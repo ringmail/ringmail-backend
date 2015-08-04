@@ -6,7 +6,7 @@ INSERT INTO `note_sequence` VALUES (0);
 
 delimiter //
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `nextid`() RETURNS bigint(20) DETERMINISTIC
+CREATE FUNCTION `nextid`() RETURNS bigint(20) DETERMINISTIC
 begin
  declare newid bigint;
  update note_sequence set id = last_insert_id( id + 3 );

@@ -272,7 +272,6 @@ CREATE TABLE `account` (
   `user_id` bigint unsigned NOT NULL,
   `ts_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ts_updated` datetime,
-  INDEX currency_1 (`currency`),
   INDEX user_1 (`user_id`),
   INDEX ts_created_1 (`ts_created`),
   INDEX ts_updated_1 (`ts_updated`),
@@ -392,12 +391,12 @@ CREATE TABLE `account_transaction_type` (
 
 delimiter //
 
-create definer = 'root'@'localhost' trigger account_tx after update on account for each row begin
+create trigger account_tx after update on account for each row begin
   insert into account_log (id, account, last_tx, balance) values (nextid(), old.id, old.last_tx, old.balance);
 end
 //
 
-create definer = 'root'@'localhost' trigger account after insert on account_transaction for each row begin
+create trigger account after insert on account_transaction for each row begin
   update account set balance=balance - new.amount, ts_updated=new.ts, last_tx=new.id where id=new.acct_src;
   update account set balance=balance + new.amount, ts_updated=new.ts, last_tx=new.id where id=new.acct_dst;
 end
