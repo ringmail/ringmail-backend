@@ -1,0 +1,57 @@
+[% menu_main = 'settings' %]
+[% menu_settings = 'phones' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				<h2>Manage VoIP Phones:</h2>
+				<p>Register compatible, SIP-enabled phones with RingMail.</p>
+				<div id="basic-accordion" class="accordion">
+					<div class="accordion-group open">
+						<div class="accordion-heading">
+							<a href="#collapseOne" data-parent="#basic-accordion" data-toggle="collapse" class="accordion-toggle"><i class="icon-bell"></i> Phone 1</a>
+						</div>
+						<div class="accordion-body in collapse" id="collapseOne" style="height: auto;">
+							<div class="accordion-inner">
+								<h3>Phone 1</h3>
+								<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;">
+									<table class="table table-bordered table-striped table-highlight table-condensed" style="width: 350px;">
+										<thead>
+											<tr>
+												<th colspan="2">&nbsp;&nbsp;Regstration Details</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="40%"><strong>Server:</strong></td>
+												<td width="60%"><p style="font-size: 1.2em;">sip.ringmail.com</p></td>
+											</tr>
+											<tr>
+												<td width="40%"><strong>Port:</strong></td>
+												<td width="60%"><p style="font-size: 1.2em;">5060</p></td>
+											</tr>
+											<tr>
+												<td width="40%"><strong>Username:</strong></td>
+												<td width="60%"><p style="font-size: 1.2em;">[% phone_1.login %]</p></td>
+											</tr>
+											<tr>
+												<td width="40%"><strong>Password:</strong></td>
+												<td width="60%"><p style="font-size: 1.2em;">[% phone_1.password %]</p></td>
+											</tr>
+										</tbody>
+									</table>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> <!-- /#tab1 -->
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

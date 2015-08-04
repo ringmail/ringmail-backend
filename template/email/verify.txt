@@ -1,0 +1,20 @@
+Welcome to RingMail,
+
+Thank you for registering your RingMail account!
+We are sending you this message to verify that your email address is correct.
+You must click the link below before you can login to RingMail and begin receiving calls.
+
+------------------------------------------------------------------------------------------
+
+Please verify your email address by clicking this link:
+
+[% link %]
+
+------------------------------------------------------------------------------------------
+
+Thank you for joining our service!  We hope you that you enjoy RingMail.
+
+Sincerely,
+
+-The RingMail Team
+

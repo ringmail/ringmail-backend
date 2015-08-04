@@ -1,0 +1,126 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8"/>
+	<title>Reset RingMail Password</title>
+	<meta name="description" content=""/>
+	<meta name="author" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800"/>
+	<link rel="stylesheet" href="/css/font-awesome.css"/>
+	<link rel="stylesheet" href="/css/bootstrap.css"/>
+	<link rel="stylesheet" href="/css/bootstrap-responsive.css"/>
+	<link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.21.custom.css"/>
+	<link rel="stylesheet" href="/css/application.css"/>
+	<link rel="stylesheet" href="/css/pages/dashboard.css"/>
+	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+</head>
+<body class="login">
+<div class="account-container login stacked">
+	<div class="content clearfix">
+		<form action="[% page.url(); %]" method="post" style="margin: 0px; padding: 0px;">
+			<h1><a href="/" style="color: #263849">RingMail</a> Password Reset</h1>
+			[% IF message %]
+			<div class="alert alert-success">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				[% message %]
+			</div>
+			[% END %]
+			[% IF error %]
+			<div class="alert alert-error">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				[% error %]
+			</div>
+			[% END %]
+			<div class="login-fields">
+				[% IF update_pass %]
+				<p>Enter a new RingMail password:</p>
+				<div class="field">
+					<label for="password">Password:</label>
+					<input type="password" id="password" name="pass1" value="" placeholder="Password" class="login password-field"/>
+				</div> <!-- /password -->
+				<div class="field">
+					<label for="password2">Confirm:</label>
+					<input type="password" id="password2" name="pass2" value="" placeholder="Confirm Password" class="login password-field"/>
+				</div> <!-- /password -->
+				<input type="hidden" name="code" value="[% code %]"/>
+				[% ELSIF login %]
+				<div style="text-align: center;">
+					<a href="/login?prefill=[% login %]" class="btn btn-large btn-info">RingMail Login</a><br/>
+				</div>
+				[% ELSE %]
+				<p>Enter your RingMail email address:</p>
+				<div class="field">
+					<label for="login">Email:</label>
+					[% page.field(
+						'command' => 'reset',
+						'name' => 'email',
+						'type' => 'text',
+						'opts' => {
+							'id' => 'login',
+							'placeholder' => 'Email',
+							'class' => 'login username-field',
+						},
+					) %]
+				</div> <!-- /field -->
+				[% END %]
+			</div> <!-- /login-fields -->
+			<div class="login-actions">
+				<!--<span class="login-checkbox">
+					<input id="Field" name="Field" type="checkbox" class="field login-checkbox" value="First Choice" tabindex="4" />
+					<label class="choice" for="Field">Keep me signed in</label>
+				</span>-->
+				[% IF update_pass %]
+				<button class="button btn btn-success btn-large">Update Password</button>
+				[% ELSIF login %]
+				[% ELSE %]
+				[% page.button(
+					'command' => 'reset',
+					'text' => 'Send Reset Email',
+					'opts' => {
+						'class' => 'button btn btn-success btn-large',
+					},
+				) %]
+				[% END %]
+			</div> <!-- .actions -->
+			[% IF ! login %]
+				<div style="text-align: left;">
+					<a href="/login">RingMail Login</a>
+				</div>
+			[% END %]
+			<!--<div class="login-social">
+				<p>Sign in using social network:</p>
+				<div class="twitter">
+					<a href="#" class="btn_1">Login with Twitter</a>				
+				</div>
+				<div class="fb">
+					<a href="#" class="btn_2">Login with Facebook</a>				
+				</div>
+			</div>-->
+		</form>
+	</div> <!-- /content -->
+</div> <!-- /account-container -->
+<!-- Text Under Box -->
+[% IF ! login %]
+<div class="login-extra">
+	Don't have a RingMail account?
+	<br/>
+	<br/>
+	<a href="/#reg" class="btn btn-large btn-info">Register For Free</a><br/>
+	<!--Forgot your <a href="#">Password?</a>-->
+</div> <!-- /login-extra -->
+[% END %]
+<div class="login-extra">
+	&nbsp;
+</div> <!-- /login-extra -->
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
+<script src="/js/libs/bootstrap/bootstrap.min.js"></script>
+<script src="/js/signin.js"></script>
+</body>
+</html>

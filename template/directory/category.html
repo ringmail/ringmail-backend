@@ -1,0 +1,77 @@
+[% content = BLOCK %]
+<div id="rg-wrapper">
+	[% INCLUDE directory/menu.html %]
+	<div class="rg-heading">
+		<div class="rg-title"><a href="/dir/cat" class="rg-back"></a></div>
+		<div class="rg-cat"><h4>[% category_name %]</h4></div>
+		<br clear="all"/>
+	</div>
+	<div id="result"></div>
+</div>
+[% END %]
+[% scripts = BLOCK %]
+<script>
+var factual_data = [];
+
+function accordion_toggle(i)
+{
+	var k = '#collapse_'+ i+ '_toggle-'+ i;
+	if (! $(k).hasClass('in'))
+	{
+		var d = factual_data[i];
+		var res = '';
+		if (d.tel)
+		{
+			res += '<div><strong>Phone Number:</strong></div>';
+			res += '<div>'+ d.tel+ '</div>';
+		}
+		if (d.website)
+		{
+			res += '<div><strong>Website:</strong></div>';
+			res += '<div><a href="'+ d.website+ '">'+ d.website+ '</a></div>';
+		}
+		if (d.address)
+		{
+			res += '<div><strong>Address:</strong></div>';
+			res += '<div>'+ d.address+ '</div>';
+		}
+		res += '<div class="map-container">';
+		res += '<iframe style="width:100%; height: 200px; border:0px; margin:0px;" scrolling="no" src="http://maps.google.com/maps?q='+ d.latitude+','+ d.longitude+ '&z=15&f=l&output=embed"></iframe>';
+		res += '</div>';
+		$('#inner_'+ i).html(res);
+	}
+	return true;
+}
+
+$.ajax({
+	dataType: "json",
+	url: "/dir/data/factual",
+	data: {
+		category_id: [% category_id %],
+		query: "category"
+	},
+	success: function(data) {
+		var res = '';
+		if (data.response.included_rows > 0)
+		{
+			factual_data = data.response.data;
+			$.each(data.response.data, function(idx, val) {
+				res += '<div class="accordion-group">';
+				res += '<div class="accordion-heading">';
+				res += '<a class="accordion-toggle" href="#collapse_'+ idx+ '_toggle-'+ idx + '" data-parent="#accordion-'+ idx+ '" data-toggle="collapse" onclick="return accordion_toggle('+ idx+ ');">';
+				res += val.name;
+				res += '</a>';
+				res += '</div>';
+				res += '<div id="collapse_'+ idx+ '_toggle-'+ idx+ '" class="accordion-body collapse">';
+				res += '<div class="accordion-inner" id="inner_'+ idx+ '">';
+				res += '</div>';
+				res += '</div>';
+				res += '</div>';
+			});
+		}
+		$('#result').html(res);
+	}
+});
+</script>
+[% END %]
+[% INCLUDE layout/directory.html %]

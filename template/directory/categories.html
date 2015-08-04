@@ -1,0 +1,26 @@
+[% title = "Categories" %]
+[% content = BLOCK %]
+<div id="rg-wrapper">
+	[% INCLUDE directory/menu.html %]
+	<div class="search">
+		<form style="margin: 4px;" class="form-search">
+			 <div class="input-append">
+				<input type="text" class="span2 search-query" style="width: 232px; font-size: 16px;"/>
+				<button type="submit" class="btn" style="width: 80px;">Search</button>
+			</div>
+		</form>
+	</div>
+	<div class="categories">
+		[% FOREACH c IN categories %]
+		<div class="rg-catitem">
+			<a href="/dir/category?id=[% c.id %]">
+				<div class="rg-caticon"><img src="/img/dir/ringmail/[% c.icon %]" width="65" height="63"/></div>
+				<div class="rg-cattitle">[% c.name %]</div>
+			</a>
+		</div>
+		[% END %]
+		<br clear="all"/>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/directory.html %]

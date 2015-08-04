@@ -1,0 +1,471 @@
+Automotive
+	Car Appraisers
+	Car Dealers and Leasing
+		Used Cars
+	Car Parts and Accessories
+	Car Wash and Detail
+	Classic and Antique Car
+	Maintenance and Repair
+		Oil and Lube
+		Smog Check
+		Tires
+		Transmissions
+	Motorcycles, Mopeds and Scooters
+		Repair
+		Sales
+	RVs and Motor Homes
+	Salvage Yards
+	Towing
+Community and Government
+	Animal Shelters and Humane Societies
+	Cemeteries
+	Day Care and Preschools
+	Disabled Persons Services
+	Drug and Alcohol Services
+	Education
+		Adult Education
+		Art Lessons and Schools
+		Colleges and Universities
+		Computer Training
+		Culinary Lessons and Schools
+		Driving Schools
+		Fraternities and Sororities
+		Primary and Secondary Schools
+		Tutoring and Educational Services
+		Vocational Schools
+	Government Departments and Agencies
+		Embassies
+	Government Lobbyists
+	Housing Assistance and Shelters
+	Law Enforcement and Public Safety
+		Fire Stations
+		Police Stations
+		Rescue Services
+	Libraries
+	Military
+		Bases
+	Organizations and Associations
+		Charities and Non-Profits
+		Environmental
+		Youth Organizations
+	Post Offices
+	Public and Social Services
+	Religious
+		Buddhist Temples
+		Churches
+		Hindu Temples
+		Mosques
+		Synagogues
+	Senior Citizen Services
+		Retirement
+	Utility Companies
+Healthcare
+	AIDS Resources
+	Assisted Living Services
+		Caretakers
+		Facilities and Nursing Homes
+	Blood Banks and Centers
+	Chiropractors
+	Dentists
+	Emergency Services
+		Ambulance
+	Holistic, Alternative and Naturopathic Medicine
+		Acupuncture
+	Hospitals, Clinics and Medical Centers
+	Medical Supplies and Labs
+	Mental Health
+		Counseling and Therapy
+		Psychologists
+	Nurses
+	Pharmacies
+	Physical Therapy and Rehabilitation
+		Sports Medicine
+	Physicians
+		Anesthesiologists
+		Cardiologists
+		Dermatologists
+		Ear, Nose and Throat
+		Family Medicine
+		Gastroenterologists
+		General Surgery
+		Geriatrics
+		Internal Medicine
+		Neurologists
+		Obstetricians and Gynecologists
+		Oncologists
+		Ophthalmologists
+		Orthopedic Surgeons
+		Pathologists
+		Pediatricians
+		Plastic Surgeons
+		Psychiatrists
+		Radiologists
+		Respiratory
+		Urologists
+	Podiatrists
+	Pregnancy and Sexual Health
+	Weight Loss and Nutritionists
+Landmarks
+	Buildings and Structures
+	Gardens
+	Historic and Protected Sites
+	Monuments and Memorials
+	Natural
+		Beaches
+		Forests
+		Lakes
+		Mountains
+		Rivers
+	Parks
+		Natural Parks
+		Picnic Areas
+		Playgrounds
+		Urban Parks
+Retail
+	Adult
+	Antiques
+	Arts and Crafts
+	Auctions
+	Beauty Products
+	Bicycles
+	Bookstores
+	Cards and Stationery
+	Children
+	Computers and Electronics
+		Cameras
+		Mobile Phones
+		Video Games
+	Construction Supplies
+	Convenience Stores
+	Costumes
+	Dance and Music
+	Department Stores
+	Discount Stores
+	Fashion
+		Clothing and Accessories
+		Jewelry and Watches
+		Shoes
+		Swimwear
+	Flea Markets
+	Florists
+	Food and Beverage
+		Catering
+		Distribution
+	Furniture and Decor
+	Gift and Novelty
+	Glasses and Optometrist
+	Hobby and Collectibles
+	Home Appliances
+	Housewares
+	Luggage
+	Music, Video and DVD
+	Newsstands
+	Nurseries and Garden Centers
+	Office Supplies
+	Outlet
+	Party Supplies
+	Pawn Shops
+	Pets
+	Photos and Frames
+	Shopping Centers and Malls
+	Sporting Goods
+	Supermarkets and Groceries
+	Tobacco
+	Toys
+	Vintage and Thrift
+	Warehouses and Wholesale Stores
+	Wedding and Bridal
+Services and Supplies
+	Advertising and Marketing
+		Advertising Agencies and Media Buyers
+		Creative Services
+		Direct Mail and Email Marketing Services
+		Market Research and Consulting
+		Online Advertising
+		Print, TV, Radio and Outdoor Advertising
+		Promotional Items
+		Public Relations
+		Search Engine Marketing and Optimization
+		Writing, Copywriting and Technical Writing
+	Agriculture and Forestry
+	Art Restoration
+	Audiovisual
+	Automation and Control Systems
+	Business and Strategy Consulting
+	Career Counseling
+	Chemicals and Gasses
+	Computers
+	Construction
+	Corporate HQ
+	Electrical Equipment
+	Employment Agencies
+	Engineering
+	Entertainment
+		Adult
+		Arcades and Amusement Parks
+		Billiard and Pool
+		Bingo
+		Bowling
+		Carnivals
+		Casinos and Gaming
+		Circuses
+		Dance Halls and Saloons
+		Fairgrounds and Rodeos
+		Go Carts
+		Hookah Lounges
+		Karaoke
+		Miniature Golf
+		Movie Theatres
+		Music and Show Venues
+		Night Clubs
+		Party Centers
+		Psychics and Astrologers
+		Ticket Sales
+	Equipment Rental
+	Events and Event Planning
+	Financial
+		Accounting and Bookkeeping
+		Banking and Finance
+			ATMs
+		Business Brokers and Franchises
+		Check Cashing
+		Collections
+		Financial Planning and Investments
+		Fund Raising
+		Loans and Mortgages
+		Stock Brokers
+		Student Aid and Grants
+	Food and Beverage
+		Catering
+		Distribution
+	Funeral Services
+	Geological
+	Home Improvement
+		Architects
+		Carpenters
+		Carpet and Flooring
+		Contractors
+			Bathrooms
+			Deck and Patio
+			Sewer
+		Doors and Windows
+		Electricians
+		Fences, Fireplaces and Garage Doors
+		Hardware and Services
+		Heating, Ventilating and Air Conditioning
+		Home Inspection Services
+		Interior Design
+		Kitchens
+		Landscaping and Gardeners
+		Lighting Fixtures
+		Movers
+		Painting
+		Pest Control
+		Plumbing
+		Pools and Spas
+		Roofers
+		Swimming Pool Maintenance and Services
+		Tree Service
+		Upholstery
+	Human Resources
+	Import and Export
+	Industrial Machinery and Vehicles
+	Insurance
+	Leather
+	Legal
+		Credit Counseling and Bankruptcy Services
+		Immigration
+		Notary
+	Logging and Sawmills
+	Machine Shops
+	Management
+	Manufacturing
+	Metals
+	Packaging
+	Paper
+	Personal Care
+		Beauty Salons and Barbers
+		Dry Cleaning, Ironing and Laundry
+		Hair Removal
+		Manicures and Pedicures
+		Massage Clinics and Therapists
+		Piercing
+		Skin Care
+		Spas
+		Tanning Salons
+		Tattooing
+	Petroleum
+	Photography
+	Plastics
+	Printing, Copying and Signage
+	Professional Cleaning
+	Publishing
+	Real Estate
+		Apartments, Condos, and Houses
+		Boarding Houses
+		Building and Land Surveyors
+		Commercial Real Estate
+		Corporate Housing
+		Property Management
+		Real Estate Agents
+		Real Estate Appraiser
+		Real Estate Development and Title Companies\
+	Refrigeration and Ice
+	Renewable Energy
+	Repair Services
+	Rubber
+	Scientific
+	Security and Safety
+	Shipping, Freight, and Material Transportation
+	Storage
+	Tailors
+	Technology
+		Advertising
+		Infrastructure
+		Mobile
+	Telecommunication Services
+	Textiles
+	Translation Services
+	Veterinarians
+	Water and Waste Management
+	Web Design and Development
+	Welding
+	Wholesale
+Social
+	Arts
+		Art Dealers and Galleries
+		Museums
+	Bars
+		Hotel Lounges
+		Jazz and Blues Cafes
+		Sports Bars
+		Wine Bars
+	Entertainment
+		Adult
+		Arcades and Amusement Parks
+		Billiard and Pool
+		Bingo
+		Bowling
+		Carnivals
+		Casinos and Gaming
+		Circuses
+		Dance Halls and Saloons
+		Fairgrounds and Rodeos
+		Go Carts
+		Hookah Lounges
+		Karaoke
+		Miniature Golf
+		Movie Theatres
+		Music and Show Venues
+		Night Clubs
+		Party Centers
+		Psychics and Astrologers
+		Ticket Sales
+	Food and Dining
+		Bagels and Donuts
+		Bakeries
+		Breweries
+		Cafes, Coffee and Tea Houses
+		Dessert
+		Ice Cream Parlors
+		Internet Cafes
+		Juice Bars and Smoothies
+		Restaurants
+			American
+			Asian
+			Barbecue
+			Buffets
+			Burgers
+			Chinese
+			Delis
+			Diners
+			Fast Food
+			Food Trucks
+			French
+			Indian
+			Italian
+			Japanese
+			Korean
+			Mexican
+			Middle Eastern
+			Pizza
+			Seafood
+			Steakhouses
+			Sushi
+			Thai
+			Vegan and Vegetarian
+	Social Clubs
+	Wineries and Vineyards
+	Zoos, Aquariums and Wildlife Sanctuaries
+Sports and Recreation
+	Athletic Fields
+	Baseball
+		Batting Ranges
+	Basketball
+	Combat Sports
+	Cycling
+	Dance
+	Equestrian
+	Football
+	Golf
+		Golf Courses
+	Gun Ranges
+	Gymnastics
+	Gyms and Fitness Centers
+	Hockey
+	Outdoors
+		Campgrounds and RV Parks
+		Hiking
+		Hot Air Balloons
+		Hunting and Fishing
+		Rock Climbing
+		Skydiving
+	Paintball
+	Personal Trainers
+	Race Tracks
+	Racquet Sports
+		Racquetball
+		Tennis
+	Recreation Centers
+	Running
+	Skating
+	Snow Sports
+	Soccer
+	Sports Clubs
+	Stadiums and Arenas
+	Swimming Pools
+	Water Sports
+		Boating
+		Canoes and Kayaks
+		Rafting
+		Scuba Diving
+		Surfing
+		Swimming
+	Yoga and Pilates
+Transportation
+	Airlines and Aviation Services
+	Gas Stations
+	Parking
+	Public Transportation Services
+	Rest Areas
+	Taxi and Car Services
+		Car and Truck Rentals
+		Charter Buses
+		Limos and Chauffeurs
+	Transport Hubs
+		Airports
+		Bus Stations
+		Heliports
+		Ports
+		Rail Stations
+Travel
+	Cruises
+	Lodging
+		Bed and Breakfasts
+		Cottages and Cabins
+		Hostels
+		Hotels and Motels
+		Lodges and Vacation Rentals
+		Resorts
+	Tourist Information and Services
+	Travel Agents and Tour Operators

@@ -1,0 +1,46 @@
+div.centered-form {
+    margin: 0 auto 10px;
+    max-width: 275px;
+}
+
+div.centered-form h3 {
+    margin: 0;
+	font-size: 18px;
+    text-align: center;
+}
+
+div.centered-form .actions {
+    display: block;
+    height: 32px;
+}
+
+div.centered-form form {
+    margin-bottom: 0;
+}
+
+div.centered-form form input:last-child {
+    margin-bottom: 0;
+}
+
+div.centered-form form span.form-label {
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 21px;
+}
+
+.block p.headline-caption {
+	font-size: 18px;
+}
+
+p, li {
+	font-size: 16px;
+}
+
+.block h5 {
+	font-size: 20px;
+}
+
+.input-append, .input-prepend {
+	margin-bottom: 0px;
+}
+

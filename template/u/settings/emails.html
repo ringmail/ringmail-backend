@@ -1,0 +1,157 @@
+[% menu_main = 'settings' %]
+[% menu_settings = 'emails' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				<h2>Call Routing for Email Addresses:</h2>
+				<p>Configure where calls to your email addresses will ring.</p>
+				<div id="basic-accordion" class="accordion">
+					[% FOREACH e IN emails %]
+					<div class="accordion-group[% IF e.id == sel %] open[% END %]">
+						<div class="accordion-heading">
+							<a href="#collapse_[% e.id %]" data-parent="#basic-accordion" data-toggle="collapse" class="accordion-toggle"><i class="icon-envelope"></i> [% e.email %]</a>
+						</div>
+						<div class="accordion-body collapse[% IF e.id == sel %] in[% END %]" id="collapse_[% e.id %]">
+							<div class="accordion-inner">
+								<h5 style="padding-left: 8px;">&raquo; Inbound Calls Ring To - [% IF e.route %][% e.route %][% ELSE %]<em>No Destination</em>[% END %]</h5>
+								<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;">
+									<table class="table table-bordered table-striped table-highlight">
+										<thead>
+											<tr>
+												<th colspan="3">&nbsp;&nbsp;Phone Number</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="5%" style="text-align: center;">[% page.field(
+'command' => 'update',
+'type' => 'radio',
+'name' => e.id_name,
+'value' => 'did',
+'checked' => e.did,
+'opts' => e.did_opts,
+												) %]</td>
+												<td width="65%" style="padding-bottom: 0px;">
+													<div class="control-group" style="margin-bottom: 0px;">
+														<label for="did_[% e.id %]" class="control-label">Phone Number</label>
+														<div class="controls" style="margin-bottom: 0px;">
+															[% IF e.did_opts.disabled == 'disabled' %]
+																[% page.field(
+'command' => 'update',
+'type' => 'text',
+'name' => e.id_did,
+'value' => e.did_number,
+'opts' => {'class' => 'input-large', 'id' => e.id_did, 'disabled' => 'disabled'},
+
+																) %]
+																<p class="help-block">
+																	A RingMail Basic subscription is required to route calls to a phone number.
+																</p>
+																<p class="help-block">
+																	<a class="btn" href="/u/settings/service">Subscribe Now</a>
+																	&nbsp;&nbsp;&nbsp;&nbsp;
+ <a href="#">Why do we charge?</a>
+																</p>
+															[% ELSE %]
+																[% page.field(
+'command' => 'update',
+'type' => 'text',
+'name' => e.id_did,
+'value' => e.did_number,
+'opts' => {'class' => 'input-large', 'id' => e.id_did},
+
+																) %]
+															[% END %]
+														</div>
+													</div>
+												</td>
+												<td width="30%"><p>Enter a telephone number.</p></td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="table table-bordered table-striped table-highlight ">
+										<thead>
+											<tr>
+												<th colspan="3">&nbsp;&nbsp;RingMail App / VoIP Phone</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="5%" style="text-align: center;">[% page.field(
+'command' => 'update',
+'type' => 'radio',
+'name' => e.id_name,
+'value' => 'phone',
+'checked' => e.phone
+												) %]</td>
+												<td width="65%">
+													<div class="control-group" style="margin-bottom: 0px;">
+														<label for="phone_[% e.id %]" class="control-label">Select Phone</label>
+														<div class="controls" style="margin-bottom: 0px;">
+															[% e.phone_field %]
+														</div>
+													</div>
+												</td>
+												<td width="30%">Register VoIP phone or softphone.</td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="table table-bordered table-striped table-highlight ">
+										<thead>
+											<tr>
+												<th colspan="3">&nbsp;&nbsp;SIP Address</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="5%" style="text-align: center;">[% page.field(
+'command' => 'update',
+'type' => 'radio',
+'name' => e.id_name,
+'value' => 'sip',
+'checked' => e.sip
+												) %]</td>
+												<td width="65%" style="padding-bottom: 0px;">
+													<div class="control-group" style="margin-bottom: 0px;">
+														<label for="sip_[% e.id %]" class="control-label">SIP Address</label>
+														<div class="controls" style="margin-bottom: 0px;">
+															[% page.field(
+'command' => 'update',
+'type' => 'text',
+'name' => e.id_sip,
+'value' => e.sip_url,
+'opts' => {'class' => 'input-large', 'id' => e.id_sip},
+															) %]
+														</div>
+													</div>
+												</td>
+												<td width="30%">Enter a SIP endpoint URL.</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="form-actions">
+										[% page.button(
+'command' => 'update',
+'contents' => '<i class="icon-ok"></i> Update',
+'opts' => {'class' => 'btn btn-primary btn-large'},
+'args' => [e.target_id, e.id],
+										) %]
+										<!--<button class="btn btn-primary btn-large" type="submit"><i class="icon-ok"></i> Update</button>-->
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					[% END %]
+				</div>
+			</div> <!-- /#tab1 -->
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>[% title %]</title>
+		<link rel="stylesheet" href="/css/dir/bootstrap.css">
+		<style>
+body
+{
+	margin: 0px;
+	padding: 0px;
+	font-family: sans-serif;
+	background-color: #2f3239;
+	color: #000000;
+	width: 320px;
+}
+
+#rg-wrapper {
+	width: 320px;
+}
+
+.rg-navitem {
+	float: left;
+	width: 80px;
+	height: 51px;
+}
+
+.rg-navitem a {
+	display: block;
+	color: #FFFFFF;
+	width: 80px;
+	height: 18px;
+	text-decoration: none;
+	text-align: center;
+	padding-top: 33px;
+	font-size: .75em;
+}
+
+.rg-catitem {
+	float: left;
+	width: 158px;
+	height: 90px;
+	margin-left: 1px;
+	margin-top: 1px;
+	background-color: #FFFFFF;
+}
+
+.rg-catitem a {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	font-size: .9em;
+	width: 158px;
+	height: 90px;
+	color: #000000;
+}
+
+.rg-caticon {
+	margin-top: 4px;
+}
+
+.rg-back {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjQ+jcx2AAAD5klEQVRoQ91az2ddQRR+hBDCy5/QXbZPqiG7yCpkFboKj0coJZSuQpRkFbJpCaWUSKWr0v4XoVqJhFJKCV110xAtpbx+X9/cvpNz7/y+90Y7HO6bmfOd78zMmZ+v06k5DYfDHuQ2ZB1yzwi/mder2Vw+HEjNQrYgx5DQxLrUmc1nkIAAw5OQB5CPoYwd9YhBrKkEKvEqMDSAXDgInaLsPeQ55JkRfjOPZbZEzEE8o0ANgM9bCHw1ZJcDoTqov2x0qKsTnZwPxQqqB8A1yA9liS12NwjAUYkYFT1KW/1c7D/6ANpVxL/j93ot4AKEmBBiy7SbbAcoE5BXCvAMv+8kg3oUiQ05UTbJYSLaZkXLH0WDJCrA9lFWT5gxLzG2E7kkq8H4tnJiLQiMM4AK2NZaXhNUPcHAds9OqMAF6pPw/CzI6wYrgQvjrkjkNmk1h8JNUZkzQmMBG+qzCWw5O21W6qJiF3IpHMie40NJ+uqBE9eKIpFjt6SjWv/cB2orB84MZNEiMxm458KJ672AAs75cn+zkmLIkD8VhuTnQQpmoQOgFQFGruO1AT+WZGGKoSbJCydkIy/95Qnj+8KBnVgHPOQfx+I5hueO4PlEOiDHVy/GoIf8IAbLVxe2eKor0ihO8WtaZF75QGQ59Hh8/GYZ87WSF8PoStibpgMLIuM41IGbIG8aXB5dF+gA9/pFehnigIf8Acpt02hIvnOqBfYLwbdPBzZExr7PAQ95y2iKyl50cQCSnHA26IDcPjgPEKjL83DTyeeAPGBt/hcOxA6hpnvB1wOlIZQSxC4n3mCM8TCSKrc8MVAK4tRp1OYE14WoxdA3cai1pzSNdkVUXkaC2RayxpwAV7nlH22rkZmzlWhtNTZTeNHe4y2/mltTNnOtOAGecjM3XrNQUMd2unEnwNO6nW7jQJO1uQN5+4HGxAHv68vjKyaqR/FkPVJGQl2rruJ0q4SFCpyN/t1DvekFfa0yl9NqdeiiUecg/msV44C+2Dqpg0QOBsjLy173xZZxgleLP0U8HOYQyNEFh0PBg5zCHj5QsS8U+fkoh0iKLm0qDnEPHlDeUwCtXfLCrr5e34tuBIBwbXitnOBDXWP3pSZg3ymb5BD/wGHigU5UPTFlLUpVrQk73N2WnpiSyastLMGrHvlWo7tWKQB3FaKfbRmw9TYSZwDIB9W9/PkFwnfglGdW6upEG2GzTUrrAZyvibaH7l8oY5y8hfCR+6kRfjOPZaxTlYhZ++tnpY8wNAV5CPlsIROTTQxitfNXA+0RDBd/9mALhyb2xM392cM29ECKsxYvYBkv/KvNfSP8Zh7L0qZEi9Hfs8DGmwrY7x8AAAAASUVORK5CYII=);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	height: 32px;
+	width: 32px;
+	float: left;
+	margin-left: 8px;
+}
+
+.rg-heading {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.rg-cat {
+	float: left;
+}
+
+.rg-cat h4 {
+	margin: 6px;
+	padding: 0px;
+	color: #FFFFFF;
+}
+
+.accordion-heading {
+	background-color: #FFFFFF;
+}
+
+.accordion-heading a {
+	color: #000000;
+	font-size: 1.2em;
+}
+
+.accordion-inner {
+	background-color: #FFFFFF;
+}
+
+.rg-navitem-1 {
+	background-image: url(/img/dir/ringmail/categories_default.png);
+}
+
+.rg-navitem-2 {
+	background-image: url(/img/dir/ringmail/favorites_default.png);
+}
+
+.rg-navitem-3 {
+	background-image: url(/img/dir/ringmail/deals_default.png);
+}
+
+.rg-navitem-4 {
+	background-image: url(/img/dir/ringmail/hashtag_default.png);
+}
+
+		</style>
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	</head>
+	<body>
+[% content %]
+		<script src="/js/dir/jquery-2.0.3.min.js"></script>
+		<script src="/js/dir/bootstrap.min.js"></script>
+[% scripts %]
+	</body>
+</html>

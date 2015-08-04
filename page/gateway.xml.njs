@@ -1,0 +1,3 @@
+{
+   "class" : "ring::fsconfig"
+}

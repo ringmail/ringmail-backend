@@ -1,0 +1,35 @@
+[% from %] tried to call you on RingMail. You can join RingMail for free
+so that next time [% from %] calls you'll be able to answer!
+
+--------------------------------------------------------------------------------
+
+What is RingMail?
+
+RingMail is a network that let's you Call, Text and Video Conference with people
+anywhere in the world using just an email address.
+
+--------------------------------------------------------------------------------
+
+How do I join RingMail?
+
+- iPhone Users:
+
+You can sign up by using our free app: http://itunes.com/apps/dylllc/ringmail
+
+- Android Users:
+
+An app for Android is coming soon! For now you can join by using our website.
+
+- RingMail Website:
+
+Visit http://ringmail.com/signup to register your email address with RingMail.
+Login and set your "Call Routing" for your email to go to a phone number.
+
+--------------------------------------------------------------------------------
+
+RingMail is powered by technology developed by DYL.
+
+DYL, LLC
+4551 Glencoe Ave. Ste. 155
+Marina del Rey, CA 90292
+

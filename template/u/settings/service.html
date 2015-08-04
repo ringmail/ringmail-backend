@@ -1,0 +1,41 @@
+[% menu_main = 'settings' %]
+[% menu_settings = 'service' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span6">
+				<h2 style="text-align: center;">Sign Up for RingMail Basic:</h2>
+				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<fieldset>
+						[% payment %]
+					</fieldset>
+				</form>
+			</div> <!-- /#tab1 -->
+			<div class="span3">
+				<h3>RingMail Basic</h3>
+				<h5>$9.98 / mo.</h5>
+				<p>
+					RingMail Basic connects your email address to your phone number.
+				</p>
+				<p>
+					Compatibile with any US/Canada phone number.
+				</p>
+				<p>
+					Works with cellular numbers and land-lines.
+				</p>
+				<p>
+					Roll-over calls from your RingMail App or VoIP phones to your regular phone number when you're not online.
+				</p>
+				<p>
+					No contracts or commitments.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

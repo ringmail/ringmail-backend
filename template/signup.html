@@ -1,0 +1,118 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8"/>
+	<title>Register with RingMail</title>
+	<meta name="description" content=""/>
+	<meta name="author" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800"/>
+	<link rel="stylesheet" href="/css/font-awesome.css"/>
+	<link rel="stylesheet" href="/css/bootstrap.css"/>
+	<link rel="stylesheet" href="/css/bootstrap-responsive.css"/>
+	<link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.21.custom.css"/>
+	<link rel="stylesheet" href="/css/application.css"/>
+	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+</head>
+<body class="login">
+<div class="account-container register stacked">
+	<div class="content clearfix">
+		<form action="[% page.url('path' => '/signup'); %]" method="post">
+			<h1>RingMail Sign Up</h1>			
+			[% IF error %]
+			<div class="alert alert-error">
+				<button class="close" data-dismiss="alert" type="button">×</button>
+				[% error %]
+			</div>
+			[% END %]
+			<div class="login-fields">
+				<p>Create your free RingMail account:</p>
+				<div style="padding: 10px; border: 1px solid #CCCCCC; margin-bottom: 10px; background-color: #FFFFFF;">
+					<h5 style="margin: 0px;">Email Address*:</h5>
+					<div style="margin-top: 8px;" class="field">
+						<div class="input-prepend [% IF page.value.error.target_email %]control-group error[% END %]">
+							<span class="add-on"><i class="icon-envelope"></i></span>
+							[% page.field(
+								'command' => 'register',
+								'type' => 'text',
+								'name' => 'target_email',
+								'value' => page.value.target_email,
+								'opts' => {
+									'style' => 'width: 150px; padding-top: 4px; padding-bottom: 4px;',
+									'placeholder' => 'email@address.com',
+									'id' => 'email_1',
+								},
+							) %]
+						</div>
+					</div>
+					<div>
+						<span class="form-label">Phone Number</span>
+						<div class="input-prepend [% IF page.value.error.route_phone %]control-group error[% END %]">
+							<span class="add-on"><i class="icon-bell"></i></span>
+							[% page.field(
+								'command' => 'register',
+								'type' => 'text',
+								'name' => 'route_phone',
+								'value' => page.value.route_phone,
+								'opts' => {
+									'style' => 'width: 150px; padding-top: 4px; padding-bottom: 4px;',
+									'placeholder' => 'Phone Number',
+								},
+							) %]
+						</div>
+					</div>
+					<div style="margin-top: 8px;">
+						<span class="form-label">Password*</span><br/>
+						<div class="input-prepend [% IF page.value.error.password %]control-group error[% END %]">
+							<span class="add-on"><i class="icon-thumbs-up"></i></span>
+							[% page.field(
+								'command' => 'register',
+								'type' => 'password',
+								'name' => 'password',
+								'opts' => {
+									'style' => 'width: 150px; padding-top: 4px; padding-bottom: 4px;',
+									'placeholder' => 'Password',
+								},
+							) %]
+						</div>
+					</div>
+					<div style="text-align: right; margin-top: 20px; text-align: center;">
+						[% page.button(
+							'command' => 'register',
+							'text' => 'Free Sign Up',
+							'opts' => {
+								'class' => 'btn btn-large btn-success rounded',
+							},
+						) %]
+					</div>
+					<div style="margin-top: 10px;">
+						* Required Fields
+					</div>
+				</div>
+			</div> <!-- /login-fields -->
+		</form>
+	</div> <!-- /content -->
+</div> <!-- /account-container -->
+<!-- Text Under Box -->
+<div class="login-extra">
+	Already have an account?<br/><br/><a href="/login" class="btn btn-large btn-info">Login</a>
+	<!--<br/>
+	Or, go back to the <a href="/">Main Page</a>.-->
+</div> <!-- /login-extra -->
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
+<script src="/js/libs/bootstrap/bootstrap.min.js"></script>
+<script src="/js/signin.js"></script>
+<script src="/js/home/home.js"></script>
+[% IF page.value.type_email || page.value.type_domain %]
+<script type="text/javascript">
+select_reg('[% IF page.value.type_email %]email[% ELSIF page.value.type_domain %]domain[% END %]');
+</script>
+[% END %]
+</body>
+</html>

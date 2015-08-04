@@ -1,0 +1,16 @@
+RingMail Password Reset For: [% email %]
+
+------------------------------------------------------------------------------------------
+
+Set a new password for your RingMail account by clicking this link:
+
+[% link %]
+
+------------------------------------------------------------------------------------------
+
+Thank you for using our service!  We hope you that you enjoy RingMail.
+
+Sincerely,
+
+-The RingMail Team
+

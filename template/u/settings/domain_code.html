@@ -1,0 +1,143 @@
+[% menu_main = 'settings' %]
+[% menu_settings = 'domains' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				<h2>Verify Domain: [% page.value.domain %]</h2>
+				[% IF verify_progress %]
+				<div id="checking">
+					<h3>Checking Domain Verification... <span id="progress"> </span></h3>
+					<div class="progress progress-secondary progress-striped active">
+						<div class="bar" style="width: 100%"></div>
+					</div>
+				</div>
+				<div id="checking_error" style="display: none;">
+					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<h4>An Error Occurred</h4>
+						<br/>
+						Unable to verify domain because an error occurred.
+						<br/>
+						<strong>Error: </strong><span id="error_msg"> </span>
+					</div> 
+				</div>
+				<div id="checking_failure" style="display: none;">
+					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<h4>Verification Failed</h4>
+						<br/>
+						<strong><span id="failure_msg"> </span></strong>
+						<br/>
+						Unable to verify your domain at this time.<br/>Please make you have correctly followed these instructions:<br/>
+						<a class="btn btn-small" href="[% page.url(
+							'path' => '/u/settings/domain_code',
+							'query' => {'id' => page.form.id},
+						) %]">Domain Verification Instructions</a>
+					</div> 
+				</div>
+				<div id="checking_ok" style="display: none;">
+					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<h4>Domain Verified</h4>
+						<br/>
+						Your domain has been successfully verified.<br/>This domain is now available for use with RingMail.<br/>
+						<a class="btn btn-small" href="[% page.url(
+							'path' => '/u/settings/domains',
+							'query' => {'id' => page.form.id},
+						) %]">Setup Domain Routing</a>
+					</div> 
+				</div>
+				<script type="text/javascript">
+$.ajax({
+	url: '[% page.url() %]',
+	data: {
+		verify: 1,
+		id: [% page.form.id %],
+	},
+	dataType: 'json',
+	timeout: 15000,
+	error: function(xhr, sts, err) {
+		$('#error_msg').html(sts);
+		$('#checking').hide();
+		$('#checking_error').show();
+	},
+	success: function(data, sts, xhr) {
+		if (data.ok)
+		{
+			$('#checking').hide();
+			$('#checking_ok').show();
+		}
+		else
+		{
+			$('#failure_msg').html(data.error);
+			$('#checking').hide();
+			$('#checking_failure').show();
+		}
+	},
+	type: 'GET'
+});
+$('#progress').html("Starting Check");
+				</script>
+				[% ELSE %]
+				<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+				<div class="faq-container">
+					<ol class="faqList faq-list">
+						<li id="faq-1">
+							<div class="faq-icon">
+								<div class="faq-number">1 A</div>
+							</div>
+							<div class="faq-text">
+								<h4>Option: Verify using a DNS record</h4>
+								<p>Create a TXT record that contains exactly this value:</p>
+								<div class="well">
+									ringmail-domain-verify=[% page.value.code %]
+								</div>
+								<h5>Additional Instructions:</h5>
+								<a href="http://support.godaddy.com/help/article/7925/adding-or-editing-txt-records" target="_blank">GoDaddy: Adding or Editing TXT Records</a> &raquo;
+							</div>
+						</li>
+						<li id="faq-2">
+							<div class="faq-icon">
+								<div class="faq-number">1 B</div>
+							</div>
+							<div class="faq-text">
+								<h4>Option: Verify using a web page</h4>
+								<p>Install this HTML page within the root ("/") directory of your web site:</p>
+								<div class="well">
+									<a href="[% page.url(
+										'command' => 'verify_download',
+										'args' => [page.form.id],
+									) %]"><img src="/img/file_html.png" border="0"/> ringmail_[% page.value.code_short %].html</a>
+								</div>
+							</div>
+						</li>
+						<li id="faq-3">
+							<div class="faq-icon">
+								<div class="faq-number">2</div>
+							</div>
+							<div class="faq-text">
+								<h4>Check Verification</h4>
+								<p>After you have completed one of these options press the button below to verify your domain.</p>
+								<a href="[% page.url(
+									'command' => 'verify',
+									'args' => [page.form.id],
+								) %]" class="btn btn-large btn-primary">Verify Domain</a>
+							</div>
+						</li>
+					</ol>
+				</div>
+				[% END %]
+			</div> <!-- /#tab1 -->
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

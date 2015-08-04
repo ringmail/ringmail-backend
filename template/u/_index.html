@@ -1,0 +1,177 @@
+[% menu_main = 'dashboard' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row" style="margin-top:0px;">
+		<div class="span6">
+			<h2>Account</h2>
+			<div>
+				<span style="font-size: 16px;"><strong>Name: </strong>[% name %]</span>
+			</div>
+			<br/>
+			<table class="table table-bordered table-striped table-highlight table-condensed" width="100%">
+				<thead>
+					<tr>
+						<th>
+							Email
+						</th>
+						<th>
+							Phone
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<span style="font-size: 16px;">[% login %]</span>
+						</td>
+						<td>
+							<span style="font-size: 16px;">[% phone %]</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="span6">
+			<h2>Routing</h2>
+			<div class="well">
+				<div style="font-size: 15px; border-bottom: 1px solid black;">
+					[% login %]
+				</div>
+				<div>
+					<div style="float: right;">
+						<strong>Route To:</strong> [% route %]
+					</div>
+					<br clear="all"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr/>
+	<div class="row" style="margin-top:0px;">
+		<div class="span6">
+			<h2>Favorites</h2>
+			<div>
+				<span style="font-size: 16px;"><strong>Count: </strong>[% favs_count %]</span>
+			</div>
+			<br/>
+			<table class="table table-bordered table-striped table-highlight table-condensed" width="100%">
+				<thead>
+					<tr>
+						<th>
+							Favorite Contacts
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<em>None</em>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<div class="span6">
+			<h2>Contacts</h2>
+			<div>
+				<span style="font-size: 16px;"><strong>Count: </strong>[% contacts_count %]</span>
+			</div>
+			<br/>
+			<table class="table table-bordered table-striped table-highlight table-condensed" width="100%">
+				<thead>
+					<tr>
+						<th>
+							All Contacts
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					[% FOREACH r IN contacts_data %]
+					<tr>
+						<td>
+							<span style="font-size: 15px;">
+								[% IF r.first_name || r.last_name %]
+									[% r.first_name %] [% r.last_name %]
+								[% ELSE %]
+									[% r.organization %]
+								[% END %]
+							</span>
+							<div>
+								[% IF r.phone %]
+									<div style="padding-left: 15px; float: left;">
+										[% FOREACH e IN r.phone %]
+											<span style="font-size: 13px;">[% page.format_phone(e) %]</span><br/>
+										[% END %]
+									</div>
+								[% END %]
+								[% IF r.email %]
+									<div style="padding-left: 15px; float: left;">
+										[% FOREACH e IN r.email %]
+											<span style="font-size: 13px;">[% e %]</span><br/>
+										[% END %]
+									</div>
+								[% END %]
+								<br clear="all"/>
+							</div>
+						</td>
+					</tr>
+					[% END %]
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<hr/>
+	<div class="row" style="margin-top:0px;">
+		<div class="span6">
+			<h2>Call History</h2>
+			<div>
+				<span style="font-size: 16px;"><strong>Items: </strong>[% history_count %]</span>
+			</div>
+			<br/>
+			<table class="table table-bordered table-striped table-highlight table-condensed" width="100%">
+				<thead>
+					<tr>
+						<th>
+							Calls
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					[% FOREACH r IN history_data %]
+					<tr>
+						<td>
+							<span style="font-size: 15px;">
+								[% IF r.to %]
+									<strong>To:</strong> [% r.to %]
+								[% ELSIF r.from %]
+									<strong>From:</strong> [% r.from %] <strong>To:</strong>
+									[% IF r.called == login %]
+										<em>Primary Email</em>
+									[% ELSE %]
+										[% r.called %]
+									[% END %]
+									<br/>
+								[% END %]
+							</span>
+							<div>
+								<div style="padding-left: 15px; font-size: 13px; float: right;">
+									<!--<strong>[% r.direction %]:</strong> -->[% r.ts %]
+								</div>
+								<br clear="all"/>
+							</div>
+						</td>
+					</tr>
+					[% END %]
+				</tbody>
+			</table>
+		</div>
+		<div class="span6">
+			<h2>Settings</h2>
+			<a class="btn btn-info btn-large" href="/u/settings">Account Settings</a>
+			<p style="margin-top: 8px; font-size: 15px;">Configure your RingMail account settings.</p>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]
