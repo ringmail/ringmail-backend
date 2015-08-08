@@ -1,4 +1,4 @@
 {
-   "class" : "ring::login",
+   "class" : "Page::ring::login",
    "template" : "login.html"
 }

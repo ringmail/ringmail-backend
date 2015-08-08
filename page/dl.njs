@@ -1,3 +1,3 @@
 {
-   "class" : "ring::download"
+   "class" : "Page::ring::download"
 }

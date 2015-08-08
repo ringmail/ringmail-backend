@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::publish::gallery",
+   "class" : "Page::ring::publish::gallery",
    "command" : {
 		"media_add" : "cmd_media_add"
    },

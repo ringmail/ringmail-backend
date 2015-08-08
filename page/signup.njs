@@ -1,5 +1,5 @@
 {
-   "class" : "ring::signup",
+   "class" : "Page::ring::signup",
    "command" : {
        "register" : "register"
    },

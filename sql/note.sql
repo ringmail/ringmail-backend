@@ -18,23 +18,16 @@ end
 delimiter ;
 
 CREATE TABLE `note_session` (
-  `id` bigint unsigned NOT NULL,
-  `ipv4_addr` bigint NOT NULL,
-  `secure` bool NOT NULL DEFAULT 0,
-  `skey` varchar(32) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `data` longblob NOT NULL,
+  `ipv4_addr` varchar(15) NOT NULL DEFAULT '',
+  `secure` tinyint(1) NOT NULL DEFAULT '0',
+  `skey` varchar(32) NOT NULL DEFAULT '',
   `ts_created` datetime NOT NULL,
   `ts_expires` datetime NOT NULL,
-  UNIQUE INDEX skey_1 (`skey`),
-  INDEX ts_expires_1 (`ts_expires`),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `note_session_data` (
-  `id` bigint unsigned NOT NULL,
-  `data` longblob NOT NULL,
-  `dkey` varchar(64) NOT NULL,
-  `session_id` bigint unsigned NOT NULL,
-  UNIQUE INDEX session_id_1 (`session_id`, `dkey`),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `skey_1` (`skey`),
+  KEY `ts_created_1` (`ts_created`),
+  KEY `ts_expires_1` (`ts_expires`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -13,7 +13,7 @@ use Authen::Passphrase::SaltedSHA512;
 use POSIX 'strftime';
 use String::Random;
 use MIME::Lite;
-use Net::RabbitMQ;
+#use Net::RabbitMQ;
 use JSON::XS 'encode_json';
 use Digest::MD5 'md5_base64';
 
@@ -309,15 +309,15 @@ sub send_request
 	my $host = $req->{'queuehost'};
 	delete $req->{'queuehost'};
 	my $json = encode_json([$cmd, $req]);
-	my $rbq = new Net::RabbitMQ();
-	$rbq->connect($rabbit{'host'}, {
-		'user' => $rabbit{'user'},
-		'password' => $rabbit{'password'},
-		'port' => $rabbit{'port'},
-	});
-	$rbq->channel_open(1);
-	$rbq->publish(1, 'rgm_'. $host, $json, {'exchange' => 'ringmail'});
-	$rbq->disconnect();
+#	my $rbq = new Net::RabbitMQ();
+#	$rbq->connect($rabbit{'host'}, {
+#		'user' => $rabbit{'user'},
+#		'password' => $rabbit{'password'},
+#		'port' => $rabbit{'port'},
+#	});
+#	$rbq->channel_open(1);
+#	$rbq->publish(1, 'rgm_'. $host, $json, {'exchange' => 'ringmail'});
+#	$rbq->disconnect();
 	::_log("Send($host): $cmd", $req);
 }
 

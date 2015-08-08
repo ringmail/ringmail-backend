@@ -2,6 +2,6 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::setup::processing",
+   "class" : "Page::ring::setup::processing",
    "template" : "u/settings/processing.html"
 }

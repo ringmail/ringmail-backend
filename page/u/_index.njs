@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::dashboard",
+   "class" : "Page::ring::dashboard",
    "command" : {
 		"logout" : "cmd_logout"
    },

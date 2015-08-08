@@ -1,4 +1,4 @@
 {
-   "class" : "ring::directory::category",
+   "class" : "Page::ring::directory::category",
    "template" : "directory/category.html"
 }

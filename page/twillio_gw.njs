@@ -1,3 +1,3 @@
 {
-   "class" : "ring::twillio"
+   "class" : "Page::ring::twillio"
 }

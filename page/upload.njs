@@ -1,3 +1,3 @@
 {
-   "class" : "ring::chat_upload"
+   "class" : "Page::ring::chat_upload"
 }

@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::setup::domain",
+   "class" : "Page::ring::setup::domain",
    "command" : {
         "domain_add" : "cmd_domain_add",
         "update" : "cmd_update"

@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::setup::email",
+   "class" : "Page::ring::setup::email",
    "command" : {
         "update" : "cmd_update"
    },

@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::setup::password",
+   "class" : "Page::ring::setup::password",
    "command" : {
 		"password_change" : "cmd_password_change"
    },

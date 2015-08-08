@@ -1,3 +1,3 @@
 {
-   "class" : "ring::data::factual"
+   "class" : "Page::ring::data::factual"
 }

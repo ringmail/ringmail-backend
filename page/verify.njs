@@ -1,4 +1,4 @@
 {
-   "class" : "ring::verify",
+   "class" : "Page::ring::verify",
    "template" : "verify.html"
 }

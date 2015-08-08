@@ -1,5 +1,5 @@
 {
-   "class" : "ring::reset_pass",
+   "class" : "Page::ring::reset_pass",
    "command" : {
        "reset" : "reset"
    },

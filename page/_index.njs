@@ -1,5 +1,4 @@
 {
-   "class" : "ring::index",
    "command" : {
       "webgw" : "cmd_webgw"
    },

@@ -1,3 +1,3 @@
 {
-   "class" : "ring::fsconfig"
+   "class" : "Page::ring::fsconfig"
 }

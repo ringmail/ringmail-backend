@@ -2,7 +2,7 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "ring::setup::service",
+   "class" : "Page::ring::setup::service",
    "command" : {
         "fund" : "cmd_fund"
    },
