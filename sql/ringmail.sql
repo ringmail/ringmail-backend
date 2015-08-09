@@ -2,15 +2,17 @@ CREATE TABLE `ring_call` (
   `id` bigint unsigned NOT NULL,
   `call_length` bigint,
   `caller_id` bigint unsigned NOT NULL,
+  `caller_user_id` bigint unsigned NOT NULL,
   `fs_uuid_aleg` varchar(36),
   `target_did_id` bigint unsigned,
   `target_domain_id` bigint unsigned,
   `target_email_id` bigint unsigned,
+  `target_user_id` bigint unsigned,
   `target_type` bigint unsigned NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` bigint unsigned NOT NULL,
   INDEX fs_uuid_aleg_1 (`fs_uuid_aleg`),
-  INDEX user_id_1 (`user_id`, `ts`),
+  INDEX caller_user_id_1 (`caller_user_id`, `ts`),
+  INDEX target_user_id_1 (`target_user_id`, `ts`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -139,14 +141,16 @@ CREATE TABLE `ring_target_route` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ring_user` (
-  `id` bigint unsigned NOT NULL,
-  `active` bool NOT NULL DEFAULT 0,
+  `id` bigint(20) unsigned NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
   `login` varchar(255) NOT NULL,
-  `password_hash` varchar(128),
-  `password_salt` varchar(128),
-  `person` bigint unsigned,
-  UNIQUE INDEX login_1 (`login`),
-  PRIMARY KEY (`id`)
+  `password_fs` varchar(32) DEFAULT NULL,
+  `password_hash` varchar(128) DEFAULT NULL,
+  `password_salt` varchar(128) DEFAULT NULL,
+  `person` bigint(20) unsigned DEFAULT NULL,
+  `verified` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login_1` (`login`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ring_user_did` (
@@ -428,6 +432,40 @@ CREATE TABLE `ring_product` (
   `id` bigint unsigned NOT NULL,
   `name` varchar(64) NOT NULL,
   UNIQUE INDEX name_1 (`name`),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `ring_contact` (
+  `id` bigint unsigned NOT NULL auto_increment,
+  `apple_id` bigint NULL DEFAULT NULL,
+  `first_name` varchar(128) NULL DEFAULT NULL,
+  `last_name` varchar(128) NULL DEFAULT NULL,
+  `organization` varchar(128) NULL DEFAULT NULL,
+  `ts_created` datetime NOT NULL,
+  `ts_updated` datetime NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  INDEX `user_id_1` (`user_id`, `apple_id`),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `ring_contact_phone` (
+  `id` bigint unsigned NOT NULL auto_increment,
+  `contact_id` bigint unsigned NOT NULL,
+  `did_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  UNIQUE INDEX `user_id_1` (`user_id`, `contact_id`, `did_id`),
+  INDEX `user_id_2` (`user_id`, `did_id`),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `ring_contact_email` (
+  `id` bigint unsigned NOT NULL auto_increment,
+  `contact_id` bigint unsigned NOT NULL,
+  `email_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  UNIQUE INDEX `user_id_1` (`user_id`, `contact_id`, `email_id`),
+  INDEX `user_id_2` (`user_id`, `email_id`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

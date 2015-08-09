@@ -105,7 +105,7 @@ sub create
 		return 0;
 	}
 	# create the user
-	open (S, '-|', '/home/mfrager/note/perl/ringmail/gensalt.pl');
+	open (S, '-|', '/home/note/app/ringmail/scripts/gensalt.pl');
 	$/ = undef;
 	my $salt = <S>;
 	close(S);
@@ -137,17 +137,20 @@ sub create
 	};
 	if ($@)
 	{
+		::_log("Error: $@");
 		push @$errors, ['create', 'An error occurred creating account.'];
 		return 0;
 	}
-	my $fsdb = $main::note_config->storage()->{'rgm_openser'};
-	$fsdb->table('subscriber')->set(
-		'insert' => {
-			'username' => $em,
-			'domain' => 'sip.ringmail.com',
-			'ha1' => md5_hex($fslogin),
-		},
-	);
+	::_log("Urec:", $urec);
+# TODO: Set up SIP login
+#	my $fsdb = $main::note_config->storage()->{'rgm_openser'};
+#	$fsdb->table('subscriber')->set(
+#		'insert' => {
+#			'username' => $em,
+#			'domain' => 'sip.ringmail.com',
+#			'ha1' => md5_hex($fslogin),
+#		},
+#	);
 	my $item = new Ring::Item();
 	my $erec = $item->item(
 		'type' => 'email',
@@ -215,11 +218,11 @@ sub reset_email_send
 	my $tmpl = new Note::Template(
 		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
 	);
-	my $txt = $tmpl->template('email/reset_pass.txt', {
+	my $txt = $tmpl->apply('email/reset_pass.txt', {
 		'link' => $link,
 		'email' => $param->{'email'},
 	});
-	my $html = $tmpl->template('email/reset_pass.html', {
+	my $html = $tmpl->apply('email/reset_pass.html', {
 		'link' => $link,
 		'email' => $param->{'email'},
 	});
@@ -283,10 +286,10 @@ sub verify_email_send
 	my $tmpl = new Note::Template(
 		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
 	);
-	my $txt = $tmpl->template('email/verify.txt', {
+	my $txt = $tmpl->apply('email/verify.txt', {
 		'link' => $link,
 	});
-	my $html = $tmpl->template('email/verify.html', {
+	my $html = $tmpl->apply('email/verify.html', {
 		'link' => $link,
 	});
 	my $msg = new MIME::Lite(
@@ -366,7 +369,7 @@ sub password_change
 {
 	my ($obj, $param) = get_param(@_);
 	my $pass = $param->{'password'};
-	open (S, '-|', '/home/mfrager/note/perl/ringmail/gensalt.pl');
+	open (S, '-|', '/home/note/app/ringmail/scripts/gensalt.pl');
 	$/ = undef;
 	my $salt = <S>;
 	close(S);
@@ -529,10 +532,10 @@ sub onboard_email
 		my $tmpl = new Note::Template(
 			'root' => $main::note_config->{'root'}. '/app/ringmail/template',
 		);
-		my $txt = $tmpl->template('email/onboard.txt', {
+		my $txt = $tmpl->apply('email/onboard.txt', {
 			'from' => $from,
 		});
-		my $html = $tmpl->template('email/onboard.html', {
+		my $html = $tmpl->apply('email/onboard.html', {
 			'from' => $from,
 		});
 		my $msg = new MIME::Lite(
@@ -579,6 +582,7 @@ sub add_contact
 		'last_name' => $ct->{'last_name'},
 		'organization' => $ct->{'organization'},
 		'ts_updated' => strftime("%F %T", gmtime($ct->{'ts_updated'})),
+		'ts_created' => strftime("%F %T", gmtime($ct->{'ts_created'})),
 	});
 	my $item = new Ring::Item();
 	foreach my $em (@{$ct->{'email'}})
