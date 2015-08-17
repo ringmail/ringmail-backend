@@ -44,6 +44,7 @@ sub load
 			'user_id' => $uid,
 		},
 	);
+	::_log($out);
 	if ($out->{'ok'})
 	{
 		my $list = $out->{'list'};

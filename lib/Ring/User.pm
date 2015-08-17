@@ -25,8 +25,6 @@ use Note::Check;
 use Note::XML 'xml';
 use Note::Template;
 use Ring::Item;
-use Ring::Route;
-use Ring::API;
 
 no warnings qw(uninitialized);
 
@@ -116,18 +114,13 @@ sub create
 	);
 	$salt = $gen->salt_hex();
 	my $hash = $gen->hash_hex();
-	my $fsdomain = $::app_config->{'fs_domain'};
-	my @pts = split /\@/, $rec->{'email'};
-	my $em = $rec->{'email'};
-	$em =~ s/\@/\%40/;
-	my $fslogin = $em. ':'. $fsdomain. ':'. $param->{'password'};
 	#::_log("F: $fslogin");
 	my $urec = undef;
 	eval {
 		$urec = Note::Row::create('ring_user' => {
 			'active' => 1,
 			'login' => $rec->{'email'},
-			'password_fs' => md5_hex($fslogin),
+			'password_fs' => '', # deprecated
 			'password_hash' => $hash,
 			'password_salt' => $salt,
 			'person' => 0, # update next
@@ -141,16 +134,7 @@ sub create
 		push @$errors, ['create', 'An error occurred creating account.'];
 		return 0;
 	}
-	::_log("Urec:", $urec);
-# TODO: Set up SIP login
-#	my $fsdb = $main::note_config->storage()->{'rgm_openser'};
-#	$fsdb->table('subscriber')->set(
-#		'insert' => {
-#			'username' => $em,
-#			'domain' => 'sip.ringmail.com',
-#			'ha1' => md5_hex($fslogin),
-#		},
-#	);
+	#::_log("Urec:", $urec);
 	my $item = new Ring::Item();
 	my $erec = $item->item(
 		'type' => 'email',
@@ -165,17 +149,23 @@ sub create
 	my $tid = $user->get_target_id(
 		'email_id' => $erec->id(),
 	);
-	my $sel = Ring::API->cmd(
-		'path' => ['user', 'endpoint', 'select'],
-		'data' => {
-			'user_id' => $user->id(),
-			'target_id' => $tid,
-			'endpoint_type' => 'app',
-		},
-	);
+#	my $sel = Ring::API->cmd(
+#		'path' => ['user', 'endpoint', 'select'],
+#		'data' => {
+#			'user_id' => $user->id(),
+#			'target_id' => $tid,
+#			'endpoint_type' => 'app',
+#		},
+#	);
 	$user->verify_email_send(
 		'email' => $rec->{'email'},
 	);
+    # setup phone
+	my $phs = $user->get_phones();
+	unless (scalar @$phs)
+	{
+		$user->add_phone();
+	}
 	return $urec->id();
 }
 
@@ -281,15 +271,18 @@ sub verify_email_send
 		'verified' => 0,
 		'verify_code' => $code,
 	});
+	my $wdom = $main::app_config->{'www_domain'};
 	my $from = 'RingMail <ringmail@ringmail.com>';
-	my $link = 'https://www.ringmail.com/verify?code='. $code;
+	my $link = 'https://'. $wdom. '/verify?code='. $code;
 	my $tmpl = new Note::Template(
 		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
 	);
 	my $txt = $tmpl->apply('email/verify.txt', {
+		'www_domain' => $wdom,
 		'link' => $link,
 	});
 	my $html = $tmpl->apply('email/verify.html', {
+		'www_domain' => $wdom,
 		'link' => $link,
 	});
 	my $msg = new MIME::Lite(
@@ -380,29 +373,12 @@ sub password_change
 	);
 	$salt = $gen->salt_hex();
 	my $hash = $gen->hash_hex();
-	my $fsdomain = $::app_config->{'fs_domain'};
-	my $urec = new Note::Row(
-		'ring_user' => {'id' => $obj->id()},
-		'select' => ['login'],
-	);
-	my $email = $urec->data('login');
-	my @pts = split /\@/, $email;
-	$email =~ s/\@/\%40/;
-	my $fslogin = $email. ':'. $fsdomain. ':'. $pass;
+	my $urec = new Note::Row('ring_user' => {'id' => $obj->id()});
 	$urec->update({
-		'password_fs' => md5_hex($fslogin),
+		'password_fs' => '', # deprecated
 		'password_hash' => $hash,
 		'password_salt' => $salt,
 	});
-	my $fsdb = $main::note_config->storage()->{'rgm_openser'};
-	$fsdb->table('subscriber')->set(
-		'update' => {
-			'ha1' => md5_hex($fslogin),
-		},
-		'where' => {
-			'username' => $email,
-		},
-	);
 }
 
 sub get_target_id
@@ -445,17 +421,29 @@ sub add_phone
 	my $sr = new String::Random();
 	my $login;
 	do {
-		$login = $sr->randregex('[a-z0-9]{7}');
+		$login = $sr->randregex('[a-z0-9]{8}');
 	} while ($tbl->count(
 		'login' => $login,
 	));
 	my $rc = undef;
+	my $pass = $sr->randregex('[a-z0-9]{12}');
+	my $fsdb = $main::note_config->storage()->{'kam_1'};
+	my $fsdomain = $main::app_config->{'sip_domain'};
+	#my $fslogin = $login. ':'. $fsdomain. ':'. $pass;
 	eval {
 		$rc = Note::Row::create('ring_phone' => {
 			'login' => $login,
-			'password' => $sr->randregex('[a-z0-9]{12}'),
+			'password' => $pass,
 			'user_id' => $obj->id(),
 		});
+		$fsdb->table('subscriber')->set(
+			'insert' => {
+				'username' => $login,
+				'domain' => $fsdomain,
+				'password' => $pass,
+				#'ha1' => md5_hex($fslogin),
+			},
+		);
 	};
 	if ($@)
 	{

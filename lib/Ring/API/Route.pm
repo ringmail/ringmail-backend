@@ -16,7 +16,6 @@ use Note::SQL::Table 'sqltable';
 use Ring::API::Base;
 use Ring::User;
 use Ring::Route;
-use Ring::Push;
 
 use base 'Ring::API::Base';
 
@@ -477,85 +476,85 @@ sub chat
 	};
 }
 
-sub push
-{
-	my ($obj, $param) = get_param(@_);
-	my $data = $param->{'data'};
-	my $path = $param->{'path'};
-	my $item = shift @$path;
-	if ($item eq 'call')
-	{
-		#::_log("Push Call API:", $data);
-		my $rc = new Note::Row('ring_user' => {'id' => $data->{'user_id'}});
-		if ($rc->id())
-		{
-			my $tokrc = new Note::Row('ring_user_push' => {
-				'user_id' => $rc->id(),
-				'push_type' => 'apple',
-			});
-			if ($tokrc->id())
-			{
-				my $tok = $tokrc->data('apns_token');
-				my $p = new Ring::Push();
-				my $ck = md5_hex($data->{'uuid'});
-				my $prq = Note::Row::create('ring_user_push_call' => {
-					'call_key' => $ck,
-					'call_uuid' => $data->{'uuid'},
-					'call_user_id' => $data->{'user_id'},
-					'call_host' => $data->{'hostname'},
-				});
-				$data->{'reply'}->(1);
-				$p->apns_push({
-					'body' => 'Incoming call from '. $data->{'caller_id'},
-					'data' => {
-						'call-id' => $ck,
-					},
-					'token' => $tok,
-					'sound' => 'ring.caf',
-					'loc-key' => 'IC_MSG',
-					'production' => $tokrc->data('production'),
-				});
-				return {
-					'ok' => 1,
-				};
-			}
-		}
-		$data->{'reply'}->(0);
-		return {
-			'ok' => 0,
-		};
-	}	
-	elsif ($item eq 'chat')
-	{
-		#::_log("Push Call API:", $data);
-		my $rc = new Note::Row('ring_user' => {'id' => $data->{'user_id'}});
-		if ($rc->id())
-		{
-			my $tokrc = new Note::Row('ring_user_push' => {
-				'user_id' => $rc->id(),
-				'push_type' => 'apple',
-			});
-			if ($tokrc->id())
-			{
-				my $tok = $tokrc->data('apns_token');
-				my $p = new Ring::Push();
-				$p->apns_push({
-					'body' => $data->{'from'}. ': '. substr($data->{'body'}, 0, 100),
-					'token' => $tok,
-					'sound' => 'msg.caf',
-					'loc-key' => 'IM_MSG',
-					'production' => $tokrc->data('production'),
-				});
-				return {
-					'ok' => 1,
-				};
-			}
-		}
-		return {
-			'ok' => 0,
-		};
-	}
-}
+#sub push
+#{
+#	my ($obj, $param) = get_param(@_);
+#	my $data = $param->{'data'};
+#	my $path = $param->{'path'};
+#	my $item = shift @$path;
+#	if ($item eq 'call')
+#	{
+#		#::_log("Push Call API:", $data);
+#		my $rc = new Note::Row('ring_user' => {'id' => $data->{'user_id'}});
+#		if ($rc->id())
+#		{
+#			my $tokrc = new Note::Row('ring_user_push' => {
+#				'user_id' => $rc->id(),
+#				'push_type' => 'apple',
+#			});
+#			if ($tokrc->id())
+#			{
+#				my $tok = $tokrc->data('apns_token');
+#				my $p = new Ring::Push();
+#				my $ck = md5_hex($data->{'uuid'});
+#				my $prq = Note::Row::create('ring_user_push_call' => {
+#					'call_key' => $ck,
+#					'call_uuid' => $data->{'uuid'},
+#					'call_user_id' => $data->{'user_id'},
+#					'call_host' => $data->{'hostname'},
+#				});
+#				$data->{'reply'}->(1);
+#				$p->apns_push({
+#					'body' => 'Incoming call from '. $data->{'caller_id'},
+#					'data' => {
+#						'call-id' => $ck,
+#					},
+#					'token' => $tok,
+#					'sound' => 'ring.caf',
+#					'loc-key' => 'IC_MSG',
+#					'production' => $tokrc->data('production'),
+#				});
+#				return {
+#					'ok' => 1,
+#				};
+#			}
+#		}
+#		$data->{'reply'}->(0);
+#		return {
+#			'ok' => 0,
+#		};
+#	}	
+#	elsif ($item eq 'chat')
+#	{
+#		#::_log("Push Call API:", $data);
+#		my $rc = new Note::Row('ring_user' => {'id' => $data->{'user_id'}});
+#		if ($rc->id())
+#		{
+#			my $tokrc = new Note::Row('ring_user_push' => {
+#				'user_id' => $rc->id(),
+#				'push_type' => 'apple',
+#			});
+#			if ($tokrc->id())
+#			{
+#				my $tok = $tokrc->data('apns_token');
+#				my $p = new Ring::Push();
+#				$p->apns_push({
+#					'body' => $data->{'from'}. ': '. substr($data->{'body'}, 0, 100),
+#					'token' => $tok,
+#					'sound' => 'msg.caf',
+#					'loc-key' => 'IM_MSG',
+#					'production' => $tokrc->data('production'),
+#				});
+#				return {
+#					'ok' => 1,
+#				};
+#			}
+#		}
+#		return {
+#			'ok' => 0,
+#		};
+#	}
+#}
 
 1;
 

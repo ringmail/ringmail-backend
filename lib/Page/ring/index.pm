@@ -16,7 +16,6 @@ use Note::Row;
 use Note::Param;
 
 use Ring::User;
-use Ring::Route;
 
 extends 'Note::Page';
 

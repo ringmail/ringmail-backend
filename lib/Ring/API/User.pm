@@ -17,7 +17,7 @@ use Note::SQL::Table 'sqltable';
 use Ring::API;
 use Ring::API::Base;
 use Ring::User;
-use Ring::Twilio;
+#use Ring::Twilio;
 
 use base 'Ring::API::Base';
 
@@ -591,16 +591,16 @@ sub target
 				if ($data->{'send_sms'})
 				{
 					my $msg = 'RingMail Code: '. $code;
-					my $tw = new Ring::Twilio();
-					my $reply = $tw->send_sms(
-						'to' => $data->{'did_number'},
-						'from' => '746465',
-						'body' => $msg,
-					);
-					unless ($reply->{'ok'})
-					{
-						::_errorlog('Send SMS Error', $reply);
-					}
+#					my $tw = new Ring::Twilio();
+#					my $reply = $tw->send_sms(
+#						'to' => $data->{'did_number'},
+#						'from' => '746465',
+#						'body' => $msg,
+#					);
+#					unless ($reply->{'ok'})
+#					{
+#						::_errorlog('Send SMS Error', $reply);
+#					}
 				}
 				return {
 					'ok' => 1,
