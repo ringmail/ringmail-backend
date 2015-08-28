@@ -33,6 +33,16 @@ has 'id' => (
 	'isa' => 'Int',
 );
 
+has 'row' => (
+	'is' => 'rw',
+	'isa' => 'Note::Row',
+	'lazy' => 1,
+	'default' => sub {
+		my $obj = shift;
+		return new Note::Row('ring_user' => {'id' => $obj->id()});
+	},
+);
+
 our %usercheck = (
 #	'first_name' => new Note::Check(
 #		'type' => 'regex',

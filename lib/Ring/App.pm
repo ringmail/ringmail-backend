@@ -17,6 +17,7 @@ no warnings qw(uninitialized);
 sub dispatch
 {
 	my ($obj, $param) = get_param(@_);
+	#::log("Dispatch: ". join('/', @{$param->{'path'}}));
 	return $obj->SUPER::dispatch($param);
 }
 

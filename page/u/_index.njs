@@ -2,9 +2,9 @@
    "init" : [
       "valid_user"
    ],
-   "class" : "Page::ring::dashboard",
+   "class" : "Page::ring::setup::email",
    "command" : {
-		"logout" : "cmd_logout"
+        "update" : "cmd_update"
    },
-   "template" : "u/_index.html"
+   "template" : "u/settings/emails.html"
 }

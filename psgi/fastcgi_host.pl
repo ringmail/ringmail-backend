@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use lib '/home/note/lib';
+use lib '/home/note/app/dev/lib';
 use lib '/home/note/app/ringmail/lib';
 
 use Plack::Handler::FCGI;

@@ -1,0 +1,31 @@
+[% menu_settings = 'hashtags' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				<h2>Hashtag: #[% hashtag %]</h2>
+				<p>
+					<a href="/u/hashtags">All Hashtags</a>
+				</p>
+				<table class="table table-bordered table-striped">
+					<tbody>
+						<tr>
+							<td>Target URL</td>
+							<td><a href="http://madebyamp.com">http://madebyamp.com</a></td>
+						</tr>
+						<tr>
+							<td>Expires</td>
+							<td><span>Never</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

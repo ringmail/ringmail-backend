@@ -780,7 +780,8 @@ sub target
 				'select' => [
 					't.id as target_id',
 					't.target_type',
-					't.active',
+					#'t.active',
+					'1 as active',
 					'd.domain',
 					'd.id as domain_id',
 				],

@@ -1,36 +1,44 @@
 <ul class="nav nav-tabs nav-stacked">
 	<li[% IF menu_settings == 'emails' %] class="active"[% END %]>
-		<a href="/u/settings">
+		<a href="/u">
 			<i class="icon-envelope"></i>
-			Emails
+			Email Address
 			<i class="icon-chevron-right"></i>
 		</a>              			              	
 	</li>
+	<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]>
+		<a href="/u/hashtags">
+			<i class="icon-bell"></i>
+			Hashtags
+			<i class="icon-chevron-right"></i>
+		</a>              			              	
+	</li>
+
 	<li[% IF menu_settings == 'domains' %] class="active"[% END %]>
-		<a href="/u/settings/domains">
+		<a href="/u/domains">
 			<i class="icon-globe"></i>
-			Domains
+			Domain Names
 			<i class="icon-chevron-right"></i>
 		</a>              			              	
 	</li>
 	<li[% IF menu_settings == 'phones' %] class="active"[% END %]>
-		<a href="/u/settings/phones">
+		<a href="/u/phones">
 			<i class="icon-bell"></i>
 			Phones
 			<i class="icon-chevron-right"></i>
 		</a>              			              	
 	</li>
 	<li[% IF menu_settings == 'service' %] class="active"[% END %]>
-		<a href="/u/settings/service">
+		<a href="/u/service">
 			<i class="icon-user"></i>
-			Service
+			Account Details
 			<i class="icon-chevron-right"></i>
 		</a>              			              	
 	</li>
 	<li[% IF menu_settings == 'password' %] class="active"[% END %]>
-		<a href="/u/settings/password">
+		<a href="/u/password">
 			<i class="icon-lock"></i>
-			Password
+			Change Password
 			<i class="icon-chevron-right"></i>
 		</a>              			              	
 	</li>

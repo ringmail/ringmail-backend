@@ -9,6 +9,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
+use MIME::Base64 'encode_base64';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -35,7 +36,6 @@ sub load
 	if (defined $fru)
 	{
 		$from = $fru->{'login'};
-		#$from =~ s/\@/%/;
 		$from = uri_escape($from);
 	}
 	my $to = $form->{'to'};
@@ -46,19 +46,39 @@ sub load
 	if ($to =~ /%/)
 	{
 		$to =~ s/%/@/;
+		my $type = $route->get_target_type(
+			'target' => $to,
+		);
+		my $dest = $route->get_route(
+			'type' => $type,
+			$type => $to,
+		);
+		if (defined $dest)
+		{
+			$res = "type=phone;from=$from;to=$dest->{'phone'}";
+		}
+		::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
 	}
-	my $type = $route->get_target_type(
-		'target' => $to,
-	);
-	my $dest = $route->get_route(
-		'type' => $type,
-		$type => $to,
-	);
-	if (defined $dest)
+	elsif ($to =~ /^#([a-z0-9_]+)/i)
 	{
-		$res = "from=$from;to=$dest->{'phone'}";
+		my $tag = lc($1);
+		my $trow = new Note::Row(
+			'ring_hashtag' => {
+				'hashtag' => $tag,
+			},
+			'select' => ['target_url'],
+		);
+		my $url;
+		if ($trow->id())
+		{
+			$url = $trow->data('target_url');
+		}
+		else
+		{
+			$url = 'http://'. $::app_config->{'www_domain'};
+		}
+		$res = "type=url;url=". encode_base64($url);
 	}
-	::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
 	return $res;
 }
 
