@@ -15,7 +15,7 @@ use POSIX 'strftime';
 use String::Random;
 use MIME::Lite;
 use Digest::MD5 'md5_hex';
-use URI::Encode 'uri_encode';
+use URI::Escape;
 use Date::Parse 'str2time';
 
 use Note::SQL::Table 'sqltable';
@@ -126,13 +126,16 @@ sub create
 	my $hash = $gen->hash_hex();
 	#::_log("F: $fslogin");
 	my $urec = undef;
+	my $sr = new String::Random();
+	my $chatpass = $sr->randregex('[a-z0-9]{12}');
 	eval {
 		$urec = Note::Row::create('ring_user' => {
 			'active' => 1,
-			'login' => $rec->{'email'},
+			'login' => lc($rec->{'email'}),
 			'password_fs' => '', # deprecated
 			'password_hash' => $hash,
 			'password_salt' => $salt,
+			'password_chat' => $chatpass,
 			'person' => 0, # update next
 			'verified' => 0,
 			#'verified' => 1, # For testing
@@ -142,6 +145,23 @@ sub create
 	{
 		::_log("Error: $@");
 		push @$errors, ['create', 'An error occurred creating account.'];
+		return 0;
+	}
+	my $chdb = $main::note_config->storage()->{'ejd_1'};
+	my $escuser = uri_escape(lc($rec->{'email'}), q{"#\%/:<>?\@^`\[\]});
+	eval {
+		$chdb->table('users')->set(
+			'insert' => {
+				'username' => $escuser,
+				'password' => $chatpass,
+				'created_at' => strftime("%F %T", localtime()),
+			},
+		);
+	};
+	if ($@)
+	{
+		::_log("Error: $@");
+		push @$errors, ['create', 'An error occurred creating account. (Chat)'];
 		return 0;
 	}
 	#::_log("Urec:", $urec);

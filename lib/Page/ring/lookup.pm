@@ -36,16 +36,17 @@ sub load
 	if (defined $fru)
 	{
 		$from = $fru->{'login'};
-		$from = uri_escape($from);
+		$from =~ s/\@/\\/;
+		$from = uri_escape($from); # TODO: expand?
 	}
 	my $to = $form->{'to'};
 	$to =~ s/^sip\://;
 	$to =~ s/\@.*//g;
 	$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 	my $target = {};
-	if ($to =~ /%/)
+	if ($to =~ /(\\|%)/)
 	{
-		$to =~ s/%/@/;
+		$to =~ s/(\\|%)/@/;
 		my $type = $route->get_target_type(
 			'target' => $to,
 		);

@@ -210,7 +210,7 @@ sub register
 		else
 		{
 			$ct->{'error'} = 'An error occurred creating user account';
-			::_log("Create User Error", $mkuser);
+			::_log("Create User Error", $mkuser->{'errors'}->[2]->{'error'});
 			return;
 		}
 	}
