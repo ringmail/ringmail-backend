@@ -384,7 +384,7 @@ sub check_password
 		'salt_hex' => $param->{'salt'},
 		'hash_hex' => $param->{'hash'},
 	);
-	return 1 if  ($auth->match($param->{'password'}));
+	return 1 if ($auth->match($param->{'password'}));
 	return 0;
 }
 
@@ -761,6 +761,39 @@ sub get_contacts_hash
 		$hrec{$r->{'apple_id'}} = $r;
 	}
 	return \%hrec;
+}
+
+# static method: login
+sub login
+{
+	my (undef, $param) = get_param(undef, @_);
+	my $rc = new Note::Row(
+		'ring_user' => {
+			'login' => $param->{'login'},
+		},
+		{
+			'select' => [qw/password_salt password_hash/],
+		},
+	);
+	if ($rc->id())
+	{
+		my $user = new Ring::User($rc->id());
+		if ($user->check_password(
+			'salt' => $rc->data('password_salt'),
+			'hash' => $rc->data('password_hash'),
+			'password' => $param->{'password'},
+		)) {
+			return $user;
+		}
+		else
+		{
+			return undef;
+		}
+	}
+	else
+	{
+		return undef;
+	}
 }
 
 1;

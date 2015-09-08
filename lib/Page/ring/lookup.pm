@@ -9,7 +9,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
-use MIME::Base64 'encode_base64';
+use MIME::Base64 'encode_base64', 'decode_base64';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -27,11 +27,12 @@ sub load
 	::log($form);
 	my $res = 'noentry';
 	my $route = new Ring::Route();
-	my $from = $form->{'from'};
+	my $from = decode_base64($form->{'from'});
+	my $to = decode_base64($form->{'to'});
 	$from =~ s/^sip\://;
 	$from =~ s/\@.*//g;
-	my $fru = $route->get_from_user(
-		'phone' => $from,
+	my $fru = $route->get_phone_user(
+		'phone_login' => $from,
 	);
 	if (defined $fru)
 	{
@@ -39,7 +40,6 @@ sub load
 		$from =~ s/\@/\\/;
 		$from = uri_escape($from); # TODO: expand?
 	}
-	my $to = $form->{'to'};
 	$to =~ s/^sip\://;
 	$to =~ s/\@.*//g;
 	$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;

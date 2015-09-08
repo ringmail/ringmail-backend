@@ -24,10 +24,25 @@ use Ring::Item;
 
 no warnings qw(uninitialized);
 
-sub get_from_user
+sub get_target_user_id
 {
 	my ($obj, $param) = get_param(@_);
-	my $phone = $param->{'phone'};
+	my $dest = $param->{'target'};
+	my $type = $obj->get_target_type('target' => $dest);
+	my $trow = $obj->get_target(
+		'type' => $type,
+		$type => $dest,
+	);
+	if (defined($trow) && $trow->id())
+	{
+		return $trow->data('user_id');
+	}
+}
+
+sub get_phone_user
+{
+	my ($obj, $param) = get_param(@_);
+	my $phone = $param->{'phone_login'};
 	my $ph = new Note::Row('ring_phone' => {'login' => $phone});
 	if ($ph->id())
 	{
@@ -111,9 +126,7 @@ sub get_target
 			'ring_target' => {
 				'email_id' => $erec->id(),
 			},
-			#'select' => ['active'],
 		);
-		# TODO: check for active
 		return $trow;
 	}
 	elsif ($tgt eq 'domain')
@@ -127,9 +140,7 @@ sub get_target
 			'ring_target' => {
 				'domain_id' => $erec->id(),
 			},
-			#'select' => ['active'],
 		);
-		# TODO: check for active
 		return $trow;
 	}
 	elsif ($tgt eq 'did')
@@ -143,9 +154,7 @@ sub get_target
 			'ring_target' => {
 				'did_id' => $erec->id(),
 			},
-			#'select' => ['active'],
 		);
-		# TODO: check for active
 		return $trow;
 	}
 	return undef;
