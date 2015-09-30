@@ -1,4 +1,4 @@
-package Page::ring::chat_upload;
+package Page::ring::app::chat_upload;
 use strict;
 use warnings;
 
@@ -9,11 +9,12 @@ use Data::Dumper;
 use POSIX 'strftime';
 use URI::Encode 'uri_decode', 'uri_encode';
 use Digest::MD5 'md5_hex';
+use JSON::XS;
 
 use Note::XML 'xml';
 use Note::Page;
 use Note::Param;
-use Note::S3;
+use Note::AWS::S3;
 
 use base 'Note::Page';
 
@@ -23,12 +24,16 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $uploads = $param->{'request'}->uploads();
+	my $res;
 	if (exists $uploads->{'userfile'})
 	{
 		my $ul = $uploads->{'userfile'};
 		my $file = $ul->basename();
 		my $path = $ul->path();
-		my $s3 = new Note::S3();
+		my $s3 = new Note::AWS::S3(
+			'access_key' => $main::app_config->{'s3_access_key'},
+			'secret_key' => $main::app_config->{'s3_secret_key'},
+		);
 		my $k = 'chat_upload/'. $file;
 		$s3->upload(
 			'file' => $path,
@@ -39,15 +44,20 @@ sub load
 			'key' => $k,
 			'bucket' => 'ringmail1',
 		);
-		$obj->response()->content_type('text/plain');
-		return $url;
+		$res = {
+			'status' => 'ok',
+			'url' => $url,
+		};
 	}
 	else
 	{
-		$obj->response()->status(404);
-		return;
+		$res = {
+			'status' => 'error',
+		};
 	}
-	#::_log($res);
+	::log($res);
+	$obj->response()->content_type('application/json');
+	return encode_json($res);
 }
 
 1;

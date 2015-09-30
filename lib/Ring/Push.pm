@@ -8,6 +8,7 @@ use Moose;
 use Data::Dumper;
 use Scalar::Util 'blessed', 'reftype';
 use JSON::XS 'decode_json';
+use Digest::MD5 'md5_hex';
 use Net::APNS::Persistent;
 #use Net::APNS::Feedback;
 
@@ -29,16 +30,18 @@ sub push_message
 	{
 		my $user = new Ring::User($uid);
 		my $apns = $user->row()->data('push_apns_data');
-		if (defined $apns)
+		if (defined($apns) && length($apns))
 		{
 			my $tokdata = decode_json($apns);
 			my $body = $param->{'from'}. ': '. $param->{'body'};
 			my $params = {
 				'token' => $tokdata->{'token'},
-				'body' => (length($body) > 100) ? substr($body, 0, 100) : $body,
-				'loc-key' => 'IM_MSG',
+				'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
+				'loc-key' => 'CHAT',
 				'sound' => 'msg.caf',
-				'data' => {},
+				'data' => {
+					'tag' => substr(md5_hex($param->{'from'}), 0, 10),
+				},
 			};
 			$obj->apns_push($params);
 		}

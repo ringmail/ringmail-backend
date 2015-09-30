@@ -26,7 +26,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log($form);
+	::log({%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -34,23 +34,38 @@ sub load
 	my $res;
 	if ($user)
 	{
-		my $chatpw = $user->row()->data('password_chat');
-		my $sipauth = sqltable('ring_phone')->get(
-			'select' => ['login', 'password'],
-			'where' => {
-				'user_id' => $user->id(),
-			},
-			'order' => 'id asc limit 1',
-		);
-		$res = {
-			'sip_login' => $sipauth->[0]->{'login'},
-			'sip_password' => $sipauth->[0]->{'password'},
-			'chat_password' => $chatpw,
-		};
+		my $verified = $user->row()->data('verified');
+		if ($verified)
+		{
+			my $chatpw = $user->row()->data('password_chat');
+			my $sipauth = sqltable('ring_phone')->get(
+				'select' => ['login', 'password'],
+				'where' => {
+					'user_id' => $user->id(),
+				},
+				'order' => 'id asc limit 1',
+			);
+			$res = {
+				'result' => 'ok',
+				'sip_login' => $sipauth->[0]->{'login'},
+				'sip_password' => $sipauth->[0]->{'password'},
+				'chat_password' => $chatpw,
+			};
+		}
+		else
+		{
+			$res = {
+				'result' => 'error',
+				'error' => 'verify',
+			};
+		}
 	}
 	else
 	{
-		$res = {};
+		$res = {
+			'result' => 'error',
+			'error' => 'credentials',
+		};
 	}
 	$obj->{'response'}->content_type('application/json');
 	::log($res);
