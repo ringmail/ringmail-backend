@@ -34,15 +34,13 @@ sub load
 	my $res = {'result' => 'error'};
 	if ($user)
 	{
-		$user->row()->update({
-			'push_apns_data' => undef,
-		});
+		sqltable('ring_user_apns')->delete('where' => {'user_id' => $userid});
 		$res = {
 			'result' => 'ok',
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	#::log($res);
 	return encode_json($res);
 }
 

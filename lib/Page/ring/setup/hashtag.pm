@@ -38,11 +38,14 @@ sub load
 			'user_id' => $uid,
 		},
 	);
+	::log($ht->data());
 	unless ($ht->id())
 	{
 		return $obj->redirect('/u/hashtags');
 	}
 	$content->{'hashtag'} = $ht->data('hashtag');
+	$content->{'target_url'} = $ht->data('target_url');
+	$content->{'edit'} = ($form->{'edit'}) ? 1 : 0;
 	return $obj->SUPER::load($param);
 }
 

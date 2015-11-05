@@ -34,21 +34,69 @@ sub load
 	my $res = {'result' => 'error'};
 	if ($user)
 	{
-		my $tok = $form->{'token'};
 		#::log("Token: $tok\n");
-		if ($tok =~ /pn-type=(\w+);app-id=(.*?);pn-tok=(.*)$/)
+		if ($form->{'token'} =~ /pn-type=(\w+);app-id=(.*?);pn-tok=(.*)$/)
 		{
 			my $type = $1;
+			my $app = $2;
+			my $tok = $3;
 			#::log($type);
 			if ($type eq 'apple')
 			{
-				my $data = {
-					'app' => $2,
-					'token' => $3,
+				my $rc = new Note::Row(
+					'ring_user_apns' => {
+						'user_id' => $user->{'id'},
+					},
+				);
+				if ($rc->id())
+				{
+					$rc->update({
+						'push_app' => $app,
+						'main_token' => $tok,
+					});
+				}
+				else
+				{
+					Note::Row::create(
+						'ring_user_apns' => {
+							'user_id' => $user->{'id'},
+							'push_app' => $app,
+							'main_token' => $tok,
+						},
+					);
+				}
+				$res = {
+					'result' => 'ok',
 				};
-				$user->row()->update({
-					'push_apns_data' => encode_json($data),
-				});
+			}
+		}
+		elsif ($form->{'voip_token'} =~ /pn-type=(\w+);app-id=(.*?);pn-tok=(.*)$/)
+		{
+			my $type = $1;
+			my $app = $2;
+			my $tok = $3;
+			if ($type eq 'apple')
+			{
+				my $rc = new Note::Row(
+					'ring_user_apns' => {
+						'user_id' => $user->{'id'},
+					},
+				);
+				if ($rc->id())
+				{
+					$rc->update({
+						'voip_token' => $tok,
+					});
+				}
+				else
+				{
+					Note::Row::create(
+						'ring_user_apns' => {
+							'user_id' => $user->{'id'},
+							'voip_token' => $tok,
+						},
+					);
+				}
 				$res = {
 					'result' => 'ok',
 				};

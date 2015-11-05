@@ -87,7 +87,7 @@ sub get_user_hashtags
 			'user_id' => $uid,
 		},
 		'order' => 'hashtag asc',
-		'limit' => '10',
+#		'limit' => '10',
 	);
 	return $q;
 }

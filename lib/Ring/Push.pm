@@ -29,21 +29,61 @@ sub push_message
 	if (defined $uid)
 	{
 		my $user = new Ring::User($uid);
-		my $apns = $user->row()->data('push_apns_data');
-		if (defined($apns) && length($apns))
+		my $rc = new Note::Row(
+			'ring_user_apns' => {
+				'user_id' => $uid,
+			},
+		);
+		if ($rc->id())
 		{
-			my $tokdata = decode_json($apns);
-			my $body = $param->{'from'}. ': '. $param->{'body'};
-			my $params = {
-				'token' => $tokdata->{'token'},
-				'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
-				'loc-key' => 'CHAT',
-				'sound' => 'msg.caf',
-				'data' => {
-					'tag' => substr(md5_hex($param->{'from'}), 0, 10),
-				},
-			};
-			$obj->apns_push($params);
+			my $apns = $rc->data('main_token');
+			if (defined($apns) && length($apns))
+			{
+				my $body = $param->{'from'}. ': '. $param->{'body'};
+				my $params = {
+					'token' => $apns,
+					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
+					'loc-key' => 'CHAT',
+					'sound' => 'msg.caf',
+					'data' => {
+						'tag' => substr(md5_hex($param->{'from'}), 0, 10),
+					},
+				};
+				$obj->apns_push($params);
+			}
+		}
+	}
+}
+
+sub push_call
+{
+	my ($obj, $param) = get_param(@_);
+	my $to = $param->{'to'};
+	my $from = $param->{'from'};
+	my $route = new Ring::Route();
+	my $uid = $route->get_target_user_id('target' => $to);
+	if (defined $uid)
+	{
+		my $user = new Ring::User($uid);
+		my $rc = new Note::Row(
+			'ring_user_apns' => {
+				'user_id' => $uid,
+			},
+		);
+		if ($rc->id())
+		{
+			my $apns = $rc->data('voip_token');
+			if (defined($apns) && length($apns))
+			{
+				my $body = $param->{'from'};
+				my $params = {
+					'voip' => 1,
+					'token' => $apns,
+					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
+					'sound' => 'msg.caf',
+				};
+				$obj->apns_push($params);
+			}
 		}
 	}
 }
@@ -54,24 +94,46 @@ sub apns_push
 {
 	my ($obj, $param) = get_param(@_);
 	::log("PUSH:", $param);
-	my $apns = new Net::APNS::Persistent($::app_config->{'push_apns'});
-	my $data = $param->{'data'};
-	$data ||= {};
-	$apns->queue_notification(
-		$param->{'token'},
-		{
-			'aps' => {
-				'alert' => {
-					'body' => $param->{'body'},
-					'action-loc-key' => $param->{'loc-key'},
+	if ($param->{'voip'})
+	{
+		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns_voip'});
+		my $data = $param->{'data'};
+		$data ||= {};
+		$apns->queue_notification(
+			$param->{'token'},
+			{
+				'aps' => {
+					'alert' => {
+						'body' => 'Call',
+					},
 				},
-				'sound' => $param->{'sound'},
+				'from' => $param->{'body'},
 			},
-			%$data,
-		},
-	);
-	$apns->send_queue();
-	$apns->disconnect();
+		);
+		$apns->send_queue();
+		$apns->disconnect();
+	}
+	else
+	{
+		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns'});
+		my $data = $param->{'data'};
+		$data ||= {};
+		$apns->queue_notification(
+			$param->{'token'},
+			{
+				'aps' => {
+					'alert' => {
+						'body' => $param->{'body'},
+						'action-loc-key' => $param->{'loc-key'},
+					},
+					'sound' => $param->{'sound'},
+				},
+				%$data,
+			},
+		);
+		$apns->send_queue();
+		$apns->disconnect();
+	}
 }
 
 #my $fb = Net::APNS::Feedback->new({

@@ -29,6 +29,8 @@ sub load
 	{
 		my $ul = $uploads->{'userfile'};
 		my $file = $ul->basename();
+		my $uuid = $file;
+		$uuid =~ s/\..*$//;
 		my $path = $ul->path();
 		my $s3 = new Note::AWS::S3(
 			'access_key' => $main::app_config->{'s3_access_key'},
@@ -39,20 +41,24 @@ sub load
 			'file' => $path,
 			'key' => $k,
 			'bucket' => 'ringmail1',
+			'content_type' => 'image/png',
+			'expires' => strftime("%F", gmtime(time() + (24 * 3600 * 7))),
 		);
 		my $url = $s3->download_url(
 			'key' => $k,
 			'bucket' => 'ringmail1',
 		);
 		$res = {
-			'status' => 'ok',
-			'url' => $url,
+			'result' => 'ok',
+			'uuid' => $uuid,
+			'type' => 'image/png',
+			'url' => "$url",
 		};
 	}
 	else
 	{
 		$res = {
-			'status' => 'error',
+			'result' => 'error',
 		};
 	}
 	::log($res);

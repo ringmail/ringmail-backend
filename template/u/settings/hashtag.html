@@ -8,21 +8,51 @@
 			</div> <!-- /.span3 -->
 			<div class="span9">
 				<h2>Hashtag: #[% hashtag %]</h2>
-				<p>
-					<a href="/u/hashtags">All Hashtags</a>
-				</p>
-				<table class="table table-bordered table-striped">
-					<tbody>
-						<tr>
-							<td>Target URL</td>
-							<td><a href="http://madebyamp.com">http://madebyamp.com</a></td>
-						</tr>
-						<tr>
-							<td>Expires</td>
-							<td><span>Never</span></td>
-						</tr>
-					</tbody>
-				</table>
+				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;">
+					<p>
+						<a href="/u/hashtags">&lt; All Hashtags</a>
+					</p>
+					<div>
+						<p style="text-align: right;">
+							[% IF ! edit %]
+							<a href="[% page.url('query' => {'id' => page.form.id, 'edit' => 1}) %]" class="btn">Edit Hashtag</a>
+							[% ELSE %]
+							[% page.button(
+								'command' => 'hashtag_edit',
+								'text' => 'Save Changes',
+								'opts' => {
+									'type' => 'submit',
+									'class' => 'btn btn-primary',
+								}
+							) %]
+							[% END %]
+						</p>
+					</div>
+					<table class="table table-bordered table-striped">
+						<tbody>
+							<tr>
+								<td>Target URL</td>
+								<td>
+									[% IF ! edit %]
+									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'hashtag_edit',
+										'type' => 'text',
+										'name' => 'target',
+										'value' => target_url,
+										'opts' => {'id' => 'target', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td>Expires</td>
+								<td><span>Never</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
 			</div>
 		</div>
 	</div>

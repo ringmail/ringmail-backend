@@ -24,7 +24,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log($form);
+	#::log($form);
 	my $res = 'noentry';
 	my $route = new Ring::Route();
 	my $from = decode_base64($form->{'from'});
@@ -58,7 +58,7 @@ sub load
 		{
 			$res = "type=phone;from=$from;to=$dest->{'phone'}";
 		}
-		::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
+		#::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
 	}
 	elsif ($to =~ /^#([a-z0-9_]+)/i)
 	{

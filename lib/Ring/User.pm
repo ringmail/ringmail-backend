@@ -24,6 +24,7 @@ use Note::Row;
 use Note::Check;
 use Note::XML 'xml';
 use Note::Template;
+use Note::Account;
 use Ring::Item;
 
 no warnings qw(uninitialized);
@@ -179,14 +180,6 @@ sub create
 	my $tid = $user->get_target_id(
 		'email_id' => $erec->id(),
 	);
-#	my $sel = Ring::API->cmd(
-#		'path' => ['user', 'endpoint', 'select'],
-#		'data' => {
-#			'user_id' => $user->id(),
-#			'target_id' => $tid,
-#			'endpoint_type' => 'app',
-#		},
-#	);
 	$user->verify_email_send(
 		'email' => $rec->{'email'},
 	);
