@@ -53,6 +53,7 @@ sub load
 				$user->verify_email_send(
 					'email' => $form->{'email'},
 				);
+				$err = '';
 				$res = {
 					'result' => 'ok',
 				};

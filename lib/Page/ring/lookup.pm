@@ -58,7 +58,7 @@ sub load
 		{
 			$res = "type=phone;from=$from;to=$dest->{'phone'}";
 		}
-		#::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
+		::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
 	}
 	elsif ($to =~ /^#([a-z0-9_]+)/i)
 	{

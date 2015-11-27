@@ -9,7 +9,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
-use MIME::Base64 'encode_base64';
+use MIME::Base64 'encode_base64', 'decode_base64';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -30,7 +30,8 @@ sub load
 #	my $token = $form->{'access_token'};
 #	if ($token eq $::app_config->{'token_offline_message'})
 #	{
-		my $from = $form->{'from'};
+		my $from = decode_base64($form->{'from'});
+		$from =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 		my $fromphone = new Note::Row(
 			'ring_phone' => {
 				'login' => $from,
@@ -39,7 +40,8 @@ sub load
 		if ($fromphone->id())
 		{
 			my $fromlogin = $fromphone->row('user_id', 'ring_user')->data('login');
-			my $to = $form->{'to'};
+			my $to = decode_base64($form->{'to'});
+			$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 			$to =~ s/\\/@/;
 			::log("From: $from ($fromlogin) To: $to");
 			my $urec = new Note::Row(
