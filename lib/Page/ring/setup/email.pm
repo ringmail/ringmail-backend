@@ -15,6 +15,7 @@ use Note::Param;
 
 use Ring::User;
 use Ring::API;
+use Page::ring::user;
 
 extends 'Page::ring::user';
 
