@@ -14,7 +14,7 @@ use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
-use Ring::HashtagFactory;
+use Ring::Model::Hashtag;
 
 extends 'Page::ring::user';
 
@@ -38,7 +38,7 @@ sub load
 			'user_id' => $uid,
 		},
 	);
-	::log($ht->data());
+	#::log($ht->data());
 	unless ($ht->id())
 	{
 		return $obj->redirect('/u/hashtags');
@@ -47,6 +47,41 @@ sub load
 	$content->{'target_url'} = $ht->data('target_url');
 	$content->{'edit'} = ($form->{'edit'}) ? 1 : 0;
 	return $obj->SUPER::load($param);
+}
+
+sub cmd_hashtag_edit
+{
+	my ($obj, $data, $args) = @_;
+	my $user = $obj->user();
+	my $uid = $user->id();
+	my $tagid = $args->[0];
+	my $target = $data->{'target'};
+	$target =~ s/^\s*//; # trim whitespace
+	$target =~ s/\s*$//;
+	unless ($target =~ m{^http(s)?://}i)
+	{
+		$target = 'http://'. $target;
+	}
+	my $factory = new Ring::Model::Hashtag();
+	if ($factory->validate_target(
+		'target' => $target,
+	)) {
+		if ($factory->update(
+			'user_id' => $uid,
+			'id' => $tagid,
+			'target' => $target,
+		)) {
+			# display confirmation
+		}
+		else
+		{
+			# failed
+		}
+	}
+	else
+	{
+		# invalid target
+	}
 }
 
 1;

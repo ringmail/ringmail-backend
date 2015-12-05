@@ -8,7 +8,7 @@
 			</div> <!-- /.span3 -->
 			<div class="span9">
 				<h2>Hashtag: #[% hashtag %]</h2>
-				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;">
+				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
 					<p>
 						<a href="/u/hashtags">&lt; All Hashtags</a>
 					</p>
@@ -24,6 +24,7 @@
 									'type' => 'submit',
 									'class' => 'btn btn-primary',
 								}
+								'args' => [page.form.id],
 							) %]
 							[% END %]
 						</p>
@@ -31,7 +32,7 @@
 					<table class="table table-bordered table-striped">
 						<tbody>
 							<tr>
-								<td>Target URL</td>
+								<td><strong>Target URL</strong></td>
 								<td>
 									[% IF ! edit %]
 									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
@@ -47,7 +48,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Expires</td>
+								<td><strong>Expires</strong></td>
 								<td><span>Never</span></td>
 							</tr>
 						</tbody>

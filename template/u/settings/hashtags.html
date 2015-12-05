@@ -103,20 +103,24 @@
 								[% FOREACH row IN hashtag_table %]
 									<tr>
 										<td>#[% row.hashtag %]</td>
-										<td>[% row.target_url %]</td>
+										<td><a target="_blank" href="[% row.target_url %]">[% row.target_url %]</a></td>
 										<td>[% IF row.expires %][% row.expires %][% ELSE %]Never[% END %]</td>
 										<td>
 											[% page.link(
-												'text' => 'Details',
-												'path' => '/u/hashtag',
-												'query' => {
-													'id' => row.id
+												'text' => 'Delete',
+												'command' => 'hashtag_delete',
+												'args' => [row.id],
+												'opts' => {
+													'onclick' => "return confirm('Really Delete Hashtag: #$row.hashtag')",
 												},
 											) %]
 											|
 											[% page.link(
-												'text' => 'Delete',
-												'command' => 'hashtag_delete',
+												'text' => 'Edit Details',
+												'path' => '/u/hashtag',
+												'query' => {
+													'id' => row.id
+												},
 											) %]
 										</td>
 									</tr>

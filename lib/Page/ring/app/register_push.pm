@@ -26,7 +26,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log($form);
+	::log($form);
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -70,7 +70,7 @@ sub load
 				};
 			}
 		}
-		elsif ($form->{'voip_token'} =~ /pn-type=(\w+);app-id=(.*?);pn-tok=(.*)$/)
+		if ($form->{'voip_token'} =~ /pn-type=(\w+);app-id=(.*?);pn-tok=(.*)$/)
 		{
 			my $type = $1;
 			my $app = $2;

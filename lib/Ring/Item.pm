@@ -123,6 +123,15 @@ sub item
 			},
 		);
 	}
+	elsif ($type eq 'device')
+	{
+		return Note::Row::find_create(
+			'ring_device' => {
+				'user_id' => $param->{'user_id'},
+				'device_uuid' => $param->{'device_uuid'},
+			},
+		);
+	}
 }
 
 1;

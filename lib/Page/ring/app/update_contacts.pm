@@ -1,11 +1,11 @@
-package Page::ring::app::sign_out;
+package Page::ring::app::update_contacts;
 use strict;
 use warnings;
 
 use vars qw();
 
 use Moose;
-use JSON::XS 'encode_json';
+use JSON::XS 'encode_json', 'decode_json';
 use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
@@ -17,6 +17,7 @@ use Note::SQL::Table 'sqltable';
 use Note::Param;
 
 use Ring::User;
+use Ring::User::Contacts;
 
 extends 'Note::Page';
 
@@ -26,15 +27,24 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log($form);
+	::log($form);
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
 	);
-	my $res = {'result' => 'error'};
+	my $res = {};
 	if ($user)
 	{
-		sqltable('ring_user_apns')->delete('where' => {'user_id' => $user->id()});
+		my $ctdata = decode_json($form->{'contacts'});
+		my $dev = $form->{'device'};
+		# TODO: validate form data
+		my $cobj = new Ring::User::Contacts(
+			'user_id' => $user->id(),
+		);
+		$cobj->load_contacts(
+			'device_uuid' => $dev,
+			'contacts' => $ctdata,
+		);
 		$res = {
 			'result' => 'ok',
 		};
