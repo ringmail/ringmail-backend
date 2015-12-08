@@ -36,21 +36,31 @@ sub load
 	if ($user)
 	{
 		my $ctdata = decode_json($form->{'contacts'});
-		my $dev = $form->{'device'};
+		my $item = new Ring::Item();
+		my $devid = $item->item(
+			'type' => 'device',
+			'device_uuid' => $form->{'device'},
+			'user_id' => $user->id(),
+		)->id();
 		# TODO: validate form data
 		my $cobj = new Ring::User::Contacts(
 			'user_id' => $user->id(),
 		);
 		$cobj->load_contacts(
-			'device_uuid' => $dev,
+			'device_id' => $devid,
 			'contacts' => $ctdata,
+			'purge' => 1,
+		);
+		my $rgusers = $cobj->get_matched_contacts(
+			'device_id' => $devid,
 		);
 		$res = {
+			'rg_contacts' => $rgusers,
 			'result' => 'ok',
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log($res);
+	::log($res);
 	return encode_json($res);
 }
 

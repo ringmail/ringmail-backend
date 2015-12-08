@@ -17,6 +17,7 @@ use Note::SQL::Table 'sqltable';
 use Note::Param;
 
 use Ring::User;
+use Ring::User::Contacts;
 
 extends 'Note::Page';
 
@@ -51,6 +52,27 @@ sub load
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
 			};
+			my $cobj = new Ring::User::Contacts(
+				'user_id' => $user->id(),
+			);
+			my $item = new Ring::Item();
+			my $devid = $item->item(
+				'type' => 'device',
+				'device_uuid' => $form->{'device'},
+				'user_id' => $user->id(),
+			)->id();
+			my $syncts = $cobj->sync_timestamp(
+				'device_id' => $devid,
+			);
+			$res->{'ts_latest'} = $syncts;
+			my $ct = $cobj->get_contacts_count(
+				'device_id' => $devid,
+			);
+			$res->{'contacts'} = $ct;
+			my $rgusers = $cobj->get_matched_contacts(
+				'device_id' => $devid,
+			);
+			$res->{'rg_contacts'} = $rgusers;
 		}
 		else
 		{
@@ -68,7 +90,7 @@ sub load
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log($res);
+	::log($res);
 	return encode_json($res);
 }
 
