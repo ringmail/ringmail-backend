@@ -51,28 +51,34 @@ sub load
 				'sip_login' => $sipauth->[0]->{'login'},
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
+				'contacts' => 0,
+				'rg_contacts' => [],
+				'ts_latest' => '',
 			};
 			my $cobj = new Ring::User::Contacts(
 				'user_id' => $user->id(),
 			);
 			my $item = new Ring::Item();
-			my $devid = $item->item(
-				'type' => 'device',
-				'device_uuid' => $form->{'device'},
-				'user_id' => $user->id(),
-			)->id();
-			my $syncts = $cobj->sync_timestamp(
-				'device_id' => $devid,
-			);
-			$res->{'ts_latest'} = $syncts;
-			my $ct = $cobj->get_contacts_count(
-				'device_id' => $devid,
-			);
-			$res->{'contacts'} = $ct;
-			my $rgusers = $cobj->get_matched_contacts(
-				'device_id' => $devid,
-			);
-			$res->{'rg_contacts'} = $rgusers;
+			if (defined($form->{'device'}) && length($form->{'device'}))
+			{
+				my $devid = $item->item(
+					'type' => 'device',
+					'device_uuid' => $form->{'device'},
+					'user_id' => $user->id(),
+				)->id();
+				my $syncts = $cobj->sync_timestamp(
+					'device_id' => $devid,
+				);
+				$res->{'ts_latest'} = $syncts;
+				my $ct = $cobj->get_contacts_count(
+					'device_id' => $devid,
+				);
+				$res->{'contacts'} = $ct;
+				my $rgusers = $cobj->get_matched_contacts(
+					'device_id' => $devid,
+				);
+				$res->{'rg_contacts'} = $rgusers;
+			}
 		}
 		else
 		{
