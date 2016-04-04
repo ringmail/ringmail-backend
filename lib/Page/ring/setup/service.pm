@@ -69,18 +69,17 @@ my %payment_check = (
     ),
 );
 
-sub load {
-    my ( @args, ) = @_;
-
+around load => sub {
+    my ( $next, @args, ) = @_;
     my ( $obj, $param ) = get_param(@args);
     my $form = $obj->form();
 
-    #::_log($form);
+    # ::_log($form);
     my $content = $obj->content();
     my $user    = $obj->user();
     $content->{'payment'} = $obj->show_payment_form();
-    return $obj->SUPER::load($param);
-}
+    return $obj->$next( $param, );
+};
 
 sub cmd_fund {
     my ( $obj, $data, $args ) = @_;
