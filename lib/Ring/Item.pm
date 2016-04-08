@@ -91,8 +91,8 @@ sub item
 				'email' => $em,
 			},
 			{
-				'domain_id' => 0,
-				'domain_user_id' => 0,
+				'domain_id' => undef,
+				'domain_user_id' => undef,
 			},
 			\$created,
 		);
