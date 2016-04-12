@@ -12,6 +12,7 @@ use POSIX 'strftime';
 
 use Note::XML 'xml';
 use Note::Param;
+use Note::Account qw(account_id transaction tx_type_id);
 
 use Ring::User;
 use Ring::Model::Hashtag;
@@ -26,10 +27,12 @@ sub load {
     #::_log($form);
     my $content = $obj->content();
     my $user    = $obj->user();
+    my $account = Note::Account->new( $user->id() );
     my $uid     = $user->id();
     my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
     ::log($ht);
+    $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
     return $obj->SUPER::load($param);
 }
@@ -52,6 +55,18 @@ sub cmd_hashtag_add {
         }
         else {
             if ( $factory->validate_target( 'target' => $target, ) ) {
+
+                my $src = Note::Account->new( $uid, );
+                my $dst = account_id('revenue_ringmail');
+
+                transaction(
+                    'acct_src' => $src,
+                    'acct_dst' => $dst,
+                    'amount'   => '1.99',                           # TODO fix
+                    'tx_type'  => tx_type_id('purchase_hashtag'),
+                    'user_id'  => $uid,
+                );
+
                 my $res = $factory->create(
                     'tag'        => $tag,
                     'user_id'    => $uid,

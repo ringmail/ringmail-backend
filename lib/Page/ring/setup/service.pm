@@ -77,6 +77,8 @@ around load => sub {
     #::_log($form);
     my $content = $obj->content();
     my $user    = $obj->user();
+    my $account = Note::Account->new( $user->id() );
+    $content->{balance} = $account->balance();
     $content->{'payment'} = $obj->show_payment_form();
     return $obj->$next( $param, );
 };
