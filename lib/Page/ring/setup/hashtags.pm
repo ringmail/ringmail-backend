@@ -18,17 +18,16 @@ use Ring::Model::Hashtag;
 
 extends 'Page::ring::user';
 
-no warnings 'uninitialized';
-
 sub load {
-    my ( $obj, $param ) = get_param(@_);
+    my ( @args, ) = @_;
+    my ( $obj, $param ) = get_param( @args, );
 
     #my $form = $obj->form();
     #::_log($form);
     my $content = $obj->content();
     my $user    = $obj->user();
     my $uid     = $user->id();
-    my $factory = new Ring::Model::Hashtag();
+    my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
     ::log($ht);
     $content->{'hashtag_table'} = $ht;
@@ -41,12 +40,12 @@ sub cmd_hashtag_add {
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
-    $target =~ s/^\s*//;    # trim whitespace
-    $target =~ s/\s*$//;
-    unless ( $target =~ m{^http(s)?://}i ) {
+    $target =~ s/^\s*//xms;    # trim whitespace
+    $target =~ s/\s*$//xms;
+    unless ( $target =~ m{^http(s)?://}xmsi ) {
         $target = 'http://' . $target;
     }
-    my $factory = new Ring::Model::Hashtag();
+    my $factory = Ring::Model::Hashtag->new();
     if ( $factory->validate_tag( 'tag' => $tag, ) ) {
         if ( $factory->check_exists( 'tag' => $tag, ) ) {
             ::log("Dup");
@@ -68,6 +67,8 @@ sub cmd_hashtag_add {
             }
         }
     }
+
+    return;
 }
 
 sub cmd_hashtag_delete {
@@ -75,7 +76,7 @@ sub cmd_hashtag_delete {
     my $user    = $obj->user();
     my $uid     = $user->id();
     my $tagid   = $args->[0];
-    my $factory = new Ring::Model::Hashtag();
+    my $factory = Ring::Model::Hashtag->new();
     if ($factory->delete(
             'user_id' => $uid,
             'id'      => $tagid,
@@ -87,6 +88,8 @@ sub cmd_hashtag_delete {
     else {
         # failed
     }
+
+    return;
 }
 
 1;
