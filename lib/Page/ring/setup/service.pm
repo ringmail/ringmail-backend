@@ -165,7 +165,7 @@ sub cmd_fund {
         my $attempt = $pmt->card_payment(
             'processor' => 'paypal',
             'card_id'   => $cid,
-            'nofork'    => 0,
+            'nofork'    => 1,
             'amount'    => '9.98',
             'ip'        => $obj->env()->{'REMOTE_ADDR'},
             'callback'  => sub {

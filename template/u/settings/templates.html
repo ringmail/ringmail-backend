@@ -1,0 +1,104 @@
+[% menu_settings = 'templates' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				[% IF page.form.new_template %]
+					<h2>Create New Template:</h2>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="template">Template:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										[% page.field(
+											'command' => 'add_template',
+											'type' => 'text',
+											'name' => 'template',
+											'opts' => {'id' => 'template', 'style' => 'width: 179px'},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="template" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="controls">
+									[% page.button(
+										'command' => 'add_template',
+										'contents' => 'Create Template',
+										'opts' => {'class' => 'btn btn-primary btn-large'},
+									) %]
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+									<a href="[% page.url() %]">Cancel</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				[% ELSE %]
+					<h2>Templates:</h2>
+					<p></p>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="template">Create a new template:</label>
+								<div class="controls">
+									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_template' => 1}) %]">Create Template</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<hr/>
+					<table class="table table-bordered table-striped table-highlight">
+						<thead>
+							<tr>
+								<th>Template</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							[% IF templates.size == 0 %]
+								<tr>
+									<td colspan="4">No templates.</td>
+								</tr>
+							[% ELSE %]
+								[% FOREACH row IN templates %]
+									<tr>
+										<td>[% row.template %]</td>
+										<td>
+											[% page.link(
+												'text' => 'Delete',
+												'command' => 'delete_template',
+												'args' => [row.id],
+												'opts' => {
+													'onclick' => "return confirm('Really Delete Template: $row.template')",
+												},
+											) %]
+											|
+											[% page.link(
+												'text' => 'Edit Details',
+												'path' => '/u/template',
+												'query' => {
+													'id' => row.id
+												},
+											) %]
+										</td>
+									</tr>
+								[% END %]
+							[% END %]
+						</tbody>
+					</table>
+				[% END %]
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

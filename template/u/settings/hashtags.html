@@ -47,6 +47,22 @@
 								</div>
 							</div>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="target">Page:</label>
+								<div class="controls">
+									[% page.field(
+										'command' => 'hashtag_add',
+										'type' => 'select',
+										'name' => 'page',
+										'opts' => {'id' => 'page_id'},
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="target">Expires:</label>
 								<div class="controls">
 									<pre style="width: 200px;">Never</pre>
@@ -77,7 +93,7 @@
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group">
-								<label class="control-label" for="domain_sel">Register A New #Hashtag:</label>
+								<label class="control-label" for="hashtag">Register A New #Hashtag:</label>
 								<div class="controls">
 									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_tag' => 1}) %]">Create #Hashtag</a>
 								</div>

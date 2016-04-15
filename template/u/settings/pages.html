@@ -1,0 +1,122 @@
+[% menu_settings = 'pages' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				[% IF page.form.new_page %]
+					<h2>Create New Page:</h2>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="page">Page:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										[% page.field(
+											'command' => 'add',
+											'type' => 'text',
+											'name' => 'page',
+											'opts' => {'id' => 'page', 'style' => 'width: 179px'},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="page" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+								</div>
+							</div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="target">Template:</label>
+                                <div class="controls">
+                                    [% page.field(
+                                        'command' => 'add',
+                                        'type' => 'select',
+                                        'name' => 'template_id',
+                                        # 'select' => template_list, 
+                                        # 'selected' => template_sel, 
+                                        # 'opts' => template_opts, 
+                                    ) %]
+                                    [% IF page.value.error %]
+                                    <div>
+                                        <span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
+                                    </div>
+                                    [% END %]
+                                </div>
+                            </div>
+							<div class="control-group">
+								<div class="controls">
+									[% page.button(
+										'command' => 'add',
+										'contents' => 'Create Page',
+										'opts' => {'class' => 'btn btn-primary btn-large'},
+									) %]
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+									<a href="[% page.url() %]">Cancel</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				[% ELSE %]
+					<h2>Pages:</h2>
+					<p></p>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="page">Create a new page:</label>
+								<div class="controls">
+									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_page' => 1}) %]">Create Page</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<hr/>
+					<table class="table table-bordered table-striped table-highlight">
+						<thead>
+							<tr>
+								<th>Page</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							[% IF pages.size == 0 %]
+								<tr>
+									<td colspan="4">No pages.</td>
+								</tr>
+							[% ELSE %]
+								[% FOREACH row IN pages %]
+									<tr>
+										<td>[% row.page %]</td>
+										<td>
+											[% page.link(
+												'text' => 'Delete',
+												'command' => 'remove',
+												'args' => [row.id],
+												'opts' => {
+													'onclick' => "return confirm('Really Delete Page: $row.page')",
+												},
+											) %]
+											|
+											[% page.link(
+												'text' => 'Edit Details',
+												'path' => '/u/page',
+												'query' => {
+													'id' => row.id
+												},
+											) %]
+										</td>
+									</tr>
+								[% END %]
+							[% END %]
+						</tbody>
+					</table>
+				[% END %]
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]
