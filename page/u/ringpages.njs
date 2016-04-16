@@ -1,5 +1,5 @@
 {
-   "class" : "Page::ring::setup::pages",
+   "class" : "Page::ring::setup::ringpages",
    "command" : {
       "add" : "add",
       "edit" : "edit",
@@ -8,5 +8,5 @@
    "init" : [
       "valid_user"
    ],
-   "template" : "u/settings/pages.html"
+   "template" : "u/settings/ringpages.html"
 }

@@ -1,4 +1,4 @@
-package Ring::Model::Page;
+package Ring::Model::RingPage;
 
 use strict;
 use warnings;
