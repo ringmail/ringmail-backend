@@ -102,8 +102,8 @@ sub get_user_pages {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $uid = $param->{'user_id'};
-    my $q   = sqltable('page')->get(
-        'select' => [ qw{ id page }, ],
+    my $q   = sqltable('ringpage')->get(
+        'select' => [ qw{ id ringpage }, ],
         'where'  => { 'user_id' => $uid, },
     );
     return $q;

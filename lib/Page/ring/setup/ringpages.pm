@@ -8,6 +8,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
+use English '-no_match_vars';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -15,6 +16,7 @@ use Note::Account qw(account_id transaction tx_type_id);
 
 use Ring::User;
 use Ring::Model::RingPage;
+use Ring::Model::Template;
 
 extends 'Page::ring::user';
 
@@ -28,19 +30,29 @@ around load => sub {
     my $user    = $obj->user();
     my $uid     = $user->id();
     my $factory = Ring::Model::RingPage->new();
-    my $pages   = $factory->get_user_pages( 'user_id' => $uid, );
-    $content->{'pages'} = $pages;
+    my $ringpages   = $factory->get_user_pages( 'user_id' => $uid, );
+    $content->{'ringpages'} = $ringpages;
+
+    my $template = Ring::Model::Template->new();
+    my $templates = $template->get_user_templates( 'user_id' => $uid, );
+
+    ::log( $templates, );
 
     my @templates;
 
-    unless ( scalar @templates ) {
-        @templates = ( '(No Templates Created)', );
+    if ( scalar @{$templates} ) {
+        push @templates, map { [ $ARG->{template} => $ARG->{id}, ]; } @{$templates};
     }
-    $content->{'template_opts'} = { 'id' => 'template' };
-    if ( scalar @templates ) {
-        $content->{'template_opts'}->{'onchange'} = 'this.form.submit();';
+    else {
+        push @templates, [ '(No Templates Created)' => 0, ];
     }
-    $content->{'template_list'} = \@templates;
+
+    $content->{template_list}             = \@templates;
+    $content->{template_sel}              = 0;
+    $content->{template_opts}->{id}       = 'template';
+    $content->{template_opts}->{onchange} = 'this.form.submit();';
+
+    ::log( $content->{template_list}, );
 
     return $obj->$next( $param, );
 };
