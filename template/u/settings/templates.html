@@ -29,6 +29,24 @@
 									</div>
 								</div>
 							</div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]"> 
+                                <label class="control-label" for="path">Path:</label> 
+                                <div class="controls"> 
+                                    <div class="input-prepend"> 
+                                        [% page.field( 
+                                            'command' => 'add_template', 
+                                            'type' => 'text', 
+                                            'name' => 'path', 
+                                            'opts' => {'id' => 'path', 'style' => 'width: 179px'}, 
+                                        ) %] 
+                                        [% IF page.value.error %] 
+                                        <div> 
+                                            <span class="error" for="path" style="display: inline;">[% page.value.error %]</span> 
+                                        </div> 
+                                        [% END %] 
+                                    </div> 
+                                </div> 
+                            </div> 
 							<div class="control-group">
 								<div class="controls">
 									[% page.button(
@@ -60,6 +78,7 @@
 						<thead>
 							<tr>
 								<th>Template</th>
+								<th>Path</th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
@@ -72,6 +91,7 @@
 								[% FOREACH row IN templates %]
 									<tr>
 										<td>[% row.template %]</td>
+										<td>[% row.path %]</td>
 										<td>
 											[% page.link(
 												'text' => 'Delete',

@@ -22,7 +22,7 @@ sub validate_template {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $template = $param->{template};
-    if ( $template =~ /^[a-z0-9_]+$/xms ) {
+    if ( $template =~ /\A \w+ \z/xms ) {
         return 1;
     }
     return 0;
@@ -41,14 +41,25 @@ sub check_exists {
 sub create {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $template = lc( $param->{template} );
+    my $template = $param->{template};
+    my $path     = $param->{path};
+    my $uid      = $param->{user_id};
+
     unless ( $obj->validate_template( template => $template, ) ) {
         croak(qq|Invalid template '$template'|);
     }
-    my $uid = $param->{'user_id'};
+
     my $trec;
 
-    try { $trec = Note::Row::create( template => { template => $template, user_id => $uid, } ); }
+    try {
+        $trec = Note::Row::create(
+            template => {
+                template => $template,
+                path     => $path,
+                user_id  => $uid,
+            },
+        );
+    }
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
@@ -103,7 +114,7 @@ sub get_user_templates {
     my ( $obj, $param ) = get_param( @args, );
     my $uid = $param->{'user_id'};
     my $q   = sqltable('template')->get(
-        'select' => [ qw{ id template }, ],
+        'select' => [ qw{ id template path }, ],
         'where'  => { 'user_id' => $uid, },
     );
     return $q;

@@ -21,8 +21,8 @@ use Ring::User;
 sub validate_page {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $page = $param->{page};
-    if ( $page =~ /^[a-z0-9_]+$/xms ) {
+    my $ringpage = $param->{ringpage};
+    if ( $ringpage =~ /^[a-z0-9_]+$/xms ) {
         return 1;
     }
     return 0;
@@ -31,24 +31,30 @@ sub validate_page {
 sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $page = $param->{page};
-    unless ( $obj->validate_page( page => $page, ) ) {
-        croak(qq|Invalid page '$page'|);
+    my $ringpage = $param->{ringpage};
+    unless ( $obj->validate_page( ringpage => $ringpage, ) ) {
+        croak(qq|Invalid ringpage '$ringpage'|);
     }
-    return sqltable('page')->count( page => $page, );
+    return sqltable('ringpage')->count( ringpage => $ringpage, );
 }
 
 sub create {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $page = lc( $param->{page} );
-    unless ( $obj->validate_page( page => $page, ) ) {
-        croak(qq|Invalid page '$page'|);
+
+    ::log( $param, );
+
+    my $ringpage    = $param->{ringpage};
+    my $ringurl     = $param->{ringurl};
+    my $link        = $param->{link};
+    my $template_id = $param->{template_id};
+    unless ( $obj->validate_page( ringpage => $ringpage, ) ) {
+        croak(qq|Invalid ringpage '$ringpage'|);
     }
     my $uid = $param->{'user_id'};
     my $trec;
 
-    try { $trec = Note::Row::create( page => { page => $page, user_id => $uid, } ); }
+    try { $trec = Note::Row::create( ringpage => { ringpage => $ringpage, ringurl => $ringurl, link => $link, template_id => $template_id, user_id => $uid, } ); }
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
@@ -66,7 +72,7 @@ sub delete {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        page => {
+        ringpage => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
@@ -84,7 +90,7 @@ sub update {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        page => {
+        ringpage => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },

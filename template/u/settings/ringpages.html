@@ -7,7 +7,7 @@
 				[% INCLUDE u/settings/menu.html %]
 			</div> <!-- /.span3 -->
 			<div class="span9">
-				[% IF page.form.new_page %]
+				[% IF page.form.new_ringpage %]
 					<h2>Create New RingPage:</h2>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
@@ -47,6 +47,42 @@
                                     [% END %]
                                 </div>
                             </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="ringurl">RingURL:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'ringurl',
+                                            'opts' => {'id' => 'ringurl', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="ringurl" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="link">Link:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'link',
+                                            'opts' => {'id' => 'link', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="link" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
 							<div class="control-group">
 								<div class="controls">
 									[% page.button(
@@ -68,7 +104,7 @@
 							<div class="control-group">
 								<label class="control-label" for="ringpage">Create a new RingPage:</label>
 								<div class="controls">
-									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_page' => 1}) %]">Create RingPage</a>
+									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_ringpage' => 1}) %]">Create RingPage</a>
 								</div>
 							</div>
 						</fieldset>

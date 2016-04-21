@@ -26,11 +26,11 @@ around load => sub {
 
     #my $form = $obj->form();
     #::_log($form);
-    my $content = $obj->content();
-    my $user    = $obj->user();
-    my $uid     = $user->id();
-    my $factory = Ring::Model::RingPage->new();
-    my $ringpages   = $factory->get_user_pages( 'user_id' => $uid, );
+    my $content   = $obj->content();
+    my $user      = $obj->user();
+    my $uid       = $user->id();
+    my $factory   = Ring::Model::RingPage->new();
+    my $ringpages = $factory->get_user_pages( 'user_id' => $uid, );
     $content->{'ringpages'} = $ringpages;
 
     my $template = Ring::Model::Template->new();
@@ -59,21 +59,27 @@ around load => sub {
 
 sub add {
     my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
-    my $uid     = $user->id();
-    my $page    = $data->{'page'};
-    my $factory = Ring::Model::RingPage->new();
+    my $user        = $obj->user();
+    my $uid         = $user->id();
+    my $ringpage    = $data->{'ringpage'};
+    my $ringurl     = $data->{ringurl};
+    my $link        = $data->{link};
+    my $template_id = $data->{template_id};
+    my $factory     = Ring::Model::RingPage->new();
 
-    if ( $factory->validate_page( page => $page, ) ) {
+    if ( $factory->validate_page( ringpage => $ringpage, ) ) {
 
-        if ( $factory->check_exists( page => $page, ) ) {
+        if ( $factory->check_exists( ringpage => $ringpage, ) ) {
             ::log('Dup');
         }
         else {
 
             my $res = $factory->create(
-                page    => $page,
-                user_id => $uid,
+                ringpage    => $ringpage,
+                ringurl     => $ringurl,
+                link        => $link,
+                template_id => $template_id,
+                user_id     => $uid,
             );
             if ( defined $res ) {
                 ::log( New => $res );

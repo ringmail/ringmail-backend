@@ -37,18 +37,22 @@ sub add_template {
     my ( $obj, $data, $args ) = @_;
     my $user     = $obj->user();
     my $uid      = $user->id();
-    my $template = $data->{'template'};
+    my $template = $data->{template};
+    my $path     = $data->{path};
     my $factory  = Ring::Model::Template->new();
 
-    if ( $factory->validate_template( template => $template, ) ) {
+    if ( $factory->validate_template( template => $template, ), ) {
 
-        if ( $factory->check_exists( template => $template, ) ) {
+        if ( $factory->check_exists( template => $template, ), ) {
             ::log('Dup');
         }
         else {
 
+            ::log( 'got create in controller', );
+
             my $res = $factory->create(
                 template => $template,
+                path     => $path,
                 user_id  => $uid,
             );
             if ( defined $res ) {
@@ -62,10 +66,10 @@ sub add_template {
 
 sub delete_template {
     my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
-    my $uid     = $user->id();
-    my $template_id   = $args->[0];
-    my $factory = Ring::Model::Template->new();
+    my $user        = $obj->user();
+    my $uid         = $user->id();
+    my $template_id = $args->[0];
+    my $factory     = Ring::Model::Template->new();
     if ($factory->delete(
             'id'      => $template_id,
             'user_id' => $uid,
