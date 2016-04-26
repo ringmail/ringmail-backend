@@ -114,4 +114,17 @@ sub list {
     return $q;
 }
 
+sub retrieve {
+    my ( @args, ) = @_;
+    my ( $obj, $param ) = get_param( @args, );
+    my $q = sqltable('ringpage')->get(
+        select => [ 'p.id',       'p.ringurl', 'p.link', ],
+        table  => [ 'ringpage p', 'template t', ],
+        join   => [ 'p.template_id = t.id', ],
+        where => { 'p.user_id' => $param->{user_id}, 'p.id' => $param->{id}, },
+    );
+
+    return $q->[0];
+}
+
 1;
