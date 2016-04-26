@@ -22,7 +22,7 @@ sub validate_page {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
-    if ( $ringpage =~ /^[a-z0-9_]+$/xms ) {
+    if ( $ringpage =~ qr{\A \w+ \z}xms ) {
         return 1;
     }
     return 0;
@@ -41,8 +41,6 @@ sub check_exists {
 sub create {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-
-    ::log( $param, );
 
     my $ringpage    = $param->{ringpage};
     my $ringurl     = $param->{ringurl};
@@ -104,13 +102,12 @@ sub update {
     }
 }
 
-sub get_user_pages {
+sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $uid = $param->{'user_id'};
-    my $q   = sqltable('ringpage')->get(
-        'select' => [ qw{ id ringpage }, ],
-        'where'  => { 'user_id' => $uid, },
+    my $q = sqltable('ringpage')->get(
+        select => [ qw{ id ringpage }, ],
+        where  => { user_id => $param->{user_id}, },
     );
     return $q;
 }

@@ -26,17 +26,11 @@ around load => sub {
 
     #my $form = $obj->form();
     #::_log($form);
-    my $content   = $obj->content();
-    my $user      = $obj->user();
-    my $uid       = $user->id();
-    my $factory   = Ring::Model::RingPage->new();
-    my $ringpages = $factory->get_user_pages( 'user_id' => $uid, );
-    $content->{'ringpages'} = $ringpages;
+    my $content = $obj->content();
+    my $user    = $obj->user();
 
     my $template = Ring::Model::Template->new();
-    my $templates = $template->get_user_templates( 'user_id' => $uid, );
-
-    ::log( $templates, );
+    my $templates = $template->get_user_templates( user_id => $user->id(), );
 
     my @templates;
 
@@ -52,7 +46,9 @@ around load => sub {
     $content->{template_opts}->{id}       = 'template';
     $content->{template_opts}->{onchange} = 'this.form.submit();';
 
-    ::log( $content->{template_list}, );
+    my $ringpage = Ring::Model::RingPage->new();
+    my $ringpages = $ringpage->list( user_id => $user->id(), );
+    $content->{ringpages} = $ringpages;
 
     return $obj->$next( $param, );
 };
@@ -60,7 +56,6 @@ around load => sub {
 sub add {
     my ( $obj, $data, $args ) = @_;
     my $user        = $obj->user();
-    my $uid         = $user->id();
     my $ringpage    = $data->{'ringpage'};
     my $ringurl     = $data->{ringurl};
     my $link        = $data->{link};
@@ -79,7 +74,7 @@ sub add {
                 ringurl     => $ringurl,
                 link        => $link,
                 template_id => $template_id,
-                user_id     => $uid,
+                user_id     => $user->id(),
             );
             if ( defined $res ) {
                 ::log( New => $res );
@@ -93,12 +88,11 @@ sub add {
 sub remove {
     my ( $obj, $data, $args ) = @_;
     my $user    = $obj->user();
-    my $uid     = $user->id();
     my $page_id = $args->[0];
     my $factory = Ring::Model::RingPage->new();
     if ($factory->delete(
-            'id'      => $page_id,
-            'user_id' => $uid,
+            id      => $page_id,
+            user_id => $user->id(),
         )
         )
     {
