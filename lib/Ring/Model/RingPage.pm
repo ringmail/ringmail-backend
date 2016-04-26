@@ -22,7 +22,7 @@ sub validate_page {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
-    if ( $ringpage =~ qr{\A \w+ \z}xms ) {
+    if ( $ringpage =~ qr{\A [\w\s]+ \z}xms ) {
         return 1;
     }
     return 0;
