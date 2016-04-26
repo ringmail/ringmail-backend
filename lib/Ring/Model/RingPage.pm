@@ -106,8 +106,10 @@ sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ringpage')->get(
-        select => [ qw{ id ringpage }, ],
-        where  => { user_id => $param->{user_id}, },
+        select => [ 'p.id',       'p.ringpage', 't.path', ],
+        table  => [ 'ringpage p', 'template t', ],
+        join   => [ 'p.template_id = t.id', ],
+        where => { 'p.user_id' => $param->{user_id}, },
     );
     return $q;
 }

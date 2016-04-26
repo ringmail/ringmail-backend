@@ -137,6 +137,14 @@
 											) %]
 											|
 											[% page.link(
+												'text' => 'View',
+												'path' => row.path,
+												'query' => {
+													'ringpage_id' => row.id
+												},
+											) %]
+											|
+											[% page.link(
 												'text' => 'Edit Details',
 												'path' => '/u/ringpage',
 												'query' => {
