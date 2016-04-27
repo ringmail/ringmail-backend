@@ -127,7 +127,7 @@
 									<tr>
 										<td>[% row.ringpage %]</td>
 										<td>
-											[% page.ringlink(
+											[% page.link(
 												'text' => 'Delete',
 												'command' => 'remove',
 												'args' => [row.id],
@@ -136,7 +136,7 @@
 												},
 											) %]
 											|
-											[% page.ringlink(
+											[% page.link(
 												'text' => 'View',
 												'path' => row.path,
 												'query' => {
@@ -144,7 +144,7 @@
 												},
 											) %]
 											|
-											[% page.ringlink(
+											[% page.link(
 												'text' => 'Edit Details',
 												'path' => '/u/ringpage',
 												'query' => {
