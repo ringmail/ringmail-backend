@@ -1,0 +1,62 @@
+[% menu_settings = 'ringpages' %]
+[% content = BLOCK %]
+<div class="container">		
+	<div class="row">
+		<div class="tabbable">
+			<div class="span3">
+				[% INCLUDE u/settings/menu.html %]
+			</div> <!-- /.span3 -->
+			<div class="span9">
+				<h2>RingPage: [% ringpage %]</h2>
+				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
+					<p>
+						<a href="/u/ringpages">&lt; All RingPages</a>
+					</p>
+					<div>
+						<p style="text-align: right;">
+							[% IF ! edit %]
+							<a href="[% page.url('query' => {'id' => page.form.id, 'edit' => 1}) %]" class="btn">Edit RingPage</a>
+							[% ELSE %]
+							[% page.button(
+								'command' => 'edit',
+								'text' => 'Save Changes',
+								'opts' => {
+									'type' => 'submit',
+									'class' => 'btn btn-primary',
+								}
+								'args' => [page.form.id],
+							) %]
+							[% END %]
+						</p>
+					</div>
+					<table class="table table-bordered table-striped">
+						<tbody>
+							<tr>
+								<td><strong>Target URL</strong></td>
+								<td>
+									[% IF ! edit %]
+									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'target',
+										'value' => target_url,
+										'opts' => {'id' => 'target', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Expires</strong></td>
+								<td><span>Never</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

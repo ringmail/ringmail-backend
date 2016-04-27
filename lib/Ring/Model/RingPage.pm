@@ -42,17 +42,17 @@ sub create {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
 
-    my $ringpage    = $param->{ringpage};
-    my $ringurl     = $param->{ringurl};
-    my $link        = $param->{link};
-    my $template_id = $param->{template_id};
+    my $ringpage     = $param->{ringpage};
+    my $ringlink_url = $param->{ringlink_url};
+    my $ringlink     = $param->{ringlink};
+    my $template_id  = $param->{template_id};
     unless ( $obj->validate_page( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
     my $uid = $param->{'user_id'};
     my $trec;
 
-    try { $trec = Note::Row::create( ringpage => { ringpage => $ringpage, ringurl => $ringurl, link => $link, template_id => $template_id, user_id => $uid, } ); }
+    try { $trec = Note::Row::create( ringpage => { ringpage => $ringpage, ringlink_url => $ringlink_url, ringlink => $ringlink, template_id => $template_id, user_id => $uid, } ); }
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
@@ -118,7 +118,7 @@ sub retrieve {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ringpage')->get(
-        select => [ 'p.id',       'p.ringurl', 'p.link', ],
+        select => [ 'p.id',       'p.ringlink_url', 'p.ringlink', ],
         table  => [ 'ringpage p', 'template t', ],
         join   => [ 'p.template_id = t.id', ],
         where => { 'p.user_id' => $param->{user_id}, 'p.id' => $param->{id}, },

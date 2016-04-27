@@ -55,12 +55,12 @@ around load => sub {
 
 sub add {
     my ( $obj, $data, $args ) = @_;
-    my $user        = $obj->user();
-    my $ringpage    = $data->{'ringpage'};
-    my $ringurl     = $data->{ringurl};
-    my $link        = $data->{link};
-    my $template_id = $data->{template_id};
-    my $factory     = Ring::Model::RingPage->new();
+    my $user         = $obj->user();
+    my $ringpage     = $data->{'ringpage'};
+    my $ringlink_url = $data->{ringlink_url};
+    my $ringlink     = $data->{ringlink};
+    my $template_id  = $data->{template_id};
+    my $factory      = Ring::Model::RingPage->new();
 
     if ( $factory->validate_page( ringpage => $ringpage, ) ) {
 
@@ -70,11 +70,11 @@ sub add {
         else {
 
             my $res = $factory->create(
-                ringpage    => $ringpage,
-                ringurl     => $ringurl,
-                link        => $link,
-                template_id => $template_id,
-                user_id     => $user->id(),
+                ringpage     => $ringpage,
+                ringlink_url => $ringlink_url,
+                ringlink     => $ringlink,
+                template_id  => $template_id,
+                user_id      => $user->id(),
             );
             if ( defined $res ) {
                 ::log( New => $res );

@@ -48,36 +48,36 @@
                                 </div>
                             </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
-                                <label class="control-label" for="ringurl">RingURL:</label>
+                                <label class="control-label" for="ringlink">RingLink:</label>
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
                                             'command' => 'add',
                                             'type' => 'text',
-                                            'name' => 'ringurl',
-                                            'opts' => {'id' => 'ringurl', 'style' => 'width: 179px'},
+                                            'name' => 'ringlink',
+                                            'opts' => {'id' => 'ringlink', 'style' => 'width: 179px'},
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
-                                            <span class="error" for="ringurl" style="display: inline;">[% page.value.error %]</span>
+                                            <span class="error" for="ringlink" style="display: inline;">[% page.value.error %]</span>
                                         </div>
                                         [% END %] 
                                     </div>
                                 </div>  
                             </div>      
                             <div class="control-group[% IF page.value.error %] error[% END %]">
-                                <label class="control-label" for="link">Link:</label>
+                                <label class="control-label" for="ringlink_url">RingLink URL:</label>
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
                                             'command' => 'add',
                                             'type' => 'text',
-                                            'name' => 'link',
-                                            'opts' => {'id' => 'link', 'style' => 'width: 179px'},
+                                            'name' => 'ringlink_url',
+                                            'opts' => {'id' => 'ringlink_url', 'style' => 'width: 179px'},
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
-                                            <span class="error" for="link" style="display: inline;">[% page.value.error %]</span>
+                                            <span class="error" for="ringlink_url" style="display: inline;">[% page.value.error %]</span>
                                         </div>
                                         [% END %] 
                                     </div>
@@ -127,7 +127,7 @@
 									<tr>
 										<td>[% row.ringpage %]</td>
 										<td>
-											[% page.link(
+											[% page.ringlink(
 												'text' => 'Delete',
 												'command' => 'remove',
 												'args' => [row.id],
@@ -136,7 +136,7 @@
 												},
 											) %]
 											|
-											[% page.link(
+											[% page.ringlink(
 												'text' => 'View',
 												'path' => row.path,
 												'query' => {
@@ -144,7 +144,7 @@
 												},
 											) %]
 											|
-											[% page.link(
+											[% page.ringlink(
 												'text' => 'Edit Details',
 												'path' => '/u/ringpage',
 												'query' => {
