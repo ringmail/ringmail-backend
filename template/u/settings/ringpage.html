@@ -32,24 +32,52 @@
 					<table class="table table-bordered table-striped">
 						<tbody>
 							<tr>
-								<td><strong>Target URL</strong></td>
+								<td><strong>RingPage</strong></td>
 								<td>
 									[% IF ! edit %]
-									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
+									<a target="_blank" href="[% ringpage %]">[% ringpage %]</a>
 									[% ELSE %]
 									[% page.field(
 										'command' => 'edit',
 										'type' => 'text',
-										'name' => 'target',
-										'value' => target_url,
-										'opts' => {'id' => 'target', 'style' => 'width: 80%;'},
+										'name' => 'ringpage',
+										'value' => ringpage,
+										'opts' => {'id' => 'ringpage', 'style' => 'width: 80%;'},
 									) %]
 									[% END %]
 								</td>
 							</tr>
 							<tr>
-								<td><strong>Expires</strong></td>
-								<td><span>Never</span></td>
+								<td><strong>RingLink</strong></td>
+								<td>
+									[% IF ! edit %]
+									<a target="_blank" href="[% ringlink_url %]">[% ringlink %]</a>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'ringlink',
+										'value' => ringlink,
+										'opts' => {'id' => 'ringlink', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>RingLink URL</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringlink_url %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'ringlink_url',
+										'value' => ringlink_url,
+										'opts' => {'id' => 'ringlink_url', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
 							</tr>
 						</tbody>
 					</table>

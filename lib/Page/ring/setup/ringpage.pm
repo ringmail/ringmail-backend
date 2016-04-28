@@ -40,6 +40,7 @@ around load => sub {
         return $obj->redirect('/u/ringpages');
     }
     $content->{ringpage}     = $ht->data('ringpage');
+    $content->{ringlink}     = $ht->data('ringlink');
     $content->{ringlink_url} = $ht->data('ringlink_url');
     $content->{edit}         = ( $form->{'edit'} ) ? 1 : 0;
 
@@ -58,7 +59,7 @@ sub edit {
         $ringlink_url = 'http://' . $ringlink_url;
     }
     my $factory = Ring::Model::RingPage->new();
-    if ( $factory->validate_ringlink( ringlink_url => $ringlink_url, ) ) {
+    if ( $factory->validate_ringpage( ringlink_url => $ringlink_url, ) ) {
         if ($factory->update(
                 user_id      => $uid,
                 id           => $id,

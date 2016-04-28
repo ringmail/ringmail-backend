@@ -18,7 +18,7 @@ use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Ring::User;
 
-sub validate_page {
+sub validate_ringpage {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
@@ -32,7 +32,7 @@ sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
-    unless ( $obj->validate_page( ringpage => $ringpage, ) ) {
+    unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
     return sqltable('ringpage')->count( ringpage => $ringpage, );
@@ -46,7 +46,7 @@ sub create {
     my $ringlink_url = $param->{ringlink_url};
     my $ringlink     = $param->{ringlink};
     my $template_id  = $param->{template_id};
-    unless ( $obj->validate_page( ringpage => $ringpage, ) ) {
+    unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
     my $uid = $param->{'user_id'};

@@ -62,7 +62,7 @@ sub add {
     my $template_id  = $data->{template_id};
     my $factory      = Ring::Model::RingPage->new();
 
-    if ( $factory->validate_page( ringpage => $ringpage, ) ) {
+    if ( $factory->validate_ringpage( ringpage => $ringpage, ) ) {
 
         if ( $factory->check_exists( ringpage => $ringpage, ) ) {
             ::log('Dup');
