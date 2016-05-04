@@ -113,10 +113,7 @@ sub get_user_templates {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $uid = $param->{'user_id'};
-    my $q   = sqltable('template')->get(
-        'select' => [ qw{ id template path }, ],
-        'where'  => { 'user_id' => $uid, },
-    );
+    my $q = sqltable('template')->get( 'select' => [ qw{ id template path }, ], );
     return $q;
 }
 

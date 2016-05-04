@@ -2,7 +2,6 @@
    "class" : "Page::ring::setup::ringpages",
    "command" : {
       "add" : "add",
-      "edit" : "edit",
       "remove" : "remove"
    },
    "init" : [
