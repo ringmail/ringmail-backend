@@ -41,10 +41,9 @@ around load => sub {
         push @templates, [ '(No Templates Created)' => 0, ];
     }
 
-    $content->{template_list}             = \@templates;
-    $content->{template_sel}              = 0;
-    $content->{template_opts}->{id}       = 'template';
-    $content->{template_opts}->{onchange} = 'this.form.submit();';
+    $content->{template_list}       = \@templates;
+    $content->{template_sel}        = 0;
+    $content->{template_opts}->{id} = 'template';
 
     my $ringpage = Ring::Model::RingPage->new();
     my $ringpages = $ringpage->list( user_id => $user->id(), );
