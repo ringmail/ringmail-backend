@@ -1,8 +1,7 @@
 package Page::ring::setup::hashtags;
+
 use strict;
 use warnings;
-
-use vars qw();
 
 use Moose;
 use JSON::XS 'encode_json';
