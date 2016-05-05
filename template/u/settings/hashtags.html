@@ -18,7 +18,9 @@
 										'command' => 'hashtag_add',
 										'type' => 'select',
 										'name' => 'category_id',
-										'opts' => {'id' => 'category_id'},
+                                        'select' => category_list,
+                                        'selected' => category_sel,
+                                        'opts' => category_opts,
 									) %]
 									[% IF page.value.error %]
 									<div>

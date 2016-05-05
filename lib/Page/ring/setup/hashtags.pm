@@ -8,6 +8,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
+use English '-no_match_vars';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -15,6 +16,7 @@ use Note::Account qw(account_id transaction tx_type_id);
 
 use Ring::User;
 use Ring::Model::Hashtag;
+use Ring::Model::Category;
 
 extends 'Page::ring::user';
 
@@ -33,6 +35,23 @@ sub load {
     ::log($ht);
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
+
+    my $category   = Ring::Model::Category->new();
+    my $categories = $category->get_categories();
+
+    my @categories;
+
+    if ( scalar @{$categories} ) {
+        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
+    }
+    else {
+        push @categories, [ '(No Categories Created)' => 0, ];
+    }
+
+    $content->{category_list}       = \@categories;
+    $content->{category_sel}        = 0;
+    $content->{category_opts}->{id} = 'category';
+
     return $obj->SUPER::load($param);
 }
 
@@ -67,9 +86,10 @@ sub cmd_hashtag_add {
                 );
 
                 my $res = $factory->create(
-                    'tag'        => $tag,
-                    'user_id'    => $uid,
-                    'target_url' => $target,
+                    tag         => $tag,
+                    user_id     => $uid,
+                    target_url  => $target,
+                    category_id => $data->{category_id},
                 );
                 if ( defined $res ) {
 

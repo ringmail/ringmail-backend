@@ -51,7 +51,7 @@ sub create {
     my $url     = $param->{'target_url'};
     my $expires = $param->{'expires'};
     my $trec;
-    eval { $trec = Note::Row::create( 'ring_hashtag', { 'hashtag' => $tag, 'user_id' => $uid, 'target_url' => $url, 'ts_expires' => $expires, } ); };
+    eval { $trec = Note::Row::create( 'ring_hashtag', { hashtag => $tag, user_id => $uid, target_url => $url, ts_expires => $expires, category_id => $param->{category_id}, } ); };
     if ($@) {
         my $err = $@;
         if ( $err =~ /Duplicate/ ) {
