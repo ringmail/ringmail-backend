@@ -17,6 +17,7 @@ use Note::Account qw(account_id transaction tx_type_id);
 use Ring::User;
 use Ring::Model::Hashtag;
 use Ring::Model::Category;
+use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
@@ -51,6 +52,22 @@ sub load {
     $content->{category_list}       = \@categories;
     $content->{category_sel}        = 0;
     $content->{category_opts}->{id} = 'category';
+
+    my $ringpage = Ring::Model::RingPage->new();
+    my $ringpages = $ringpage->list( user_id => $user->id(), );
+
+    my @ringpages;
+
+    if ( scalar @{$ringpages} ) {
+        push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
+    }
+    else {
+        push @ringpages, [ '(No Ringpages Created)' => 0, ];
+    }
+
+    $content->{ringpage_list}       = \@ringpages;
+    $content->{ringpage_sel}        = 0;
+    $content->{ringpage_opts}->{id} = 'ringpage';
 
     return $obj->SUPER::load($param);
 }

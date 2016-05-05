@@ -71,7 +71,9 @@
 										'command' => 'hashtag_add',
 										'type' => 'select',
 										'name' => 'ringpage_id',
-										'opts' => {'id' => 'ringpage_id'},
+                                        'select' => ringpage_list,
+                                        'selected' => ringpage_sel,
+                                        'opts' => ringpage_opts,
 									) %]
 									[% IF page.value.error %]
 									<div>

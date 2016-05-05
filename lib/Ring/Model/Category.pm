@@ -110,7 +110,7 @@ sub update {
 sub get_categories {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $q = sqltable('category')->get( 'select' => [ qw{ id category }, ], );
+    my $q = sqltable('ring_category')->get( 'select' => [ qw{ id category }, ], );
     return $q;
 }
 

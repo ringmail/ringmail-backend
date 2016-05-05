@@ -35,7 +35,7 @@ sub check_exists {
     unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
-    return sqltable('ringpage')->count( ringpage => $ringpage, );
+    return sqltable('ring_page')->count( ringpage => $ringpage, );
 }
 
 sub create {
@@ -52,7 +52,7 @@ sub create {
     my $uid = $param->{'user_id'};
     my $trec;
 
-    try { $trec = Note::Row::create( ringpage => { ringpage => $ringpage, ringlink_url => $ringlink_url, ringlink => $ringlink, template_id => $template_id, user_id => $uid, } ); }
+    try { $trec = Note::Row::create( ring_page => { ringpage => $ringpage, ringlink_url => $ringlink_url, ringlink => $ringlink, template_id => $template_id, user_id => $uid, } ); }
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
@@ -70,7 +70,7 @@ sub delete {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        ringpage => {
+        ring_page => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
@@ -88,7 +88,7 @@ sub update {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        ringpage => {
+        ring_page => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
@@ -105,9 +105,9 @@ sub update {
 sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $q = sqltable('ringpage')->get(
-        select => [ 'p.id',       'p.ringpage', 't.path', ],
-        table  => [ 'ringpage p', 'template t', ],
+    my $q = sqltable('ring_page')->get(
+        select => [ 'p.id',        'p.ringpage', 't.path', ],
+        table  => [ 'ring_page p', 'ring_template t', ],
         join   => [ 'p.template_id = t.id', ],
         where => { 'p.user_id' => $param->{user_id}, },
     );
@@ -117,9 +117,9 @@ sub list {
 sub retrieve {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
-    my $q = sqltable('ringpage')->get(
-        select => [ 'p.id',       'p.ringlink_url', 'p.ringlink', ],
-        table  => [ 'ringpage p', 'template t', ],
+    my $q = sqltable('ring_page')->get(
+        select => [ 'p.id',        'p.ringlink_url', 'p.ringlink', ],
+        table  => [ 'ring_page p', 'ring_template t', ],
         join   => [ 'p.template_id = t.id', ],
         where => { 'p.user_id' => $param->{user_id}, 'p.id' => $param->{id}, },
     );
