@@ -26,7 +26,7 @@ around load => sub {
     my $user    = $obj->user();
     my $uid     = $user->id();
     my $id      = $form->{'id'};
-    unless ( $id =~ qr{ \A \d+ \z }xms ) {
+    if ( not $id =~ m{ \A \d+ \z }xms ) {
         return $obj->redirect('/u/ringpages');
     }
     my $ht = Note::Row->new(
@@ -36,34 +36,34 @@ around load => sub {
         },
     );
 
-    unless ( $ht->id() ) {
+    if ( not $ht->id() ) {
         return $obj->redirect('/u/ringpages');
     }
-    $content->{ringpage}     = $ht->data('ringpage');
-    $content->{ringlink}     = $ht->data('ringlink');
-    $content->{ringlink_url} = $ht->data('ringlink_url');
-    $content->{edit}         = ( $form->{'edit'} ) ? 1 : 0;
+    $content->{ringpage} = $ht->data();
+    ::log( $content->{ringpage}, );
+    $content->{edit} = ( $form->{'edit'} ) ? 1 : 0;
 
     return $obj->$next( $param, );
 };
 
 sub edit {
     my ( $obj, $data, $args ) = @_;
-    my $user         = $obj->user();
-    my $uid          = $user->id();
-    my $id           = $args->[0];
-    my $ringlink_url = $data->{ringlink_url};
-    $ringlink_url =~ s{ \A \s* }{}xms;    # trim whitespace
-    $ringlink_url =~ s{ \s* \z }{}xms;
-    unless ( $ringlink_url =~ m{ \A http(s)?:// }xmsi ) {
-        $ringlink_url = 'http://' . $ringlink_url;
-    }
+    my $user    = $obj->user();
+    my $uid     = $user->id();
+    my $id      = $args->[0];
     my $factory = Ring::Model::RingPage->new();
-    if ( $factory->validate_ringpage( ringlink_url => $ringlink_url, ) ) {
+    if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
         if ($factory->update(
-                user_id      => $uid,
-                id           => $id,
-                ringlink_url => $ringlink_url,
+                user_id                 => $uid,
+                id                      => $id,
+                ringpage                => $data->{ringpage},
+                header_background_color => $data->{header_background_color},
+                header_text_color       => $data->{header_text_color},
+                body_background_image   => $data->{body_background_image},
+                body_background_color   => $data->{body_background_color},
+                body_text_color         => $data->{body_text_color},
+                footer_background_color => $data->{footer_background_color},
+                footer_text_color       => $data->{footer_text_color},
             )
             )
         {
@@ -74,7 +74,7 @@ sub edit {
         }
     }
     else {
-        # invalid ringlink_url
+        # invalid
     }
 
     return;

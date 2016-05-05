@@ -54,26 +54,27 @@ around load => sub {
 
 sub add {
     my ( $obj, $data, $args ) = @_;
-    my $user         = $obj->user();
-    my $ringpage     = $data->{'ringpage'};
-    my $ringlink_url = $data->{ringlink_url};
-    my $ringlink     = $data->{ringlink};
-    my $template_id  = $data->{template_id};
-    my $factory      = Ring::Model::RingPage->new();
+    my $user    = $obj->user();
+    my $factory = Ring::Model::RingPage->new();
 
-    if ( $factory->validate_ringpage( ringpage => $ringpage, ) ) {
+    if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
 
-        if ( $factory->check_exists( ringpage => $ringpage, ) ) {
+        if ( $factory->check_exists( ringpage => $data->{ringpage}, ) ) {
             ::log('Dup');
         }
         else {
 
             my $res = $factory->create(
-                ringpage     => $ringpage,
-                ringlink_url => $ringlink_url,
-                ringlink     => $ringlink,
-                template_id  => $template_id,
-                user_id      => $user->id(),
+                ringpage                => $data->{ringpage},
+                header_background_color => $data->{header_background_color},
+                header_text_color       => $data->{header_text_color},
+                body_background_image   => $data->{body_background_image},
+                body_background_color   => $data->{body_background_color},
+                body_text_color         => $data->{body_text_color},
+                footer_background_color => $data->{footer_background_color},
+                footer_text_color       => $data->{footer_text_color},
+                template_id             => $data->{template_id},
+                user_id                 => $user->id(),
             );
             if ( defined $res ) {
                 ::log( New => $res );

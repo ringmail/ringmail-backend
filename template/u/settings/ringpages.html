@@ -48,36 +48,126 @@
                                 </div>
                             </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
-                                <label class="control-label" for="ringlink">RingLink:</label>
+                                <label class="control-label" for="header_background_color">Header Background Color:</label>
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
                                             'command' => 'add',
                                             'type' => 'text',
-                                            'name' => 'ringlink',
-                                            'opts' => {'id' => 'ringlink', 'style' => 'width: 179px'},
+                                            'name' => 'header_background_color',
+                                            'opts' => {'id' => 'header_background_color', 'style' => 'width: 179px'},
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
-                                            <span class="error" for="ringlink" style="display: inline;">[% page.value.error %]</span>
+                                            <span class="error" for="header_background_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
                                         [% END %] 
                                     </div>
                                 </div>  
                             </div>      
                             <div class="control-group[% IF page.value.error %] error[% END %]">
-                                <label class="control-label" for="ringlink_url">RingLink URL:</label>
+                                <label class="control-label" for="header_text_color">Header Text Color:</label>
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
                                             'command' => 'add',
                                             'type' => 'text',
-                                            'name' => 'ringlink_url',
-                                            'opts' => {'id' => 'ringlink_url', 'style' => 'width: 179px'},
+                                            'name' => 'header_text_color',
+                                            'opts' => {'id' => 'header_text_color', 'style' => 'width: 179px'},
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
-                                            <span class="error" for="ringlink_url" style="display: inline;">[% page.value.error %]</span>
+                                            <span class="error" for="header_text_color" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="body_background_image">Body Background Image:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'body_background_image',
+                                            'opts' => {'id' => 'body_background_image', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="body_background_image" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="body_background_color">Body Background Color:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'body_background_color',
+                                            'opts' => {'id' => 'body_background_color', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="body_background_color" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="body_text_color">Body Text Color:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'body_text_color',
+                                            'opts' => {'id' => 'body_text_color', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="body_text_color" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="footer_background_color">Footer Background Color:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'footer_background_color',
+                                            'opts' => {'id' => 'footer_background_color', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="footer_background_color" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %] 
+                                    </div>
+                                </div>  
+                            </div>      
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="footer_text_color">Footer Text Color:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'footer_text_color',
+                                            'opts' => {'id' => 'footer_text_color', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="footer_text_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
                                         [% END %] 
                                     </div>

@@ -7,7 +7,7 @@
 				[% INCLUDE u/settings/menu.html %]
 			</div> <!-- /.span3 -->
 			<div class="span9">
-				<h2>RingPage: [% ringpage %]</h2>
+				<h2>RingPage: [% ringpage.ringpage %]</h2>
 				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
 					<p>
 						<a href="/u/ringpages">&lt; All RingPages</a>
@@ -35,46 +35,126 @@
 								<td><strong>RingPage</strong></td>
 								<td>
 									[% IF ! edit %]
-									<a target="_blank" href="[% ringpage %]">[% ringpage %]</a>
+									<span>[% ringpage.ringpage %]</span>
 									[% ELSE %]
 									[% page.field(
 										'command' => 'edit',
 										'type' => 'text',
 										'name' => 'ringpage',
-										'value' => ringpage,
+										'value' => ringpage.ringpage,
 										'opts' => {'id' => 'ringpage', 'style' => 'width: 80%;'},
 									) %]
 									[% END %]
 								</td>
 							</tr>
 							<tr>
-								<td><strong>RingLink</strong></td>
+								<td><strong>Header Background Color</strong></td>
 								<td>
 									[% IF ! edit %]
-									<a target="_blank" href="[% ringlink_url %]">[% ringlink %]</a>
+									<span>[% ringpage.header_background_color %]</span>
 									[% ELSE %]
 									[% page.field(
 										'command' => 'edit',
 										'type' => 'text',
-										'name' => 'ringlink',
-										'value' => ringlink,
-										'opts' => {'id' => 'ringlink', 'style' => 'width: 80%;'},
+										'name' => 'header_background_color',
+										'value' => ringpage.header_background_color,
+										'opts' => {'id' => 'header_background_color', 'style' => 'width: 80%;'},
 									) %]
 									[% END %]
 								</td>
 							</tr>
 							<tr>
-								<td><strong>RingLink URL</strong></td>
+								<td><strong>Header Text Color</strong></td>
 								<td>
 									[% IF ! edit %]
-									<span>[% ringlink_url %]</span>
+									<span>[% ringpage.header_text_color %]</span>
 									[% ELSE %]
 									[% page.field(
 										'command' => 'edit',
 										'type' => 'text',
-										'name' => 'ringlink_url',
-										'value' => ringlink_url,
-										'opts' => {'id' => 'ringlink_url', 'style' => 'width: 80%;'},
+										'name' => 'header_text_color',
+										'value' => ringpage.header_text_color,
+										'opts' => {'id' => 'header_text_color', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Body Background Image</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.body_background_image %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'body_background_image',
+										'value' => ringpage.body_background_image,
+										'opts' => {'id' => 'body_background_image', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Body Background Color</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.body_background_color %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'body_background_color',
+										'value' => ringpage.body_background_color,
+										'opts' => {'id' => 'body_background_color', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Body Text Color</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.body_text_color %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'body_text_color',
+										'value' => ringpage.body_text_color,
+										'opts' => {'id' => 'body_text_color', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Footer Background Color</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.footer_background_color %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'footer_background_color',
+										'value' => ringpage.footer_background_color,
+										'opts' => {'id' => 'footer_background_color', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Footer Text Color</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.footer_text_color %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'text',
+										'name' => 'footer_text_color',
+										'value' => ringpage.footer_text_color,
+										'opts' => {'id' => 'footer_text_color', 'style' => 'width: 80%;'},
 									) %]
 									[% END %]
 								</td>

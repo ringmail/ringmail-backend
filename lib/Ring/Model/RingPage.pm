@@ -3,8 +3,6 @@ package Ring::Model::RingPage;
 use strict;
 use warnings;
 
-use vars qw();
-
 use Moose;
 use Data::Dumper;
 use Scalar::Util 'blessed', 'reftype';
@@ -32,7 +30,7 @@ sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
-    unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
+    if ( not $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
     return sqltable('ring_page')->count( ringpage => $ringpage, );
@@ -43,7 +41,7 @@ sub create {
     my ( $obj, $param ) = get_param( @args, );
 
     my $ringpage = $param->{ringpage};
-    unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
+    if ( not $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
     my $trec;
@@ -118,7 +116,6 @@ sub update {
                 body_text_color         => $param->{body_text_color},
                 footer_background_color => $param->{footer_background_color},
                 footer_text_color       => $param->{footer_text_color},
-                template_id             => $param->{template_id},
 
             }
         );
