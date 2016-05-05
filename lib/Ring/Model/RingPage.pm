@@ -42,17 +42,30 @@ sub create {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
 
-    my $ringpage     = $param->{ringpage};
-    my $ringlink_url = $param->{ringlink_url};
-    my $ringlink     = $param->{ringlink};
-    my $template_id  = $param->{template_id};
+    my $ringpage = $param->{ringpage};
     unless ( $obj->validate_ringpage( ringpage => $ringpage, ) ) {
         croak(qq|Invalid ringpage '$ringpage'|);
     }
-    my $uid = $param->{'user_id'};
     my $trec;
 
-    try { $trec = Note::Row::create( ring_page => { ringpage => $ringpage, ringlink_url => $ringlink_url, ringlink => $ringlink, template_id => $template_id, user_id => $uid, } ); }
+    try {
+        $trec = Note::Row::create(
+            ring_page => {
+
+                ringpage                => $param->{ringpage},
+                header_background_color => $param->{header_background_color},
+                header_text_color       => $param->{header_text_color},
+                body_background_image   => $param->{body_background_image},
+                body_background_color   => $param->{body_background_color},
+                body_text_color         => $param->{body_text_color},
+                footer_background_color => $param->{footer_background_color},
+                footer_text_color       => $param->{footer_text_color},
+                template_id             => $param->{template_id},
+                user_id                 => $param->{user_id},
+
+            }
+        );
+    }
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
@@ -94,7 +107,21 @@ sub update {
         },
     );
     if ( $rc->id() ) {
-        $rc->update( { 'target_url' => $param->{'target'}, } );
+        $rc->update(
+            {
+
+                ringpage                => $param->{ringpage},
+                header_background_color => $param->{header_background_color},
+                header_text_color       => $param->{header_text_color},
+                body_background_image   => $param->{body_background_image},
+                body_background_color   => $param->{body_background_color},
+                body_text_color         => $param->{body_text_color},
+                footer_background_color => $param->{footer_background_color},
+                footer_text_color       => $param->{footer_text_color},
+                template_id             => $param->{template_id},
+
+            }
+        );
         return 1;
     }
     else {
@@ -106,10 +133,10 @@ sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ring_page')->get(
-        select => [ 'p.id',        'p.ringpage', 't.path', ],
-        table  => [ 'ring_page p', 'ring_template t', ],
-        join   => [ 'p.template_id = t.id', ],
-        where => { 'p.user_id' => $param->{user_id}, },
+        select => [ 'rp.id',        'rp.ringpage', 't.path', ],
+        table  => [ 'ring_page rp', 'ring_template t', ],
+        join   => [ 'rp.template_id = t.id', ],
+        where => { 'rp.user_id' => $param->{user_id}, },
     );
     return $q;
 }
@@ -118,10 +145,21 @@ sub retrieve {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ring_page')->get(
-        select => [ 'p.id',        'p.ringlink_url', 'p.ringlink', ],
-        table  => [ 'ring_page p', 'ring_template t', ],
-        join   => [ 'p.template_id = t.id', ],
-        where => { 'p.user_id' => $param->{user_id}, 'p.id' => $param->{id}, },
+        select => [
+
+            'rp.id',
+            'rp.header_background_color',
+            'rp.header_text_color',
+            'rp.body_background_image',
+            'rp.body_background_color',
+            'rp.body_text_color',
+            'rp.footer_background_color',
+            'rp.footer_text_color',
+
+        ],
+        table => [ 'ring_page rp', 'ring_template t', ],
+        join  => [ 'rp.template_id = t.id', ],
+        where => { 'rp.user_id' => $param->{user_id}, 'rp.id' => $param->{id}, },
     );
 
     return $q->[0];

@@ -30,9 +30,9 @@ around load => sub {
         return $obj->redirect('/u/ringpages');
     }
     my $ht = Note::Row->new(
-        'ringpage' => {
-            'id'      => $id,
-            'user_id' => $uid,
+        ring_page => {
+            id      => $id,
+            user_id => $uid,
         },
     );
 

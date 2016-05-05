@@ -29,8 +29,8 @@ around load => sub {
     my $content = $obj->content();
     my $user    = $obj->user();
 
-    my $template = Ring::Model::Template->new();
-    my $templates = $template->get_user_templates( user_id => $user->id(), );
+    my $template  = Ring::Model::Template->new();
+    my $templates = $template->list();
 
     my @templates;
 

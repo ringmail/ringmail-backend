@@ -35,7 +35,7 @@ sub check_exists {
     unless ( $obj->validate_template( template => $template, ) ) {
         croak(qq|Invalid template '$template'|);
     }
-    return sqltable('template')->count( template => $template, );
+    return sqltable('ring_template')->count( template => $template, );
 }
 
 sub create {
@@ -53,7 +53,7 @@ sub create {
 
     try {
         $trec = Note::Row::create(
-            template => {
+            ring_template => {
                 template => $template,
                 path     => $path,
                 user_id  => $uid,
@@ -77,7 +77,7 @@ sub delete {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        template => {
+        ring_template => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
@@ -95,7 +95,7 @@ sub update {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(
-        template => {
+        ring_template => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
@@ -109,11 +109,11 @@ sub update {
     }
 }
 
-sub get_user_templates {
+sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $uid = $param->{'user_id'};
-    my $q = sqltable('template')->get( 'select' => [ qw{ id template path }, ], );
+    my $q = sqltable('ring_template')->get( 'select' => [ qw{ id template path }, ], );
     return $q;
 }
 
