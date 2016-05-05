@@ -1,8 +1,7 @@
 package Page::ring::setup::hashtag;
+
 use strict;
 use warnings;
-
-use vars qw();
 
 use Moose;
 use JSON::XS 'encode_json';
@@ -18,19 +17,18 @@ use Ring::Model::Hashtag;
 
 extends 'Page::ring::user';
 
-no warnings 'uninitialized';
-
-sub load {
-    my ( $obj, $param ) = get_param(@_);
+around load => sub {
+    my ( $next, @args, ) = @_;
+    my ( $obj, $param ) = get_param( @args, );
     my $content = $obj->content();
     my $form    = $obj->form();
     my $user    = $obj->user();
     my $uid     = $user->id();
     my $id      = $form->{'id'};
-    unless ( $id =~ /^\d+$/ ) {
+    if ( not $id =~ m{ \A \d+ \z }xms ) {
         return $obj->redirect('/u/hashtags');
     }
-    my $ht = new Note::Row(
+    my $ht = Note::Row->new(
         'ring_hashtag' => {
             'id'      => $id,
             'user_id' => $uid,
@@ -38,14 +36,14 @@ sub load {
     );
 
     #::log($ht->data());
-    unless ( $ht->id() ) {
+    if ( not defined $ht->id() ) {
         return $obj->redirect('/u/hashtags');
     }
     $content->{'hashtag'}    = $ht->data('hashtag');
     $content->{'target_url'} = $ht->data('target_url');
     $content->{'edit'}       = ( $form->{'edit'} ) ? 1 : 0;
-    return $obj->SUPER::load($param);
-}
+    return $obj->$next( $param, );
+};
 
 sub cmd_hashtag_edit {
     my ( $obj, $data, $args ) = @_;
@@ -53,12 +51,12 @@ sub cmd_hashtag_edit {
     my $uid    = $user->id();
     my $tagid  = $args->[0];
     my $target = $data->{'target'};
-    $target =~ s/^\s*//;    # trim whitespace
-    $target =~ s/\s*$//;
-    unless ( $target =~ m{^http(s)?://}i ) {
+    $target =~ s{ \A \s* }{}xms;    # trim whitespace
+    $target =~ s{ \s* \z }{}xms;
+    if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
         $target = 'http://' . $target;
     }
-    my $factory = new Ring::Model::Hashtag();
+    my $factory = Ring::Model::Hashtag->new();
     if ( $factory->validate_target( 'target' => $target, ) ) {
         if ($factory->update(
                 'user_id' => $uid,
@@ -76,6 +74,8 @@ sub cmd_hashtag_edit {
     else {
         # invalid target
     }
+
+    return;
 }
 
 1;
