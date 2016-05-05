@@ -1,8 +1,7 @@
 package Ring::Model::Hashtag;
+
 use strict;
 use warnings;
-
-use vars qw();
 
 use Moose;
 use Data::Dumper;
@@ -14,8 +13,6 @@ use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Ring::User;
-
-no warnings qw(uninitialized);
 
 sub validate_tag {
     my ( $obj, $param ) = get_param(@_);
