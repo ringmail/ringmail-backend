@@ -156,7 +156,7 @@ sub retrieve {
         ],
         table => [ 'ring_page rp', 'ring_template t', ],
         join  => [ 'rp.template_id = t.id', ],
-        where => { 'rp.user_id' => $param->{user_id}, 'rp.id' => $param->{id}, },
+        where => { 'rp.id' => $param->{id}, },
     );
 
     return $q->[0];

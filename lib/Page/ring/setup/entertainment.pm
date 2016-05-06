@@ -16,7 +16,9 @@ around load => sub {
 
     my $ringpage = Ring::Model::RingPage->new();
 
-    $obj->content()->{ringpage} = $ringpage->retrieve( user_id => $obj->user()->id(), id => $param->{form}->{ringpage_id}, );
+    $obj->content()->{ringpage} = $ringpage->retrieve( id => $param->{form}->{ringpage_id}, );
+
+    ::log( $obj->content()->{ringpage}, );
 
     return $obj->$next( $param, );
 };

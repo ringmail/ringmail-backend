@@ -1,0 +1,348 @@
+
+
+/* Reset Styles
+***********************/
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed,figure, figcaption, footer, header, hgroup,menu, nav, output, ruby, section, summary,time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,q:before, q:after {content: ''; content: none;}
+table {border-collapse: collapse; border-spacing: 0;}
+strong {font-weight: bold;}
+em {font-style: italic;}
+a {outline: none;}
+button:focus {
+  outline: 0;
+}
+
+button:hover {
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=75);
+  opacity: .75;
+}
+
+/* ==== clearfix styles ===================================================== */
+
+.clear {
+    clear: both;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+}
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+}
+
+/* ==== Fonts ===================================================== */
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 57 Cn';
+	src: url('../fonts/HelveticaNeueLTCom-Cn.eot');
+	src: url('../fonts/HelveticaNeueLTCom-Cn.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-Cn.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-Cn.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 67 MdCn';
+	src: url('../fonts/HelveticaNeueLTCom-MdCn.eot');
+	src: url('../fonts/HelveticaNeueLTCom-MdCn.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-MdCn.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-MdCn.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 57 Cn';
+	src: url('../fonts/HelveticaNeueLTCom-BdCn.eot');
+	src: url('../fonts/HelveticaNeueLTCom-BdCn.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-BdCn.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-BdCn.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 65 Md';
+	src: url('../fonts/HelveticaNeueLTCom-Md.eot');
+	src: url('../fonts/HelveticaNeueLTCom-Md.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-Md.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-Md.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 55 Roman';
+	src: url('../fonts/HelveticaNeueLTCom-Bd.eot');
+	src: url('../fonts/HelveticaNeueLTCom-Bd.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-Bd.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-Bd.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 43 LtEx';
+	src: url('../fonts/HelveticaNeueLTCom-LtEx.eot');
+	src: url('../fonts/HelveticaNeueLTCom-LtEx.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-LtEx.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-LtEx.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'HelveticaNeueLT Com 45 Lt';
+	src: url('../fonts/HelveticaNeueLTCom-Lt.eot');
+	src: url('../fonts/HelveticaNeueLTCom-Lt.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/HelveticaNeueLTCom-Lt.woff') format('woff'),
+		url('../fonts/HelveticaNeueLTCom-Lt.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+}
+
+
+
+/* ==== primary styles ===================================================== */
+
+
+html {
+	min-height: 100%;
+	background-color: [% ringpage.body_background_color %]
+}
+
+
+body {
+	font-family: 'Helvetica Neue', "Open Sans", "Arial", sans-serif;
+	font-size: 14px;
+   	height: 100%;
+   	max-width: 100%;
+   	padding: 0;
+}
+
+img {
+	max-width: 100%;
+	width: auto; /* for ie 8 */
+}
+
+button:hover {
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=75);
+  opacity: .75;
+}
+
+.ringpage-header {
+	float: left;
+	width: 100%;
+}
+
+.ringpage-hgroup {
+	max-width: 800px;
+	font-family: 'Helvetica Neue', "Open Sans", "Arial", sans-serif;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.ringpage-header-h1 {
+	font-family: 'HelveticaNeueLT Com 57 Cn';
+	margin: 64px auto 20px;
+	font-size: 50px;
+}
+
+.ringpage-header-h2 {
+	font-family: 'HelveticaNeueLT Com 45 Lt';
+	font-weight: bold;
+	margin: 20px auto 64px;
+	font-size: 22px;
+}
+
+.ringpage-cta-section-wrapper {
+	float: left;
+	width: 100%;
+	background-size: cover;
+}
+
+.ringpage-cta-section {
+	max-width: 800px;
+	margin: 60px auto;
+	text-align: center;
+}
+
+.ringpage-cta-button {
+	font-family: 'HelveticaNeueLT Com 57 Cn';
+	font-weight: bold;
+	font-size: 32px;
+	margin: 20px auto 40px;
+	display: block;
+	padding: 22px 0 12px;
+	width: 30%;
+	-webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    border: 0;
+}
+
+.ringpage-content-section-wrapper {
+	float: left;
+	width: 100%;
+}
+
+.ringpage-content-section {
+	max-width: 800px;
+	margin: 40px auto;
+	text-align: center;
+}
+
+.ringpage-content-h1 {
+	font-family: 'HelveticaNeueLT Com 45 Lt';
+	font-weight: bold;
+	font-size: 22px;
+	margin: 40px auto 40px;
+}
+
+.ringpage-content-p {
+	font-family: 'HelveticaNeueLT Com 45 Lt';
+	font-size: 20px;
+}
+
+.ringpage-footer-wrapper {
+	float: left;
+	width: 100%;
+}
+
+.ringpage-footer {
+	max-width: 800px;
+	margin: 40px auto;
+	text-align: center;
+}
+
+.ringpage-footer-p {
+	font-size: 18px;
+}
+
+@media only screen and (max-width: 768px) {
+
+
+button:hover {
+  text-decoration: none;
+  cursor: pointer;
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+	
+	
+.ringpage-header-h1 {
+	margin: 44px auto 10px;
+	font-size: 38px;
+}
+
+.ringpage-header-h2 {
+	margin: 10px auto 44px;
+	font-size: 14px;
+}
+
+.ringpage-cta-section {
+	max-width: 800px;
+	margin: 40px auto;
+	text-align: center;
+}
+
+
+
+
+.ringpage-cta-section-wrapper {
+	float: left;
+	width: 100%;
+	background-size: cover;
+	
+}
+
+.ringpage-cta-button {
+	font-size: 28px;
+	margin: 20px auto 20px;
+	display: block;
+	padding: 18px 0 8px;
+	width: 80%;
+
+}
+
+.ringpage-content-section {
+	width: 80%;
+	margin: 40px auto;
+	text-align: center;
+}
+
+.ringpage-content-h1 {
+	font-size: 14px;
+	margin: 0 auto 20px;
+}
+
+.ringpage-content-p {
+	margin: 0 auto 20px;
+	font-size: 14px;
+}
+	
+}
+
+
+
+/* ==|== non-semantic helper classes ======================================== */
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
+.ir br { display: none; }
+.hidden { display: none !important; visibility: hidden; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+.invisible { visibility: hidden; }
+
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
+.ir br { display: none; }
+.hidden { display: none !important; visibility: hidden; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+.invisible { visibility: hidden; }
+
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+
+.clearfix:after:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+/* ==|== print styles ======================================================= */
+ 
+@media print {
+  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } 
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; } 
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
