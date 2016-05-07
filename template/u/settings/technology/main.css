@@ -139,7 +139,7 @@ body {
    	max-width: 100%;
    	padding: 0;
    	background-color: [% ringpage.body_background_color %]
-   	color: [% body_text_color %];
+   	color: [% ringpage.body_text_color %];
 }
 
 img {
@@ -157,8 +157,8 @@ button:hover {
 .ringpage-header {
 	float: left;
 	width: 100%;
-	background-color: [% header_background_color %];
-	color: [% header_text_color %];
+	background-color: [% ringpage.header_background_color %];
+	color: [% ringpage.header_text_color %];
 }
 
 .ringpage-hgroup {
@@ -184,7 +184,7 @@ button:hover {
 .ringpage-cta-section-wrapper {
 	float: left;
 	width: 100%;
-	background-image: [% body_background_image %];
+	background-image: [% ringpage.body_background_image %];
 	background-size: cover;
 }
 
