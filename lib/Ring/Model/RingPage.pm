@@ -50,14 +50,19 @@ sub create {
         $trec = Note::Row::create(
             ring_page => {
 
-                ringpage                => $param->{ringpage},
-                header_background_color => $param->{header_background_color},
-                header_text_color       => $param->{header_text_color},
-                body_background_image   => $param->{body_background_image},
                 body_background_color   => $param->{body_background_color},
+                body_background_image   => $param->{body_background_image},
+                body_header             => $param->{body_header},
+                body_text               => $param->{body_text},
                 body_text_color         => $param->{body_text_color},
                 footer_background_color => $param->{footer_background_color},
+                footer_text             => $param->{footer_text},
                 footer_text_color       => $param->{footer_text_color},
+                header_background_color => $param->{header_background_color},
+                header_subtitle         => $param->{header_subtitle},
+                header_text_color       => $param->{header_text_color},
+                header_title            => $param->{header_title},
+                ringpage                => $param->{ringpage},
                 template_id             => $param->{template_id},
                 user_id                 => $param->{user_id},
 
@@ -108,14 +113,22 @@ sub update {
         $rc->update(
             {
 
-                ringpage                => $param->{ringpage},
-                header_background_color => $param->{header_background_color},
-                header_text_color       => $param->{header_text_color},
-                body_background_image   => $param->{body_background_image},
                 body_background_color   => $param->{body_background_color},
+                body_background_image   => $param->{body_background_image},
+                body_header             => $param->{body_header},
+                body_text               => $param->{body_text},
                 body_text_color         => $param->{body_text_color},
                 footer_background_color => $param->{footer_background_color},
+                footer_text             => $param->{footer_text},
                 footer_text_color       => $param->{footer_text_color},
+                header_background_color => $param->{header_background_color},
+                header_subtitle         => $param->{header_subtitle},
+                header_text_color       => $param->{header_text_color},
+                header_title            => $param->{header_title},
+                ringpage                => $param->{ringpage},
+                user_id                 => $param->{user_id},
+
+                # template_id             => $param->{template_id},
 
             }
         );
@@ -144,14 +157,21 @@ sub retrieve {
     my $q = sqltable('ring_page')->get(
         select => [
 
-            'rp.id',
-            'rp.header_background_color',
-            'rp.header_text_color',
-            'rp.body_background_image',
             'rp.body_background_color',
+            'rp.body_background_image',
+            'rp.body_header',
+            'rp.body_text',
             'rp.body_text_color',
             'rp.footer_background_color',
+            'rp.footer_text',
             'rp.footer_text_color',
+            'rp.header_background_color',
+            'rp.header_subtitle',
+            'rp.header_text_color',
+            'rp.header_title',
+            'rp.id',
+            'rp.ringpage',
+            'rp.template_id',
 
         ],
         table => [ 'ring_page rp', 'ring_template t', ],

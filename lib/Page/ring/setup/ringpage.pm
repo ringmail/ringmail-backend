@@ -64,6 +64,11 @@ sub edit {
                 body_text_color         => $data->{body_text_color},
                 footer_background_color => $data->{footer_background_color},
                 footer_text_color       => $data->{footer_text_color},
+                body_header             => $data->{body_header},
+                body_text               => $data->{body_text},
+                footer_text             => $data->{footer_text},
+                header_title            => $data->{header_title},
+                header_subtitle         => $data->{header_subtitle},
             )
             )
         {
