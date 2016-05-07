@@ -234,12 +234,15 @@ button:hover {
 .ringpage-footer-wrapper {
 	float: left;
 	width: 100%;
+	background-color: [% ringpage.footer_background_color %];
+	
 }
 
 .ringpage-footer {
 	max-width: 800px;
 	margin: 40px auto;
 	text-align: center;
+	color: [% ringpage.footer_text_color %];
 }
 
 .ringpage-footer-p {
