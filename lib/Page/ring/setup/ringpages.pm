@@ -65,14 +65,19 @@ sub add {
         else {
 
             my $res = $factory->create(
-                ringpage                => $data->{ringpage},
-                header_background_color => $data->{header_background_color},
-                header_text_color       => $data->{header_text_color},
-                body_background_image   => $data->{body_background_image},
                 body_background_color   => $data->{body_background_color},
+                body_background_image   => $data->{body_background_image},
+                body_header             => $data->{body_header},
+                body_text               => $data->{body_text},
                 body_text_color         => $data->{body_text_color},
                 footer_background_color => $data->{footer_background_color},
+                footer_text             => $data->{footer_text},
                 footer_text_color       => $data->{footer_text_color},
+                header_background_color => $data->{header_background_color},
+                header_subtitle         => $data->{header_subtitle},
+                header_text_color       => $data->{header_text_color},
+                header_title            => $data->{header_title},
+                ringpage                => $data->{ringpage},
                 template_id             => $data->{template_id},
                 user_id                 => $user->id(),
             );

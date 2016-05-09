@@ -36,9 +36,9 @@
                                         'command' => 'add',
                                         'type' => 'select',
                                         'name' => 'template_id',
-                                        'select' => template_list, 
-                                        'selected' => template_sel, 
-                                        'opts' => template_opts, 
+                                        'select' => template_list,
+                                        'selected' => template_sel,
+                                        'opts' => template_opts,
                                     ) %]
                                     [% IF page.value.error %]
                                     <div>
@@ -61,10 +61,10 @@
                                         <div>
                                             <span class="error" for="header_background_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="header_text_color">Header Text Color:</label>
                                 <div class="controls">
@@ -79,10 +79,10 @@
                                         <div>
                                             <span class="error" for="header_text_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="body_background_image">Body Background Image:</label>
                                 <div class="controls">
@@ -97,10 +97,10 @@
                                         <div>
                                             <span class="error" for="body_background_image" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="body_background_color">Body Background Color:</label>
                                 <div class="controls">
@@ -115,10 +115,10 @@
                                         <div>
                                             <span class="error" for="body_background_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="body_text_color">Body Text Color:</label>
                                 <div class="controls">
@@ -133,10 +133,10 @@
                                         <div>
                                             <span class="error" for="body_text_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="footer_background_color">Footer Background Color:</label>
                                 <div class="controls">
@@ -151,10 +151,10 @@
                                         <div>
                                             <span class="error" for="footer_background_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="footer_text_color">Footer Text Color:</label>
                                 <div class="controls">
@@ -169,10 +169,100 @@
                                         <div>
                                             <span class="error" for="footer_text_color" style="display: inline;">[% page.value.error %]</span>
                                         </div>
-                                        [% END %] 
+                                        [% END %]
                                     </div>
-                                </div>  
-                            </div>      
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="body_text">Body Text:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'body_text',
+                                            'opts' => {'id' => 'body_text', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="body_text" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %]
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="footer_text">Footer Text:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'footer_text',
+                                            'opts' => {'id' => 'footer_text', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="footer_text" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %]
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="header_subtitle">Header Subtitle:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'header_subtitle',
+                                            'opts' => {'id' => 'header_subtitle', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="header_subtitle" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %]
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="body_header">Body Header:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'body_header',
+                                            'opts' => {'id' => 'body_header', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="body_header" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %]
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="header_title">Header Title:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        [% page.field(
+                                            'command' => 'add',
+                                            'type' => 'text',
+                                            'name' => 'header_title',
+                                            'opts' => {'id' => 'header_title', 'style' => 'width: 179px'},
+                                        ) %]
+                                        [% IF page.value.error %]
+                                        <div>
+                                            <span class="error" for="header_title" style="display: inline;">[% page.value.error %]</span>
+                                        </div>
+                                        [% END %]
+                                    </div>
+                                </div>
+                            </div>
 							<div class="control-group">
 								<div class="controls">
 									[% page.button(
