@@ -53,70 +53,70 @@ button:hover {
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
-	src: url('../fonts/HelveticaNeueLTCom-Cn.eot');
-	src: url('../fonts/HelveticaNeueLTCom-Cn.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-Cn.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-Cn.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-Cn.eot');
+	src: url('/font/HelveticaNeueLTCom-Cn.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-Cn.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-Cn.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 67 MdCn';
-	src: url('../fonts/HelveticaNeueLTCom-MdCn.eot');
-	src: url('../fonts/HelveticaNeueLTCom-MdCn.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-MdCn.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-MdCn.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-MdCn.eot');
+	src: url('/font/HelveticaNeueLTCom-MdCn.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-MdCn.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-MdCn.ttf') format('truetype');
 	font-weight: 500;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
-	src: url('../fonts/HelveticaNeueLTCom-BdCn.eot');
-	src: url('../fonts/HelveticaNeueLTCom-BdCn.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-BdCn.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-BdCn.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-BdCn.eot');
+	src: url('/font/HelveticaNeueLTCom-BdCn.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-BdCn.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-BdCn.ttf') format('truetype');
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 65 Md';
-	src: url('../fonts/HelveticaNeueLTCom-Md.eot');
-	src: url('../fonts/HelveticaNeueLTCom-Md.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-Md.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-Md.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-Md.eot');
+	src: url('/font/HelveticaNeueLTCom-Md.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-Md.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-Md.ttf') format('truetype');
 	font-weight: 500;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 55 Roman';
-	src: url('../fonts/HelveticaNeueLTCom-Bd.eot');
-	src: url('../fonts/HelveticaNeueLTCom-Bd.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-Bd.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-Bd.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-Bd.eot');
+	src: url('/font/HelveticaNeueLTCom-Bd.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-Bd.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-Bd.ttf') format('truetype');
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 43 LtEx';
-	src: url('../fonts/HelveticaNeueLTCom-LtEx.eot');
-	src: url('../fonts/HelveticaNeueLTCom-LtEx.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-LtEx.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-LtEx.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-LtEx.eot');
+	src: url('/font/HelveticaNeueLTCom-LtEx.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-LtEx.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-LtEx.ttf') format('truetype');
 	font-weight: 300;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'HelveticaNeueLT Com 45 Lt';
-	src: url('../fonts/HelveticaNeueLTCom-Lt.eot');
-	src: url('../fonts/HelveticaNeueLTCom-Lt.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/HelveticaNeueLTCom-Lt.woff') format('woff'),
-		url('../fonts/HelveticaNeueLTCom-Lt.ttf') format('truetype');
+	src: url('/font/HelveticaNeueLTCom-Lt.eot');
+	src: url('/font/HelveticaNeueLTCom-Lt.eot?#iefix') format('embedded-opentype'),
+		url('/font/HelveticaNeueLTCom-Lt.woff') format('woff'),
+		url('/font/HelveticaNeueLTCom-Lt.ttf') format('truetype');
 	font-weight: 300;
 	font-style: normal;
 }
@@ -184,7 +184,7 @@ button:hover {
 .ringpage-cta-section-wrapper {
 	float: left;
 	width: 100%;
-	background-image: [% ringpage.body_background_image %];
+	background-image: url('[% ringpage.body_background_image %]');
 	background-size: cover;
 }
 
