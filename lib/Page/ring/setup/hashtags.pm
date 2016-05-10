@@ -21,8 +21,8 @@ use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
-sub load {
-    my ( @args, ) = @_;
+around load => sub {
+    my ( $next, @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
 
     #my $form = $obj->form();
@@ -69,8 +69,8 @@ sub load {
     $content->{ringpage_sel}        = 0;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->SUPER::load($param);
-}
+    return $obj->$next( $param, );
+};
 
 sub cmd_hashtag_add {
     my ( $obj, $data, $args ) = @_;
