@@ -74,19 +74,22 @@ sub load {
 
 sub cmd_hashtag_add {
     my ( $obj, $data, $args ) = @_;
+
+    ::log( $data, );
+
     my $user   = $obj->user();
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
     $target =~ s/^\s*//xms;    # trim whitespace
     $target =~ s/\s*$//xms;
-    unless ( $target =~ m{^http(s)?://}xmsi ) {
+    if ( not $target =~ m{^http(s)?://}xmsi ) {
         $target = 'http://' . $target;
     }
     my $factory = Ring::Model::Hashtag->new();
     if ( $factory->validate_tag( 'tag' => $tag, ) ) {
         if ( $factory->check_exists( 'tag' => $tag, ) ) {
-            ::log("Dup");
+            ::log('Dup');
         }
         else {
             if ( $factory->validate_target( 'target' => $target, ) ) {
@@ -95,18 +98,19 @@ sub cmd_hashtag_add {
                 my $dst = account_id('revenue_ringmail');
 
                 transaction(
-                    'acct_src' => $src,
-                    'acct_dst' => $dst,
-                    'amount'   => '1.99',                           # TODO fix
-                    'tx_type'  => tx_type_id('purchase_hashtag'),
-                    'user_id'  => $uid,
+                    acct_dst => $dst,
+                    acct_src => $src,
+                    amount   => '1.99',                           # TODO fix
+                    tx_type  => tx_type_id('purchase_hashtag'),
+                    user_id  => $uid,
                 );
 
                 my $res = $factory->create(
-                    tag         => $tag,
-                    user_id     => $uid,
-                    target_url  => $target,
                     category_id => $data->{category_id},
+                    ringpage_id => $data->{ringpage_id},
+                    tag         => $tag,
+                    target_url  => $target,
+                    user_id     => $uid,
                 );
                 if ( defined $res ) {
 
@@ -114,7 +118,7 @@ sub cmd_hashtag_add {
                 }
             }
             else {
-                ::log("Bad Target");
+                ::log('Bad Target');
             }
         }
     }
@@ -144,4 +148,3 @@ sub cmd_hashtag_delete {
 }
 
 1;
-

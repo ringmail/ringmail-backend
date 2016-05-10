@@ -64,6 +64,7 @@ sub create {
 
                 category_id => $param->{category_id},
                 hashtag     => $tag,
+                ringpage_id => $param->{ringpage_id},
                 target_url  => $url,
                 ts_expires  => $expires,
                 user_id     => $uid,

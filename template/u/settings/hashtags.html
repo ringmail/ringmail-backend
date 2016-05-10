@@ -12,24 +12,6 @@
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="category">Category:</label>
-								<div class="controls">
-									[% page.field(
-										'command' => 'hashtag_add',
-										'type' => 'select',
-										'name' => 'category_id',
-                                        'select' => category_list,
-                                        'selected' => category_sel,
-                                        'opts' => category_opts,
-									) %]
-									[% IF page.value.error %]
-									<div>
-										<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
-									</div>
-									[% END %]
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="hashtag">Hashtag:</label>
 								<div class="controls">
 									<div class="input-prepend">
@@ -46,6 +28,24 @@
 										</div>
 										[% END %]
 									</div>
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="category">Category:</label>
+								<div class="controls">
+									[% page.field(
+										'command' => 'hashtag_add',
+										'type' => 'select',
+										'name' => 'category_id',
+                                        'select' => category_list,
+                                        'selected' => category_sel,
+                                        'opts' => category_opts,
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
 								</div>
 							</div>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
