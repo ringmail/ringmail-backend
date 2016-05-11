@@ -54,6 +54,9 @@ around load => sub {
 
 sub add {
     my ( $obj, $data, $args ) = @_;
+
+    ::log( $data, );
+
     my $user    = $obj->user();
     my $factory = Ring::Model::RingPage->new();
 
@@ -77,9 +80,11 @@ sub add {
                 header_subtitle         => $data->{header_subtitle},
                 header_text_color       => $data->{header_text_color},
                 header_title            => $data->{header_title},
+                offer                   => defined $data->{offer} ? 1 : 0,
                 ringpage                => $data->{ringpage},
                 template_id             => $data->{template_id},
                 user_id                 => $user->id(),
+                video                   => defined $data->{video} ? 1 : 0,
             );
             if ( defined $res ) {
                 ::log( New => $res );

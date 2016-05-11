@@ -48,6 +48,36 @@
                                 </div>
                             </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="offer">Contains Offer:</label>
+                                <div class="controls">
+                                    [% page.field(
+                                        'command' => 'add',
+                                        'type' => 'checkbox',
+                                        'name' => 'offer',
+                                    ) %]
+                                    [% IF page.value.error %]
+                                    <div>
+                                        <span class="error" for="offer" style="display: inline;">[% page.value.error %]</span>
+                                    </div>
+                                    [% END %]
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="video">Contains Video:</label>
+                                <div class="controls">
+                                    [% page.field(
+                                        'command' => 'add',
+                                        'type' => 'checkbox',
+                                        'name' => 'video',
+                                    ) %]
+                                    [% IF page.value.error %]
+                                    <div>
+                                        <span class="error" for="video" style="display: inline;">[% page.value.error %]</span>
+                                    </div>
+                                    [% END %]
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="header_background_color">Header Background Color:</label>
                                 <input type='text' id="full"/>
 

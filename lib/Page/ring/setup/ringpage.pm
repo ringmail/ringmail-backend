@@ -41,7 +41,7 @@ around load => sub {
     }
     $content->{ringpage} = $ht->data();
     ::log( $content->{ringpage}, );
-    $content->{edit} = ( $form->{'edit'} ) ? 1 : 0;
+    $content->{edit} = ( $form->{edit} ) ? 1 : 0;
 
     return $obj->$next( $param, );
 };
@@ -54,21 +54,23 @@ sub edit {
     my $factory = Ring::Model::RingPage->new();
     if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
         if ($factory->update(
-                user_id                 => $uid,
-                id                      => $id,
-                ringpage                => $data->{ringpage},
-                header_background_color => $data->{header_background_color},
-                header_text_color       => $data->{header_text_color},
-                body_background_image   => $data->{body_background_image},
                 body_background_color   => $data->{body_background_color},
-                body_text_color         => $data->{body_text_color},
-                footer_background_color => $data->{footer_background_color},
-                footer_text_color       => $data->{footer_text_color},
+                body_background_image   => $data->{body_background_image},
                 body_header             => $data->{body_header},
                 body_text               => $data->{body_text},
+                body_text_color         => $data->{body_text_color},
+                footer_background_color => $data->{footer_background_color},
                 footer_text             => $data->{footer_text},
-                header_title            => $data->{header_title},
+                footer_text_color       => $data->{footer_text_color},
+                header_background_color => $data->{header_background_color},
                 header_subtitle         => $data->{header_subtitle},
+                header_text_color       => $data->{header_text_color},
+                header_title            => $data->{header_title},
+                id                      => $id,
+                offer                   => defined $data->{offer} ? 1 : 0,
+                ringpage                => $data->{ringpage},
+                user_id                 => $uid,
+                video                   => defined $data->{video} ? 1 : 0,
             )
             )
         {

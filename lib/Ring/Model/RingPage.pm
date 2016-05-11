@@ -62,9 +62,11 @@ sub create {
                 header_subtitle         => $param->{header_subtitle},
                 header_text_color       => $param->{header_text_color},
                 header_title            => $param->{header_title},
+                offer                   => $param->{offer},
                 ringpage                => $param->{ringpage},
                 template_id             => $param->{template_id},
                 user_id                 => $param->{user_id},
+                video                   => $param->{video},
 
             }
         );
@@ -125,8 +127,10 @@ sub update {
                 header_subtitle         => $param->{header_subtitle},
                 header_text_color       => $param->{header_text_color},
                 header_title            => $param->{header_title},
+                offer                   => $param->{offer},
                 ringpage                => $param->{ringpage},
                 user_id                 => $param->{user_id},
+                video                   => $param->{video},
 
                 # template_id             => $param->{template_id},
 
@@ -170,8 +174,10 @@ sub retrieve {
             'rp.header_text_color',
             'rp.header_title',
             'rp.id',
+            'rp.offer',
             'rp.ringpage',
             'rp.template_id',
+            'rp.video',
 
         ],
         table => [ 'ring_page rp', 'ring_template t', ],

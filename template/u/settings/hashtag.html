@@ -32,6 +32,23 @@
 					<table class="table table-bordered table-striped">
 						<tbody>
 							<tr>
+								<td><strong>Category</strong></td>
+								<td>
+									[% IF ! edit %]
+									[% category %]
+									[% ELSE %]
+                                    [% page.field(
+                                        'command' => 'hashtag_edit',
+                                        'type' => 'select',
+                                        'name' => 'category_id',
+                                        'select' => category_list,
+                                        'selected' => category_sel,
+                                        'opts' => category_opts,
+                                    ) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
 								<td><strong>Target URL</strong></td>
 								<td>
 									[% IF ! edit %]
@@ -44,6 +61,24 @@
 										'value' => target_url,
 										'opts' => {'id' => 'target', 'style' => 'width: 80%;'},
 									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>RingPage</strong></td>
+								<td>
+									[% IF ! edit %]
+									[% ringpage %]
+									[% ELSE %]
+                                    [% page.field(
+                                        'command' => 'hashtag_add',
+                                        'type' => 'select',
+                                        'name' => 'ringpage_id',
+                                        'select' => ringpage_list,
+                                        'selected' => ringpage_sel,
+                                        'opts' => ringpage_opts,
+                                    ) %]
+
 									[% END %]
 								</td>
 							</tr>

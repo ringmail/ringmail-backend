@@ -48,6 +48,38 @@
 								</td>
 							</tr>
 							<tr>
+								<td><strong>Contains Offer</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.offer %]</span>
+									[% ELSE %]
+									[% page.field(
+										command => 'edit',
+										type => 'checkbox',
+										name => 'offer',
+										value => ringpage.offer,
+										opts => { id => 'offer', style => 'width: 80%;', },
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Contains Video</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% ringpage.video %]</span>
+									[% ELSE %]
+									[% page.field(
+										'command' => 'edit',
+										'type' => 'checkbox',
+										'name' => 'video',
+										'value' => ringpage.video,
+										'opts' => {'id' => 'video', 'style' => 'width: 80%;'},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							<tr>
 								<td><strong>Header Background Color</strong></td>
 								<td>
 									[% IF ! edit %]
