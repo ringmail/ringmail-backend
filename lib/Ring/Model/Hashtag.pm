@@ -57,6 +57,9 @@ sub create {
     my $url     = $param->{'target_url'};
     my $expires = $param->{'expires'};
     my $trec;
+
+    ::log( $param, );
+
     try {
         $trec = Note::Row::create(
             'ring_hashtag',
@@ -107,13 +110,21 @@ sub update {
     my ( @args, ) = @_;
     my ( $obj, $param, ) = get_param( @args, );
     my $rc = Note::Row->new(
-        'ring_hashtag' => {
-            'user_id' => $param->{'user_id'},
-            'id'      => $param->{'id'},
+        ring_hashtag => {
+            user_id => $param->{user_id},
+            id      => $param->{id},
         },
     );
     if ( $rc->id() ) {
-        $rc->update( { 'target_url' => $param->{'target'}, } );
+        $rc->update(
+            {
+
+                category_id => $param->{category_id},
+                ringpage_id => $param->{ringpage_id},
+                target_url  => $param->{target},
+
+            },
+        );
         return 1;
     }
     else {

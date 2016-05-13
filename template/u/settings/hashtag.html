@@ -8,23 +8,23 @@
 			</div> <!-- /.span3 -->
 			<div class="span9">
 				<h2>Hashtag: #[% hashtag %]</h2>
-				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
+				<form method="post" action="[% page.url( query => { id => page.form.id, }, ) %]" style="margin: 0px; padding: 0px;">
 					<p>
 						<a href="/u/hashtags">&lt; All Hashtags</a>
 					</p>
 					<div>
 						<p style="text-align: right;">
 							[% IF ! edit %]
-							<a href="[% page.url('query' => {'id' => page.form.id, 'edit' => 1}) %]" class="btn">Edit Hashtag</a>
+							<a href="[% page.url( query => { id => page.form.id, edit => 1, }, ) %]" class="btn">Edit Hashtag</a>
 							[% ELSE %]
 							[% page.button(
-								'command' => 'hashtag_edit',
-								'text' => 'Save Changes',
-								'opts' => {
-									'type' => 'submit',
-									'class' => 'btn btn-primary',
-								}
-								'args' => [page.form.id],
+								command => 'hashtag_edit',
+								text => 'Save Changes',
+								opts => {
+									type => 'submit',
+									class => 'btn btn-primary',
+								},
+								args => [ page.form.id, ],
 							) %]
 							[% END %]
 						</p>
@@ -38,12 +38,12 @@
 									[% category %]
 									[% ELSE %]
                                     [% page.field(
-                                        'command' => 'hashtag_edit',
-                                        'type' => 'select',
-                                        'name' => 'category_id',
-                                        'select' => category_list,
-                                        'selected' => category_sel,
-                                        'opts' => category_opts,
+                                        command => 'hashtag_edit',
+                                        type => 'select',
+                                        name => 'category_id',
+                                        select => category_list,
+                                        selected => category_sel,
+                                        opts => category_opts,
                                     ) %]
 									[% END %]
 								</td>
@@ -55,11 +55,11 @@
 									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
 									[% ELSE %]
 									[% page.field(
-										'command' => 'hashtag_edit',
-										'type' => 'text',
-										'name' => 'target',
-										'value' => target_url,
-										'opts' => {'id' => 'target', 'style' => 'width: 80%;'},
+										command => 'hashtag_edit',
+										type => 'text',
+										name => 'target',
+										value => target_url,
+										opts => { id => 'target', style => 'width: 80%;', },
 									) %]
 									[% END %]
 								</td>
@@ -71,14 +71,13 @@
 									[% ringpage %]
 									[% ELSE %]
                                     [% page.field(
-                                        'command' => 'hashtag_add',
-                                        'type' => 'select',
-                                        'name' => 'ringpage_id',
-                                        'select' => ringpage_list,
-                                        'selected' => ringpage_sel,
-                                        'opts' => ringpage_opts,
+                                        command => 'hashtag_edit',
+                                        type => 'select',
+                                        name => 'ringpage_id',
+                                        select => ringpage_list,
+                                        selected => ringpage_sel,
+                                        opts => ringpage_opts,
                                     ) %]
-
 									[% END %]
 								</td>
 							</tr>

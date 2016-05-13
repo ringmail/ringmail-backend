@@ -62,11 +62,10 @@ around load => sub {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No Ringpages Created)' => 0, ];
+        push @ringpages, [ '(No Ringpages Created)' => q{}, ];
     }
 
     $content->{ringpage_list}       = \@ringpages;
-    $content->{ringpage_sel}        = 0;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
     return $obj->$next( $param, );
