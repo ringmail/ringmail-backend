@@ -18,7 +18,7 @@ has 'config' => (
 	'is' => 'rw',
 	'isa' => 'HashRef',
 	'default' => sub {
-		my $cfg = $Note::Config::Data->config();
+		my $cfg = $main::note_config->config_apps()->{'ringmail'};
 		return {
 			'AccountSid' => $cfg->{'twilio_account_sid'},
 			'AuthToken' => $cfg->{'twilio_auth_token'},
@@ -32,8 +32,8 @@ sub send_sms
 	my $ua = new LWP::UserAgent();
 	my $cfg = $obj->config();
 	my $url = 'https://api.twilio.com/2010-04-01/Accounts/'. $cfg->{'AccountSid'};
-	$url .= '/SMS/Messages.json';
-	#::_log("SMS Send", $param);
+	$url .= '/Messages.json';
+	::log("SMS Send", $param);
 	$ua->add_handler('request_prepare' => sub {
 		my($request, $ua, $h) = @_;
 		$request->authorization_basic($cfg->{'AccountSid'}, $cfg->{'AuthToken'});
@@ -57,7 +57,7 @@ sub send_sms
 				'error' => "JSON Decode Failed: $@",
 			};
 		}
-		#::_log("SMS Reply", $data);
+		::log("SMS Reply", $data);
 		return {
 			'ok' => 1,
 			'twilio_reply' => $data,

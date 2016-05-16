@@ -27,7 +27,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log({%$form, 'password' => ''});
+	#::log({%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -46,11 +46,32 @@ sub load
 				},
 				'order' => 'id asc limit 1',
 			);
+			my $phone = sqltable('ring_user_did')->get(
+				'array' => 1,
+				'result' => 1,
+				'table' => 'ring_did d, ring_user_did ud',
+				'select' => ['d.did_code', 'd.did_number'],
+				'join' => 'd.id=u.did_id',
+				'where' => {
+					'ud.user_id' => $user->{'id'},
+				},
+				'order' => 'ud.id asc',
+				'limit' => 1,
+			);
+			if (defined $phone)
+			{
+				$phone = '+'. $phone->[0]. $phone->[1];
+			}
+			else
+			{
+				$phone = '+'. '0' x 11;
+			}
 			$res = {
 				'result' => 'ok',
 				'sip_login' => $sipauth->[0]->{'login'},
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
+				'phone' => $phone,
 				'contacts' => 0,
 				'rg_contacts' => [],
 				'ts_latest' => '',
@@ -96,7 +117,7 @@ sub load
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	#::log($res);
 	return encode_json($res);
 }
 

@@ -7,6 +7,7 @@ use vars qw();
 use Moose;
 use Data::Dumper;
 use Scalar::Util 'blessed', 'reftype';
+use Digest::SHA 'sha256_hex';
 
 use Note::Param;
 use Note::Row;
@@ -45,10 +46,24 @@ sub item
 				die('Invalid did number'); # non US/Canada number not supported yet
 			}
 		}
+		if ($param->{'no_create'})
+		{
+			my $res = new Note::Row(
+				'ring_did' => {
+					'did_code' => $code,
+					'did_number' => $did,
+				},
+			);
+			return undef unless ($res->id());
+			return $res;
+		}
 		return Note::Row::find_create(
 			'ring_did' => {
 				'did_code' => $code,
 				'did_number' => $did,
+			},
+			{
+				'did_hash' => sha256_hex('r!ng:+'. $code. $did),
 			},
 		);
 	}
@@ -93,6 +108,7 @@ sub item
 			{
 				'domain_id' => 0,
 				'domain_user_id' => 0,
+				'email_hash' => sha256_hex('r!ng:'. $em),
 			},
 			\$created,
 		);

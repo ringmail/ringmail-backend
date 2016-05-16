@@ -70,6 +70,54 @@ sub get_matched_contacts
 	return [map {$_->[0]} @$q];
 }
 
+sub get_device_matches
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->user_id();
+	my @res = ();
+	my $q = sqltable('ring_contact')->get(
+		'array' => 1,
+		'table' => ['ring_contact c, ring_contact_email e'],
+		'select' => ['e.email_hash'],
+		'join' => 'c.id=e.contact_id',
+		'where' => [
+			{
+				'c.user_id' => $uid,
+				'c.device_id' => $param->{'device_id'},
+				'c.matched_user_id' => ['is not', undef],
+				'e.matched_user_id' => ['is not', undef],
+			},
+			'and',
+			{
+				'c.matched_user_id' => ['!=', $uid],
+				'e.matched_user_id' => ['!=', $uid],
+			},
+		],
+	);
+	push @res, map {$_->[0]} @$q;
+	$q = sqltable('ring_contact')->get(
+		'array' => 1,
+		'table' => ['ring_contact c, ring_contact_phone p'],
+		'select' => ['p.phone_hash'],
+		'join' => 'c.id=p.contact_id',
+		'where' => [
+			{
+				'c.user_id' => $uid,
+				'c.device_id' => $param->{'device_id'},
+				'c.matched_user_id' => ['is not', undef],
+				'p.matched_user_id' => ['is not', undef],
+			},
+			'and',
+			{
+				'c.matched_user_id' => ['!=', $uid],
+				'p.matched_user_id' => ['!=', $uid],
+			},
+		],
+	);
+	push @res, map {$_->[0]} @$q;
+	return \@res;
+}
+
 sub load_contacts
 {
 	my ($obj, $param) = get_param(@_);

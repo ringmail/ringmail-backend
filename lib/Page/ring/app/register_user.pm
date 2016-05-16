@@ -27,22 +27,26 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log($form);
+	::log("Create User", {%$form, 'password' => ''});
 	$form->{'email'} =~ s/^\s+//g;
 	$form->{'email'} =~ s/\s+$//g;
 	my $res;
 	my $err = '';
-	if (Email::Valid->address($form->{'email'}))
+	my %error_detail = ();
+	if (Email::Valid->address($form->{'email'}) && $form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/)
 	{
 		my $ck = Ring::API->cmd(
 			'path' => ['user', 'check', 'user'],
 			'data' => {
 				'email' => $form->{'email'},
+				'phone' => $form->{'phone'},
 			},
 		);
 		unless ($ck->{'ok'})
 		{
+			#::log($ck);
 			$err = 'duplicate';
+			$error_detail{'duplicate'} = $ck->{'duplicate'};
 		}
 	}
 	unless ($err)
@@ -51,8 +55,10 @@ sub load
 			'path' => ['user', 'create'],
 			'data' => {
 				'email' => $form->{'email'},
+				'phone' => $form->{'phone'},
 				'password' => $form->{'password'},
-				'password2' => $form->{'password'},
+				'first_name' => $form->{'first_name'},
+				'last_name' => $form->{'last_name'},
 			},
 		);
 		if ($mkuser->{'ok'})
@@ -72,10 +78,11 @@ sub load
 		$res = {
 			'result' => 'error',
 			'error' => $err,
+			%error_detail,
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log("Create User", $form, "Result", $res);
+	::log("Result", $res);
 	return encode_json($res);
 }
 

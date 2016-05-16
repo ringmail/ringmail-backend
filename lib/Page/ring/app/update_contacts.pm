@@ -27,7 +27,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log($form);
+	#::log({%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -54,13 +54,17 @@ sub load
 		my $rgusers = $cobj->get_matched_contacts(
 			'device_id' => $devid,
 		);
+		my $rgmatches = $cobj->get_device_matches(
+			'device_id' => $devid,
+		);
 		$res = {
 			'rg_contacts' => $rgusers,
+			'rg_matches' => $rgmatches,
 			'result' => 'ok',
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	#::log($res);
 	return encode_json($res);
 }
 
