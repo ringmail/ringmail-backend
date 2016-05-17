@@ -29,13 +29,14 @@ sub load {
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join '/', => 'body_background_image', $obj->user()->id(), $file;
+        my $key = join q{/}, => 'body_background_image', $obj->user()->id(), $file;
         $s3->upload(
             file         => $path,
             key          => $key,
             bucket       => 'ringmail1',
             content_type => 'image/jpeg',
             expires      => strftime( '%F', gmtime( time() + ( 24 * 3_600 * 1 ) ) ),
+            acl_short    => 'public-read',
         );
         my $url = $s3->download_url(
             key    => $key,
