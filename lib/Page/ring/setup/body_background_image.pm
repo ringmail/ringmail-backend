@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Moose;
+use POSIX 'strftime';
 use JSON::XS;
 
 use Note::Page;
@@ -40,6 +41,7 @@ sub load {
             key    => $key,
             bucket => 'ringmail1',
         );
+        ::log( $url, );
         $response = {
             result => 'ok',
             type   => 'image/jpeg',
