@@ -18,6 +18,7 @@ use Note::Param;
 
 use Ring::User;
 use Ring::API;
+use Ring::Item;
 
 extends 'Note::Page';
 
@@ -27,13 +28,14 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log($form);
+	::log($form);
 	$form->{'email'} =~ s/^\s+//g;
 	$form->{'email'} =~ s/\s+$//g;
 	my $res;
-	my $err = 'email';
-	if (Email::Valid->address($form->{'email'}))
+	my $err = 'other';
+	if (defined $form->{'email'} && Email::Valid->address($form->{'email'}))
 	{
+		$err = 'email';
 		my $ck = Ring::API->cmd(
 			'path' => ['user', 'check', 'user'],
 			'data' => {
@@ -60,10 +62,49 @@ sub load
 			}
 			else
 			{
-				$res = {
-					'result' => 'error',
-					'error' => 'verified',
-				};
+				$err = 'verified';
+			}
+		}
+	}
+	elsif (defined $form->{'phone'} && $form->{'phone'} =~ /^\+?\d{10,11}$/)
+	{
+		$err = 'phone';
+		my $item = new Ring::Item();
+		my $phitem = $item->item(
+			'type' => 'did',
+			'did_number' => $form->{'phone'},
+			'no_create' => 1,
+		);
+		::log("Phone Item:", $item);
+		if (defined $phitem) # make sure DID exists in database at all
+		{
+			my $rc = new Note::Row(
+				'ring_user_did' => {
+					'did_id' => $phitem->{'id'},
+				},
+			);
+			if ($rc->id())
+			{
+				if (! $rc->data('verified'))
+				{
+					my $out = Ring::API->cmd(
+						'path' => ['user', 'target', 'verify', 'did', 'generate'],
+						'data' => {
+							'user_id' => $rc->data('user_id'),
+							'did_number' => $form->{'phone'},
+							'send_sms' => 1,
+						},
+					);
+					if ($out->{'ok'})
+					{
+						$err = '';
+						$res = {'result' => 'ok'};
+					}
+				}
+				else
+				{
+					$err = 'verified';
+				}
 			}
 		}
 	}

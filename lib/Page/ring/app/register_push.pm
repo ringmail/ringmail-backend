@@ -26,7 +26,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log($form);
+	#::log({%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -77,6 +77,8 @@ sub load
 			my $tok = $3;
 			if ($type eq 'apple')
 			{
+				sleep(2); # avoid race condition with above item
+				# TODO: fix this hack with a proper queue, lock, transaction or something
 				my $rc = new Note::Row(
 					'ring_user_apns' => {
 						'user_id' => $user->{'id'},

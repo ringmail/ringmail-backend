@@ -17,7 +17,7 @@ use Note::SQL::Table 'sqltable';
 use Ring::API;
 use Ring::API::Base;
 use Ring::User;
-#use Ring::Twilio;
+use Ring::Twilio;
 
 use base 'Ring::API::Base';
 
@@ -25,7 +25,7 @@ no warnings qw(uninitialized);
 
 # create user and request validation of main email
 # commands:
-#  user create | email: email@address.com, password: secret, password2: secret
+#  user create | email: email@address.com, password: secret, phone: 15557779999, first_name: John, last_name: Doe
 sub create
 {
 	my ($obj, $param) = get_param(@_);
@@ -34,19 +34,22 @@ sub create
 	my $phone = $data->{'phone'};
 	$phone =~ s/\D//g;
 	$phone =~ s/^1//;
-	my $check = Ring::API->cmd(
-		'path' => ['user', 'check', 'user'],
-		'data' => {
-			'email' => $data->{'email'},
-			'phone' => $phone,
-		},
-	);
-	unless ($check->{'ok'})
-	{
-		return $check;
-	}
+
+# Already checked...
+#	my $check = Ring::API->cmd(
+#		'path' => ['user', 'check', 'user'],
+#		'data' => {
+#			'email' => $data->{'email'},
+#			'phone' => $phone,
+#		},
+#	);
+#	unless ($check->{'ok'})
+#	{
+#		return $check;
+#	}
+
 	$data->{'errors'} = [];
-	my $uid = Ring::User::create($data);
+	my $uid = Ring::User::create($data); # create user and send email verification (phase 1)
 	my $ok = ($uid) ? 1 : 0;
 	if ($ok && defined $data->{'contacts'}) # create contact list
 	{
@@ -68,32 +71,33 @@ sub create
 			'item_count' => scalar(@{$data->{'contacts'}}),
 		});
 	}
-	if (defined $data->{'name'})
+	if ($ok)
 	{
-		my @name = split /\s+/, $data->{'name'}, 2;
-		my $rc = Note::Row::create('ring_person', {
-			'first_name' => $name[0],
-			'last_name' => $name[1],
-		});
-		my $userrec = new Note::Row('ring_user' => {'id' => $uid});
-		$userrec->update({
-			'person' => $rc->id(),
-		});
-	}
-	if (defined($data->{'phone'}) && length($data->{'phone'}))
-	{
-		my $out = Ring::API->cmd(
-			'path' => ['user', 'target', 'verify', 'did', 'generate'],
-			'data' => {
-				'user_id' => $uid,
-				'did_code' => 1,
-				'did_number' => $phone,
-				'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
-			},
-		);
-		unless ($out->{'ok'})
+		if (defined $data->{'first_name'} && defined $data->{'last_name'})
 		{
-			::_errorlog("Verify DID Failed: ", $out);
+			my $rc = Note::Row::create('ring_person', {
+				'first_name' => $data->{'first_name'},
+				'last_name' => $data->{'last_name'},
+			});
+			my $userrec = new Note::Row('ring_user' => {'id' => $uid});
+			$userrec->update({
+				'person' => $rc->id(),
+			});
+		}
+		if (defined($data->{'phone'}) && length($data->{'phone'}))
+		{
+			my $out = Ring::API->cmd(
+				'path' => ['user', 'target', 'verify', 'did', 'generate'],
+				'data' => {
+					'user_id' => $uid,
+					'did_number' => $phone,
+					#'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
+				},
+			);
+			unless ($out->{'ok'})
+			{
+				::_errorlog("Verify DID Failed: ", $out);
+			}
 		}
 	}
 	return {
@@ -122,13 +126,13 @@ sub check
 		my $phone = $data->{'phone'};
 		if (sqltable('ring_user')->count('login' => $em))
 		{
-			return {'ok' => 0, 'error_code' => 1, 'error' => 'Duplicate email'}; # duplicate email
+			return {'ok' => 0, 'error_code' => 1, 'error' => 'Duplicate email', 'duplicate' => 'email'}; # duplicate email
 		}
 		if (defined($phone) && length($phone))
 		{
 			$phone =~ s/\D//g;
 			$phone =~ s/^1//;
-			unless (length($phone) == 10)
+			unless (length($phone) == 10) # TODO: update for intl
 			{
 				return {'ok' => 0, 'error_code' => 4, 'error' => 'Invalid phone'}; # invalid phone
 			}
@@ -145,7 +149,7 @@ sub check
 			);
 			if ($c)
 			{
-				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone'}; # duplicate phone
+				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone', 'duplicate' => 'phone'}; # duplicate phone
 			}
 		}
 		return {'ok' => 1};
@@ -554,7 +558,6 @@ sub target
 				my $item = new Ring::Item();
 				my $drec = $item->item(
 					'type' => 'did',
-					'did_code' => $data->{'did_code'},
 					'did_number' => $data->{'did_number'},
 				);
 				eval {
@@ -569,38 +572,41 @@ sub target
 				};
 				if ($@)
 				{
-					if ($@ =~ /duplicate/i)
-					{
-						return {'ok' => 0, 'duplicate' => 1};
-					}
-					else
+					unless ($@ =~ /duplicate/i) # duplicates ok here
 					{
 						return {'ok' => 0, 'error' => $@};
 					}
 				}
-				my $sr = new String::Random();
-				my $code = $sr->randregex('[0-9]{4}');
-				Note::Row::create('ring_verify_did' => {
-					'did_id' => $drec->id(),
-					'ts_added' => strftime("%F %T", localtime()),
-					'user_id' => $uid,
-					'verified' => 0,
-					'verify_code' => $code,
-					'tries' => 0,
-				});
 				if ($data->{'send_sms'})
 				{
+					my $sr = new String::Random();
+					my $code = $sr->randregex('[0-9]{4}');
+					sqltable('ring_verify_did')->delete(
+						'where' => {
+							'did_id' => $drec->id(),
+							'user_id' => $uid,
+							'verified' => 0,
+						},
+					);
+					Note::Row::create('ring_verify_did' => {
+						'did_id' => $drec->id(),
+						'ts_added' => strftime("%F %T", localtime()),
+						'user_id' => $uid,
+						'verified' => 0,
+						'verify_code' => $code,
+						'tries' => 0,
+					});
 					my $msg = 'RingMail Code: '. $code;
-#					my $tw = new Ring::Twilio();
-#					my $reply = $tw->send_sms(
-#						'to' => $data->{'did_number'},
-#						'from' => '746465',
-#						'body' => $msg,
-#					);
-#					unless ($reply->{'ok'})
-#					{
-#						::_errorlog('Send SMS Error', $reply);
-#					}
+					my $tw = new Ring::Twilio();
+					my $reply = $tw->send_sms(
+						'to' => $data->{'did_number'},
+						'from' => '+13109123089',
+						'body' => $msg,
+					);
+					unless ($reply->{'ok'})
+					{
+						::_errorlog('Send SMS Error', $reply);
+					}
 				}
 				return {
 					'ok' => 1,

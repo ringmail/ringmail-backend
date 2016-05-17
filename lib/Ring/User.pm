@@ -45,14 +45,14 @@ has 'row' => (
 );
 
 our %usercheck = (
-#	'first_name' => new Note::Check(
-#		'type' => 'regex',
-#		'chars' => 'A-Za-z0-9.- ',
-#	),
-#	'last_name' => new Note::Check(
-#		'type' => 'regex',
-#		'chars' => 'A-Za-z0-9.- ',
-#	),
+	'first_name' => new Note::Check(
+		'type' => 'regex',
+		'chars' => 'A-Za-z0-9.- ',
+	),
+	'last_name' => new Note::Check(
+		'type' => 'regex',
+		'chars' => 'A-Za-z0-9.- ',
+	),
 	'email' => new Note::Check(
 		'type' => 'valid',
 		'valid' => sub {
@@ -108,11 +108,11 @@ sub create
 		push @$errors, ['password', 'Password must be at least 4 characters long.'];
 		return 0;
 	}
-	unless ($param->{'password'} eq $param->{'password2'})
-	{
-		push @$errors, ['password', 'Password do not match.'];
-		return 0;
-	}
+#	unless ($param->{'password'} eq $param->{'password2'})
+#	{
+#		push @$errors, ['password', 'Password do not match.'];
+#		return 0;
+#	}
 	# create the user
 	open (S, '-|', '/home/note/app/ringmail/scripts/gensalt.pl');
 	$/ = undef;
