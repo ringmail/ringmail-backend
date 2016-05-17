@@ -16,10 +16,10 @@
 								<div class="controls">
 									<div class="input-prepend">
 										[% page.field(
-											'command' => 'add',
-											'type' => 'text',
-											'name' => 'ringpage',
-											'opts' => {'id' => 'ringpage', 'style' => 'width: 179px'},
+											command => 'add',
+											type => 'text',
+											name => 'ringpage',
+											opts => { id => 'ringpage', style => 'width: 179px', },
 										) %]
 										[% IF page.value.error %]
 										<div>
@@ -33,12 +33,12 @@
                                 <label class="control-label" for="template">Template:</label>
                                 <div class="controls">
                                     [% page.field(
-                                        'command' => 'add',
-                                        'type' => 'select',
-                                        'name' => 'template_id',
-                                        'select' => template_list,
-                                        'selected' => template_sel,
-                                        'opts' => template_opts,
+                                        command => 'add',
+                                        type => 'select',
+                                        name => 'template_id',
+                                        select => template_list,
+                                        selected => template_sel,
+                                        opts => template_opts,
                                     ) %]
                                     [% IF page.value.error %]
                                     <div>
@@ -51,9 +51,9 @@
                                 <label class="control-label" for="offer">Contains Offer:</label>
                                 <div class="controls">
                                     [% page.field(
-                                        'command' => 'add',
-                                        'type' => 'checkbox',
-                                        'name' => 'offer',
+                                        command => 'add',
+                                        type => 'checkbox',
+                                        name => 'offer',
                                     ) %]
                                     [% IF page.value.error %]
                                     <div>
@@ -66,9 +66,9 @@
                                 <label class="control-label" for="video">Contains Video:</label>
                                 <div class="controls">
                                     [% page.field(
-                                        'command' => 'add',
-                                        'type' => 'checkbox',
-                                        'name' => 'video',
+                                        command => 'add',
+                                        type => 'checkbox',
+                                        name => 'video',
                                     ) %]
                                     [% IF page.value.error %]
                                     <div>
@@ -108,19 +108,16 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'body_background_image',
-                                            'opts' => {'id' => 'body_background_image', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'file',
+                                            name => 'body_background_image',
+											opts => { id => 'body_background_image', style => 'width: 179px', 'data-url' => '/u/body_background_image', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
                                             <span class="error" for="body_background_image" style="display: inline;">[% page.value.error %]</span>
                                         </div>
                                         [% END %]
-
-<input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
-
                                     </div>
                                 </div>
                             </div>
@@ -181,10 +178,10 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'body_text',
-                                            'opts' => {'id' => 'body_text', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'text',
+                                            name => 'body_text',
+                                            opts => { id => 'body_text', style => 'width: 179px', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
@@ -199,10 +196,10 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'footer_text',
-                                            'opts' => {'id' => 'footer_text', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'text',
+                                            name => 'footer_text',
+                                            opts => { id => 'footer_text', style => 'width: 179px', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
@@ -217,10 +214,10 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'header_subtitle',
-                                            'opts' => {'id' => 'header_subtitle', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'text',
+                                            name => 'header_subtitle',
+                                            opts => { id => 'header_subtitle', style => 'width: 179px', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
@@ -235,10 +232,10 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'body_header',
-                                            'opts' => {'id' => 'body_header', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'text',
+                                            name => 'body_header',
+                                            opts => { id => 'body_header', style => 'width: 179px', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
@@ -253,10 +250,10 @@
                                 <div class="controls">
                                     <div class="input-prepend">
                                         [% page.field(
-                                            'command' => 'add',
-                                            'type' => 'text',
-                                            'name' => 'header_title',
-                                            'opts' => {'id' => 'header_title', 'style' => 'width: 179px'},
+                                            command => 'add',
+                                            type => 'text',
+                                            name => 'header_title',
+                                            opts => { id => 'header_title', style => 'width: 179px', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
@@ -269,9 +266,9 @@
 							<div class="control-group">
 								<div class="controls">
 									[% page.button(
-										'command' => 'add',
-										'contents' => 'Create RingPage',
-										'opts' => {'class' => 'btn btn-primary btn-large'},
+										command => 'add',
+										contents => 'Create RingPage',
+										opts => { class => 'btn btn-primary btn-large', },
 									) %]
 									&nbsp;&nbsp;|&nbsp;&nbsp;
 									<a href="[% page.url() %]">Cancel</a>
@@ -311,27 +308,27 @@
 										<td>[% row.ringpage %]</td>
 										<td>
 											[% page.link(
-												'text' => 'Delete',
-												'command' => 'remove',
-												'args' => [row.id],
-												'opts' => {
-													'onclick' => "return confirm('Really Delete RingPage: $row.ringpage')",
+												text => 'Delete',
+												command => 'remove',
+												args => [ row.id, ],
+												opts => {
+													onclick => "return confirm( 'Really Delete RingPage: $row.ringpage' )",
 												},
 											) %]
 											|
 											[% page.link(
-												'text' => 'View',
-												'path' => row.path,
-												'query' => {
-													'ringpage_id' => row.id
+												text => 'View',
+												path => row.path,
+												query => {
+													ringpage_id => row.id,
 												},
 											) %]
 											|
 											[% page.link(
-												'text' => 'Edit Details',
-												'path' => '/u/ringpage',
-												'query' => {
-													'id' => row.id
+												text => 'Edit Details',
+												path => '/u/ringpage',
+												query => {
+													id => row.id,
 												},
 											) %]
 										</td>
