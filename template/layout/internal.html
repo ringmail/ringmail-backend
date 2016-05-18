@@ -120,11 +120,11 @@ $(function () {
 <script src="/js/jquery.fileupload.js"></script>
 <script>
 $(function () {
-    $('#body_background_image').fileupload({
+    $('#f_d1-body_background_image').fileupload({
         dataType: 'json',
         done: function (e, data) {
             $.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo(document.body);
+            $('#d1-body_background_image').val( file.url );
             });
         }
     });

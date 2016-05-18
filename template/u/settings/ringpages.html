@@ -111,7 +111,13 @@
                                             command => 'add',
                                             type => 'file',
                                             name => 'body_background_image',
-											opts => { id => 'body_background_image', style => 'width: 179px', 'data-url' => '/u/body_background_image', },
+											opts => { id => 'f_d1-body_background_image', style => 'width: 179px', 'data-url' => '/u/body_background_image', },
+                                        ) %]
+                                        [% page.field(
+                                            command => 'add',
+                                            type => 'hidden',
+                                            name => 'body_background_image',
+											opts => { id => 'd1-body_background_image', },
                                         ) %]
                                         [% IF page.value.error %]
                                         <div>
