@@ -78,6 +78,58 @@
                                 </div>
                             </div>
                             <div class="control-group[% IF page.value.error %] error[% END %]">
+                                <label class="control-label" for="button">Button:</label>
+                                <div class="controls">
+									<p>
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_text',
+										opts => { placeholder => 'Button Text', },
+                                    ) %]
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_link',
+										opts => { placeholder => 'Button Link', },
+                                    ) %]
+									</p>
+									<p>
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_text',
+										opts => { placeholder => 'Button Text', },
+                                    ) %]
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_link',
+										opts => { placeholder => 'Button Link', },
+                                    ) %]
+									</p>
+									<p>
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_text',
+										opts => { placeholder => 'Button Text', },
+                                    ) %]
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_link',
+										opts => { placeholder => 'Button Link', },
+                                    ) %]
+									</p>
+                                    [% IF page.value.error %]
+                                    <div>
+                                        <span class="error" for="button" style="display: inline;">[% page.value.error %]</span>
+                                    </div>
+                                    [% END %]
+                                </div>
+                            </div>
+                            <div class="control-group[% IF page.value.error %] error[% END %]">
                                 <label class="control-label" for="header_background_color">Header Background Color:</label>
                                 <div class="controls">
                                     <div class="input-prepend">

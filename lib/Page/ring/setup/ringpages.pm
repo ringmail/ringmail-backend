@@ -5,14 +5,15 @@ use warnings;
 
 use Moose;
 use JSON::XS 'encode_json';
-use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
 use English '-no_match_vars';
+use List::MoreUtils 'each_arrayref';
 
 use Note::XML 'xml';
 use Note::Param;
 use Note::Account qw(account_id transaction tx_type_id);
+use Note::Row;
 
 use Ring::User;
 use Ring::Model::RingPage;
@@ -88,6 +89,19 @@ sub add {
             );
             if ( defined $res ) {
                 ::log( New => $res );
+
+                my $each_array = each_arrayref [ $obj->request()->parameters()->get_all( 'd1-button_text', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_link', ), ];
+                while ( my ( $button_text, $button_link, ) = $each_array->() ) {
+                    my $row = Note::Row::create(
+                        ring_button => {
+                            button      => $button_text,
+                            uri         => $button_link,
+                            user_id     => $user->id(),
+                            ringpage_id => $res->id(),
+                        },
+                    );
+                }
+
             }
         }
     }
