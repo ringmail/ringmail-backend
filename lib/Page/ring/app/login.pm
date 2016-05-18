@@ -48,18 +48,18 @@ sub load
 			);
 			my $phone = sqltable('ring_user_did')->get(
 				'array' => 1,
-				'result' => 1,
 				'table' => 'ring_did d, ring_user_did ud',
 				'select' => ['d.did_code', 'd.did_number'],
-				'join' => 'd.id=u.did_id',
+				'join' => 'd.id=ud.did_id',
 				'where' => {
 					'ud.user_id' => $user->{'id'},
 				},
 				'order' => 'ud.id asc',
 				'limit' => 1,
 			);
-			if (defined $phone)
+			if (scalar @$phone)
 			{
+				$phone = shift @$phone;
 				$phone = '+'. $phone->[0]. $phone->[1];
 			}
 			else
