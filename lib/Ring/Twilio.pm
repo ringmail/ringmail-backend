@@ -68,6 +68,7 @@ sub send_sms
 		return {
 			'ok' => 0,
 			'error' => $rsp->status_line(),
+			'error_text' => $rsp->content(),
 		};
 	}
 }

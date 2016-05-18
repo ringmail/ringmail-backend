@@ -53,6 +53,7 @@ if (defined $user->id())
 	);
 	# ring_phone
 	my $phs = sqltable('ring_phone')->get(
+		'array' => 1,
 		'select' => ['login'],
 		'where' => { 'user_id' => $uid },
 	);
