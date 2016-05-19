@@ -92,12 +92,15 @@ sub add {
 
                 my $each_array = each_arrayref [ $obj->request()->parameters()->get_all( 'd1-button_text', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_link', ), ];
                 while ( my ( $button_text, $button_link, ) = $each_array->() ) {
+
+                    next if $button_text eq q{} or $button_link eq q{};
+
                     my $row = Note::Row::create(
                         ring_button => {
                             button      => $button_text,
+                            ringpage_id => $res->id(),
                             uri         => $button_link,
                             user_id     => $user->id(),
-                            ringpage_id => $res->id(),
                         },
                     );
                 }

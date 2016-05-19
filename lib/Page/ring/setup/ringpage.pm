@@ -8,6 +8,7 @@ use JSON::XS 'encode_json';
 use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
+use List::MoreUtils 'each_arrayref';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -47,7 +48,7 @@ around load => sub {
     my $ringpage_id = $obj->form()->{id};
 
     my $buttons = sqltable( 'ring_button', )->get(
-        select => [ qw{ button uri }, ],
+        select => [ qw{ id button uri }, ],
         where  => { ringpage_id => $ringpage_id, },
     );
 
@@ -85,6 +86,47 @@ sub edit {
             )
         {
             # display confirmation
+
+            my $each_array = each_arrayref [ $obj->request()->parameters()->get_all( 'd1-button_id', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_text', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_link', ), ];
+            while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
+
+                ::log( $button_id, $button_text, $button_link, );
+
+                if ( $button_id eq q{} ) {
+
+                    next if $button_text eq q{} or $button_link eq q{};
+
+                    my $row = Note::Row::create(
+                        ring_button => {
+                            button      => $button_text,
+                            ringpage_id => $id,
+                            uri         => $button_link,
+                            user_id     => $user->id(),
+                        },
+                    );
+
+                }
+
+                else {
+
+                    my $row = Note::Row->new( ring_button => $button_id, );
+
+                    if ( $button_text eq q{} or $button_link eq q{} ) {
+
+                        $row->delete();
+
+                    }
+
+                    else {
+
+                        $row->update( { button => $button_text, uri => $button_link, }, );
+
+                    }
+
+                }
+
+            }
+
         }
         else {
             # failed
