@@ -23,8 +23,8 @@ around load => sub {
     my $ringpage = $ringpage_model->retrieve( id => $ringpage_id, );
 
     my $buttons = sqltable( 'ring_button', )->get(
-        select => [ 'button', 'uri', ],
-        where => { ringpage_id => $ringpage_id, },
+        select => [ qw{ button uri }, ],
+        where  => { ringpage_id => $ringpage_id, },
     );
 
     $obj->content()->{ringpage} = $ringpage;

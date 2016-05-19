@@ -81,6 +81,17 @@
 									[% END %]
 								</td>
 							</tr>
+							[% FOREACH button IN ringpage.buttons %]
+							<tr>
+								<td><strong>Button:</strong></td>
+								<td>
+									[% IF ! edit %]
+									<span>[% button.button %] ([% button.uri %])</span>
+									[% ELSE %]
+									[% END %]
+								</td>
+							</tr>
+							[% END %]
 							<tr>
 								<td><strong>Header Background Color</strong></td>
 								<td>

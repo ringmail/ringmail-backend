@@ -11,6 +11,7 @@ use POSIX 'strftime';
 
 use Note::XML 'xml';
 use Note::Param;
+use Note::SQL::Table 'sqltable';
 
 use Ring::User;
 use Ring::Model::RingPage;
@@ -42,6 +43,15 @@ around load => sub {
     $content->{ringpage} = $ht->data();
     ::log( $content->{ringpage}, );
     $content->{edit} = ( $form->{edit} ) ? 1 : 0;
+
+    my $ringpage_id = $obj->form()->{id};
+
+    my $buttons = sqltable( 'ring_button', )->get(
+        select => [ qw{ button uri }, ],
+        where  => { ringpage_id => $ringpage_id, },
+    );
+
+    $obj->content()->{ringpage}->{buttons} = $buttons;
 
     return $obj->$next( $param, );
 };
