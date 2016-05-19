@@ -7,6 +7,8 @@ use Moose;
 use POSIX 'strftime';
 use JSON::XS;
 use Readonly;
+use Math::Random::Secure 'rand';
+use String::Random 'random_regex';
 
 use Note::Page;
 use Note::Param;
@@ -21,6 +23,10 @@ Readonly my $DAYS => 24 * 3_600;
 sub load {
     my ( @args, ) = @_;
 
+    my $random_string = random_regex( '[A-Za-z0-9]{32}', );
+
+    ::log( $random_string, );
+
     my ( $obj, $param ) = get_param( @args, );
     my $uploads = $param->{request}->uploads();
     my $response;
@@ -30,7 +36,7 @@ sub load {
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join _ => 'ringpage', $obj->user()->id(), 'body_background_image.jpg';
+        my $key = join q{/} => $random_string, 'ringpage', 'body_background_image.jpg';
         $s3->upload(
             file         => $file,
             key          => $key,
