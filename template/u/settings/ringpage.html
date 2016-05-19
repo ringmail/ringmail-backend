@@ -88,6 +88,20 @@
 									[% IF ! edit %]
 									<span>[% button.button %] ([% button.uri %])</span>
 									[% ELSE %]
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_text',
+										value => button.button,
+                                        opts => { placeholder => 'Button Text', },
+                                    ) %]
+                                    [% page.field(
+                                        command => 'add',
+                                        type => 'text',
+                                        name => 'button_link',
+										value => button.uri,
+                                        opts => { placeholder => 'Button Link', },
+                                    ) %]
 									[% END %]
 								</td>
 							</tr>
