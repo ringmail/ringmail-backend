@@ -21,9 +21,9 @@ use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
-around load => sub {
-    my ( $next, @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
+sub load
+{
+    my ( $obj, $param ) = get_param( @_ );
 
     #my $form = $obj->form();
     #::_log($form);
@@ -33,7 +33,7 @@ around load => sub {
     my $uid     = $user->id();
     my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
-    ::log($ht);
+    #::log($ht);
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
 
@@ -68,8 +68,8 @@ around load => sub {
     $content->{ringpage_list}       = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->$next( $param, );
-};
+	return $obj->SUPER::load($param);
+}
 
 sub cmd_hashtag_add {
     my ( $obj, $data, $args ) = @_;

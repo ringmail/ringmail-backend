@@ -221,11 +221,11 @@ sub reset_email_send
 		'ring_user_pwreset' => {
 			'user_id' => $uid,
 		},
-		{
-			'ts' => strftime("%F %T", localtime()),
-		},
 	);
-	$rc->update({'reset_hash' => $code});
+	$rc->update({
+		'reset_hash' => $code,
+		'ts' => strftime("%F %T", localtime()),
+	});
 	my $from = 'RingMail <ringmail@ringmail.com>';
 	my $link = 'https://www.ringmail.com/reset?code='. $code;
 	my $tmpl = new Note::Template(
