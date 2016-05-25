@@ -17,6 +17,8 @@ use MIME::Lite;
 use Digest::MD5 'md5_hex';
 use URI::Escape;
 use Date::Parse 'str2time';
+use Math::Random::Secure 'rand';
+use String::Random 'random_regex';
 
 use Note::SQL::Table 'sqltable';
 use Note::Param;
@@ -787,6 +789,16 @@ sub login
 	{
 		return undef;
 	}
+}
+
+sub aws_user_id {
+    my ( @args, ) = @_;
+
+    my $random_string = random_regex( '[A-Za-z0-9]{32}', );
+
+    ::log( $random_string, );
+
+    return $random_string;
 }
 
 1;
