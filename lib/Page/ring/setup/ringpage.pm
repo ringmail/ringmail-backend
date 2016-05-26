@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Moose;
-use JSON::XS 'encode_json';
+use JSON::XS qw{ encode_json decode_json };
 use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
@@ -31,25 +31,36 @@ around load => sub {
     if ( not $id =~ m{ \A \d+ \z }xms ) {
         return $obj->redirect('/u/ringpages');
     }
-    my $ht = Note::Row->new(
+    my $ringpage_row = Note::Row->new(
         ring_page => {
             id      => $id,
             user_id => $uid,
         },
     );
 
-    if ( not $ht->id() ) {
+    if ( not $ringpage_row->id() ) {
         return $obj->redirect('/u/ringpages');
     }
-    $content->{ringpage} = $ht->data();
+
+    my $data = $ringpage_row->data();
+
+    my $ringpage_fields = decode_json $data->{fields};
+
+    for my $ringpage_field ( @{$ringpage_fields} ) {
+
+        my $key   = $ringpage_field->{name};
+        my $value = $ringpage_field->{value};
+
+        $data->{$key} = $value;
+    }
+
+    $content->{ringpage} = $data;
     ::log( $content->{ringpage}, );
     $content->{edit} = ( $form->{edit} ) ? 1 : 0;
 
-    my $ringpage_id = $obj->form()->{id};
-
     my $buttons = sqltable( 'ring_button', )->get(
         select => [ qw{ id button uri }, ],
-        where  => { ringpage_id => $ringpage_id, },
+        where  => { ringpage_id => $ringpage_row->id(), },
     );
 
     $obj->content()->{ringpage}->{buttons} = $buttons;
@@ -59,29 +70,35 @@ around load => sub {
 
 sub edit {
     my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
-    my $uid     = $user->id();
-    my $id      = $args->[0];
-    my $factory = Ring::Model::RingPage->new();
-    if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
-        if ($factory->update(
-                body_background_color   => $data->{body_background_color},
-                body_background_image   => $data->{body_background_image},
-                body_header             => $data->{body_header},
-                body_text               => $data->{body_text},
-                body_text_color         => $data->{body_text_color},
-                footer_background_color => $data->{footer_background_color},
-                footer_text             => $data->{footer_text},
-                footer_text_color       => $data->{footer_text_color},
-                header_background_color => $data->{header_background_color},
-                header_subtitle         => $data->{header_subtitle},
-                header_text_color       => $data->{header_text_color},
-                header_title            => $data->{header_title},
-                id                      => $id,
-                offer                   => defined $data->{offer} ? 1 : 0,
-                ringpage                => $data->{ringpage},
-                user_id                 => $uid,
-                video                   => defined $data->{video} ? 1 : 0,
+    my $user           = $obj->user();
+    my $uid            = $user->id();
+    my $id             = $args->[0];
+    my $ringpage_model = Ring::Model::RingPage->new();
+    if ( $ringpage_model->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
+
+        my $ringpage_row = Note::Row->new(
+            ring_page => {
+                id      => $id,
+                user_id => $uid,
+            },
+        );
+
+        my $ringpage_row_data = $ringpage_row->data();
+
+        my $ringpage_fields = decode_json $ringpage_row_data->{fields};
+
+        for my $ringpage_field ( @{$ringpage_fields} ) {
+
+            my $key = $ringpage_field->{name};
+
+            $ringpage_field->{value} = $data->{$key};
+        }
+
+        if ($ringpage_model->update(
+                fields   => encode_json $ringpage_fields,
+                id       => $id,
+                ringpage => $data->{ringpage},
+                user_id  => $uid,
             )
             )
         {
@@ -96,7 +113,7 @@ sub edit {
 
                     next if $button_text eq q{} or $button_link eq q{};
 
-                    my $row = Note::Row::create(
+                    my $button_row = Note::Row::create(
                         ring_button => {
                             button      => $button_text,
                             ringpage_id => $id,
@@ -109,17 +126,17 @@ sub edit {
 
                 else {
 
-                    my $row = Note::Row->new( ring_button => $button_id, );
+                    my $button_row = Note::Row->new( ring_button => $button_id, );
 
                     if ( $button_text eq q{} or $button_link eq q{} ) {
 
-                        $row->delete();
+                        $button_row->delete();
 
                     }
 
                     else {
 
-                        $row->update( { button => $button_text, uri => $button_link, }, );
+                        $button_row->update( { button => $button_text, uri => $button_link, }, );
 
                     }
 

@@ -50,23 +50,10 @@ sub create {
         $trec = Note::Row::create(
             ring_page => {
 
-                body_background_color   => $param->{body_background_color},
-                body_background_image   => $param->{body_background_image},
-                body_header             => $param->{body_header},
-                body_text               => $param->{body_text},
-                body_text_color         => $param->{body_text_color},
-                footer_background_color => $param->{footer_background_color},
-                footer_text             => $param->{footer_text},
-                footer_text_color       => $param->{footer_text_color},
-                header_background_color => $param->{header_background_color},
-                header_subtitle         => $param->{header_subtitle},
-                header_text_color       => $param->{header_text_color},
-                header_title            => $param->{header_title},
-                offer                   => $param->{offer},
-                ringpage                => $param->{ringpage},
-                template_id             => $param->{template_id},
-                user_id                 => $param->{user_id},
-                video                   => $param->{video},
+                fields      => $param->{fields},
+                ringpage    => $param->{ringpage},
+                template_id => $param->{template_id},
+                user_id     => $param->{user_id},
 
             }
         );
@@ -115,24 +102,9 @@ sub update {
         $rc->update(
             {
 
-                body_background_color   => $param->{body_background_color},
-                body_background_image   => $param->{body_background_image},
-                body_header             => $param->{body_header},
-                body_text               => $param->{body_text},
-                body_text_color         => $param->{body_text_color},
-                footer_background_color => $param->{footer_background_color},
-                footer_text             => $param->{footer_text},
-                footer_text_color       => $param->{footer_text_color},
-                header_background_color => $param->{header_background_color},
-                header_subtitle         => $param->{header_subtitle},
-                header_text_color       => $param->{header_text_color},
-                header_title            => $param->{header_title},
-                offer                   => $param->{offer},
-                ringpage                => $param->{ringpage},
-                user_id                 => $param->{user_id},
-                video                   => $param->{video},
-
-                # template_id             => $param->{template_id},
+                fields   => $param->{fields},
+                ringpage => $param->{ringpage},
+                user_id  => $param->{user_id},
 
             }
         );
@@ -161,23 +133,10 @@ sub retrieve {
     my $q = sqltable('ring_page')->get(
         select => [
 
-            'rp.body_background_color',
-            'rp.body_background_image',
-            'rp.body_header',
-            'rp.body_text',
-            'rp.body_text_color',
-            'rp.footer_background_color',
-            'rp.footer_text',
-            'rp.footer_text_color',
-            'rp.header_background_color',
-            'rp.header_subtitle',
-            'rp.header_text_color',
-            'rp.header_title',
+            'rp.fields',
             'rp.id',
-            'rp.offer',
             'rp.ringpage',
             'rp.template_id',
-            'rp.video',
 
         ],
         table => [ 'ring_page rp', 'ring_template t', ],
