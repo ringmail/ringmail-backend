@@ -28,9 +28,9 @@ around load => sub {
         where  => { ringpage_id => $ringpage_id, },
     );
 
-    my $fields = decode_json $ringpage->{fields};
+    my $ringpage_fields = decode_json $ringpage->{fields};
 
-    for my $field ( @{$fields} ) {
+    for my $field ( @{$ringpage_fields} ) {
 
         my $key   = $field->{name};
         my $value = $field->{value};

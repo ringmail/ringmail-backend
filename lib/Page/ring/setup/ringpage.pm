@@ -42,19 +42,19 @@ around load => sub {
         return $obj->redirect('/u/ringpages');
     }
 
-    my $data = $ringpage_row->data();
+    my $ringpage_row_data = $ringpage_row->data();
 
-    my $ringpage_fields = decode_json $data->{fields};
+    my $ringpage_fields = decode_json $ringpage_row_data->{fields};
 
-    for my $ringpage_field ( @{$ringpage_fields} ) {
+    for my $field ( @{$ringpage_fields} ) {
 
-        my $key   = $ringpage_field->{name};
-        my $value = $ringpage_field->{value};
+        my $key   = $field->{name};
+        my $value = $field->{value};
 
-        $data->{$key} = $value;
+        $ringpage_row_data->{$key} = $value;
     }
 
-    $content->{ringpage} = $data;
+    $content->{ringpage} = $ringpage_row_data;
     ::log( $content->{ringpage}, );
     $content->{edit} = ( $form->{edit} ) ? 1 : 0;
 
@@ -87,11 +87,11 @@ sub edit {
 
         my $ringpage_fields = decode_json $ringpage_row_data->{fields};
 
-        for my $ringpage_field ( @{$ringpage_fields} ) {
+        for my $field ( @{$ringpage_fields} ) {
 
-            my $key = $ringpage_field->{name};
+            my $key = $field->{name};
 
-            $ringpage_field->{value} = $data->{$key};
+            $field->{value} = $data->{$key};
         }
 
         if ($ringpage_model->update(
