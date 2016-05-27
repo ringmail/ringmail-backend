@@ -51,7 +51,7 @@
 								<td><strong>Contains Offer</strong></td>
 								<td>
 									[% IF ! edit %]
-									<span>[% ringpage.offer %]</span>
+									<span>[% ringpage.offer ? 'Yes' : 'No' %]</span>
 									[% ELSE %]
 									[% page.field(
 										command => 'edit',
@@ -68,14 +68,14 @@
 								<td><strong>Contains Video</strong></td>
 								<td>
 									[% IF ! edit %]
-									<span>[% ringpage.video %]</span>
+									<span>[% ringpage.video ? 'Yes' : 'No' %]</span>
 									[% ELSE %]
 									[% page.field(
-										'command' => 'edit',
-										'type' => 'checkbox',
-										'name' => 'video',
-										'value' => ringpage.video,
-										'opts' => {'id' => 'video', 'style' => 'width: 80%;'},
+										command => 'edit',
+										type => 'checkbox',
+										name => 'video',
+										value => ringpage.video,
+										opts => { id => 'video', style => 'width: 80%;', },
 										checked => ringpage.video,
 									) %]
 									[% END %]
@@ -254,7 +254,7 @@
 								<td><strong>Body Background Image</strong></td>
 								<td>
 									[% IF ! edit %]
-									<span>[% ringpage.body_background_image %]</span>
+									<span><img src="[% ringpage.body_background_image %]" /></span>
 									[% ELSE %]
                                         [% page.field(
                                             command => 'edit',
