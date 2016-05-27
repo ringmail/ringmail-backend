@@ -82,10 +82,14 @@ sub cmd_hashtag_add {
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
-    $target =~ s/^\s*//xms;    # trim whitespace
-    $target =~ s/\s*$//xms;
-    if ( not $target =~ m{^http(s)?://}xmsi ) {
-        $target = 'http://' . $target;
+    if ( $target ne q{} ) {
+
+        $target =~ s/^\s*//xms;    # trim whitespace
+        $target =~ s/\s*$//xms;
+        if ( not $target =~ m{^http(s)?://}xmsi ) {
+            $target = 'http://' . $target;
+        }
+
     }
     my $factory = Ring::Model::Hashtag->new();
     if ( $factory->validate_tag( 'tag' => $tag, ) ) {
@@ -93,7 +97,7 @@ sub cmd_hashtag_add {
             ::log('Dup');
         }
         else {
-            if ( $factory->validate_target( 'target' => $target, ) ) {
+            if ( $factory->validate_target( 'target' => $target, ) or defined $data->{ringpage_id} ) {
 
                 my $src = Note::Account->new( $uid, );
                 my $dst = account_id('revenue_ringmail');

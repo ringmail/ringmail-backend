@@ -49,8 +49,15 @@
 								</div>
 							</div>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="target">Target URL:</label>
+								<label class="control-label" for="target">Destination:</label>
 								<div class="controls">
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">Target URL</a></li>
+    <li><a href="#tab2" data-toggle="tab">RingPage</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab1">
 									[% page.field(
 										'command' => 'hashtag_add',
 										'type' => 'text',
@@ -62,11 +69,8 @@
 										<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
 									</div>
 									[% END %]
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="ringpage">RingPage:</label>
-								<div class="controls">
+    </div>
+    <div class="tab-pane" id="tab2">
 									[% page.field(
 										'command' => 'hashtag_add',
 										'type' => 'select',
@@ -80,6 +84,9 @@
 										<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
 									</div>
 									[% END %]
+    </div>
+  </div>
+</div>
 								</div>
 							</div>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
