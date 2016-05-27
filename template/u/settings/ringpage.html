@@ -183,33 +183,39 @@
 							<tr>
 								<td><strong>Header Background Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.header_background_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'header_background_color',
 										value => ringpage.header_background_color,
-										opts => { id => 'header_background_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'header_background_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
 								<td><strong>Header Text Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.header_text_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'header_text_color',
 										value => ringpage.header_text_color,
-										opts => { id => 'header_text_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'header_text_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
@@ -269,33 +275,39 @@
 							<tr>
 								<td><strong>Body Background Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.body_background_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'body_background_color',
 										value => ringpage.body_background_color,
-										opts => { id => 'body_background_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'body_background_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
 								<td><strong>Body Text Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.body_text_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'body_text_color',
 										value => ringpage.body_text_color,
-										opts => { id => 'body_text_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'body_text_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
@@ -333,33 +345,39 @@
 							<tr>
 								<td><strong>Footer Background Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.footer_background_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'footer_background_color',
 										value => ringpage.footer_background_color,
-										opts => { id => 'footer_background_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'footer_background_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
 								<td><strong>Footer Text Color</strong></td>
 								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.footer_text_color %]</span>
-									[% ELSE %]
 									[% page.field(
 										command => 'edit',
 										type => 'color',
 										name => 'footer_text_color',
 										value => ringpage.footer_text_color,
-										opts => { id => 'footer_text_color', 'data-show-palette' => 'true','data-toggle-palette-only' => 'false','data-show-buttons' => 'false', 'data-show-input' => 'true', },
+										opts => {
+											id => 'footer_text_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
 									) %]
-									[% END %]
 								</td>
 							</tr>
 							<tr>
