@@ -48,10 +48,11 @@ around load => sub {
 
     for my $field ( @{$ringpage_fields} ) {
 
-        my $key   = $field->{name};
-        my $value = $field->{value};
+        my $key     = $field->{name};
+        my $value   = $field->{value};
+        my $default = $field->{default};
 
-        $ringpage_row_data->{$key} = $value;
+        $ringpage_row_data->{$key} = $value // $default;
     }
 
     $content->{ringpage} = $ringpage_row_data;
