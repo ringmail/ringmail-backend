@@ -70,7 +70,7 @@ around load => sub {
     $content->{ringpage_list} = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->$next( $params, );
+    return $obj->$next( $param, );
 };
 
 sub cmd_hashtag_add {
