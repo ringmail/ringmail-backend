@@ -113,6 +113,7 @@
 							</tr>
 							[% END %]
 									[% IF edit %]
+									[% FOREACH row IN [ 1 .. 3 ] %]
 							<tr>
 								<td><strong>Button:</strong></td>
 								<td>
@@ -135,48 +136,26 @@
                                     ) %]
 								</td>
 							</tr>
+									[% END %]
+									[% END %]
+									[% FOREACH field IN structure.fields %]
 							<tr>
-								<td><strong>Button:</strong></td>
+								<td><strong>[% field.label %]</strong></td>
 								<td>
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'hidden',
-                                        name => 'button_id',
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_text',
-                                        opts => { placeholder => 'Button Text', },
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_link',
-                                        opts => { placeholder => 'Button Link', },
-                                    ) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Button:</strong></td>
-								<td>
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'hidden',
-                                        name => 'button_id',
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_text',
-                                        opts => { placeholder => 'Button Text', },
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_link',
-                                        opts => { placeholder => 'Button Link', },
-                                    ) %]
+									[% page.field(
+										command => 'edit',
+										type => field.type,
+										name => field.name,
+										value => field.default,
+										opts => {
+											id => 'header_background_color',
+											'data-show-palette' => 'true',
+											'data-toggle-palette-only' => 'false',
+											'data-show-buttons' => 'false',
+											'data-show-input' => 'true',
+											'data-disabled' => edit ? 'false' : 'true',
+										},
+									) %]
 								</td>
 							</tr>
 									[% END %]
