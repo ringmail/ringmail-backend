@@ -1,7 +1,7 @@
 {
-   "class" : "Page::ring::setup::account::index",
+   "class" : "Page::ring::setup::email",
    "init" : [
       "valid_user"
    ],
-   "template" : "u/settings/account/index.html"
+   "template" : "u/settings/emails.html"
 }

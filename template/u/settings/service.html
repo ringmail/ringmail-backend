@@ -1,12 +1,13 @@
 [% menu_main = 'settings' %]
-[% menu_settings = 'service' %]
+[% menu_settings = 'account' %]
+[% menu_subnav = 'service' %]
 [% content = BLOCK %]
-<div class="container">		
+<div class="container">
 	<div class="row">
 		<div class="tabbable">
-			<div class="span3">
+			<div class="span12">
 				[% INCLUDE u/settings/menu.html %]
-			</div> <!-- /.span3 -->
+			</div>
 			<div class="span6">
 				<h2 style="text-align: center;">Add Funds To Account:</h2>
 				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
@@ -14,12 +15,12 @@
 						[% payment %]
 					</fieldset>
 				</form>
-			</div> <!-- /#tab1 -->
+			</div>
 			<div class="span3">
 				<h3>Account Balance</h3>
 				<h5>$[% balance %]</h5>
 				<p>
-					You can use your RingMail Account Balance to reserve hashtags.
+				You can use your RingMail Account Balance to reserve hashtags.
 				</p>
 			</div>
 		</div>

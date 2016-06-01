@@ -1,18 +1,18 @@
 [% menu_main = 'settings' %]
-[% menu_settings = 'emails' %]
+[% menu_settings = 'account' %]
+[% menu_subnav = 'emails' %]
 [% content = BLOCK %]
 <div class="container">		
 	<div class="row">
 		<div class="tabbable">
-			<div class="span3">
+			<div class="span12">
 				[% INCLUDE u/settings/menu.html %]
-			</div> <!-- /.span3 -->
-			<div class="span9">
+			</div>
+			<div class="span12">
 				<h2 style="margin-bottom: 0px;">[% email %]</h2>
 				<h5>RingMail Enabled <i class="icon-ok" style="color: #00FF00;"></i></h5>
 				<hr/>
-				<!--<p>Receive calls from your website with the RingMail Call button: http://ring.ml/[% email %]</p>-->
-			</div> <!-- /#tab1 -->
+			</div>
 		</div>
 	</div>
 </div>
