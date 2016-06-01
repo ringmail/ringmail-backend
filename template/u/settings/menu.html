@@ -1,44 +1,13 @@
-<ul class="nav nav-tabs nav-stacked">
-	<li[% IF menu_settings == 'emails' %] class="active"[% END %]>
-		<a href="/u">
-			<i class="icon-envelope"></i>
-			Email Address
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-	<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]>
-		<a href="/u/hashtags">
-			<i class="icon-bell"></i>
-			Hashtags
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-	<li[% IF menu_settings == 'domains' %] class="active"[% END %]>
-		<a href="/u/domains">
-			<i class="icon-globe"></i>
-			Domain Names
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-	<li[% IF menu_settings == 'ringpages' %] class="active"[% END %]>
-		<a href="/u/ringpages">
-			<i class="icon-globe"></i>
-			RingPages
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-	<li[% IF menu_settings == 'service' %] class="active"[% END %]>
-		<a href="/u/service">
-			<i class="icon-user"></i>
-			Account Details
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-	<li[% IF menu_settings == 'password' %] class="active"[% END %]>
-		<a href="/u/password">
-			<i class="icon-lock"></i>
-			Change Password
-			<i class="icon-chevron-right"></i>
-		</a>              			              	
-	</li>
-</ul>
+<div class="navbar">
+	<div class="navbar-inner">
+		<ul class="nav">
+			<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]><a href="/u/hashtags">Hashtag</a></li>
+			<li class="divider-vertical"></li>
+			<li[% IF menu_settings == 'domains' %] class="active"[% END %]><a href="/u/domains">Domain</a></li>
+			<li class="divider-vertical"></li>
+			<li[% IF menu_settings == 'ringpages' %] class="active"[% END %]><a href="/u/ringpages">Ringpage</a></li>
+			<li class="divider-vertical"></li>
+			<li[% IF menu_settings == 'account' %] class="active"[% END %]><a href="/u/account/">Account</a></li>
+		</ul>
+	</div>
+</div>
