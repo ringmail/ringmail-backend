@@ -1,4 +1,5 @@
 package Page::ring::user;
+
 use strict;
 use warnings;
 
@@ -20,15 +21,15 @@ use Ring::User;
 
 extends 'Note::Page';
 
-no warnings 'uninitialized';
-
 has 'user' => (
     'is'  => 'rw',
     'isa' => 'Ring::User',
 );
 
 sub show_payment_form {
-    my ( $obj, $param ) = get_param(@_);
+    my ( @args, ) = @_;
+
+    my ( $obj, $param ) = get_param( @args, );
     my %months = (
         '01' => 'January',
         '02' => 'February',
@@ -276,8 +277,8 @@ sub valid_user {
     my ($obj) = @_;
     my $sd = $obj->session();
     if ( defined $sd->{'login_ringmail'} ) {
-        my $user = new Ring::User( $sd->{'login_ringmail'} );
-        my $urc = new Note::Row( 'ring_user' => $user->{'id'} );
+        my $user = Ring::User->new( $sd->{'login_ringmail'} );
+        my $urc = Note::Row->new( 'ring_user' => $user->{'id'} );
         if ( $urc->data('active') ) {
             $obj->user($user);
             return 1;
@@ -293,6 +294,8 @@ sub cmd_logout {
     delete $sd->{'login_ringmail'};
     $obj->session_write();
     $obj->redirect( $obj->url( 'path' => '/' ) );
+
+    return;
 }
 
 1;
