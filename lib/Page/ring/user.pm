@@ -62,6 +62,8 @@ sub show_payment_form {
     my $rc      = {};
     my @funding = (
         'div',
+        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Billing Details' ], ],
+        'div',
         [   { 'class' => 'control-group' },
             'label',
             [ { 'class' => 'control-label', 'for' => 'name' }, 0, 'Name:', ],
@@ -103,8 +105,6 @@ sub show_payment_form {
                 ),
             ],
         ],
-        'div',
-        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Billing Address:' ], ],
         'div',
         [   { 'class' => 'control-group' },
             'label',
@@ -187,7 +187,7 @@ sub show_payment_form {
             ],
         ],
         'div',
-        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Card Details:' ], ],
+        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Card Details' ], ],
         'div',
         [   { 'class' => 'control-group' },
             'label',
@@ -264,10 +264,12 @@ sub show_payment_form {
         [   { 'style' => 'padding-left: 180px;', 'class' => 'form-actions' },
             0,
             $obj->button(
-                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, ' Subscribe', ),
+                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, 'Add Funds', ),
                 'command' => 'fund',
                 'opts'    => { 'class' => 'btn btn-large btn-info', },
             ),
+            0,
+            $obj->link( text => 'Register Hashtag', path => '/u/ringpages?new_ringpage=1', ),
         ],
     );
     return xml(@funding);
@@ -299,4 +301,3 @@ sub cmd_logout {
 }
 
 1;
-

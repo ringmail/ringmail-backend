@@ -9,7 +9,6 @@
 			</div>
 			<div class="span12">
 				[% IF page.form.new_ringpage %]
-				<h2>Create New RingPage:</h2>
 				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group[% IF page.value.error %] error[% END %]">
@@ -62,8 +61,6 @@
 					</fieldset>
 				</form>
 				[% ELSE %]
-				<h2>RingPages:</h2>
-				<p></p>
 				<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group">
@@ -74,7 +71,6 @@
 						</div>
 					</fieldset>
 				</form> -->
-				<hr/>
 				<table class="table table-bordered table-striped table-highlight">
 					<thead>
 						<tr>
