@@ -1,4 +1,5 @@
 [% menu_settings = 'ringpages' %]
+[% menu_subnav = page.form.new_ringpage ? 'new_ringpage' : 'ringpages' %]
 [% content = BLOCK %]
 <div class="container">
 	<div class="row">
@@ -63,7 +64,7 @@
 				[% ELSE %]
 				<h2>RingPages:</h2>
 				<p></p>
-				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+				<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group">
 							<label class="control-label" for="ringpage">Create a new RingPage:</label>
@@ -72,7 +73,7 @@
 							</div>
 						</div>
 					</fieldset>
-				</form>
+				</form> -->
 				<hr/>
 				<table class="table table-bordered table-striped table-highlight">
 					<thead>

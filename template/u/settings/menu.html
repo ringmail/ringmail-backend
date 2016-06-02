@@ -30,3 +30,11 @@
 	</ul>
 </div>
 [% END %]
+[% IF menu_settings == 'ringpages' %]
+<div class="span3">
+	<ul class="nav nav-pills nav-stacked">
+		<li[% IF menu_subnav == 'ringpages' %] class="active"[% END %]><a href="/u/ringpages">Manage RingPages</a></li>
+		<li[% IF menu_subnav == 'new_ringpage' %] class="active"[% END %]><a href="/u/ringpages?new_ringpage=1">Create New RingPage</a></li>
+	</ul>
+</div>
+[% END %]
