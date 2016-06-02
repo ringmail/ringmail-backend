@@ -1,380 +1,381 @@
 [% menu_settings = 'ringpages' %]
+[% menu_subnav = 'ringpages' %]
 [% content = BLOCK %]
-<div class="container">		
+<div class="container">
 	<div class="row">
 		<div class="tabbable">
-			<div class="span3">
+			<div class="span12">
 				[% INCLUDE u/settings/menu.html %]
-			</div> <!-- /.span3 -->
-			<div class="span9">
+			</div>
+			<div class="span12">
 				<h2>RingPage: [% ringpage.ringpage %]</h2>
 				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
 					<p>
-						<a href="/u/ringpages">&lt; All RingPages</a>
+					<a href="/u/ringpages">&lt; All RingPages</a>
 					</p>
 					<div>
 						<p style="text-align: right;">
-							[% IF ! edit %]
-							<a href="[% page.url('query' => {'id' => page.form.id, 'edit' => 1}) %]" class="btn">Edit RingPage</a>
-							[% ELSE %]
-							[% page.button(
-								'command' => 'edit',
-								'text' => 'Save Changes',
-								'opts' => {
-									'type' => 'submit',
-									'class' => 'btn btn-primary',
-								}
-								'args' => [page.form.id],
-							) %]
-							[% END %]
+						[% IF ! edit %]
+						<a href="[% page.url('query' => {'id' => page.form.id, 'edit' => 1}) %]" class="btn">Edit RingPage</a>
+						[% ELSE %]
+						[% page.button(
+						'command' => 'edit',
+						'text' => 'Save Changes',
+						'opts' => {
+						'type' => 'submit',
+						'class' => 'btn btn-primary',
+						}
+						'args' => [page.form.id],
+						) %]
+						[% END %]
 						</p>
 					</div>
 					<table class="table table-bordered table-striped">
 						<tbody>
-							<tr>
-								<td><strong>RingPage</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.ringpage %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'ringpage',
-										'value' => ringpage.ringpage,
-										'opts' => {'id' => 'ringpage', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Contains Offer</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.offer ? 'Yes' : 'No' %]</span>
-									[% ELSE %]
-									[% page.field(
-										command => 'edit',
-										type => 'checkbox',
-										name => 'offer',
-										value => ringpage.offer,
-										opts => { id => 'offer', style => 'width: 80%;', },
-										checked => ringpage.offer,
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Contains Video</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.video ? 'Yes' : 'No' %]</span>
-									[% ELSE %]
-									[% page.field(
-										command => 'edit',
-										type => 'checkbox',
-										name => 'video',
-										value => ringpage.video,
-										opts => { id => 'video', style => 'width: 80%;', },
-										checked => ringpage.video,
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							[% FOREACH button IN ringpage.buttons %]
-							<tr>
-								<td><strong>Button:</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% button.button %] ([% button.uri %])</span>
-									[% ELSE %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'hidden',
-                                        name => 'button_id',
-										value => button.id,
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_text',
-										value => button.button,
-                                        opts => { placeholder => 'Button Text', },
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_link',
-										value => button.uri,
-                                        opts => { placeholder => 'Button Link', },
-                                    ) %]
-									[% END %]
-								</td>
-							</tr>
-							[% END %]
-									[% IF edit %]
-									[% FOREACH row IN [ 1 .. 3 ] %]
-							<tr>
-								<td><strong>Button:</strong></td>
-								<td>
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'hidden',
-                                        name => 'button_id',
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_text',
-                                        opts => { placeholder => 'Button Text', },
-                                    ) %]
-                                    [% page.field(
-                                        command => 'edit',
-                                        type => 'text',
-                                        name => 'button_link',
-                                        opts => { placeholder => 'Button Link', },
-                                    ) %]
-								</td>
-							</tr>
-									[% END %]
-									[% END %]
-									[% FOREACH field IN structure.fields %]
-							<tr>
-								<td><strong>[% field.label %]</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => field.type,
-										name => field.name,
-										value => field.default,
-										opts => {
-											id => 'header_background_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-									[% END %]
-							<tr>
-								<td><strong>Header Background Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'header_background_color',
-										value => ringpage.header_background_color,
-										opts => {
-											id => 'header_background_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Header Text Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'header_text_color',
-										value => ringpage.header_text_color,
-										opts => {
-											id => 'header_text_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Header Title</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.header_title %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'header_title',
-										'value' => ringpage.header_title,
-										'opts' => {'id' => 'header_title', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Header Subtitle</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.header_subtitle %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'header_subtitle',
-										'value' => ringpage.header_subtitle,
-										'opts' => {'id' => 'header_subtitle', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Body Background Image</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span><img src="[% ringpage.body_background_image %]" /></span>
-									[% ELSE %]
-                                        [% page.field(
-                                            command => 'edit',
-                                            type => 'file',
-                                            name => 'body_background_image',
-                                            opts => { id => 'f_d1-body_background_image', style => 'width: 179px', 'data-url' => '/u/body_background_image', },
-                                        ) %]
-                                        [% page.field(
-                                            command => 'edit',
-                                            type => 'hidden',
-                                            name => 'body_background_image',
-                                            value => ringpage.body_background_image,
-                                            opts => { id => 'd1-body_background_image', },
-                                        ) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Body Background Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'body_background_color',
-										value => ringpage.body_background_color,
-										opts => {
-											id => 'body_background_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Body Text Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'body_text_color',
-										value => ringpage.body_text_color,
-										opts => {
-											id => 'body_text_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Body Header</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.body_header %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'body_header',
-										'value' => ringpage.body_header,
-										'opts' => {'id' => 'body_header', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Body Text</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.body_text %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'body_text',
-										'value' => ringpage.body_text,
-										'opts' => {'id' => 'body_text', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Footer Background Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'footer_background_color',
-										value => ringpage.footer_background_color,
-										opts => {
-											id => 'footer_background_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Footer Text Color</strong></td>
-								<td>
-									[% page.field(
-										command => 'edit',
-										type => 'color',
-										name => 'footer_text_color',
-										value => ringpage.footer_text_color,
-										opts => {
-											id => 'footer_text_color',
-											'data-show-palette' => 'true',
-											'data-toggle-palette-only' => 'false',
-											'data-show-buttons' => 'false',
-											'data-show-input' => 'true',
-											'data-disabled' => edit ? 'false' : 'true',
-										},
-									) %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>Footer Text</strong></td>
-								<td>
-									[% IF ! edit %]
-									<span>[% ringpage.footer_text %]</span>
-									[% ELSE %]
-									[% page.field(
-										'command' => 'edit',
-										'type' => 'text',
-										'name' => 'footer_text',
-										'value' => ringpage.footer_text,
-										'opts' => {'id' => 'footer_text', 'style' => 'width: 80%;'},
-									) %]
-									[% END %]
-								</td>
-							</tr>
+						<tr>
+							<td><strong>RingPage</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.ringpage %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'ringpage',
+								'value' => ringpage.ringpage,
+								'opts' => {'id' => 'ringpage', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Contains Offer</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.offer ? 'Yes' : 'No' %]</span>
+								[% ELSE %]
+								[% page.field(
+								command => 'edit',
+								type => 'checkbox',
+								name => 'offer',
+								value => ringpage.offer,
+								opts => { id => 'offer', style => 'width: 80%;', },
+								checked => ringpage.offer,
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Contains Video</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.video ? 'Yes' : 'No' %]</span>
+								[% ELSE %]
+								[% page.field(
+								command => 'edit',
+								type => 'checkbox',
+								name => 'video',
+								value => ringpage.video,
+								opts => { id => 'video', style => 'width: 80%;', },
+								checked => ringpage.video,
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						[% FOREACH button IN ringpage.buttons %]
+						<tr>
+							<td><strong>Button:</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% button.button %] ([% button.uri %])</span>
+								[% ELSE %]
+								[% page.field(
+								command => 'edit',
+								type => 'hidden',
+								name => 'button_id',
+								value => button.id,
+								) %]
+								[% page.field(
+								command => 'edit',
+								type => 'text',
+								name => 'button_text',
+								value => button.button,
+								opts => { placeholder => 'Button Text', },
+								) %]
+								[% page.field(
+								command => 'edit',
+								type => 'text',
+								name => 'button_link',
+								value => button.uri,
+								opts => { placeholder => 'Button Link', },
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						[% END %]
+						[% IF edit %]
+						[% FOREACH row IN [ 1 .. 3 ] %]
+						<tr>
+							<td><strong>Button:</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'hidden',
+								name => 'button_id',
+								) %]
+								[% page.field(
+								command => 'edit',
+								type => 'text',
+								name => 'button_text',
+								opts => { placeholder => 'Button Text', },
+								) %]
+								[% page.field(
+								command => 'edit',
+								type => 'text',
+								name => 'button_link',
+								opts => { placeholder => 'Button Link', },
+								) %]
+							</td>
+						</tr>
+						[% END %]
+						[% END %]
+						[% FOREACH field IN structure.fields %]
+						<tr>
+							<td><strong>[% field.label %]</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => field.type,
+								name => field.name,
+								value => field.default,
+								opts => {
+								id => 'header_background_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						[% END %]
+						<tr>
+							<td><strong>Header Background Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'header_background_color',
+								value => ringpage.header_background_color,
+								opts => {
+								id => 'header_background_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Header Text Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'header_text_color',
+								value => ringpage.header_text_color,
+								opts => {
+								id => 'header_text_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Header Title</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.header_title %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'header_title',
+								'value' => ringpage.header_title,
+								'opts' => {'id' => 'header_title', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Header Subtitle</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.header_subtitle %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'header_subtitle',
+								'value' => ringpage.header_subtitle,
+								'opts' => {'id' => 'header_subtitle', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Body Background Image</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span><img src="[% ringpage.body_background_image %]" /></span>
+								[% ELSE %]
+								[% page.field(
+								command => 'edit',
+								type => 'file',
+								name => 'body_background_image',
+								opts => { id => 'f_d1-body_background_image', style => 'width: 179px', 'data-url' => '/u/body_background_image', },
+								) %]
+								[% page.field(
+								command => 'edit',
+								type => 'hidden',
+								name => 'body_background_image',
+								value => ringpage.body_background_image,
+								opts => { id => 'd1-body_background_image', },
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Body Background Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'body_background_color',
+								value => ringpage.body_background_color,
+								opts => {
+								id => 'body_background_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Body Text Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'body_text_color',
+								value => ringpage.body_text_color,
+								opts => {
+								id => 'body_text_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Body Header</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.body_header %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'body_header',
+								'value' => ringpage.body_header,
+								'opts' => {'id' => 'body_header', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Body Text</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.body_text %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'body_text',
+								'value' => ringpage.body_text,
+								'opts' => {'id' => 'body_text', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Footer Background Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'footer_background_color',
+								value => ringpage.footer_background_color,
+								opts => {
+								id => 'footer_background_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Footer Text Color</strong></td>
+							<td>
+								[% page.field(
+								command => 'edit',
+								type => 'color',
+								name => 'footer_text_color',
+								value => ringpage.footer_text_color,
+								opts => {
+								id => 'footer_text_color',
+								'data-show-palette' => 'true',
+								'data-toggle-palette-only' => 'false',
+								'data-show-buttons' => 'false',
+								'data-show-input' => 'true',
+								'data-disabled' => edit ? 'false' : 'true',
+								},
+								) %]
+							</td>
+						</tr>
+						<tr>
+							<td><strong>Footer Text</strong></td>
+							<td>
+								[% IF ! edit %]
+								<span>[% ringpage.footer_text %]</span>
+								[% ELSE %]
+								[% page.field(
+								'command' => 'edit',
+								'type' => 'text',
+								'name' => 'footer_text',
+								'value' => ringpage.footer_text,
+								'opts' => {'id' => 'footer_text', 'style' => 'width: 80%;'},
+								) %]
+								[% END %]
+							</td>
+						</tr>
 						</tbody>
 					</table>
 				</form>
