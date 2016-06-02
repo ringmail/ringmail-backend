@@ -64,7 +64,7 @@ around load => sub {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No Ringpages Created)' => q{}, ];
+        push @ringpages, [ '(No RingPages Created)' => q{}, ];
     }
 
     $content->{ringpage_list} = \@ringpages;
