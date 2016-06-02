@@ -1,7 +1,7 @@
 <div class="navbar">
 	<div class="navbar-inner">
 		<ul class="nav">
-			<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]><a href="/u/hashtags">Hashtag</a></li>
+			<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]><a href="/u/check_hashtag">Hashtag</a></li>
 			<li class="divider-vertical"></li>
 			<li[% IF menu_settings == 'domains' %] class="active"[% END %]><a href="/u/domains">Domain</a></li>
 			<li class="divider-vertical"></li>
@@ -24,8 +24,8 @@
 [% IF menu_settings == 'hashtags' %]
 <div class="span3">
 	<ul class="nav nav-pills nav-stacked">
-		<li[% IF menu_subnav == 'hashtags' %] class="active"[% END %]><a href="/u/hashtags">Hashtags</a></li>
 		<li[% IF menu_subnav == 'check_hashtag' %] class="active"[% END %]><a href="/u/check_hashtag">Check Available Hashtag</a></li>
+		<li[% IF menu_subnav == 'hashtags' %] class="active"[% END %]><a href="/u/hashtags">Hashtags</a></li>
 		<li[% IF menu_subnav == 'register_hashtag' %] class="active"[% END %]><a href="/u/hashtags?new_tag=1">Register Hashtag</a></li>
 	</ul>
 </div>
