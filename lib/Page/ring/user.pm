@@ -23,294 +23,276 @@ extends 'Note::Page';
 no warnings 'uninitialized';
 
 has 'user' => (
-	'is' => 'rw',
-	'isa' => 'Ring::User',
+    'is'  => 'rw',
+    'isa' => 'Ring::User',
 );
 
-sub show_payment_form
-{
-	my ($obj, $param) = get_param(@_);
-	my %months = (
-		'01' => 'January',
-		'02' => 'February',
-		'03' => 'March',
-		'04' => 'April',
-		'05' => 'May',
-		'06' => 'June',
-		'07' => 'July',
-		'08' => 'August',
-		'09' => 'September',
-		'10' => 'October',
-		'11' => 'November',
-		'12' => 'December',
-	);
-	my @expm = ();
-	my @expy = ();
-	foreach my $j (1..12)
-	{
-		my $m = sprintf("%02d", $j);
-		push @expm, [$m, $m];
-	}
-	my $cur = strftime("%Y", localtime(time()));
-	foreach my $i ($cur..($cur + 10))
-	{
-		push @expy, [$i, $i];
-	}
-	my @sts = ();
-	foreach my $st (@{us_states()})
-	{
-		push @sts, [us_state_name($st), $st];
-	}
-	my $amt = 100;
-	my $rc = {};
-	my @funding = (
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'name'},
-				0, 'Name:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 80px;',
-					},
-					'name' => 'first_name',
-					'value' => $rc->{'first_name'},
-				),
-				0, '&nbsp;&nbsp;',
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 110px;',
-					},
-					'name' => 'last_name',
-					'value' => $rc->{'last_name'},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'phone'},
-				0, 'Phone:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 140px;',
-					},
-					'name' => 'phone',
-					'value' => $rc->{'phone'},
-				),
-			],
-		],
-		'div', [{'style' => 'text-align: center;'},
-			'h5', [{}, 0, 'Billing Address:'],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'address'},
-				0, 'Address:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 180px;',
-					},
-					'name' => 'address',
-					'value' => $rc->{'address'},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'address2'},
-				0, 'Address (2):',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 180px;',
-					},
-					'name' => 'address2',
-					'value' => $rc->{'address2'},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'city'},
-				0, 'City:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 180px;',
-					},
-					'name' => 'city',
-					'value' => $rc->{'city'},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'state'},
-				0, 'State:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'select',
-					'select' => \@sts,
-					'selected' => $rc->{'state'},
-					'name' => 'state',
-					'opts' => {
-						'style' => 'width: 180px;',
-					},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'zip'},
-				0, 'Zipcode:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'opts' => {
-						'style' => 'width: 50px;',
-					},
-					'name' => 'zip',
-					'value' => $rc->{'zip'},
-				),
-			],
-		],
-		'div', [{'style' => 'text-align: center;'},
-			'h5', [{}, 0, 'Card Details:'],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'cc_type'},
-				0, 'Type of Card:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'select',
-					'name' => 'cc_type',
-					'select' => [
-						['Visa', 'Visa'],
-						['MasterCard', 'MasterCard'],
-						['American Express', 'AMEX'],
-						['Discover', 'Discover'],
-					],
-					'opts' => {
-						'style' => 'width: 180px;',
-					},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'cc_num'},
-				0, 'Card Number:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'name' => 'cc_num',
-					'opts' => {
-						'style' => 'width: 160px;',
-					},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'cc_exp'},
-				0, 'Card Expires:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'select',
-					'name' => 'cc_expm',
-					'select' => \@expm,
-					'opts' => {
-						'style' => 'width: 60px;',
-					},
-				),
-				0, '&nbsp;&nbsp;',
-				0,  $obj->field(
-					'command' => 'fund',
-					'type' => 'select',
-					'name' => 'cc_expy',
-					'select' => \@expy,
-					'opts' => {
-						'style' => 'width: 90px;',
-					},
-				),
-			],
-		],
-		'div', [{'class' => 'control-group'},
-			'label', [{'class' => 'control-label', 'for' => 'cc_code'},
-				0, 'Security Code:',
-			],
-			'div', [{'class' => 'controls'},
-				0, $obj->field(
-					'command' => 'fund',
-					'type' => 'text',
-					'name' => 'cc_cvv2',
-					'opts' => {
-						'style' => 'width: 50px;',
-					},
-				),
-			],
-		],
-		'div', [{'style' => 'padding-left: 180px;', 'class' => 'form-actions'},
-			0, $obj->button(
-				'text' => xml(
-					'i', [{'class' => 'icon-check'}, 0, ''],
-					0, ' Subscribe',
-				),
-				'command' => 'fund',
-				'opts' => {
-					'class' => 'btn btn-large btn-info',
-				},
-			),
-		],
-	);
-	return xml(@funding);
+sub show_payment_form {
+    my ( $obj, $param ) = get_param(@_);
+    my %months = (
+        '01' => 'January',
+        '02' => 'February',
+        '03' => 'March',
+        '04' => 'April',
+        '05' => 'May',
+        '06' => 'June',
+        '07' => 'July',
+        '08' => 'August',
+        '09' => 'September',
+        '10' => 'October',
+        '11' => 'November',
+        '12' => 'December',
+    );
+    my @expm = ();
+    my @expy = ();
+    foreach my $j ( 1 .. 12 ) {
+        my $m = sprintf( "%02d", $j );
+        push @expm, [ $m, $m ];
+    }
+    my $cur = strftime( "%Y", localtime( time() ) );
+    foreach my $i ( $cur .. ( $cur + 10 ) ) {
+        push @expy, [ $i, $i ];
+    }
+    my @sts = ();
+    foreach my $st ( @{ us_states() } ) {
+        push @sts, [ us_state_name($st), $st ];
+    }
+    my $amt     = 100;
+    my $rc      = {};
+    my @funding = (
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'name' }, 0, 'Name:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 80px;', },
+                    'name'    => 'first_name',
+                    'value'   => $rc->{'first_name'},
+                ),
+                0,
+                '&nbsp;&nbsp;',
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 110px;', },
+                    'name'    => 'last_name',
+                    'value'   => $rc->{'last_name'},
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'phone' }, 0, 'Phone:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 140px;', },
+                    'name'    => 'phone',
+                    'value'   => $rc->{'phone'},
+                ),
+            ],
+        ],
+        'div',
+        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Billing Address:' ], ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'address' }, 0, 'Address:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 180px;', },
+                    'name'    => 'address',
+                    'value'   => $rc->{'address'},
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'address2' }, 0, 'Address (2):', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 180px;', },
+                    'name'    => 'address2',
+                    'value'   => $rc->{'address2'},
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'city' }, 0, 'City:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 180px;', },
+                    'name'    => 'city',
+                    'value'   => $rc->{'city'},
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'state' }, 0, 'State:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command'  => 'fund',
+                    'type'     => 'select',
+                    'select'   => \@sts,
+                    'selected' => $rc->{'state'},
+                    'name'     => 'state',
+                    'opts'     => { 'style' => 'width: 180px;', },
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'zip' }, 0, 'Zipcode:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'opts'    => { 'style' => 'width: 50px;', },
+                    'name'    => 'zip',
+                    'value'   => $rc->{'zip'},
+                ),
+            ],
+        ],
+        'div',
+        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Card Details:' ], ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'cc_type' }, 0, 'Type of Card:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'select',
+                    'name'    => 'cc_type',
+                    'select'  => [ [ 'Visa', 'Visa' ], [ 'MasterCard', 'MasterCard' ], [ 'American Express', 'AMEX' ], [ 'Discover', 'Discover' ], ],
+                    'opts' => { 'style' => 'width: 180px;', },
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'cc_num' }, 0, 'Card Number:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'name'    => 'cc_num',
+                    'opts'    => { 'style' => 'width: 160px;', },
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'cc_exp' }, 0, 'Card Expires:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'select',
+                    'name'    => 'cc_expm',
+                    'select'  => \@expm,
+                    'opts'    => { 'style' => 'width: 60px;', },
+                ),
+                0,
+                '&nbsp;&nbsp;',
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'select',
+                    'name'    => 'cc_expy',
+                    'select'  => \@expy,
+                    'opts'    => { 'style' => 'width: 90px;', },
+                ),
+            ],
+        ],
+        'div',
+        [   { 'class' => 'control-group' },
+            'label',
+            [ { 'class' => 'control-label', 'for' => 'cc_code' }, 0, 'Security Code:', ],
+            'div',
+            [   { 'class' => 'controls' },
+                0,
+                $obj->field(
+                    'command' => 'fund',
+                    'type'    => 'text',
+                    'name'    => 'cc_cvv2',
+                    'opts'    => { 'style' => 'width: 50px;', },
+                ),
+            ],
+        ],
+        'div',
+        [   { 'style' => 'padding-left: 180px;', 'class' => 'form-actions' },
+            0,
+            $obj->button(
+                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, ' Subscribe', ),
+                'command' => 'fund',
+                'opts'    => { 'class' => 'btn btn-large btn-info', },
+            ),
+        ],
+    );
+    return xml(@funding);
 }
 
-sub valid_user
-{
-	my ($obj) = @_;
-	my $sd = $obj->session();
-	if (defined $sd->{'login_ringmail'})
-	{
-		my $user = new Ring::User($sd->{'login_ringmail'});
-		my $urc = new Note::Row('ring_user' => $user->{'id'});
-		if ($urc->data('active'))
-		{
-			$obj->user($user);
-			return 1;
-		}
-	}
-	$obj->redirect($obj->url('path' => '/login'));
-	return 0;
+sub valid_user {
+    my ($obj) = @_;
+    my $sd = $obj->session();
+    if ( defined $sd->{'login_ringmail'} ) {
+        my $user = new Ring::User( $sd->{'login_ringmail'} );
+        my $urc = new Note::Row( 'ring_user' => $user->{'id'} );
+        if ( $urc->data('active') ) {
+            $obj->user($user);
+            return 1;
+        }
+    }
+    $obj->redirect( $obj->url( 'path' => '/login' ) );
+    return 0;
 }
 
-sub cmd_logout
-{
-	my ($obj) = @_;
-	my $sd = $obj->session();
-	delete $sd->{'login_ringmail'};
-	$obj->session_write();
-	$obj->redirect($obj->url('path' => '/'));
+sub cmd_logout {
+    my ($obj) = @_;
+    my $sd = $obj->session();
+    delete $sd->{'login_ringmail'};
+    $obj->session_write();
+    $obj->redirect( $obj->url( 'path' => '/' ) );
 }
 
 1;
