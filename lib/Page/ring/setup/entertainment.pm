@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Moose;
+use JSON::XS 'decode_json';
 
 use Note::Param;
 use Note::SQL::Table 'sqltable';
@@ -26,6 +27,16 @@ around load => sub {
         select => [ qw{ button uri }, ],
         where  => { ringpage_id => $ringpage_id, },
     );
+
+    my $ringpage_fields = decode_json $ringpage->{fields};
+
+    for my $field ( @{$ringpage_fields} ) {
+
+        my $key   = $field->{name};
+        my $value = $field->{value};
+
+        $ringpage->{$key} = $value;
+    }
 
     $obj->content()->{ringpage} = $ringpage;
     $obj->content()->{ringpage}->{buttons} = $buttons;

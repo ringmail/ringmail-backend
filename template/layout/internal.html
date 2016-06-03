@@ -4,80 +4,85 @@
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<title>Dashboard Admin</title>
-	<meta charset="utf-8"/>
-	<meta name="description" content=""/>
-	<meta name="author" content=""/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<meta name="apple-mobile-web-app-capable" content="yes"/>
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800"/>
-	<link rel="stylesheet" href="/css/font-awesome.css"/>
-	<link rel="stylesheet" href="/css/bootstrap.css"/>
-	<link rel="stylesheet" href="/css/bootstrap-responsive.css"/>
-	<link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.21.custom.css"/>
-	<link rel="stylesheet" href="/css/application.css"/>
-	<link rel="stylesheet" href="/css/pages/dashboard.css"/>
-	<link rel="stylesheet" href="/css/spectrum.css"/>
-	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
-	<script src="/js/libs/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="/js/spectrum.js"></script>
+<title>Dashboard Admin</title>
+<meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600,800"/>
+<link rel="stylesheet" href="/css/font-awesome.css"/>
+<link rel="stylesheet" href="/css/bootstrap.css"/>
+<link rel="stylesheet" href="/css/bootstrap-responsive.css"/>
+<link rel="stylesheet" href="/css/ui-lightness/jquery-ui-1.8.21.custom.css"/>
+<link rel="stylesheet" href="/css/application.css"/>
+<link rel="stylesheet" href="/css/pages/dashboard.css"/>
+<link rel="stylesheet" href="/css/spectrum.css"/>
+<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/js/spectrum.js"></script>
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
+<script src="/js/libs/bootstrap/bootstrap.min.js"></script>
+<script src="/js/bootstrap-affix.js"></script>
 </head>
 <body>
 <div id="wrapper">
-<div id="topbar">
-	<div class="container">
-		<a href="javascript:;" id="menu-trigger" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
-			<i class="icon-cog"></i>
-		</a>
-		<div id="top-nav">
-			<!--<ul class="pull-right">
+	<div id="topbar">
+		<div class="container">
+			<a href="javascript:;" id="menu-trigger" class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+				<i class="icon-cog"></i>
+			</a>
+			<div id="top-nav">
+				<!--<ul class="pull-right">
 				<li><a href="/login"><i class="icon-user"></i> Refer A Friend or Family Member To RingMail &raquo;</a></li>
 			</ul>-->
-		</div> <!-- /#top-nav -->
-	</div> <!-- /.container -->
-</div> <!-- /#topbar -->
-<div id="header">
-	<div class="container">
-		<div style="position: relative; top: 24px; width: 280px; height: 32px; display: block;">&nbsp;</div>
-		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        	<i class="icon-reorder"></i>
-      	</a>
-		<div class="nav-collapse">
-			<ul id="main-nav" class="nav pull-right">
-				<li class="nav active">
+			</div> <!-- /#top-nav -->
+		</div> <!-- /.container -->
+	</div> <!-- /#topbar -->
+	<div id="header">
+		<div class="container">
+			<div style="position: relative; top: 24px; width: 280px; height: 32px; display: block;">&nbsp;</div>
+			<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<i class="icon-reorder"></i>
+			</a>
+			<div class="nav-collapse">
+				<ul id="main-nav" class="nav pull-right">
+					<li class="nav active">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="icon-list-alt"></i>
 						<span>Control Panel</span>
 					</a>	
-				</li>
-				<li class="nav" style="margin-left: 20px;">
+					</li>
+					<li class="nav" style="margin-left: 20px;">
 					<a href="[% page.url(
 						'path' => '/u',
 						'command' => 'logout',
-					) %]">
+						) %]">
 						<span>Logout</span>
 						<i class="icon-chevron-right"></i>
 					</a>	
-				</li>
-			</ul>
-		</div> <!-- /.nav-collapse -->
-	</div> <!-- /.container -->
-</div> <!-- /#header -->
-<div id="masthead" style="padding-top: 8px; padding-bottom: 8px;">
-	<div class="container">
-		<div class="masthead-pad">
-			<div class="masthead-text">
-				<div style="float: left; width: 300px;">
-					<img border="0" src="/img/ringmail_logo1.png"/>
-				</div>
-				<br clear="all"/>
-			</div> <!-- /.masthead-text -->
-		</div>
-	</div> <!-- /.container -->	
-</div> <!-- /#masthead -->
-<div id="content">
-	[% content %]
-</div> <!-- /#content -->
+					</li>
+				</ul>
+			</div> <!-- /.nav-collapse -->
+		</div> <!-- /.container -->
+	</div> <!-- /#header -->
+	<div id="masthead" style="padding-top: 8px; padding-bottom: 8px;">
+		<div class="container">
+			<div class="masthead-pad">
+				<div class="masthead-text">
+					<div style="float: left; width: 300px;">
+						<img border="0" src="/img/ringmail_logo1.png"/>
+					</div>
+					<br clear="all"/>
+				</div> <!-- /.masthead-text -->
+			</div>
+		</div> <!-- /.container -->	
+	</div> <!-- /#masthead -->
+	<div id="content">
+		[% content %]
+	</div> <!-- /#content -->
 </div> <!-- /#wrapper -->
 
 <div id="footer">
@@ -93,10 +98,6 @@
 	</div> <!-- /container -->
 </div> <!-- /#footer -->
 
-<script src="/js/libs/jquery-1.7.2.min.js"></script>
-<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
-<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
-<script src="/js/libs/bootstrap/bootstrap.min.js"></script>
 <script src="/js/Theme.js"></script>
 <script src="/js/Charts.js"></script>
 <script src="/js/plugins/excanvas/excanvas.min.js"></script>
@@ -110,8 +111,8 @@
 
 <script>
 $(function () {
-	Theme.init ();
-});
+		Theme.init ();
+		});
 </script>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -120,15 +121,15 @@ $(function () {
 <script src="/js/jquery.fileupload.js"></script>
 <script>
 $(function () {
-    $('#f_d1-body_background_image').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-            $('#d1-body_background_image').val( file.url );
-            });
-        }
-    });
+		$('#f_d1-body_background_image').fileupload({
+dataType: 'json',
+done: function (e, data) {
+$.each(data.result.files, function (index, file) {
+	$('#d1-body_background_image').val( file.url );
+	});
+}
 });
+		});
 </script>
 
 </body>

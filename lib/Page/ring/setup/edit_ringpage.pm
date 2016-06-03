@@ -1,4 +1,4 @@
-package Page::ring::setup::ringpage;
+package Page::ring::setup::edit_ringpage;
 
 use strict;
 use warnings;

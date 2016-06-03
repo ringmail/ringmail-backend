@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Moose;
-use JSON::XS 'encode_json';
+use JSON::XS qw{ decode_json encode_json };
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
 use English '-no_match_vars';
@@ -68,24 +68,22 @@ sub add {
         }
         else {
 
+            my $template = Note::Row->new( ring_template => { id => $data->{template_id}, }, );
+            my $structure = decode_json $template->data( 'structure', );
+
+            for my $field ( @{ $structure->{fields} } ) {
+                my $name = $field->{name};
+
+                $field->{value} = $data->{$name};
+            }
+
+            ::log( $structure, );
+
             my $res = $factory->create(
-                body_background_color   => $data->{body_background_color},
-                body_background_image   => $data->{body_background_image},
-                body_header             => $data->{body_header},
-                body_text               => $data->{body_text},
-                body_text_color         => $data->{body_text_color},
-                footer_background_color => $data->{footer_background_color},
-                footer_text             => $data->{footer_text},
-                footer_text_color       => $data->{footer_text_color},
-                header_background_color => $data->{header_background_color},
-                header_subtitle         => $data->{header_subtitle},
-                header_text_color       => $data->{header_text_color},
-                header_title            => $data->{header_title},
-                offer                   => defined $data->{offer} ? 1 : 0,
-                ringpage                => $data->{ringpage},
-                template_id             => $data->{template_id},
-                user_id                 => $user->id(),
-                video                   => defined $data->{video} ? 1 : 0,
+                fields      => encode_json $structure->{fields},
+                ringpage    => $data->{ringpage},
+                template_id => $data->{template_id},
+                user_id     => $user->id(),
             );
             if ( defined $res ) {
                 ::log( New => $res );

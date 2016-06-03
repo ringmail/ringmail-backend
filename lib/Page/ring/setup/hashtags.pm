@@ -21,9 +21,10 @@ use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
-sub load
-{
-    my ( $obj, $param ) = get_param( @_ );
+around load => sub {
+    my ( $next, @args, ) = @_;
+
+    my ( $obj, $param ) = get_param( @args, );
 
     #my $form = $obj->form();
     #::_log($form);
@@ -33,6 +34,7 @@ sub load
     my $uid     = $user->id();
     my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
+
     #::log($ht);
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
@@ -62,14 +64,14 @@ sub load
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No Ringpages Created)' => q{}, ];
+        push @ringpages, [ '(No RingPages Created)' => q{}, ];
     }
 
-    $content->{ringpage_list}       = \@ringpages;
+    $content->{ringpage_list} = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-	return $obj->SUPER::load($param);
-}
+    return $obj->$next( $param, );
+};
 
 sub cmd_hashtag_add {
     my ( $obj, $data, $args ) = @_;
@@ -80,10 +82,14 @@ sub cmd_hashtag_add {
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
-    $target =~ s/^\s*//xms;    # trim whitespace
-    $target =~ s/\s*$//xms;
-    if ( not $target =~ m{^http(s)?://}xmsi ) {
-        $target = 'http://' . $target;
+    if ( $target ne q{} ) {
+
+        $target =~ s/^\s*//xms;    # trim whitespace
+        $target =~ s/\s*$//xms;
+        if ( not $target =~ m{^http(s)?://}xmsi ) {
+            $target = 'http://' . $target;
+        }
+
     }
     my $factory = Ring::Model::Hashtag->new();
     if ( $factory->validate_tag( 'tag' => $tag, ) ) {
@@ -91,7 +97,7 @@ sub cmd_hashtag_add {
             ::log('Dup');
         }
         else {
-            if ( $factory->validate_target( 'target' => $target, ) ) {
+            if ( $factory->validate_target( 'target' => $target, ) or defined $data->{ringpage_id} ) {
 
                 my $src = Note::Account->new( $uid, );
                 my $dst = account_id('revenue_ringmail');

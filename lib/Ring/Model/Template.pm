@@ -3,8 +3,6 @@ package Ring::Model::Template;
 use strict;
 use warnings;
 
-use vars qw();
-
 use Moose;
 use Data::Dumper;
 use Scalar::Util 'blessed', 'reftype';
@@ -32,7 +30,7 @@ sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $template = $param->{template};
-    unless ( $obj->validate_template( template => $template, ) ) {
+    if ( not $obj->validate_template( template => $template, ) ) {
         croak(qq|Invalid template '$template'|);
     }
     return sqltable('ring_template')->count( template => $template, );
@@ -45,7 +43,7 @@ sub create {
     my $path     = $param->{path};
     my $uid      = $param->{user_id};
 
-    unless ( $obj->validate_template( template => $template, ) ) {
+    if ( not $obj->validate_template( template => $template, ) ) {
         croak(qq|Invalid template '$template'|);
     }
 
@@ -84,24 +82,6 @@ sub delete {
     );
     if ( $rc->id() ) {
         $rc->delete();
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
-sub update {
-    my ( @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
-    my $rc = Note::Row->new(
-        ring_template => {
-            user_id => $param->{user_id},
-            id      => $param->{id},
-        },
-    );
-    if ( $rc->id() ) {
-        $rc->update( { 'target_url' => $param->{'target'}, } );
         return 1;
     }
     else {

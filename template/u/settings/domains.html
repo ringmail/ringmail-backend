@@ -1,25 +1,25 @@
 [% menu_main = 'settings' %]
 [% menu_settings = 'domains' %]
 [% content = BLOCK %]
-<div class="container">		
+<div class="container">
 	<div class="row">
 		<div class="tabbable">
-			<div class="span3">
+			<div class="span12">
 				[% INCLUDE u/settings/menu.html %]
-			</div> <!-- /.span3 -->
-			<div class="span9">
-			[% IF page.form.new_domain %]
+			</div>
+			<div class="span12">
+				[% IF page.form.new_domain %]
 				<h2>Register New Domain:</h2>
 				<div class="faq-container">
 					<ol class="faqList faq-list">
 						<li id="faq-1">
-							<div class="faq-icon">
-								<div class="faq-number">&raquo;</div>
-							</div>
-							<div class="faq-text">
-								<h4>After registering you must confirm ownership of this domain</h4>
-								<p>You will be provided with a verification code that can be added to your DNS entries or posted on your website.</p>
-							</div>
+						<div class="faq-icon">
+							<div class="faq-number">&raquo;</div>
+						</div>
+						<div class="faq-text">
+							<h4>After registering you must confirm ownership of this domain</h4>
+							<p>You will be provided with a verification code that can be added to your DNS entries or posted on your website.</p>
+						</div>
 						</li>
 					</ol>
 				</div>
@@ -29,10 +29,10 @@
 							<label class="control-label" for="dns">Domain Name:</label>
 							<div class="controls">
 								[% page.field(
-									'command' => 'domain_add',
-									'type' => 'text',
-									'name' => 'dns',
-									'opts' => {'id' => 'dns'},
+								'command' => 'domain_add',
+								'type' => 'text',
+								'name' => 'dns',
+								'opts' => {'id' => 'dns'},
 								) %]
 								[% IF page.value.error %]
 								<div>
@@ -44,9 +44,9 @@
 						<div class="control-group">
 							<div class="controls">
 								[% page.button(
-									'command' => 'domain_add',
-									'contents' => 'Register Domain',
-									'opts' => {'class' => 'btn btn-primary btn-large'},
+								'command' => 'domain_add',
+								'contents' => 'Register Domain',
+								'opts' => {'class' => 'btn btn-primary btn-large'},
 								) %]
 								&nbsp;&nbsp;|&nbsp;&nbsp;
 								<a href="[% page.url() %]">Cancel</a>
@@ -54,47 +54,47 @@
 						</div>
 					</fieldset>
 				</form>
-			[% ELSE %]
+				[% ELSE %]
 				<h2>Routing for Domains:</h2>
 				[% IF page.value.domain_added %]
-					<div class="alert alert-success">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						<h4>Domain Registered</h4>
-						<br/>
-						The domain name <strong>[% page.value.domain %]</strong> is now registered with RingMail. You must verify that you own the domain before it can be used.
-					</div> 
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<h4>Domain Registered</h4>
+					<br/>
+					The domain name <strong>[% page.value.domain %]</strong> is now registered with RingMail. You must verify that you own the domain before it can be used.
+				</div> 
 				[% END %]
 				[% IF verify_count %]
-					<div class="span6">
-						<h3>Domains To Verify:</h3>
-						<table class="table table-bordered table-striped">
-							<thead>
-								<tr>
-									<th>Domain</th>
-									<th>How To Verify</th>
-									<th>Check Verification</th>
-								</tr>
-							</thead>
-							<tbody>
-								[% FOREACH d IN verify %]
-									<tr>
-										<td><span style="font-size: 14px;">[% d.domain %]</span></td>
-										<td style="width: 25%;"><a class="btn btn-small" href="[% page.url(
-																											'path' => '/u/settings/domain_code',
-																											'query' => {'id' => d.domain_id},
-																										) %]">Instructions</a></td>
-										<td style="width: 25%;"><a class="btn btn-small btn-primary" href="[% page.url(
-																												'path' => '/u/settings/domain_code',
-																												'command' => 'verify',
-																												'args' => [d.domain_id],
-																											) %]">Verify Now</a></td>
-									</tr>
-								[% END %]
-							</tbody>
-						</table>
-					</div>
-					<br clear="all"/>
-					<hr/>
+				<div class="span6">
+					<h3>Domains To Verify:</h3>
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Domain</th>
+								<th>How To Verify</th>
+								<th>Check Verification</th>
+							</tr>
+						</thead>
+						<tbody>
+						[% FOREACH d IN verify %]
+						<tr>
+							<td><span style="font-size: 14px;">[% d.domain %]</span></td>
+							<td style="width: 25%;"><a class="btn btn-small" href="[% page.url(
+									'path' => '/u/settings/domain_code',
+									'query' => {'id' => d.domain_id},
+									) %]">Instructions</a></td>
+							<td style="width: 25%;"><a class="btn btn-small btn-primary" href="[% page.url(
+									'path' => '/u/settings/domain_code',
+									'command' => 'verify',
+									'args' => [d.domain_id],
+									) %]">Verify Now</a></td>
+						</tr>
+						[% END %]
+						</tbody>
+					</table>
+				</div>
+				<br clear="all"/>
+				<hr/>
 				[% END %]
 				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
@@ -109,11 +109,11 @@
 							<label class="control-label" for="domain_sel">Select Domain:</label>
 							<div class="controls">
 								[% page.field(
-									'type' => 'select',
-									'name' => 'id',
-									'select' => domain_list,
-									'selected' => domain_sel,
-									'opts' => domain_opts,
+								'type' => 'select',
+								'name' => 'id',
+								'select' => domain_list,
+								'selected' => domain_sel,
+								'opts' => domain_opts,
 								) %]
 							</div>
 						</div>
@@ -129,49 +129,49 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td width="5%" style="text-align: center;">[% page.field(
-									'command' => 'update',
-									'type' => 'radio',
-									'name' => domain_rt.id_name,
-									'value' => 'did',
-									'checked' => domain_rt.did,
-									'opts' => domain_rt.did_opts,
+						<tr>
+							<td width="5%" style="text-align: center;">[% page.field(
+								'command' => 'update',
+								'type' => 'radio',
+								'name' => domain_rt.id_name,
+								'value' => 'did',
+								'checked' => domain_rt.did,
+								'opts' => domain_rt.did_opts,
 								) %]</td>
-								<td width="65%" style="padding-bottom: 0px;">
-									<div class="control-group" style="margin-bottom: 0px;">
-										<label for="did_[% domain_rt.id %]" class="control-label">Phone Number</label>
-										<div class="controls" style="margin-bottom: 0px;">
-											[% IF domain_rt.did_opts.disabled == 'disabled' %]
-												[% page.field(
-													'command' => 'update',
-													'type' => 'text',
-													'name' => domain_rt.id_did,
-													'value' => domain_rt.did_number,
-													'opts' => {'class' => 'input-large', 'id' => domain_rt.id_did, 'disabled' => 'disabled'},
-												) %]
-												<p class="help-block">
-													A RingMail Basic subscription is required to route calls to a phone number.
-												</p>
-												<p class="help-block">
-													<a class="btn" href="/u/settings/service">Subscribe Now</a>
-													&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="#">Why do we charge?</a>
-												</p>
-											[% ELSE %]
-												[% page.field(
-													'command' => 'update',
-													'type' => 'text',
-													'name' => domain_rt.id_did,
-													'value' => domain_rt.did_number,
-													'opts' => {'class' => 'input-large', 'id' => domain_rt.id_did},
-												) %]
-											[% END %]
-										</div>
+							<td width="65%" style="padding-bottom: 0px;">
+								<div class="control-group" style="margin-bottom: 0px;">
+									<label for="did_[% domain_rt.id %]" class="control-label">Phone Number</label>
+									<div class="controls" style="margin-bottom: 0px;">
+										[% IF domain_rt.did_opts.disabled == 'disabled' %]
+										[% page.field(
+										'command' => 'update',
+										'type' => 'text',
+										'name' => domain_rt.id_did,
+										'value' => domain_rt.did_number,
+										'opts' => {'class' => 'input-large', 'id' => domain_rt.id_did, 'disabled' => 'disabled'},
+										) %]
+										<p class="help-block">
+										A RingMail Basic subscription is required to route calls to a phone number.
+										</p>
+										<p class="help-block">
+										<a class="btn" href="/u/settings/service">Subscribe Now</a>
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										<a href="#">Why do we charge?</a>
+										</p>
+										[% ELSE %]
+										[% page.field(
+										'command' => 'update',
+										'type' => 'text',
+										'name' => domain_rt.id_did,
+										'value' => domain_rt.did_number,
+										'opts' => {'class' => 'input-large', 'id' => domain_rt.id_did},
+										) %]
+										[% END %]
 									</div>
-								</td>
-								<td width="30%"><p>Enter a telephone number.</p></td>
-							</tr>
+								</div>
+							</td>
+							<td width="30%"><p>Enter a telephone number.</p></td>
+						</tr>
 						</tbody>
 					</table>
 					<table class="table table-bordered table-striped table-highlight ">
@@ -181,24 +181,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td width="5%" style="text-align: center;">[% page.field(
-									'command' => 'update',
-									'type' => 'radio',
-									'name' => domain_rt.id_name,
-									'value' => 'phone',
-									'checked' => domain_rt.phone
+						<tr>
+							<td width="5%" style="text-align: center;">[% page.field(
+								'command' => 'update',
+								'type' => 'radio',
+								'name' => domain_rt.id_name,
+								'value' => 'phone',
+								'checked' => domain_rt.phone
 								) %]</td>
-								<td width="65%">
-									<div class="control-group" style="margin-bottom: 0px;">
-										<label for="phone_[% domain_rt.id %]" class="control-label">Select Phone</label>
-										<div class="controls" style="margin-bottom: 0px;">
-											[% domain_rt.phone_field %]
-										</div>
+							<td width="65%">
+								<div class="control-group" style="margin-bottom: 0px;">
+									<label for="phone_[% domain_rt.id %]" class="control-label">Select Phone</label>
+									<div class="controls" style="margin-bottom: 0px;">
+										[% domain_rt.phone_field %]
 									</div>
-								</td>
-								<td width="30%">Register VoIP phone or softphone.</td>
-							</tr>
+								</div>
+							</td>
+							<td width="30%">Register VoIP phone or softphone.</td>
+						</tr>
 						</tbody>
 					</table>
 					<table class="table table-bordered table-striped table-highlight ">
@@ -208,43 +208,43 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td width="5%" style="text-align: center;">[% page.field(
-									'command' => 'update',
-									'type' => 'radio',
-									'name' => domain_rt.id_name,
-									'value' => 'sip',
-									'checked' => domain_rt.sip
+						<tr>
+							<td width="5%" style="text-align: center;">[% page.field(
+								'command' => 'update',
+								'type' => 'radio',
+								'name' => domain_rt.id_name,
+								'value' => 'sip',
+								'checked' => domain_rt.sip
 								) %]</td>
-								<td width="65%" style="padding-bottom: 0px;">
-									<div class="control-group" style="margin-bottom: 0px;">
-										<label for="sip_[% domain_rt.id %]" class="control-label">SIP Address</label>
-										<div class="controls" style="margin-bottom: 0px;">
-											[% page.field(
-												'command' => 'update',
-												'type' => 'text',
-												'name' => domain_rt.id_sip,
-												'value' => domain_rt.sip_url,
-												'opts' => {'class' => 'input-large', 'id' => domain_rt.id_sip},
-											) %]
-										</div>
+							<td width="65%" style="padding-bottom: 0px;">
+								<div class="control-group" style="margin-bottom: 0px;">
+									<label for="sip_[% domain_rt.id %]" class="control-label">SIP Address</label>
+									<div class="controls" style="margin-bottom: 0px;">
+										[% page.field(
+										'command' => 'update',
+										'type' => 'text',
+										'name' => domain_rt.id_sip,
+										'value' => domain_rt.sip_url,
+										'opts' => {'class' => 'input-large', 'id' => domain_rt.id_sip},
+										) %]
 									</div>
-								</td>
-								<td width="30%">Enter a SIP endpoint URL.</td>
-							</tr>
+								</div>
+							</td>
+							<td width="30%">Enter a SIP endpoint URL.</td>
+						</tr>
 						</tbody>
 					</table>
 					<div class="form-actions">
 						[% page.button(
-							'command' => 'update',
-							'contents' => '<i class="icon-ok"></i> Update',
-							'opts' => {'class' => 'btn btn-primary btn-large'},
-							'args' => [domain_rt.target_id, domain_sel],
+						'command' => 'update',
+						'contents' => '<i class="icon-ok"></i> Update',
+						'opts' => {'class' => 'btn btn-primary btn-large'},
+						'args' => [domain_rt.target_id, domain_sel],
 						) %]
 					</div>
 				</form>
 				[% END %]
-			[% END %]
+				[% END %]
 			</div> <!-- /#tab1 -->
 		</div>
 	</div>
