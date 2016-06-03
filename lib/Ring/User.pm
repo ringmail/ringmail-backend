@@ -229,7 +229,8 @@ sub reset_email_send
 		'ts' => strftime("%F %T", localtime()),
 	});
 	my $from = 'RingMail <ringmail@ringmail.com>';
-	my $link = 'https://www.ringmail.com/reset?code='. $code;
+	my $wdom = $main::app_config->{'www_domain'};
+	my $link = 'https://'. $wdom. '/reset?code='. $code;
 	my $tmpl = new Note::Template(
 		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
 	);

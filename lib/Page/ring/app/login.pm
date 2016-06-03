@@ -27,7 +27,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log({%$form, 'password' => ''});
+	::log({%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},

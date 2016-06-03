@@ -205,16 +205,19 @@ sub add_contact
 		'organization' => $ct->{'co'},
 		'ts_updated' => strftime("%F %T", gmtime($ts)),
 	});
-	$obj->add_contact_emails(
+	my $match = $obj->add_contact_emails(
 		'contact_id' => $ctrec->{'id'},
 		'emails' => $ct->{'em'},
 		'purge' => $param->{'purge'},
 	);
-	$obj->add_contact_phones(
+	$match ||= $obj->add_contact_phones(
 		'contact_id' => $ctrec->{'id'},
 		'phones' => $ct->{'ph'},
 		'purge' => $param->{'purge'},
 	);
+	$ctrec->update({
+		'matched_user_id' => $match,
+	});
 }
 
 sub add_contact_emails
@@ -275,26 +278,90 @@ sub add_contact_emails
 		foreach my $k (@ks)
 		{
 			my $rid = $current{$k};
-			my $prevmatch = sqltable('ring_contact_email')->get(
-				'array' => 1,
-				'select' => ['matched_user_id'],
-				'where' => {
-					'id' => $rid,
-				},
-			)->[0]->[0];
-			if (defined $prevmatch) # only remove from main contact if its the same as this entity (another remaining item may add a match back to the main contact)
-			{
-				sqltable('ring_contact')->set(
-					'update' => {
-						'matched_user_id' => undef,
-					},
-					'where' => {
-						'id' => $ct,
-						'matched_user_id' => $prevmatch,
-					},
-				);
-			}
+#			my $prevmatch = sqltable('ring_contact_email')->get(
+#				'array' => 1,
+#				'select' => ['matched_user_id'],
+#				'where' => {
+#					'id' => $rid,
+#				},
+#			)->[0]->[0];
+#			if (defined $prevmatch) # only remove from main contact if its the same as this entity (another remaining item may add a match back to the main contact)
+#			{
+#				sqltable('ring_contact')->set(
+#					'update' => {
+#						'matched_user_id' => undef,
+#					},
+#					'where' => {
+#						'id' => $ct,
+#						'matched_user_id' => $prevmatch,
+#					},
+#				);
+#			}
 			sqltable('ring_contact_email')->delete(
+				'where' => {'id' => $rid},
+			);
+		}
+	}
+	return $match;
+}
+
+sub add_contact_phones
+{
+	my ($obj, $param) = get_param(@_);
+	my $ct = $param->{'contact_id'};
+	my $phones = $param->{'phones'};
+	my %current = ();
+	if ($param->{'purge'})
+	{
+		my $q = sqltable('ring_contact_phone')->get(
+			'array' => 1,
+			'select' => ['phone_hash', 'id'],
+			'where' => {
+				'contact_id' => $ct,
+			},
+		);
+		%current = map {$_->[0] => $_->[1]} @$q;
+	}
+	my $match = undef;
+	foreach my $ph (@$phones)
+	{
+		if (exists $current{$ph})
+		{
+			delete $current{$ph};
+		}
+		my $item = Note::Row::find_create('ring_contact_phone' => {
+			'contact_id' => $ct,
+			'phone_hash' => $ph,
+		});
+		my $matches = sqltable('ring_user_did')->get(
+			'array' => 1,
+			'select' => [
+				'ud.user_id',
+			],
+			'table' => 'ring_did d, ring_user_did ud',
+			'join' => [
+				'd.id=ud.did_id',
+			],
+			'where' => {
+				'd.did_hash' => $ph,
+			},
+		);
+		if (scalar @$matches)
+		{
+			# match :)
+			$match ||= $matches->[0]->[0]; # only take the first phone that matches
+			$item->update({
+				'matched_user_id' => $match,
+			});
+		}
+	}
+	if ($param->{'purge'})
+	{
+		my @ks = keys %current;
+		foreach my $k (@ks)
+		{
+			my $rid = $current{$k};
+			sqltable('ring_contact_phone')->delete(
 				'where' => {'id' => $rid},
 			);
 		}
@@ -312,21 +379,7 @@ sub add_contact_emails
 			},
 		);
 	}
-}
-
-sub add_contact_phones
-{
-	my ($obj, $param) = get_param(@_);
-	my $ct = $param->{'contact_id'};
-	my $phones = $param->{'phones'};
-	foreach my $ph (@$phones)
-	{
-		Note::Row::find_create('ring_contact_phone' => {
-			'contact_id' => $ct,
-			'phone_hash' => $ph,
-		});
-		# TODO: match
-	}
+	return $match;
 }
 
 sub delete_contact
