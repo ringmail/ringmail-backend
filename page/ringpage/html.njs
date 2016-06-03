@@ -1,4 +1,3 @@
 {
-   "class" : "Page::ring::setup::entertainment",
-   "template" : "u/settings/entertainment.html"
+   "class" : "Page::ring::ringpage"
 }
