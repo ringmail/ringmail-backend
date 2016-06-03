@@ -18,25 +18,14 @@
 <link rel="stylesheet" href="/css/application.css"/>
 <link rel="stylesheet" href="/css/pages/dashboard.css"/>
 <link rel="stylesheet" href="/css/spectrum.css"/>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/js/spectrum.js"></script>
+<script src="/js/libs/jquery-1.7.2.min.js"></script>
 <script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
-<script src="/js/jquery.iframe-transport.js"></script>
-<script src="/js/jquery.fileupload.js"></script>
-<script src="/js/Theme.js"></script>
+<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
 <script src="/js/libs/bootstrap/bootstrap.min.js"></script>
 <script src="/js/bootstrap-affix.js"></script>
-<script src="/js/Charts.js"></script>
-<script src="/js/demos/charts/donut.js"></script>
-<script src="/js/demos/charts/line.js"></script>
-<script src="/js/libs/jquery.ui.touch-punch.min.js"></script>
-<script src="/js/libs/modernizr-2.5.3.min.js"></script>
-<script src="/js/plugins/excanvas/excanvas.min.js"></script>
-<script src="/js/plugins/flot/jquery.flot.js"></script>
-<script src="/js/plugins/flot/jquery.flot.orderBars.js"></script>
-<script src="/js/plugins/flot/jquery.flot.pie.js"></script>
-<script src="/js/plugins/flot/jquery.flot.resize.js"></script>
-<script src="/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
-<script src="/js/spectrum.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -109,11 +98,28 @@
 	</div> <!-- /container -->
 </div> <!-- /#footer -->
 
+<script src="/js/Theme.js"></script>
+<script src="/js/Charts.js"></script>
+<script src="/js/plugins/excanvas/excanvas.min.js"></script>
+<script src="/js/plugins/flot/jquery.flot.js"></script>
+<script src="/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="/js/plugins/flot/jquery.flot.orderBars.js"></script>
+<script src="/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="/js/demos/charts/line.js"></script>
+<script src="/js/demos/charts/donut.js"></script>
+
 <script>
 $(function () {
 		Theme.init ();
 		});
+</script>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/vendor/jquery.ui.widget.js"></script>
+<script src="/js/jquery.iframe-transport.js"></script>
+<script src="/js/jquery.fileupload.js"></script>
+<script>
 $(function () {
 		$('#f_d1-body_background_image').fileupload({
 dataType: 'json',

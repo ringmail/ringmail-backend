@@ -7,7 +7,7 @@
 			<div class="span12">
 				[% INCLUDE u/settings/menu.html %]
 			</div>
-			<div class="span6">
+			<div class="span9">
 				<h2>RingPage: [% ringpage.ringpage %]</h2>
 				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
 					<p>
@@ -307,7 +307,7 @@
 					</table>
 				</form>
 			</div>
-			<div class="span6">
+			<div class="span3">
 				<div data-spy="affix">
 					<h2>Preview</h2>
 					<iframe class="well" style="height: 600px;" src="/u/t/entertainment?ringpage_id=[% page.form.id %]" />
