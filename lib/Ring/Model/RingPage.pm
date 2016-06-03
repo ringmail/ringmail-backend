@@ -137,6 +137,7 @@ sub retrieve {
             'rp.id',
             'rp.ringpage',
             'rp.template_id',
+			't.path',
 
         ],
         table => [ 'ring_page rp', 'ring_template t', ],
