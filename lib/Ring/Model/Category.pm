@@ -3,16 +3,28 @@ package Ring::Model::Category;
 use strict;
 use warnings;
 
-use Moose;
+use open ':encoding(UTF-8)';
 
-use Note::Param;
-use Note::SQL::Table 'sqltable';
+use Moose;
+use Carp 'croak';
+use English '-no_match_vars';
+use JSON::XS qw{ encode_json decode_json };
+
+has caller => ( is => 'ro', isa => 'Any', );
 
 sub get_categories {
-    my ( @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
-    my $q = sqltable('ring_category')->get( 'select' => [ qw{ id category }, ], );
-    return $q;
+    my ( $self, ) = @_;
+
+    my $caller = $self->caller();
+
+    my $filename = $caller->root() . '/data/hashtag/categories.json';
+
+    open my $filehandle, '<', $filename or croak $OS_ERROR;
+    local $RS = undef;
+    my $json = decode_json readline $filehandle;
+    close $filehandle or croak $OS_ERROR;
+
+    return $json;
 }
 
 1;

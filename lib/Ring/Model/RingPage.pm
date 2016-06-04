@@ -50,10 +50,10 @@ sub create {
         $trec = Note::Row::create(
             ring_page => {
 
-                fields      => $param->{fields},
-                ringpage    => $param->{ringpage},
-                template_id => $param->{template_id},
-                user_id     => $param->{user_id},
+                fields   => $param->{fields},
+                ringpage => $param->{ringpage},
+                template => $param->{template},
+                user_id  => $param->{user_id},
 
             }
         );
@@ -119,9 +119,15 @@ sub list {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ring_page')->get(
-        select => [ 'rp.id',        'rp.ringpage', 't.path', ],
-        table  => [ 'ring_page rp', 'ring_template t', ],
-        join   => [ 'rp.template_id = t.id', ],
+        select => [
+            qw{
+
+                rp.id
+                rp.ringpage
+
+                },
+        ],
+        table => 'ring_page rp',
         where => { 'rp.user_id' => $param->{user_id}, },
     );
     return $q;
@@ -132,16 +138,16 @@ sub retrieve {
     my ( $obj, $param ) = get_param( @args, );
     my $q = sqltable('ring_page')->get(
         select => [
+            qw{
 
-            'rp.fields',
-            'rp.id',
-            'rp.ringpage',
-            'rp.template_id',
-			't.path',
+                rp.fields
+                rp.id
+                rp.ringpage
+                rp.template
 
+                },
         ],
-        table => [ 'ring_page rp', 'ring_template t', ],
-        join  => [ 'rp.template_id = t.id', ],
+        table => 'ring_page rp',
         where => { 'rp.id' => $param->{id}, },
     );
 

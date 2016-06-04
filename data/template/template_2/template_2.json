@@ -84,20 +84,6 @@
          "value":""
       },
       {
-         "name":"offer",
-         "type":"checkbox",
-         "default":"0",
-         "label":"Contains Offer",
-         "value":""
-      },
-      {
-         "name":"video",
-         "type":"checkbox",
-         "default":"0",
-         "label":"Contains Video",
-         "value":""
-      },
-      {
          "name":"button_background_color",
          "type":"color",
          "default":"#D3D3D3",

@@ -24,28 +24,25 @@ extends 'Page::ring::user';
 around load => sub {
     my ( $next, @args, ) = @_;
 
-    my ( $obj, $param ) = get_param( @args, );
+    my ( $self, $param ) = get_param( @args, );
 
-    #my $form = $obj->form();
-    #::_log($form);
-    my $content = $obj->content();
-    my $user    = $obj->user();
+    my $content = $self->content();
+    my $user    = $self->user();
     my $account = Note::Account->new( $user->id() );
     my $uid     = $user->id();
     my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
 
-    #::log($ht);
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
 
-    my $category   = Ring::Model::Category->new();
+    my $category = Ring::Model::Category->new( caller => $self, );
     my $categories = $category->get_categories();
 
     my @categories;
 
     if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
+        push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
     }
     else {
         push @categories, [ '(No Categories Created)' => 0, ];
@@ -70,15 +67,13 @@ around load => sub {
     $content->{ringpage_list} = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->$next( $param, );
+    return $self->$next( $param, );
 };
 
 sub cmd_hashtag_add {
-    my ( $obj, $data, $args ) = @_;
+    my ( $self, $data, $args ) = @_;
 
-    ::log( $data, );
-
-    my $user   = $obj->user();
+    my $user   = $self->user();
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
@@ -119,7 +114,7 @@ sub cmd_hashtag_add {
                 );
                 if ( defined $res ) {
 
-                    #::log("New", $res);
+                    ::log( 'New', $res );
                 }
             }
             else {
@@ -132,8 +127,8 @@ sub cmd_hashtag_add {
 }
 
 sub cmd_hashtag_delete {
-    my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
+    my ( $self, $data, $args ) = @_;
+    my $user    = $self->user();
     my $uid     = $user->id();
     my $tagid   = $args->[0];
     my $factory = Ring::Model::Hashtag->new();
