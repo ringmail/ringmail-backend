@@ -22,14 +22,14 @@ extends 'Page::ring::user';
 
 around load => sub {
     my ( $next, @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
-    my $content = $obj->content();
-    my $form    = $obj->form();
-    my $user    = $obj->user();
+    my ( $self, $param ) = get_param( @args, );
+    my $content = $self->content();
+    my $form    = $self->form();
+    my $user    = $self->user();
     my $uid     = $user->id();
     my $id      = $form->{'id'};
     if ( not $id =~ m{ \A \d+ \z }xms ) {
-        return $obj->redirect('/u/hashtags');
+        return $self->redirect('/u/hashtags');
     }
 
     {
@@ -42,10 +42,8 @@ around load => sub {
         );
 
         if ( not defined $hashtag->id() ) {
-            return $obj->redirect('/u/hashtags');
+            return $self->redirect('/u/hashtags');
         }
-
-        my $category = Note::Row->new( ring_category => { id => $hashtag->data( 'category_id', ), }, );
 
         my $ringpage = Note::Row->new(
             ring_page => {
@@ -54,18 +52,18 @@ around load => sub {
             },
         );
 
-        $content->{category_sel} = $hashtag->data( 'category_id', );
-        $content->{category}     = $category->data('category');
+        $content->{category_sel} = $hashtag->data( 'category', );
+        $content->{category}     = $hashtag->data( 'category', );
         $content->{edit}         = ( $form->{edit} ) ? 1 : 0;
-        $content->{hashtag}      = $hashtag->data('hashtag');
+        $content->{hashtag}      = $hashtag->data( 'hashtag', );
         $content->{ringpage_sel} = $hashtag->data( 'ringpage_id', );
-        $content->{ringpage}     = $ringpage->data('ringpage');
-        $content->{target_url}   = $hashtag->data('target_url');
+        $content->{ringpage}     = $ringpage->data( 'ringpage', );
+        $content->{target_url}   = $hashtag->data( 'target_url', );
 
     }
 
-    my $category   = Ring::Model::Category->new();
-    my $categories = $category->get_categories();
+    my $category = Ring::Model::Category->new( caller => $self, );
+    my $categories = $category->list();
 
     my @categories;
 
@@ -88,18 +86,18 @@ around load => sub {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No RingPages Created)' => 0, ];
+        push @ringpages, [ '(No RingPages Created)' => undef, ];
     }
 
     $content->{ringpage_list} = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->$next( $param, );
+    return $self->$next( $param, );
 };
 
 sub cmd_hashtag_edit {
-    my ( $obj, $data, $args ) = @_;
-    my $user   = $obj->user();
+    my ( $self, $data, $args ) = @_;
+    my $user   = $self->user();
     my $uid    = $user->id();
     my $tagid  = $args->[0];
     my $target = $data->{target};
@@ -111,12 +109,15 @@ sub cmd_hashtag_edit {
 
     ::log( $data, );
 
+    my $ringpage_id = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+
+    ::log( $ringpage_id, );
+
     my $hashtag = Ring::Model::Hashtag->new();
     if ( $hashtag->validate_target( 'target' => $target, ) ) {
         if ($hashtag->update(
-                category_id => $data->{category_id},
                 id          => $tagid,
-                ringpage_id => $data->{ringpage_id},
+                ringpage_id => $ringpage_id,
                 target      => $target,
                 user_id     => $uid,
             )

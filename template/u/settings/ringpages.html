@@ -35,7 +35,7 @@
 								[% page.field(
 								command => 'add',
 								type => 'select',
-								name => 'template_id',
+								name => 'template_name',
 								select => template_list,
 								selected => template_sel,
 								opts => template_opts,
@@ -98,18 +98,10 @@
 							) %]
 							|
 							[% page.link(
-							text => 'View',
-							path => row.path,
-							query => {
-							ringpage_id => row.id,
-							},
-							) %]
-							|
-							[% page.link(
 							text => 'Edit Details',
 							path => '/u/edit_ringpage',
 							query => {
-							id => row.id,
+							ringpage_id => row.id,
 							},
 							) %]
 						</td>

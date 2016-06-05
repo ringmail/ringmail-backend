@@ -16,30 +16,31 @@ use Note::SQL::Table 'sqltable';
 
 use Ring::User;
 use Ring::Model::RingPage;
+use Ring::Model::Template;
 
 extends 'Page::ring::user';
 
 around load => sub {
     my ( $next, @args, ) = @_;
 
-    my ( $obj, $param ) = get_param( @args, );
-    my $content = $obj->content();
-    my $form    = $obj->form();
-    my $user    = $obj->user();
-    my $uid     = $user->id();
-    my $id      = $form->{'id'};
-    if ( not $id =~ m{ \A \d+ \z }xms ) {
-        return $obj->redirect('/u/ringpages');
+    my ( $self, $param ) = get_param( @args, );
+    my $content     = $self->content();
+    my $form        = $self->form();
+    my $user        = $self->user();
+    my $uid         = $user->id();
+    my $ringpage_id = $form->{ringpage_id};
+    if ( not $ringpage_id =~ m{ \A \d+ \z }xms ) {
+        return $self->redirect('/u/ringpages');
     }
     my $ringpage_row = Note::Row->new(
         ring_page => {
-            id      => $id,
+            id      => $ringpage_id,
             user_id => $uid,
         },
     );
 
     if ( not $ringpage_row->id() ) {
-        return $obj->redirect('/u/ringpages');
+        return $self->redirect('/u/ringpages');
     }
 
     my $ringpage_row_data = $ringpage_row->data();
@@ -55,10 +56,10 @@ around load => sub {
         $ringpage_row_data->{$key} = $value // $default;
     }
 
-    my $template_id        = $ringpage_row_data->{template_id};
-    my $template_row       = Note::Row->new( ring_template => { id => $template_id, }, );
-    my $template_row_data  = $template_row->data();
-    my $template_structure = decode_json $template_row_data->{structure};
+    my $template_model     = Ring::Model::Template->new( caller => $self, );
+    my $templates          = $template_model->list();
+    my $template_name      = $ringpage_row_data->{template};
+    my $template_structure = $templates->{$template_name}->{structure};
 
     my $buttons = sqltable( 'ring_button', )->get(
         select => [ qw{ id button uri }, ],
@@ -70,92 +71,84 @@ around load => sub {
     $content->{ringpage}->{buttons} = $buttons;
     $content->{edit}                = $form->{edit} ? 1 : 0;
 
-    ::log( $content->{template}, );
-
-    return $obj->$next( $param, );
+    return $self->$next( $param, );
 };
 
 sub edit {
-    my ( $obj, $data, $args ) = @_;
-    my $user           = $obj->user();
+    my ( $self, $data, $args ) = @_;
+    my $user           = $self->user();
     my $uid            = $user->id();
     my $id             = $args->[0];
     my $ringpage_model = Ring::Model::RingPage->new();
-    if ( $ringpage_model->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
 
-        my $ringpage_row = Note::Row->new(
-            ring_page => {
-                id      => $id,
-                user_id => $uid,
-            },
-        );
+    my $ringpage_row = Note::Row->new(
+        ring_page => {
+            id      => $id,
+            user_id => $uid,
+        },
+    );
 
-        my $ringpage_row_data = $ringpage_row->data();
+    my $ringpage_row_data = $ringpage_row->data();
 
-        my $ringpage_fields = decode_json $ringpage_row_data->{fields};
+    my $ringpage_fields = decode_json $ringpage_row_data->{fields};
 
-        for my $field ( @{$ringpage_fields} ) {
+    for my $field ( @{$ringpage_fields} ) {
 
-            my $key = $field->{name};
+        my $key = $field->{name};
 
-            $field->{value} = $data->{$key};
-        }
+        $field->{value} = $data->{$key};
+    }
 
-        if ($ringpage_model->update(
-                fields   => encode_json $ringpage_fields,
-                id       => $id,
-                ringpage => $data->{ringpage},
-                user_id  => $uid,
-            )
-            )
-        {
-            # display confirmation
+    if ($ringpage_model->update(
+            fields  => encode_json $ringpage_fields,
+            id      => $id,
+            user_id => $uid,
+        )
+        )
+    {
+        # display confirmation
 
-            my $each_array = each_arrayref [ $obj->request()->parameters()->get_all( 'd1-button_id', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_text', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_link', ), ];
-            while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
+        my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_id', ), ], [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
+        while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
 
-                if ( $button_id eq q{} ) {
+            if ( $button_id eq q{} ) {
 
-                    next if $button_text eq q{} or $button_link eq q{};
+                next if $button_text eq q{} or $button_link eq q{};
 
-                    my $button_row = Note::Row::create(
-                        ring_button => {
-                            button      => $button_text,
-                            ringpage_id => $id,
-                            uri         => $button_link,
-                            user_id     => $user->id(),
-                        },
-                    );
+                my $button_row = Note::Row::create(
+                    ring_button => {
+                        button      => $button_text,
+                        ringpage_id => $id,
+                        uri         => $button_link,
+                        user_id     => $user->id(),
+                    },
+                );
+
+            }
+
+            else {
+
+                my $button_row = Note::Row->new( ring_button => $button_id, );
+
+                if ( $button_text eq q{} or $button_link eq q{} ) {
+
+                    $button_row->delete();
 
                 }
 
                 else {
 
-                    my $button_row = Note::Row->new( ring_button => $button_id, );
-
-                    if ( $button_text eq q{} or $button_link eq q{} ) {
-
-                        $button_row->delete();
-
-                    }
-
-                    else {
-
-                        $button_row->update( { button => $button_text, uri => $button_link, }, );
-
-                    }
+                    $button_row->update( { button => $button_text, uri => $button_link, }, );
 
                 }
 
             }
 
         }
-        else {
-            # failed
-        }
+
     }
     else {
-        # invalid
+        # failed
     }
 
     return;

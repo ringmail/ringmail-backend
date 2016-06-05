@@ -12,7 +12,7 @@ use JSON::XS qw{ encode_json decode_json };
 
 has caller => ( is => 'ro', isa => 'Any', );
 
-sub get_categories {
+sub list {
     my ( $self, ) = @_;
 
     my $caller = $self->caller();

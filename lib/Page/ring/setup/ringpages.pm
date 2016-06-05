@@ -23,42 +23,33 @@ extends 'Page::ring::user';
 
 around load => sub {
     my ( $next, @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
+    my ( $self, $param ) = get_param( @args, );
 
-    #my $form = $obj->form();
-    #::_log($form);
-    my $content = $obj->content();
-    my $user    = $obj->user();
+    my $content = $self->content();
+    my $user    = $self->user();
 
-    my $template  = Ring::Model::Template->new();
+    my $template = Ring::Model::Template->new( caller => $self, );
     my $templates = $template->list();
 
     my @templates;
 
-    if ( scalar @{$templates} ) {
-        push @templates, map { [ $ARG->{template} => $ARG->{id}, ]; } @{$templates};
-    }
-    else {
-        push @templates, [ '(No Templates Created)' => 0, ];
-    }
+    push @templates, map { [ $templates->{$ARG}->{title} => $ARG, ]; } sort keys $templates;
 
     $content->{template_list}       = \@templates;
     $content->{template_sel}        = 0;
-    $content->{template_opts}->{id} = 'template';
+    $content->{template_opts}->{id} = 'template_name';
 
     my $ringpage = Ring::Model::RingPage->new();
     my $ringpages = $ringpage->list( user_id => $user->id(), );
     $content->{ringpages} = $ringpages;
 
-    return $obj->$next( $param, );
+    return $self->$next( $param, );
 };
 
 sub add {
-    my ( $obj, $data, $args ) = @_;
+    my ( $self, $data, $args ) = @_;
 
-    ::log( $data, );
-
-    my $user    = $obj->user();
+    my $user    = $self->user();
     my $factory = Ring::Model::RingPage->new();
 
     if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
@@ -68,27 +59,29 @@ sub add {
         }
         else {
 
-            my $template = Note::Row->new( ring_template => { id => $data->{template_id}, }, );
-            my $structure = decode_json $template->data( 'structure', );
+            my $template_name = $data->{template_name};
 
-            for my $field ( @{ $structure->{fields} } ) {
+            my $template_model = Ring::Model::Template->new( caller => $self, );
+            my $templates = $template_model->list();
+
+            my $template_structure = $templates->{$template_name}->{structure};
+
+            for my $field ( @{ $template_structure->{fields} } ) {
                 my $name = $field->{name};
 
                 $field->{value} = $data->{$name};
             }
 
-            ::log( $structure, );
-
             my $res = $factory->create(
-                fields      => encode_json $structure->{fields},
-                ringpage    => $data->{ringpage},
-                template_id => $data->{template_id},
-                user_id     => $user->id(),
+                fields        => encode_json $template_structure->{fields},
+                ringpage      => $data->{ringpage},
+                template_name => $template_name,
+                user_id       => $user->id(),
             );
             if ( defined $res ) {
                 ::log( New => $res );
 
-                my $each_array = each_arrayref [ $obj->request()->parameters()->get_all( 'd1-button_text', ), ], [ $obj->request()->parameters()->get_all( 'd1-button_link', ), ];
+                my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
                 while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
                     next if $button_text eq q{} or $button_link eq q{};
@@ -111,8 +104,8 @@ sub add {
 }
 
 sub remove {
-    my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
+    my ( $self, $data, $args ) = @_;
+    my $user    = $self->user();
     my $page_id = $args->[0];
     my $factory = Ring::Model::RingPage->new();
     if ($factory->delete(

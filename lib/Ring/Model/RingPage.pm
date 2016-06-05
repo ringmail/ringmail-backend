@@ -52,7 +52,7 @@ sub create {
 
                 fields   => $param->{fields},
                 ringpage => $param->{ringpage},
-                template => $param->{template},
+                template => $param->{template_name},
                 user_id  => $param->{user_id},
 
             }
@@ -102,9 +102,8 @@ sub update {
         $rc->update(
             {
 
-                fields   => $param->{fields},
-                ringpage => $param->{ringpage},
-                user_id  => $param->{user_id},
+                fields  => $param->{fields},
+                user_id => $param->{user_id},
 
             }
         );
@@ -148,7 +147,7 @@ sub retrieve {
                 },
         ],
         table => 'ring_page rp',
-        where => { 'rp.id' => $param->{id}, },
+        where => { 'rp.id' => $param->{ringpage_id}, },
     );
 
     return $q->[0];

@@ -1,6 +1,5 @@
-[
-   {
-      "name":"template_1",
+{
+   "template_1":{
       "title":"Entertainment",
       "path":"template_1",
       "structure":{
@@ -119,8 +118,7 @@
          ]
       }
    },
-   {
-      "name":"template_2",
+   "template_2":{
       "title":"News",
       "path":"template_2",
       "structure":{
@@ -239,4 +237,4 @@
          ]
       }
    }
-]
+}

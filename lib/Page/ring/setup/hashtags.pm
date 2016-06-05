@@ -37,16 +37,11 @@ around load => sub {
     $content->{'hashtag_table'} = $ht;
 
     my $category = Ring::Model::Category->new( caller => $self, );
-    my $categories = $category->get_categories();
+    my $categories = $category->list();
 
     my @categories;
 
-    if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
-    }
-    else {
-        push @categories, [ '(No Categories Created)' => 0, ];
-    }
+    push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
 
     $content->{category_list}       = \@categories;
     $content->{category_sel}        = 0;
@@ -61,7 +56,7 @@ around load => sub {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No RingPages Created)' => q{}, ];
+        push @ringpages, [ '(No RingPages Created)' => undef, ];
     }
 
     $content->{ringpage_list} = \@ringpages;
@@ -105,9 +100,16 @@ sub cmd_hashtag_add {
                     user_id  => $uid,
                 );
 
+                ::log( $data, );
+
+                my $category = $data->{category};
+                my ( $ringpage_id, ) = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+
+                ::log( $ringpage_id, );
+
                 my $res = $factory->create(
-                    category_id => $data->{category_id},
-                    ringpage_id => $data->{ringpage_id},
+                    category    => $category,
+                    ringpage_id => $ringpage_id,
                     tag         => $tag,
                     target_url  => $target,
                     user_id     => $uid,
