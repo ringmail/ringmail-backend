@@ -9,7 +9,28 @@
 				[% INCLUDE u/settings/menu.html %]
 			</div>
 			<div class="span12">
-				<form>
+				<form style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<fieldset>
+						<div class="control-group[% IF page.value.error %] error[% END %]">
+							<label class="control-label" for="hashtag">Hashtag:</label>
+							<div class="controls">
+								<div class="input-prepend">
+									<span class="add-on">#</span>
+									[% page.field(
+									'command' => 'check_hashtag',
+									'type' => 'text',
+									'name' => 'hashtag',
+									'opts' => {'id' => 'hashtag', 'style' => 'width: 179px'},
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
+								</div>
+							</div>
+						</div>
+					</fieldset>
 				</form>
 			</div>
 		</div>
