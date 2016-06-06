@@ -45,19 +45,21 @@ around load => sub {
             return $self->redirect('/u/hashtags');
         }
 
-        my $ringpage = Note::Row->new(
+        my $ringpage_row = Note::Row->new(
             ring_page => {
                 id      => $hashtag->data( 'ringpage_id', ),
                 user_id => $uid,
             },
         );
 
+        my $ringpage = defined $ringpage_row->id() ? $ringpage_row->data( 'ringpage', ) : undef;
+
         $content->{category_sel} = $hashtag->data( 'category', );
         $content->{category}     = $hashtag->data( 'category', );
         $content->{edit}         = ( $form->{edit} ) ? 1 : 0;
         $content->{hashtag}      = $hashtag->data( 'hashtag', );
         $content->{ringpage_sel} = $hashtag->data( 'ringpage_id', );
-        $content->{ringpage}     = $ringpage->data( 'ringpage', );
+        $content->{ringpage}     = $ringpage;
         $content->{target_url}   = $hashtag->data( 'target_url', );
 
     }
@@ -68,7 +70,7 @@ around load => sub {
     my @categories;
 
     if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
+        push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
     }
     else {
         push @categories, [ '(No Categories Created)' => 0, ];
@@ -107,11 +109,7 @@ sub cmd_hashtag_edit {
         $target = 'http://' . $target;
     }
 
-    ::log( $data, );
-
-    my $ringpage_id = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-
-    ::log( $ringpage_id, );
+    my ( $ringpage_id, ) = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
 
     my $hashtag = Ring::Model::Hashtag->new();
     if ( $hashtag->validate_target( 'target' => $target, ) ) {
