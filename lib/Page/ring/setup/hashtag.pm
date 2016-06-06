@@ -32,6 +32,10 @@ around load => sub {
         return $self->redirect('/u/hashtags');
     }
 
+    my $category_model = Ring::Model::Category->new( caller => $self, );
+    my $categories     = $category_model->list();
+    my %categories     = map { $ARG->{name} => $ARG->{title} } @{$categories};
+
     {
 
         my $hashtag = Note::Row->new(
@@ -45,6 +49,9 @@ around load => sub {
             return $self->redirect('/u/hashtags');
         }
 
+        my $category_name  = $hashtag->data( 'category', );
+        my $category_title = $categories{$category_name};
+
         my $ringpage_row = Note::Row->new(
             ring_page => {
                 id      => $hashtag->data( 'ringpage_id', ),
@@ -55,7 +62,7 @@ around load => sub {
         my $ringpage = defined $ringpage_row->id() ? $ringpage_row->data( 'ringpage', ) : undef;
 
         $content->{category_sel} = $hashtag->data( 'category', );
-        $content->{category}     = $hashtag->data( 'category', );
+        $content->{category}     = $category_title;
         $content->{edit}         = ( $form->{edit} ) ? 1 : 0;
         $content->{hashtag}      = $hashtag->data( 'hashtag', );
         $content->{ringpage_sel} = $hashtag->data( 'ringpage_id', );
@@ -63,9 +70,6 @@ around load => sub {
         $content->{target_url}   = $hashtag->data( 'target_url', );
 
     }
-
-    my $category = Ring::Model::Category->new( caller => $self, );
-    my $categories = $category->list();
 
     my @categories;
 
