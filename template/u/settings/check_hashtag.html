@@ -9,7 +9,13 @@
 				[% INCLUDE u/settings/menu.html %]
 			</div>
 			<div class="span12">
-				<p>[% page.value.available %]</p>
+				<div class="span12">
+					[% IF page.value.hashtag == 0 %]
+					Available!
+					[% ELSE %]
+					Not available. 
+					[% END %]
+				</div>
 				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group[% IF page.value.error %] error[% END %]">

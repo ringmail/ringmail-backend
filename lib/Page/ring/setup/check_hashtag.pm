@@ -6,11 +6,9 @@ use warnings;
 use Moose;
 
 use Note::Param;
+use Ring::Model::Hashtag;
 
-use Ring::User;
-use Page::ring::user;
-
-use parent 'Page::ring::user';
+extends 'Page::ring::user';
 
 around load => sub {
     my ( $next, @args, ) = @_;
@@ -25,11 +23,11 @@ sub check_hashtag {
 
     my ( $self, $param ) = get_param( @args, );
 
-    ::log( $self, $param, );
-
     $self->form()->{hashtag} = $param->{hashtag};
 
-    $self->value()->{available} = 1 if $param->{hashtag} eq 'foobar';
+    my $hashtag_model = Ring::Model::Hashtag->new();
+
+    $self->value()->{hashtag} = $hashtag_model->check_exists( tag => $param->{hashtag}, );
 
     return;
 }
