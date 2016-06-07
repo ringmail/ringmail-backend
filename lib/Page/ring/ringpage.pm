@@ -56,9 +56,9 @@ sub load {
         $template_filename = $templates->{$template_name}->{path} . '.css';
     }
 
-    my $tpl = Note::Template->new( root => $self->root() . '/data/template/' . $templates->{$template_name}->{path}, );
+    my $template = Note::Template->new( root => $self->root() . '/data/template/' . $templates->{$template_name}->{path}, );
 
-    return $tpl->apply( $template_filename, $self->content(), );
+    return $template->apply( $template_filename, $self->content(), );
 }
 
 1;
