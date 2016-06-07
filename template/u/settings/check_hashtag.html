@@ -9,7 +9,8 @@
 				[% INCLUDE u/settings/menu.html %]
 			</div>
 			<div class="span12">
-				<form style="margin: 0px; padding: 0px;" class="form-horizontal">
+				<p>[% page.value.available %]</p>
+				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group[% IF page.value.error %] error[% END %]">
 							<label class="control-label" for="hashtag">Hashtag:</label>
@@ -17,10 +18,14 @@
 								<div class="input-prepend">
 									<span class="add-on">#</span>
 									[% page.field(
-									'command' => 'check_hashtag',
-									'type' => 'text',
-									'name' => 'hashtag',
-									'opts' => {'id' => 'hashtag', 'style' => 'width: 179px'},
+									command => 'check_hashtag',
+									type    => 'text',
+									name    => 'hashtag',
+									value   => page.form.hashtag,
+									opts    => {
+									id => 'hashtag',
+									style => 'width: 179px',
+									},
 									) %]
 									[% IF page.value.error %]
 									<div>
@@ -28,6 +33,19 @@
 									</div>
 									[% END %]
 								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls">
+								[% page.button(
+								command  => 'check_hashtag',
+								contents => 'Check Hashtag',
+								opts     => {
+								class => 'btn btn-primary btn-large',
+								},
+								) %]
+								&nbsp;&nbsp;|&nbsp;&nbsp;
+								<a href="[% page.url() %]">Cancel</a>
 							</div>
 						</div>
 					</fieldset>
