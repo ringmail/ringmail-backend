@@ -1,0 +1,169 @@
+/* ladt resets */
+
+.main-wrapper td {
+	margin: 0;
+	padding: 0;
+	vertical-align: text-top;
+}
+
+.main-wrapper td label {
+	margin: 0;
+	padding: 0;
+}
+
+.table tbody tr td {
+	padding: 0;
+}
+
+label, input, button, select, textarea {
+	display: inline-block;
+}
+
+select, input[type="file"] {
+	display: inline-block;
+    height: inherit;
+    line-height: inherit;
+   }
+   
+input[type="file"] {
+	display: inline-block;
+    height: inherit;
+    line-height: 10px;
+   }
+
+/* ladt styles */
+
+.main-wrapper {
+}
+
+.main-wrapper .table tbody tr td {
+	padding: 10px 15px;
+}
+
+.main-wrapper ul {
+	margin: 0 auto;
+	padding: 0;
+}
+
+.radio-wrapper {
+	
+}
+
+.main-wrapper ul li {
+	list-style-type: none;
+	padding: 0;
+}
+
+.radio-wrapper label, .radio-wrapper input {
+	padding: 0;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.main-wrapper .td-label {
+	width: 15%;
+	border-top: none!important;
+}
+
+.td-options tr, .td-inputs tr {
+	display: flex;
+}
+
+table td td {
+	border: none !important;
+}
+
+.main-wrapper .td-options {
+	width: 25%;
+	border-top: none!important;
+}
+
+.main-wrapper .td-options-2 {
+	width: 15%;
+	border-top: none!important;
+}
+
+.td-label {
+	line-height: inherit;
+}
+
+.main-wrapper .td-inputs {
+	border-top: none!important;
+}
+
+.main-wrapper input {
+	margin: 0;
+}
+
+.radio-wrapper input {
+	width: 20%;
+}
+
+.main-wrapper .radio-wrapper label:first-of-type {
+	margin-left: 0;
+}
+
+.theme-ul li {
+	text-align: center;
+	display: inline-block;
+	width: 24%;
+	box-sizing: border-box;
+	margin: 0;
+	vertical-align: top;
+}
+.theme-ul ul li:first-of-type {
+	border: none;
+}
+
+.theme-ul ul li {
+	float: left;
+	display: inline-block;
+	height: 18px;
+	width: 18px;
+	box-sizing: border-box;
+	margin: 0;
+	
+}
+
+.theme-ul ul li span input {
+	display: inline-block;
+	vertical-align: baseline;
+	margin-right: 4px;
+	
+}
+
+textarea {
+	margin-bottom: 0;
+}
+
+.swatch input {
+	width: 5%;
+	padding:  1px 3px;
+}
+
+.inputs-ul li {
+	margin: 10px 0;
+}
+
+/* --------------- TABLE NAMES ---------------- */
+
+.logo { 
+	
+}
+
+.theme { 
+	
+}
+
+.media { 
+	
+}
+
+.text-content { 
+	
+}
+
+.background { 
+	
+}
+
