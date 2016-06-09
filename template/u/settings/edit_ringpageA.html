@@ -2,213 +2,211 @@
 [% menu_subnav = 'ringpages' %]
 [% content = BLOCK %]
 <div class="container">
-	<div class="row">
-		<div class="tabbable">
-			<div class="span12">
-				[% INCLUDE u/settings/menu.html %]
-			</div>
-			<form method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
-				<div class="span6">
-					<h2>RingPage: [% ringpage.ringpage %]</h2>
-					<p>
-					<a href="/u/ringpages">&lt; All RingPages</a>
-					</p>
-					<div>
-						<p style="text-align: right;">
-						[% page.button(
-						'command' => 'edit',
-						'text' => 'Save Changes',
-						'opts' => {
-						'type' => 'submit',
-						'class' => 'btn btn-primary',
-						}
-						'args' => [page.form.ringpage_id],
-						) %]
-						</p>
-					</div>
-				</div>
+	<div class="tabbable">
+		<div class="row">
+			<div class="main-wrapper">
 				<div class="span12">
-					<div class="main-wrapper">
-						<div class="span6">
-							<table class="table table-bordered logo">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Logo</label></td>
-									<td>
-										<ul>
-											<li><input data-url="" id="" name="" style="" type="file"/>500px x 500px (png, jpg, gif)</li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered theme">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Theme</label></td>
-									<td>
-										<ul class="theme-ul">
-											<li>
-											<ul>
-												<li><span class="input-group-addon">
-													<input type="radio" name="theme" value="theme1" checked/>
-												</span></li>
-												<li style="background-color:#28bbd2;"></li>
-												<li style="background-color:#d4f2f6;"></li>
-												<li style="background-color:#fff;"></li>
-												<li style="background-color:#f2f2f2;"></li>
-											</ul>
-											</li>
-											<li>
-											<ul>
-												<li><span class="input-group-addon">
-													<input type="radio" name="theme" value="theme2" />
-												</span></li>
-												<li style="background-color:#ed5349;"></li>
-												<li style="background-color:#ead9d2;"></li>
-												<li style="background-color:#fff;"></li>
-												<li style="background-color:#f2f2f2;"></li>
-											</ul>
-											</li>
-											<li>
-											<ul>
-												<li><span class="input-group-addon">
-													<input type="radio" name="theme" value="theme3" />
-												</span></li>
-												<li style="background-color:#69cb63;"></li>
-												<li style="background-color:#e0f4df;"></li>
-												<li style="background-color:#fff;"></li>
-												<li style="background-color:#f2f2f2;"></li>
-											</ul>
-											</li>
-											<li>
-											<ul>
-												<li><span class="input-group-addon">
-													<input type="radio" name="theme" value="theme4" />
-												</span></li>
-												<li style="background-color:#9249d0;"></li>
-												<li style="background-color:#e8daf5;"></li>
-												<li style="background-color:#fff;"></li>
-												<li style="background-color:#f2f2f2;">
-											</ul>
-											</li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered media">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Image</label></td>
-									<td>
-										<ul>
-											<li><input data-url="" id="" name="" style="" type="file"/></li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered media">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Video</label></td>
-									<td>
-										<ul>
-											<input data-url="" id="" name="" type="" placeholder="Video Embed URL"/></li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered text-content">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Content</label></td>
-									<td class="td-inputs">
-										<ul class="inputs-ul">
-											<li><input id="" name="" placeholder="Headline" type="text" value=""/></li>
-											<li><input id="" name="" placeholder="Subhead" type="text" value=""/></li>
-											<li><input id="" name="" placeholder="Body Headline" type="text" value=""/></li>
-											<li><textarea id="" name="" placeholder="Body" type="text" value=""></textarea></li>
-											<li><textarea id="" name="" placeholder="Footer" type="text" value=""></textarea></li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered buttons">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Buttons</label></td>
-									<td class="td-inputs">
-										<ul class="radio-wrapper">
-											<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
-										</ul>
-										<ul class="button-data-ul">
-											<li>Button 1</li>
-											<li>file:///Applications/MAMP/htdocs/ringmail-backend/creative/RingMail/Web-App/ringpage%20dashboard/Dashboard%20Admin.htm</li>
-											<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
-										</ul>
-										<ul class="button-data-ul">
-											<li>Button 2</li>
-											<li>http://www.google.com</li>
-											<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
-										</ul>
-										<ul class="button-data-ul">
-											<li>Button 2</li>
-											<li>http://www.google.com</li>
-											<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-							<table class="table table-bordered background">
-								<tbody>
-								<tr>
-									<td class="td-label"><label>Links</label></td>
-									<td class="td-options">
-										<ul class="radio-wrapper">
-											<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
-											<label class="" for="facebook">Homepage</label></li>
-											<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
-											<label class="" for="facebook">Facebook</label></li>
-											<li style="height:42px;"><input type="checkbox" id="twitter" name="cb" value="" class="" />
-											<label class="" for="twitter">Twitter</label></li>
-											<li style="height:42px;"><input type="checkbox" id="instagram" name="cb" value="" class="" />
-											<label class="" for="instagram">Instagram</label></li>
-											<li style="height:42px;"><input type="checkbox" id="linkedin" name="cb" value="" class="" />
-											<label class="" for="linkedin">LinkedIn</label></li>
-											<li style="height:42px;"><input type="checkbox" id="googleplus" name="cb" value="" class="" />
-											<label class="" for="googleplus">Google+</label></li>
-											<li style="height:42px;"><input type="checkbox" id="pinterest" name="cb" value="" class="" />
-											<label class="" for="pinterest">Pinterest</label></li>
-											<li><input type="checkbox" id="youtube" name="cb" value="" class="" />
-											<label class="" for="youtube">YouTube</label></li>
-										</ul>
-									</td>
-									<td class="td-inputs">
-										<ul class="buttons-ul">
-											<li style="height:42px;"><input name="" placeholder="Homepage URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Facebook URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Twitter URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Instagram URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Linkedin URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Google+ URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="Pinterest URL" type="text" value="" style=""></li>
-											<li style="height:42px;"><input name="" placeholder="YouTube URL" type="text" value="" style=""></li>
-										</ul>
-									</td>
-								</tr>
-								</tbody>
-							</table>
+					[% INCLUDE u/settings/menu.html %]
+				</div>
+				<div class="span6 pull-left">
+					<form method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
+						<h2>RingPage: [% ringpage.ringpage %]</h2>
+						<p>
+						<a href="/u/ringpages">&lt; All RingPages</a>
+						</p>
+						<div>
+							<p style="text-align: right;">
+							[% page.button(
+							'command' => 'edit',
+							'text' => 'Save Changes',
+							'opts' => {
+							'type' => 'submit',
+							'class' => 'btn btn-primary',
+							}
+							'args' => [page.form.ringpage_id],
+							) %]
+							</p>
 						</div>
-					</div>
-					<div class="span3 pull-right">
-						<div id="preview"></div>
-					</div>
-					<script>
+						<table class="table table-bordered logo">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Logo</label></td>
+								<td>
+									<ul>
+										<li><input data-url="" id="" name="" style="" type="file"/>500px x 500px (png, jpg, gif)</li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered theme">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Theme</label></td>
+								<td>
+									<ul class="theme-ul">
+										<li>
+										<ul>
+											<li><span class="input-group-addon">
+												<input type="radio" name="theme" value="theme1" checked/>
+											</span></li>
+											<li style="background-color:#28bbd2;"></li>
+											<li style="background-color:#d4f2f6;"></li>
+											<li style="background-color:#fff;"></li>
+											<li style="background-color:#f2f2f2;"></li>
+										</ul>
+										</li>
+										<li>
+										<ul>
+											<li><span class="input-group-addon">
+												<input type="radio" name="theme" value="theme2" />
+											</span></li>
+											<li style="background-color:#ed5349;"></li>
+											<li style="background-color:#ead9d2;"></li>
+											<li style="background-color:#fff;"></li>
+											<li style="background-color:#f2f2f2;"></li>
+										</ul>
+										</li>
+										<li>
+										<ul>
+											<li><span class="input-group-addon">
+												<input type="radio" name="theme" value="theme3" />
+											</span></li>
+											<li style="background-color:#69cb63;"></li>
+											<li style="background-color:#e0f4df;"></li>
+											<li style="background-color:#fff;"></li>
+											<li style="background-color:#f2f2f2;"></li>
+										</ul>
+										</li>
+										<li>
+										<ul>
+											<li><span class="input-group-addon">
+												<input type="radio" name="theme" value="theme4" />
+											</span></li>
+											<li style="background-color:#9249d0;"></li>
+											<li style="background-color:#e8daf5;"></li>
+											<li style="background-color:#fff;"></li>
+											<li style="background-color:#f2f2f2;">
+										</ul>
+										</li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered media">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Image</label></td>
+								<td>
+									<ul>
+										<li><input data-url="" id="" name="" style="" type="file"/></li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered media">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Video</label></td>
+								<td>
+									<ul>
+										<input data-url="" id="" name="" type="" placeholder="Video Embed URL"/></li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered text-content">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Content</label></td>
+								<td class="td-inputs">
+									<ul class="inputs-ul">
+										<li><input id="" name="" placeholder="Headline" type="text" value=""/></li>
+										<li><input id="" name="" placeholder="Subhead" type="text" value=""/></li>
+										<li><input id="" name="" placeholder="Body Headline" type="text" value=""/></li>
+										<li><textarea id="" name="" placeholder="Body" type="text" value=""></textarea></li>
+										<li><textarea id="" name="" placeholder="Footer" type="text" value=""></textarea></li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered buttons">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Buttons</label></td>
+								<td class="td-inputs">
+									<ul class="radio-wrapper">
+										<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
+									</ul>
+									<ul class="button-data-ul">
+										<li>Button 1</li>
+										<li>file:///Applications/MAMP/htdocs/ringmail-backend/creative/RingMail/Web-App/ringpage%20dashboard/Dashboard%20Admin.htm</li>
+										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
+									</ul>
+									<ul class="button-data-ul">
+										<li>Button 2</li>
+										<li>http://www.google.com</li>
+										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
+									</ul>
+									<ul class="button-data-ul">
+										<li>Button 2</li>
+										<li>http://www.google.com</li>
+										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-bordered background">
+							<tbody>
+							<tr>
+								<td class="td-label"><label>Links</label></td>
+								<td class="td-options">
+									<ul class="radio-wrapper">
+										<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
+										<label class="" for="facebook">Homepage</label></li>
+										<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
+										<label class="" for="facebook">Facebook</label></li>
+										<li style="height:42px;"><input type="checkbox" id="twitter" name="cb" value="" class="" />
+										<label class="" for="twitter">Twitter</label></li>
+										<li style="height:42px;"><input type="checkbox" id="instagram" name="cb" value="" class="" />
+										<label class="" for="instagram">Instagram</label></li>
+										<li style="height:42px;"><input type="checkbox" id="linkedin" name="cb" value="" class="" />
+										<label class="" for="linkedin">LinkedIn</label></li>
+										<li style="height:42px;"><input type="checkbox" id="googleplus" name="cb" value="" class="" />
+										<label class="" for="googleplus">Google+</label></li>
+										<li style="height:42px;"><input type="checkbox" id="pinterest" name="cb" value="" class="" />
+										<label class="" for="pinterest">Pinterest</label></li>
+										<li><input type="checkbox" id="youtube" name="cb" value="" class="" />
+										<label class="" for="youtube">YouTube</label></li>
+									</ul>
+								</td>
+								<td class="td-inputs">
+									<ul class="buttons-ul">
+										<li style="height:42px;"><input name="" placeholder="Homepage URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Facebook URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Twitter URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Instagram URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Linkedin URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Google+ URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="Pinterest URL" type="text" value="" style=""></li>
+										<li style="height:42px;"><input name="" placeholder="YouTube URL" type="text" value="" style=""></li>
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+			<div class="span6 pull-right">
+				<div id="preview"></div>
+			</div>
+			<script>
 bioMp(document.getElementById('preview'), {
 url: 'http://ringmail.com/ringpages-v2',
 view: 'front',
@@ -218,49 +216,47 @@ scale: '.8'
 $('#addButtonModal').on('shown.bs.modal', function () {
 		$('#myInput').focus()
 		})
-					</script>
-					<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header add-button">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<h4 class="modal-title">Add Button</h4>
-								</div>
-								<div class="modal-body">
-									<p></p>
-									<ul class="modal-ul">
-										<li>
-										<span class="input-group-addon">
-											<input class="modal-radio" type="radio" name="linktype" value="url" style="visibility: hidden;"/><label>Button Text</label><input id="" name="" placeholder="Text" type="text" value=""/></span></li>
-									</ul>
-									<hr>
-									<ul class="modal-options-ul">
-										<li><span class="input-group-addon">
-											<input class="modal-radio" type="radio" name="linktype" value="url" checked />
-											<label>Link</label><input id="" name="" placeholder="URL" type="text" value=""/></span>
-										</li>
-										<li><span class="input-group-addon">
-											<input class="modal-radio" type="radio" name="linktype" value="call" />
-											<label>Call</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-										</li>
-										<li><span class="input-group-addon">
-											<input class="modal-radio" type="radio" name="linktype" value="video" />
-											<label>Video</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-										</li>
-										<li><span class="input-group-addon">
-											<input class="modal-radio" type="radio" name="linktype" value="chat" />
-											<label>Chat</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-										</li>
-									</ul>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary">Save changes</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
+			</script>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header add-button">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Add Button</h4>
+			</div>
+			<div class="modal-body">
+				<p></p>
+				<ul class="modal-ul">
+					<li>
+					<span class="input-group-addon">
+						<input class="modal-radio" type="radio" name="linktype" value="url" style="visibility: hidden;"/><label>Button Text</label><input id="" name="" placeholder="Text" type="text" value=""/></span></li>
+				</ul>
+				<hr>
+				<ul class="modal-options-ul">
+					<li><span class="input-group-addon">
+						<input class="modal-radio" type="radio" name="linktype" value="url" checked />
+						<label>Link</label><input id="" name="" placeholder="URL" type="text" value=""/></span>
+					</li>
+					<li><span class="input-group-addon">
+						<input class="modal-radio" type="radio" name="linktype" value="call" />
+						<label>Call</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
+					</li>
+					<li><span class="input-group-addon">
+						<input class="modal-radio" type="radio" name="linktype" value="video" />
+						<label>Video</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
+					</li>
+					<li><span class="input-group-addon">
+						<input class="modal-radio" type="radio" name="linktype" value="chat" />
+						<label>Chat</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
+					</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 	</div>

@@ -354,13 +354,11 @@ textarea {
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#f4f4f4', GradientType=0);
     border: 1px solid #0077c2;
-    -webkit-box-shadow: inset 0 1px 0 #0077c2;
-    -moz-box-shadow: inset 0 1px 0 #0077c2;
-    box-shadow: inset 0 1px 0 #0077c2;
+
 }
 
 #main-nav > li > a:hover, #main-nav > li.open > a {
-    background-color: #1b3148;
+    background-color: #ccc;
     background-image: -moz-linear-gradient(top, #ccc, #ccc);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ccc), to(#ccc));
     background-image: -webkit-linear-gradient(top, #ccc, #ccc);
@@ -368,6 +366,7 @@ textarea {
     background-image: linear-gradient(to bottom, #ccc, #ccc);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc', endColorstr='#ccc', GradientType=0);
+    
 }
 
 
