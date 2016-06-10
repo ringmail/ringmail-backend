@@ -8,7 +8,7 @@ use open ':encoding(UTF-8)';
 use Moose;
 use Carp 'croak';
 use English '-no_match_vars';
-use JSON::XS qw{ encode_json decode_json };
+use JSON::XS qw{ decode_json };
 
 has caller => ( is => 'ro', isa => 'Any', );
 
@@ -21,10 +21,10 @@ sub list {
 
     open my $filehandle, '<', $filename or croak $OS_ERROR;
     local $RS = undef;
-    my $json = decode_json readline $filehandle;
+    my $data = decode_json readline $filehandle;
     close $filehandle or croak $OS_ERROR;
 
-    return $json;
+    return $data;
 }
 
 1;
