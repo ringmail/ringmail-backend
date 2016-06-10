@@ -17,13 +17,13 @@
 						<div>
 							<p style="text-align: right;">
 							[% page.button(
-							'command' => 'edit',
-							'text' => 'Save Changes',
-							'opts' => {
-							'type' => 'submit',
-							'class' => 'btn btn-primary',
+							command => 'edit',
+							text => 'Save Changes',
+							opts => {
+							type => 'submit',
+							class => 'btn btn-primary',
 							}
-							'args' => [page.form.ringpage_id],
+							args => [ page.form.ringpage_id, ],
 							) %]
 							</p>
 						</div>
@@ -33,7 +33,27 @@
 								<td class="td-label"><label>Logo</label></td>
 								<td>
 									<ul>
-										<li><input data-url="" id="" name="" style="" type="file"/>500px x 500px (png, jpg, gif)</li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'file',
+										name => 'logo',
+										opts => {
+										id => 'f_d1-logo',
+										'data-url' => '/u/logo',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'logo',
+										value => ringpage.logo,
+										opts => {
+										id => 'd1-logo',
+										},
+										) %]
+										500px x 500px (png, jpg, gif)
+										</li>
 									</ul>
 								</td>
 							</tr>
@@ -48,7 +68,12 @@
 										<li>
 										<ul>
 											<li><span class="input-group-addon">
-												<input type="radio" name="theme" value="theme1" checked/>
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'color_theme',
+												checked => 1,
+												) %]
 											</span></li>
 											<li style="background-color:#28bbd2;"></li>
 											<li style="background-color:#d4f2f6;"></li>
@@ -59,7 +84,11 @@
 										<li>
 										<ul>
 											<li><span class="input-group-addon">
-												<input type="radio" name="theme" value="theme2" />
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'color_theme',
+												) %]
 											</span></li>
 											<li style="background-color:#ed5349;"></li>
 											<li style="background-color:#ead9d2;"></li>
@@ -70,7 +99,11 @@
 										<li>
 										<ul>
 											<li><span class="input-group-addon">
-												<input type="radio" name="theme" value="theme3" />
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'color_theme',
+												) %]
 											</span></li>
 											<li style="background-color:#69cb63;"></li>
 											<li style="background-color:#e0f4df;"></li>
@@ -81,7 +114,11 @@
 										<li>
 										<ul>
 											<li><span class="input-group-addon">
-												<input type="radio" name="theme" value="theme4" />
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'color_theme',
+												) %]
 											</span></li>
 											<li style="background-color:#9249d0;"></li>
 											<li style="background-color:#e8daf5;"></li>
@@ -100,7 +137,26 @@
 								<td class="td-label"><label>Image</label></td>
 								<td>
 									<ul>
-										<li><input data-url="" id="" name="" style="" type="file"/></li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'file',
+										name => 'image',
+										opts => {
+										id => 'f_d1-image',
+										'data-url' => '/u/image',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'image',
+										value => ringpage.image,
+										opts => {
+										id => 'd1-image',
+										},
+										) %]
+										</li>
 									</ul>
 								</td>
 							</tr>
@@ -112,7 +168,15 @@
 								<td class="td-label"><label>Video</label></td>
 								<td>
 									<ul>
-										<input data-url="" id="" name="" type="" placeholder="Video Embed URL"/></li>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'video_url',
+										value => ringpage.video_url,
+										opts => {
+										placeholder => 'Video Embed URL',
+										},
+										) %]
 									</ul>
 								</td>
 							</tr>
@@ -124,11 +188,61 @@
 								<td class="td-label"><label>Content</label></td>
 								<td class="td-inputs">
 									<ul class="inputs-ul">
-										<li><input id="" name="" placeholder="Headline" type="text" value=""/></li>
-										<li><input id="" name="" placeholder="Subhead" type="text" value=""/></li>
-										<li><input id="" name="" placeholder="Body Headline" type="text" value=""/></li>
-										<li><textarea id="" name="" placeholder="Body" type="text" value=""></textarea></li>
-										<li><textarea id="" name="" placeholder="Footer" type="text" value=""></textarea></li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'headline',
+										value => ringpage.headline,
+										opts => {
+										placeholder => 'Headline',
+										},
+										) %]
+										</li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'subhead',
+										value => ringpage.subhead,
+										opts => {
+										placeholder => 'Subhead',
+										},
+										) %]
+										</li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'body_headline',
+										value => ringpage.body_headline,
+										opts => {
+										placeholder => 'Body Headline',
+										},
+										) %]
+										</li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'textarea',
+										name => 'body',
+										value => ringpage.body,
+										opts => {
+										placeholder => 'Body',
+										},
+										) %]
+										</li>
+										<li>
+										[% page.field(
+										command => 'edit',
+										type => 'textarea',
+										name => 'footer',
+										value => ringpage.footer,
+										opts => {
+										placeholder => 'Footer',
+										},
+										) %]
+										</li>
 									</ul>
 								</td>
 							</tr>
@@ -142,21 +256,27 @@
 									<ul class="radio-wrapper">
 										<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
 									</ul>
+									[% FOREACH button IN ringpage.buttons %]
 									<ul class="button-data-ul">
-										<li>Button 1</li>
-										<li>file:///Applications/MAMP/htdocs/ringmail-backend/creative/RingMail/Web-App/ringpage%20dashboard/Dashboard%20Admin.htm</li>
-										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
+										<li>
+										[% button.button %]
+										</li>
+										<li>
+										[% button.uri %]
+										</li>
+										<li>
+										[% page.link(
+										text => '<i class="fa fa-minus"></i>',
+										command => 'button_delete',
+										args => [ button.id, ],
+										opts => {
+										onclick => "return confirm( 'Really Delete Button: $button.button?' );",
+										class=>'delbtn-a',
+										},
+										) %]
+										</li>
 									</ul>
-									<ul class="button-data-ul">
-										<li>Button 2</li>
-										<li>http://www.google.com</li>
-										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
-									</ul>
-									<ul class="button-data-ul">
-										<li>Button 2</li>
-										<li>http://www.google.com</li>
-										<li><a class="delbtn-a" href=""><i class="fa fa-minus"></i></a></li>
-									</ul>
+									[% END %]
 								</td>
 							</tr>
 							</tbody>
@@ -187,14 +307,94 @@
 								</td>
 								<td class="td-inputs">
 									<ul class="buttons-ul">
-										<li style="height:42px;"><input name="" placeholder="Homepage URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Facebook URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Twitter URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Instagram URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Linkedin URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Google+ URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="Pinterest URL" type="text" value="" style=""></li>
-										<li style="height:42px;"><input name="" placeholder="YouTube URL" type="text" value="" style=""></li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'homepage_url',
+										value => ringpage.homepage_url,
+										opts => {
+										placeholder => 'Homepage URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'facebook_url',
+										value => ringpage.facebook_url,
+										opts => {
+										placeholder => 'Facebook URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'twitter_url',
+										value => ringpage.twitter_url,
+										opts => {
+										placeholder => 'Twitter URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'instagram_url',
+										value => ringpage.instagram_url,
+										opts => {
+										placeholder => 'Instagram URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'linkedin_url',
+										value => ringpage.linkedin_url,
+										opts => {
+										placeholder => 'LinkedIn URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'googleplus_url',
+										value => ringpage.googleplus_url,
+										opts => {
+										placeholder => 'Google+ URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'pinterest_url',
+										value => ringpage.pinterest_url,
+										opts => {
+										placeholder => 'Pinterest URL',
+										},
+										) %]
+										</li>
+										<li style="height:42px;">
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'youtube_url',
+										value => ringpage.youtube_url,
+										opts => {
+										placeholder => 'YouTube URL',
+										},
+										) %]
+										</li>
 									</ul>
 								</td>
 							</tr>
