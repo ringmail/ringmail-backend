@@ -89,8 +89,8 @@ sub edit {
     );
 
     my $ringpage_row_data = $ringpage_row->data();
-
-    my $ringpage_fields = decode_json $ringpage_row_data->{fields};
+    my $ringpage_template = $ringpage_row_data->{template};
+    my $ringpage_fields   = decode_json $ringpage_row_data->{fields};
 
     for my $field ( @{$ringpage_fields} ) {
 

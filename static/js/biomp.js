@@ -1,6 +1,6 @@
 window.bioMp = function(el, options) {
 	// Private
-	var front = {width: 428, height: 889, ratio: (428 / 889)},
+	var front = {width: 430, height: 889, ratio: (430 / 968)},
 	    side = {width: 302, height: 889, ratio: (302 / 889)};
 	
 	// Options
@@ -79,7 +79,7 @@ window.bioMp = function(el, options) {
 		var phoneImageCss = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%;';
 
 		if(view == 'front')
-			var screenCss = 'position: absolute; top: 109px; left: 26.5px; width: 375px; height: 669px; border: 0;';
+			var screenCss = 'position: absolute; top: 89px; left: 25px; width: 380px; height: 617px; border: 0;';
 		else if(view == 'left')
 			var screenCss = 'position: absolute; top: 135px; left: -60px; width: 375px; height: 669px; border: 0; -webkit-transform: matrix3d(0.682, -0.160, 0, -0.000380, 0, 0.972, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); -moz-transform: matrix3d(0.682, -0.160, 0, -0.000380, 0, 0.972, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); -ms-transform: matrix3d(0.682, -0.160, 0, -0.000380, 0, 0.972, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); -o-transform: matrix3d(0.682, -0.160, 0, -0.000380, 0, 0.972, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transform: matrix3d(0.682, -0.160, 0, -0.000380, 0, 0.972, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);';
 		else
