@@ -1,15 +1,15 @@
 [% menu_settings = 'ringpages' %]
 [% menu_subnav = 'ringpages' %]
 [% content = BLOCK %]
-<div class="container">
-	<div class="tabbable">
-		<div class="row">
-			<div class="main-wrapper">
-				<div class="span12">
-					[% INCLUDE u/settings/menu.html %]
-				</div>
-				<div class="span6 pull-left">
-					<form method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
+<form method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
+	<div class="container">
+		<div class="tabbable">
+			<div class="row">
+				<div class="main-wrapper">
+					<div class="span12">
+						[% INCLUDE u/settings/menu.html %]
+					</div>
+					<div class="span6 pull-left">
 						<h2>RingPage: [% ringpage.ringpage %]</h2>
 						<p>
 						<a href="/u/ringpages">&lt; All RingPages</a>
@@ -287,21 +287,21 @@
 								<td class="td-label"><label>Links</label></td>
 								<td class="td-options">
 									<ul class="radio-wrapper">
-										<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="facebook">Homepage</label></li>
-										<li style="height:42px;"><input type="checkbox" id="facebook" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="facebook">Facebook</label></li>
-										<li style="height:42px;"><input type="checkbox" id="twitter" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="twitter">Twitter</label></li>
-										<li style="height:42px;"><input type="checkbox" id="instagram" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="instagram">Instagram</label></li>
-										<li style="height:42px;"><input type="checkbox" id="linkedin" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="linkedin">LinkedIn</label></li>
-										<li style="height:42px;"><input type="checkbox" id="googleplus" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="googleplus">Google+</label></li>
-										<li style="height:42px;"><input type="checkbox" id="pinterest" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="pinterest">Pinterest</label></li>
-										<li><input type="checkbox" id="youtube" name="cb" value="" class="" />
+										<li style="height:42px;">
 										<label class="" for="youtube">YouTube</label></li>
 									</ul>
 								</td>
@@ -400,13 +400,12 @@
 							</tr>
 							</tbody>
 						</table>
-					</form>
+					</div>
 				</div>
-			</div>
-			<div class="span6 pull-right">
-				<div id="preview"></div>
-			</div>
-			<script>
+				<div class="span6 pull-right">
+					<div id="preview"></div>
+				</div>
+				<script>
 bioMp(document.getElementById('preview'), {
 url: 'http://ringmail.com/ringpages-v2',
 view: 'front',
@@ -416,50 +415,104 @@ scale: '.8'
 $('#addButtonModal').on('shown.bs.modal', function () {
 		$('#myInput').focus()
 		})
-			</script>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header add-button">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Add Button</h4>
-			</div>
-			<div class="modal-body">
-				<p></p>
-				<ul class="modal-ul">
-					<li>
-					<span class="input-group-addon">
-						<input class="modal-radio" type="radio" name="linktype" value="url" style="visibility: hidden;"/><label>Button Text</label><input id="" name="" placeholder="Text" type="text" value=""/></span></li>
-				</ul>
-				<hr>
-				<ul class="modal-options-ul">
-					<li><span class="input-group-addon">
-						<input class="modal-radio" type="radio" name="linktype" value="url" checked />
-						<label>Link</label><input id="" name="" placeholder="URL" type="text" value=""/></span>
-					</li>
-					<li><span class="input-group-addon">
-						<input class="modal-radio" type="radio" name="linktype" value="call" />
-						<label>Call</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-					</li>
-					<li><span class="input-group-addon">
-						<input class="modal-radio" type="radio" name="linktype" value="video" />
-						<label>Video</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-					</li>
-					<li><span class="input-group-addon">
-						<input class="modal-radio" type="radio" name="linktype" value="chat" />
-						<label>Chat</label><input id="" name="" placeholder="Ringmail Address" type="text" value=""/></span>
-					</li>
-				</ul>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				</script>
 			</div>
 		</div>
 	</div>
-</div>
+	<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header add-button">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add Button</h4>
+				</div>
+				<div class="modal-body">
+					<p></p>
+					<ul class="modal-ul">
+						<li>
+						<span class="input-group-addon">
+							<input class="modal-radio" type="radio" name="linktype" value="url" style="visibility: hidden;"/><label>Button Text</label>
+							[% page.field(
+							command => 'edit',
+							type => 'text',
+							name => 'button_text',
+							opts => {
+							placeholder => 'Text',
+							},
+							) %]
+						</span></li>
+					</ul>
+					<hr>
+					<ul class="modal-options-ul">
+						<li><span class="input-group-addon">
+							<input class="modal-radio" type="radio" name="linktype" value="url" checked />
+							<label>Link</label>
+							[% page.field(
+							command => 'edit',
+							type => 'text',
+							name => 'button_link',
+							opts => {
+							placeholder => 'URL',
+							},
+							) %]
+						</span>
+						</li>
+						<li><span class="input-group-addon">
+							<input class="modal-radio" type="radio" name="linktype" value="call" />
+							<label>Call</label>
+							[% page.field(
+							command => 'edit',
+							type => 'text',
+							name => 'button_link',
+							opts => {
+							placeholder => 'Ringmail Address',
+							},
+							) %]
+						</span>
+						</li>
+						<li><span class="input-group-addon">
+							<input class="modal-radio" type="radio" name="linktype" value="video" />
+							<label>Video</label>
+							[% page.field(
+							command => 'edit',
+							type => 'text',
+							name => 'button_link',
+							opts => {
+							placeholder => 'Ringmail Address',
+							},
+							) %]
+						</span>
+						</li>
+						<li><span class="input-group-addon">
+							<input class="modal-radio" type="radio" name="linktype" value="chat" />
+							<label>Chat</label>
+							[% page.field(
+							command => 'edit',
+							type => 'text',
+							name => 'button_link',
+							opts => {
+							placeholder => 'Ringmail Address',
+							},
+							) %]
+						</span>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					[% page.button(
+					command => 'edit',
+					text => 'Save Changes',
+					opts => {
+					type => 'submit',
+					class => 'btn btn-primary',
+					}
+					args => [ page.form.ringpage_id, ],
+					) %]
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
 [% END %]
 [% INCLUDE layout/internal.html %]
