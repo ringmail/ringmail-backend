@@ -268,7 +268,7 @@
 										[% page.link(
 										text => '<i class="fa fa-minus"></i>',
 										command => 'button_delete',
-										args => [ button.id, ],
+										args => [ ringpage.id, button.id, ],
 										opts => {
 										onclick => "return confirm( 'Really Delete Button: $button.button?' );",
 										class=>'delbtn-a',

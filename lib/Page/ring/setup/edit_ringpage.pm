@@ -24,10 +24,11 @@ around load => sub {
     my ( $next, @args, ) = @_;
 
     my ( $self, $param ) = get_param( @args, );
+
     my $content     = $self->content();
     my $form        = $self->form();
     my $user        = $self->user();
-    my $uid         = $user->id();
+    my $user_id     = $user->id();
     my $ringpage_id = $form->{ringpage_id};
     if ( not $ringpage_id =~ m{ \A \d+ \z }xms ) {
         return $self->redirect('/u/ringpages');
@@ -35,7 +36,7 @@ around load => sub {
     my $ringpage_row = Note::Row->new(
         ring_page => {
             id      => $ringpage_id,
-            user_id => $uid,
+            user_id => $user_id,
         },
     );
 
@@ -76,23 +77,28 @@ around load => sub {
 
 sub edit {
     my ( $self, $data, $args ) = @_;
-    my $user           = $self->user();
-    my $uid            = $user->id();
-    my $id             = $args->[0];
+    my $user        = $self->user();
+    my $user_id     = $user->id();
+    my $ringpage_id = $args->[0];
+
     my $ringpage_model = Ring::Model::RingPage->new();
 
     my $ringpage_row = Note::Row->new(
         ring_page => {
-            id      => $id,
-            user_id => $uid,
+            id      => $ringpage_id,
+            user_id => $user_id,
         },
     );
 
-    my $ringpage_row_data = $ringpage_row->data();
-    my $ringpage_template = $ringpage_row_data->{template};
-    my $ringpage_fields   = decode_json $ringpage_row_data->{fields};
+    my $ringpage_row_data  = $ringpage_row->data();
+    my $ringpage_template  = $ringpage_row_data->{template};
+    my $ringpage_fields    = decode_json $ringpage_row_data->{fields};
+    my $template_model     = Ring::Model::Template->new( caller => $self, );
+    my $templates          = $template_model->list();
+    my $template_name      = $ringpage_row_data->{template};
+    my $template_structure = $templates->{$template_name}->{structure};
 
-    for my $field ( @{$ringpage_fields} ) {
+    for my $field ( @{ $template_structure->{fields} } ) {
 
         my $key = $field->{name};
 
@@ -100,9 +106,9 @@ sub edit {
     }
 
     if ($ringpage_model->update(
-            fields  => encode_json $ringpage_fields,
-            id      => $id,
-            user_id => $uid,
+            fields  => encode_json $template_structure->{fields},
+            id      => $ringpage_id,
+            user_id => $user_id,
         )
         )
     {
@@ -118,7 +124,7 @@ sub edit {
                 my $button_row = Note::Row::create(
                     ring_button => {
                         button      => $button_text,
-                        ringpage_id => $id,
+                        ringpage_id => $ringpage_id,
                         uri         => $button_link,
                         user_id     => $user->id(),
                     },
@@ -150,6 +156,29 @@ sub edit {
     else {
         # failed
     }
+
+    return;
+}
+
+sub button_delete {
+    my ( $self, $data, $args, ) = @_;
+
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
+    my ( $ringpage_id, $button_id, ) = @{$args};
+
+    my $button_row = Note::Row->new( ring_button => { id => $button_id, user_id => $user_id, }, );
+
+    if ( $button_row->delete() ) {
+
+        # display confirmation
+    }
+    else {
+        # failed
+    }
+
+    $self->form()->{ringpage_id} = $ringpage_id;
 
     return;
 }

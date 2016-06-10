@@ -126,6 +126,62 @@
                "value":""
             },
             {
+               "name":"homepage_url",
+               "type":"text",
+               "default":"",
+               "label":"Homepage URL",
+               "value":""
+            },
+            {
+               "name":"facebook_url",
+               "type":"text",
+               "default":"",
+               "label":"Facebook URL",
+               "value":""
+            },
+            {
+               "name":"twitter_url",
+               "type":"text",
+               "default":"",
+               "label":"Twitter URL",
+               "value":""
+            },
+            {
+               "name":"instagram_url",
+               "type":"text",
+               "default":"",
+               "label":"Instagram URL",
+               "value":""
+            },
+            {
+               "name":"linkedin_url",
+               "type":"text",
+               "default":"",
+               "label":"LinkedIn URL",
+               "value":""
+            },
+            {
+               "name":"googleplus_url",
+               "type":"text",
+               "default":"",
+               "label":"Google+ URL",
+               "value":""
+            },
+            {
+               "name":"pinterest_url",
+               "type":"text",
+               "default":"",
+               "label":"Pinterest URL",
+               "value":""
+            },
+            {
+               "name":"youtube_url",
+               "type":"text",
+               "default":"",
+               "label":"YouTube URL",
+               "value":""
+            },
+            {
                "name":"body_background_color",
                "type":"color",
                "default":"#FFFFFF",
@@ -243,7 +299,184 @@
       "title":"Template 2",
       "path":"template_2",
       "structure":{
+         "themes":[
+            {
+               "name":"theme_1",
+               "color_1":"#28BBD2",
+               "color_2":"#D4F2F6",
+               "color_3":"#FFFFFF",
+               "color_4":"#F2F2F2"
+            },
+            {
+               "name":"theme_2",
+               "color_1":"#ED5349",
+               "color_2":"#EAD9D2",
+               "color_3":"#FFFFFF",
+               "color_4":"#F2F2F2"
+            },
+            {
+               "name":"theme_3",
+               "color_1":"#69CB63",
+               "color_2":"#E0F4DF",
+               "color_3":"#FFFFFF",
+               "color_4":"#F2F2F2"
+            },
+            {
+               "name":"theme_4",
+               "color_1":"#9249D0",
+               "color_2":"#E8DAF5",
+               "color_3":"#FFFFFF",
+               "color_4":"#F2F2F2"
+            }
+         ],
          "fields":[
+            {
+               "name":"logo",
+               "type":"text",
+               "default":"",
+               "label":"Logo",
+               "value":""
+            },
+            {
+               "name":"theme",
+               "type":"text",
+               "default":"",
+               "label":"Theme",
+               "value":""
+            },
+            {
+               "name":"color_1",
+               "type":"text",
+               "default":"",
+               "label":"Color 1",
+               "value":""
+            },
+            {
+               "name":"color_2",
+               "type":"text",
+               "default":"",
+               "label":"Color 2",
+               "value":""
+            },
+            {
+               "name":"color_3",
+               "type":"text",
+               "default":"",
+               "label":"Color 3",
+               "value":""
+            },
+            {
+               "name":"color_4",
+               "type":"text",
+               "default":"",
+               "label":"Color 4",
+               "value":""
+            },
+            {
+               "name":"image",
+               "type":"text",
+               "default":"",
+               "label":"Image",
+               "value":""
+            },
+            {
+               "name":"video_url",
+               "type":"text",
+               "default":"",
+               "label":"Video Embed URL",
+               "value":""
+            },
+            {
+               "name":"headline",
+               "type":"text",
+               "default":"",
+               "label":"Headline",
+               "value":""
+            },
+            {
+               "name":"subhead",
+               "type":"text",
+               "default":"",
+               "label":"Subhead",
+               "value":""
+            },
+            {
+               "name":"body_headline",
+               "type":"text",
+               "default":"",
+               "label":"Body Headline",
+               "value":""
+            },
+            {
+               "name":"body",
+               "type":"text",
+               "default":"",
+               "label":"Body",
+               "value":""
+            },
+            {
+               "name":"footer",
+               "type":"text",
+               "default":"",
+               "label":"Footer",
+               "value":""
+            },
+            {
+               "name":"homepage_url",
+               "type":"text",
+               "default":"",
+               "label":"Homepage URL",
+               "value":""
+            },
+            {
+               "name":"facebook_url",
+               "type":"text",
+               "default":"",
+               "label":"Facebook URL",
+               "value":""
+            },
+            {
+               "name":"twitter_url",
+               "type":"text",
+               "default":"",
+               "label":"Twitter URL",
+               "value":""
+            },
+            {
+               "name":"instagram_url",
+               "type":"text",
+               "default":"",
+               "label":"Instagram URL",
+               "value":""
+            },
+            {
+               "name":"linkedin_url",
+               "type":"text",
+               "default":"",
+               "label":"LinkedIn URL",
+               "value":""
+            },
+            {
+               "name":"googleplus_url",
+               "type":"text",
+               "default":"",
+               "label":"Google+ URL",
+               "value":""
+            },
+            {
+               "name":"pinterest_url",
+               "type":"text",
+               "default":"",
+               "label":"Pinterest URL",
+               "value":""
+            },
+            {
+               "name":"youtube_url",
+               "type":"text",
+               "default":"",
+               "label":"YouTube URL",
+               "value":""
+            },
             {
                "name":"body_background_color",
                "type":"color",

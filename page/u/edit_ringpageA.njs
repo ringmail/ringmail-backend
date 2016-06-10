@@ -1,6 +1,7 @@
 {
    "class" : "Page::ring::setup::edit_ringpage",
    "command" : {
+      "button_delete" : "button_delete",
       "edit" : "edit"
    },
    "init" : [
