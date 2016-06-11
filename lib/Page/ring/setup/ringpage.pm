@@ -76,7 +76,8 @@ around load => sub {
 };
 
 sub edit {
-    my ( $self, $data, $args ) = @_;
+    my ( $self, $data, $args, ) = @_;
+
     my $user        = $self->user();
     my $user_id     = $user->id();
     my $ringpage_id = $args->[0];
