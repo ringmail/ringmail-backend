@@ -9,7 +9,7 @@
 			</div>
 			<div class="span9">
 				<h2>RingPage: [% ringpage.ringpage %]</h2>
-				<form method="post" action="[% page.url('query' => {'id' => page.form.id}) %]" style="margin: 0px; padding: 0px;">
+				<form method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
 					<p>
 					<a href="/u/ringpages">&lt; All RingPages</a>
 					</p>
@@ -22,24 +22,12 @@
 						'type' => 'submit',
 						'class' => 'btn btn-primary',
 						}
-						'args' => [page.form.id],
+						'args' => [page.form.ringpage_id],
 						) %]
 						</p>
 					</div>
 					<table class="table table-bordered table-striped">
 						<tbody>
-						<tr>
-							<td><strong>RingPage</strong></td>
-							<td>
-								[% page.field(
-								'command' => 'edit',
-								'type' => 'text',
-								'name' => 'ringpage',
-								'value' => ringpage.ringpage,
-								'opts' => {'id' => 'ringpage', 'style' => 'width: 80%;'},
-								) %]
-							</td>
-						</tr>
 						<tr>
 							<td><strong>Contains Offer</strong></td>
 							<td>
@@ -310,7 +298,7 @@
 			<div class="span3">
 				<div data-spy="affix">
 					<h2>Preview</h2>
-					<iframe class="well" style="height: 600px;" src="/u/t/entertainment?ringpage_id=[% page.form.id %]" />
+					<iframe class="well" style="height: 600px;" src="/ringpage/html?ringpage_id=[% page.form.ringpage_id %]" />
 					</div>
 				</div>
 			</div>

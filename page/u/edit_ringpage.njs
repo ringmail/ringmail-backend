@@ -1,5 +1,5 @@
 {
-   "class" : "Page::ring::setup::edit_ringpage",
+   "class" : "Page::ring::setup::ringpage",
    "command" : {
       "edit" : "edit"
    },

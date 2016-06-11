@@ -65,7 +65,7 @@ sub create {
             'ring_hashtag',
             {
 
-                category_id => $param->{category_id},
+                category    => $param->{category},
                 hashtag     => $tag,
                 ringpage_id => $param->{ringpage_id},
                 target_url  => $url,
@@ -119,7 +119,6 @@ sub update {
         $rc->update(
             {
 
-                category_id => $param->{category_id},
                 ringpage_id => $param->{ringpage_id},
                 target_url  => $param->{target},
 

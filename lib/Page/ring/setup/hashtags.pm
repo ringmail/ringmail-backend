@@ -24,32 +24,24 @@ extends 'Page::ring::user';
 around load => sub {
     my ( $next, @args, ) = @_;
 
-    my ( $obj, $param ) = get_param( @args, );
+    my ( $self, $param ) = get_param( @args, );
 
-    #my $form = $obj->form();
-    #::_log($form);
-    my $content = $obj->content();
-    my $user    = $obj->user();
+    my $content = $self->content();
+    my $user    = $self->user();
     my $account = Note::Account->new( $user->id() );
     my $uid     = $user->id();
     my $factory = Ring::Model::Hashtag->new();
     my $ht      = $factory->get_user_hashtags( 'user_id' => $uid, );
 
-    #::log($ht);
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
 
-    my $category   = Ring::Model::Category->new();
-    my $categories = $category->get_categories();
+    my $category = Ring::Model::Category->new( caller => $self, );
+    my $categories = $category->list();
 
     my @categories;
 
-    if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
-    }
-    else {
-        push @categories, [ '(No Categories Created)' => 0, ];
-    }
+    push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
 
     $content->{category_list}       = \@categories;
     $content->{category_sel}        = 0;
@@ -64,21 +56,19 @@ around load => sub {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
-        push @ringpages, [ '(No RingPages Created)' => q{}, ];
+        push @ringpages, [ '(No RingPages Created)' => undef, ];
     }
 
     $content->{ringpage_list} = \@ringpages;
     $content->{ringpage_opts}->{id} = 'ringpage';
 
-    return $obj->$next( $param, );
+    return $self->$next( $param, );
 };
 
 sub cmd_hashtag_add {
-    my ( $obj, $data, $args ) = @_;
+    my ( $self, $data, $args ) = @_;
 
-    ::log( $data, );
-
-    my $user   = $obj->user();
+    my $user   = $self->user();
     my $uid    = $user->id();
     my $tag    = lc( $data->{'hashtag'} );
     my $target = $data->{'target'};
@@ -110,16 +100,23 @@ sub cmd_hashtag_add {
                     user_id  => $uid,
                 );
 
+                ::log( $data, );
+
+                my $category = $data->{category};
+                my ( $ringpage_id, ) = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+
+                ::log( $ringpage_id, );
+
                 my $res = $factory->create(
-                    category_id => $data->{category_id},
-                    ringpage_id => $data->{ringpage_id},
+                    category    => $category,
+                    ringpage_id => $ringpage_id,
                     tag         => $tag,
                     target_url  => $target,
                     user_id     => $uid,
                 );
                 if ( defined $res ) {
 
-                    #::log("New", $res);
+                    ::log( 'New', $res );
                 }
             }
             else {
@@ -132,8 +129,8 @@ sub cmd_hashtag_add {
 }
 
 sub cmd_hashtag_delete {
-    my ( $obj, $data, $args ) = @_;
-    my $user    = $obj->user();
+    my ( $self, $data, $args ) = @_;
+    my $user    = $self->user();
     my $uid     = $user->id();
     my $tagid   = $args->[0];
     my $factory = Ring::Model::Hashtag->new();

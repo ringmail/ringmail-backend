@@ -35,18 +35,7 @@
 						<tr>
 							<td><strong>Category</strong></td>
 							<td>
-								[% IF ! edit %]
 								[% category %]
-								[% ELSE %]
-								[% page.field(
-								command => 'hashtag_edit',
-								type => 'select',
-								name => 'category_id',
-								select => category_list,
-								selected => category_sel,
-								opts => category_opts,
-								) %]
-								[% END %]
 							</td>
 						</tr>
 						<tr>
