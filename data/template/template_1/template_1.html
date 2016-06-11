@@ -1,50 +1,90 @@
-<p>[% ringpage.ringlink %]</p>
-<p>[% ringpage.ringlink_url %]</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-
+<!DOCTYPE html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>[% ringpage.ringpage %]</title>
-	<link href="/ringpage/css?ringpage_id=[% ringpage.id %]" type="text/css" rel="stylesheet">
-
-
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[% ringpage.ringpage %]</title>
+<link href="/ringpage/css?ringpage_id=[% ringpage.id %]" type="text/css" rel="stylesheet">
 </head>
 <html lang="en">
 <body class="body-wrapper">
-	
-	<header class="ringpage-header">
-		<hgroup class="ringpage-hgroup">
-			<h1 class="ringpage-header-h1">[% ringpage.header_title %]</h1>
-			<h2 class="ringpage-header-h2">[% ringpage.header_subtitle %]</h2>
-		</hgroup>
-	</header>
-		
-	<div class="ringpage-cta-section-wrapper">
-		<section class="ringpage-cta-section">
+<header class="ringpage-header">
+	<figure class="logo">
+		<img class="logo-img" src="img/logo-ph.png" alt="" />
+	</figure>
+</header>
+<div class="ringpage-cta-section-wrapper">
+	<section class="ringpage-cta-section">
 		[% FOREACH button IN ringpage.buttons %]
-			<button type="button" class="ringpage-cta-button" onClick="location.href='[% button.uri %]'">[% button.button %]</button>
+		<button type="button" class="ringpage-cta-button" onClick="location.href='[% button.uri %]'">[% button.button %]</button>
 		[% END %]
-		</section>
-	</div>
-
-	<div class="ringpage-content-section-wrapper">
-		<section class="ringpage-content-section">
-			<h1 class="ringpage-content-h1">[% ringpage.body_header %]</h1>
-			<p class="ringpage-content-p">[% ringpage.body_text %]</p>
-		</section>
-	</div>
-	
-	<div class="ringpage-footer-wrapper">
-		<footer class="ringpage-footer">
-			<p class="ringpage-footer-p">[% ringpage.footer_text %]</p>
-		</footer>
-	</div>
-	
+	</section>
+</div>
+<div class="ringpage-content-section-wrapper">
+	<section class="ringpage-content-section">
+		<h1 class="ringpage-content-h1">[% ringpage.headline %]</h1>
+		<p class="ringpage-content-p">[% ringpage.subhead %]</p>
+	</section>
+</div>
+<div class="ringpage-content-section-wrapper-2">
+	<section class="ringpage-content-section-2">
+		<h1 class="ringpage-content-h1-2">[% ringpage.body_headline %]</h1>
+		<p class="ringpage-content-p-2">[% ringpage.body %]</p>
+	</section>
+</div>
+<div class="ringpage-footer-wrapper">
+	<footer class="ringpage-footer">
+		<p class="ringpage-footer-p-2">[% ringpage.footer %]</p>
+		<p class="ringpage-footer-p">footer</p>
+	</footer>
+</div>
+<div class="social-wrapper">
+	<nav class="social-nav">
+		<ul class="social-ul">
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.homepage_url %]" title="Homepage">
+				<span class="home-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.facebook_url %]" title="Facebook">
+				<span class="fb-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.twitter_url %]" title="Twitter">
+				<span class="tw-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.instagram_url %]" title="Instagram">
+				<span class="inst-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.googleplus_url %]" title="Google+">
+				<span class="gplus-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.pinterest_url %]" title="Pinterest">
+				<span class="pin-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.linkedin_url %]" title="LinkedIn">
+				<span class="lin-span"></span>
+			</a>
+			</li>
+			<li class="social-li">
+			<a class="social-li-a" href="[% ringpage.youtube_url %]" title="YouTube">
+				<span class="ytube-span"></span>
+			</a>
+			</li>
+		</ul>
+	</nav>
+</div>	
 </body>
 </html>
