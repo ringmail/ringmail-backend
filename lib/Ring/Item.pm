@@ -99,6 +99,16 @@ sub item
 	elsif ($type eq 'email')
 	{
 		my $em = lc($param->{'email'});
+		if ($param->{'no_create'})
+		{
+			my $res = new Note::Row(
+				'ring_email' => {
+					'email' => $em,
+				},
+			);
+			return undef unless ($res->id());
+			return $res;
+		}
 		my $created = 0;
 		my $erec = Note::Row::find_create(
 			'ring_email',

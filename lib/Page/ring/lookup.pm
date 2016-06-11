@@ -43,8 +43,9 @@ sub load
 	$to =~ s/^sip\://;
 	$to =~ s/\@.*//g;
 	$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+	#::log("From: $from To: $to");
 	my $target = {};
-	if ($to =~ /(\\|%)/)
+	if ($to =~ /(\\|%)/ || $to =~ /^\+?\d+$/)
 	{
 		$to =~ s/(\\|%)/@/;
 		my $type = $route->get_target_type(
