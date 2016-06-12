@@ -44,7 +44,7 @@ sub push_message
 					'token' => $apns,
 					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
 					'loc-key' => 'CHAT',
-					'sound' => 'msg.caf',
+					'sound' => 'chat_in_alert.caf',
 					'data' => {
 						'tag' => substr(md5_hex($param->{'from'}), 0, 10),
 					},
