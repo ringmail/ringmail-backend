@@ -50,11 +50,11 @@ around load => sub {
 
     for my $field ( @{$ringpage_fields} ) {
 
-        my $key     = $field->{name};
+        my $name    = $field->{name};
         my $value   = $field->{value};
         my $default = $field->{default};
 
-        $ringpage_row_data->{$key} = $value // $default;
+        $ringpage_row_data->{$name} = $value // $default;
     }
 
     my $template_model     = Ring::Model::Template->new( caller => $self, );
@@ -76,13 +76,11 @@ around load => sub {
 };
 
 sub edit {
-    my ( $self, $data, $args, ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
-    my $user        = $self->user();
-    my $user_id     = $user->id();
-    my $ringpage_id = $args->[0];
-
-    my $ringpage_model = Ring::Model::RingPage->new();
+    my ( $ringpage_id, ) = @{$args};
+    my $user             = $self->user();
+    my $user_id          = $user->id();
 
     my $ringpage_row = Note::Row->new(
         ring_page => {
@@ -92,19 +90,39 @@ sub edit {
     );
 
     my $ringpage_row_data  = $ringpage_row->data();
-    my $ringpage_template  = $ringpage_row_data->{template};
-    my $ringpage_fields    = decode_json $ringpage_row_data->{fields};
     my $template_model     = Ring::Model::Template->new( caller => $self, );
     my $templates          = $template_model->list();
     my $template_name      = $ringpage_row_data->{template};
     my $template_structure = $templates->{$template_name}->{structure};
 
+    my $theme_name = $form_data->{theme_name};
+
+    ::log( $theme_name, );
+
+    for my $theme ( @{ $template_structure->{themes} } ) {
+
+        if ( $theme->{name} eq $theme_name ) {
+
+            for my $name ( keys %{$theme} ) {
+
+                $form_data->{$name} = $theme->{$name};
+
+            }
+
+        }
+
+    }
+
     for my $field ( @{ $template_structure->{fields} } ) {
 
-        my $key = $field->{name};
+        my $name = $field->{name};
 
-        $field->{value} = $data->{$key};
+        $field->{value} = $form_data->{$name};
     }
+
+    ::log( $template_structure, );
+
+    my $ringpage_model = Ring::Model::RingPage->new();
 
     if ($ringpage_model->update(
             fields  => encode_json $template_structure->{fields},
@@ -164,7 +182,7 @@ sub edit {
 }
 
 sub button_delete {
-    my ( $self, $data, $args, ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
     my $user    = $self->user();
     my $user_id = $user->id();

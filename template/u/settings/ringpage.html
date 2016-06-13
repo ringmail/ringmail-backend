@@ -72,9 +72,9 @@
 												[% page.field(
 												command => 'edit',
 												type => 'radio',
-												name => 'theme',
+												name => 'theme_name',
 												value => theme.name,
-												checked => 1,
+												checked => theme.name == ringpage.theme_name ? 1 : 0,
 												) %]
 											</span></li>
 											<li style="background-color:[% theme.color_1 %];"></li>

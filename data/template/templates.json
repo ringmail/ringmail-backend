@@ -42,7 +42,7 @@
                "value":""
             },
             {
-               "name":"theme",
+               "name":"theme_name",
                "type":"text",
                "default":"",
                "label":"Theme",
@@ -338,7 +338,7 @@
                "value":""
             },
             {
-               "name":"theme",
+               "name":"theme_name",
                "type":"text",
                "default":"",
                "label":"Theme",
@@ -634,7 +634,7 @@
                "value":""
             },
             {
-               "name":"theme",
+               "name":"theme_name",
                "type":"text",
                "default":"",
                "label":"Theme",
@@ -930,7 +930,7 @@
                "value":""
             },
             {
-               "name":"theme",
+               "name":"theme_name",
                "type":"text",
                "default":"",
                "label":"Theme",
