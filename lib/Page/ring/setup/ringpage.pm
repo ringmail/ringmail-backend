@@ -132,8 +132,6 @@ sub edit {
         my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_id', ), ], [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
         while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
 
-            next if not defined $button_id;
-
             if ( $button_id eq q{} ) {
 
                 next if $button_text eq q{} or $button_link eq q{};
