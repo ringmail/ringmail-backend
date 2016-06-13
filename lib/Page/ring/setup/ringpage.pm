@@ -97,8 +97,6 @@ sub edit {
 
     my $theme_name = $form_data->{theme_name};
 
-    ::log( $theme_name, );
-
     for my $theme ( @{ $template_structure->{themes} } ) {
 
         if ( $theme->{name} eq $theme_name ) {
@@ -119,8 +117,6 @@ sub edit {
 
         $field->{value} = $form_data->{$name};
     }
-
-    ::log( $template_structure, );
 
     my $ringpage_model = Ring::Model::RingPage->new();
 
