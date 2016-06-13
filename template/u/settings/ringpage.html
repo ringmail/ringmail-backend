@@ -65,67 +65,25 @@
 								<td class="td-label"><label>Theme</label></td>
 								<td>
 									<ul class="theme-ul">
+										[% FOREACH theme IN structure.themes %]
 										<li>
 										<ul>
 											<li><span class="input-group-addon">
 												[% page.field(
 												command => 'edit',
 												type => 'radio',
-												name => 'color_theme',
+												name => 'theme',
+												value => theme.name,
 												checked => 1,
 												) %]
 											</span></li>
-											<li style="background-color:#28bbd2;"></li>
-											<li style="background-color:#d4f2f6;"></li>
-											<li style="background-color:#fff;"></li>
-											<li style="background-color:#f2f2f2;"></li>
+											<li style="background-color:[% theme.color_1 %];"></li>
+											<li style="background-color:[% theme.color_2 %];"></li>
+											<li style="background-color:[% theme.color_3 %];"></li>
+											<li style="background-color:[% theme.color_4 %];"></li>
 										</ul>
 										</li>
-										<li>
-										<ul>
-											<li><span class="input-group-addon">
-												[% page.field(
-												command => 'edit',
-												type => 'radio',
-												name => 'color_theme',
-												) %]
-											</span></li>
-											<li style="background-color:#ed5349;"></li>
-											<li style="background-color:#ead9d2;"></li>
-											<li style="background-color:#fff;"></li>
-											<li style="background-color:#f2f2f2;"></li>
-										</ul>
-										</li>
-										<li>
-										<ul>
-											<li><span class="input-group-addon">
-												[% page.field(
-												command => 'edit',
-												type => 'radio',
-												name => 'color_theme',
-												) %]
-											</span></li>
-											<li style="background-color:#69cb63;"></li>
-											<li style="background-color:#e0f4df;"></li>
-											<li style="background-color:#fff;"></li>
-											<li style="background-color:#f2f2f2;"></li>
-										</ul>
-										</li>
-										<li>
-										<ul>
-											<li><span class="input-group-addon">
-												[% page.field(
-												command => 'edit',
-												type => 'radio',
-												name => 'color_theme',
-												) %]
-											</span></li>
-											<li style="background-color:#9249d0;"></li>
-											<li style="background-color:#e8daf5;"></li>
-											<li style="background-color:#fff;"></li>
-											<li style="background-color:#f2f2f2;">
-										</ul>
-										</li>
+										[% END %]
 									</ul>
 								</td>
 							</tr>
