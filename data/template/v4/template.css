@@ -121,17 +121,11 @@ button:hover {
 	font-style: normal;
 }
 
-
-
 /* ==== primary styles ===================================================== */
-
-
 html {
 	min-height: 100%;
 	background-color: #FFF;
 }
-
-
 body {
 	font-family: 'Helvetica Neue', "Open Sans", "Arial", sans-serif;
 	font-size: 14px;
@@ -156,53 +150,43 @@ button:hover {
 .ringpage-header {
 	float: left;
 	width: 100%;
-	height: 100px;
+	height: 300px;
 	background-color: #d4f2f6;
-	position: absolute;
 }
-
-.logo {
-	margin: 20px auto;
-	display: block;
-	height: 150px;
-	width: 150px;
-	padding: 6px;
-	background-color: #fff;
-	border-radius: 80px;
-
-}
-
-.logo-img {
-	width: 150px;
-	height: 150px;
-	position: relative;
-	overflow: hidden;
-	border-radius: 50%;
-}
-
-
-
-.ringpage-cta-section-wrapper {
+.ringpage-video-section-wrapper {
 	float: left;
 	width: 100%;
 	background-color: #000; /* delete, bg image will go here */
 	background-image: url("");
 	background-size: cover;
-	height: 500px;
 }
 
-.ringpage-cta-section {
+.ringpage-video-section {
 	max-width: 800px;
 	margin: 0 auto;
 	text-align: center;
+	position: relative;
+	padding-bottom: 30%;
+	padding-top: 30px; height: 0; overflow: hidden;
+}
+
+
+.ringpage-video-section iframe,
+.ringpage-video-section object,
+.ringpage-video-section embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .ringpage-cta-button {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
 	font-size: 40px;
 	color: #fff;
-	background-color: #28bbd2;
-	margin: 360px auto 0;
+	background-color: #69cb63;
+	margin: 20px auto 0;
 	display: block;
 	padding: 22px 0 12px;
 	width: 50%;
@@ -215,8 +199,9 @@ button:hover {
 .ringpage-content-section-wrapper {
 	float: left;
 	width: 100%;
-	background-color: #d4f2f6;
+	background-color: #e0f4df;
 	color: #32352f;
+
 }
 
 .ringpage-content-section {
@@ -224,6 +209,36 @@ button:hover {
 	margin: 40px auto;
 	text-align: center;
 	color: #32352f;
+}
+
+.logo {
+	position: relative;
+	top: 120px;
+	margin: -80px auto 0;
+	display: block;
+	height: 150px;
+	width: 150px;
+	padding: 6px;
+	background-color: #fff;
+	border-radius: 80px;
+}
+
+.logo-img {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+.logo {
+	margin: 20px auto;
+	display: block;
+	height: 150px;
+	width: 150px;
+	padding: 6px;
+	background-color: #fff;
+	border-radius: 80px;
+
 }
 
 .ringpage-content-h1 {
@@ -250,14 +265,14 @@ button:hover {
 
 .ringpage-content-section-2 {
 	max-width: 800px;
-	margin: 40px auto;
+	margin: 120px auto 40px;
 	text-align: left;
 	color: #333;
 }
 
 .ringpage-content-h1-2 {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
-	font-size: 36px;
+	font-size: 34px;
 	margin: 40px auto 20px;
 	max-width: 760px;
 	line-height: 1.4em;
@@ -265,7 +280,7 @@ button:hover {
 
 .ringpage-content-p-2 {
 	font-family: 'HelveticaNeue';
-	font-size: 21px;
+	font-size: 20px;
 	margin: 0 auto;
 	max-width: 760px;
 	line-height: 1.4em;
@@ -275,8 +290,6 @@ button:hover {
 	text-decoration: underline;
 	color: #ed5349;
 }
-
-
 .ringpage-footer-wrapper {
 	float: left;
 	width: 100%;
@@ -297,34 +310,21 @@ button:hover {
 .ringpage-footer-p-2 {
 	font-family: 'HelveticaNeue';
 	font-style: italic;
-	font-size: 18px;
+	font-size: 17px;
 	margin-bottom: 20px;
 	line-height: 1.4em;
-}
-
-.social-wrapper {
-	background-color: #333;
-}
-
-.social-nav {
-
+	color: #333;
 }
 
 @media only screen and (max-width: 768px) {
 
-	.ringpage-header {
-		float: left;
-		width: 100%;
-		height: 75px;
-		position: absolute;
-	}
-
 	.logo {
-		margin: 20px auto;
+		top: 110px;
 		display: block;
 		height: 100px;
 		width: 100px;
 		padding: 4px;
+		background-color: #fff;
 		border-radius: 60px;
 	}
 
@@ -334,41 +334,29 @@ button:hover {
 		overflow: hidden;
 		border-radius: 50%;
 	}
-
-	.ringpage-cta-section {
-		max-width: 800px;
-		margin: 40px auto;
-		text-align: center;
-	}
-
-
-
-
 	.ringpage-cta-section-wrapper {
-		float: left;
-		width: 100%;
+		background-image: url("");
 		background-size: cover;
-		height:400px;
+
 	}
 
 	.ringpage-cta-button {
 		font-size: 28px;
-		margin: 300px auto 0;
 
-		width: 80%;
+		width: 90%;
 
 	}
 
 	.ringpage-content-section {
 		width: 90%;
-		margin: 40px auto;
 		text-align: center;
+		margin: 40px auto 60px;
 	}
 
 	.ringpage-content-section-2 {
 		width: 90%;
-		margin: 40px auto;
 		text-align: left;
+		margin: 100px auto 40px;
 	}
 
 	.ringpage-footer {
@@ -399,6 +387,9 @@ button:hover {
 		font-size: 16px;
 	}
 
+	.ringpage-video-section {
+		padding-bottom: 56.25%;
+	}
 
 }
 
@@ -421,8 +412,6 @@ button:hover {
 	margin: 0 auto;
 	text-align: center;
 }
-
-
 
 .social-li {
 	display: inline-block;
@@ -525,8 +514,6 @@ button:hover {
 	filter: alpha(opacity=75);
 	opacity: .75;
 }
-
-
 /* ==|== non-semantic helper classes ======================================== */
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
 .ir br { display: none; }
@@ -546,8 +533,6 @@ button:hover {
 
 .clearfix:after:after { clear: both; }
 .clearfix { zoom: 1; }
-
-
 /* ==|== print styles ======================================================= */
 
 @media print {

@@ -17,10 +17,10 @@ extends 'Page::ring::user';
 sub load {
     my ( @args, ) = @_;
 
-    my ( $self, $param ) = get_param( @args, );
+    my ( $self, $param, ) = get_param( @args, );
 
-    my $ringpage_id     = $param->{form}->{ringpage_id};
     my $ringpage_model  = Ring::Model::RingPage->new();
+    my $ringpage_id     = $param->{form}->{ringpage_id};
     my $ringpage        = $ringpage_model->retrieve( ringpage_id => $ringpage_id, );
     my $ringpage_fields = decode_json $ringpage->{fields};
 
@@ -41,22 +41,26 @@ sub load {
 
     $self->content()->{ringpage}->{buttons} = $buttons;
 
+    my @app_path            = @{ $self->path() };
+    my $app_path_last_index = $#app_path;
+    my $template_type       = $app_path[$app_path_last_index];
+
+    my $template_filename;
+    if ( $template_type eq 'html' ) {
+        $self->response()->content_type('text/html; charset=utf-8');
+        $template_filename = 'template.html';
+    }
+    elsif ( $template_type eq 'css' ) {
+        $self->response()->content_type('text/css; charset=utf-8');
+        $template_filename = 'template.css';
+    }
+
+    my $app_root       = $self->root();
     my $template_model = Ring::Model::Template->new( caller => $self, );
     my $templates      = $template_model->list();
     my $template_name  = $ringpage->{template};
-
-    my $uri_path = $self->path();
-    my $template_filename;
-    if ( $uri_path->[-1] eq 'html' ) {
-        $self->response()->content_type('text/html; charset=utf-8');
-        $template_filename = $templates->{$template_name}->{path} . '.html';
-    }
-    elsif ( $uri_path->[-1] eq 'css' ) {
-        $self->response()->content_type('text/css; charset=utf-8');
-        $template_filename = $templates->{$template_name}->{path} . '.css';
-    }
-
-    my $template = Note::Template->new( root => $self->root() . '/data/template/' . $templates->{$template_name}->{path}, );
+    my $template_path  = $templates->{$template_name}->{path};
+    my $template       = Note::Template->new( root => join q{/}, $app_root, 'data/template', $template_path, );
 
     return $template->apply( $template_filename, $self->content(), );
 }
