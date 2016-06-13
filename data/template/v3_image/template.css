@@ -147,12 +147,6 @@ button:hover {
 	opacity: .75;
 }
 
-.ringpage-header {
-	float: left;
-	width: 100%;
-	height: 300px;
-	background-color: #d4f2f6;
-}
 .ringpage-video-section-wrapper {
 	float: left;
 	width: 100%;
@@ -176,7 +170,7 @@ button:hover {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
 	font-size: 40px;
 	color: #fff;
-	background-color: #ed5349;
+	background-color: [% ringpage.color_1 %];
 	margin: 20px auto 0;
 	display: block;
 	padding: 22px 0 12px;
@@ -190,7 +184,7 @@ button:hover {
 .ringpage-content-section-wrapper {
 	float: left;
 	width: 100%;
-	background-color: #ead9d2;
+	background-color: [% ringpage.color_2 %];
 	color: #32352f;
 
 }
@@ -239,7 +233,7 @@ button:hover {
 .ringpage-content-section-wrapper-2 {
 	float: left;
 	width: 100%;
-	background-color: #fff;
+	background-color: [% ringpage.color_3 %];
 	color: #32352f;
 }
 
@@ -274,7 +268,7 @@ button:hover {
 	float: left;
 	width: 100%;
 	color: #949494;
-	background-color: #f2f2f2;
+	background-color: [% ringpage.color_4 %];
 }
 
 .ringpage-footer {
