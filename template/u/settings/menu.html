@@ -1,40 +1,22 @@
-<div class="navbar">
-	<div class="navbar-inner">
-		<ul class="nav">
-			<li[% IF menu_settings == 'hashtags' %] class="active"[% END %]><a href="/u/check_hashtag">Hashtag</a></li>
-			<li class="divider-vertical"></li>
-			<li[% IF menu_settings == 'domains' %] class="active"[% END %]><a href="/u/domains">Domain</a></li>
-			<li class="divider-vertical"></li>
-			<li[% IF menu_settings == 'ringpages' %] class="active"[% END %]><a href="/u/ringpages">RingPage</a></li>
-			<li class="divider-vertical"></li>
-			<li[% IF menu_settings == 'account' %] class="active"[% END %]><a href="/u/account/">Account</a></li>
+<div id="header">
+	<div class="container">
+		<a href="/">
+			<h1 class="logo-h1">Ringmail</h1>
+		</a>
+		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+			<i class="icon-reorder"></i>
+		</a>
+		<ul class="logout-ul pull-right">
+			<li><a href="javascript:;"><i class="icon-user"></i>User Name</a></li>
+			<li><a href="u?do-1_2=1&amp;cmd-1_2=logout">Logout</a></li>
 		</ul>
+		<div class="nav-collapse">
+			<ul id="main-nav" class="nav pull-right">
+				<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u/check_hashtag">Hashtags</a></li>
+				<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
+				<li class="nav-icon[% IF menu_settings == 'domains' %] active[% END %]"><a href="/u/domains">Domains</a></li>
+				<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account/">Account</a></li>
+			</ul>
+		</div>
 	</div>
-	<hr />
 </div>
-[% IF menu_settings == 'account' %]
-<div class="span3">
-	<ul class="nav nav-pills nav-stacked">
-		<li[% IF menu_subnav == 'emails' %] class="active"[% END %]><a href="/u/account">Add Email</a></li>
-		<li[% IF menu_subnav == 'service' %] class="active"[% END %]><a href="/u/service">Manage Funds</a></li>
-		<li[% IF menu_subnav == 'password' %] class="active"[% END %]><a href="/u/password">Change Password</a></li>
-	</ul>
-</div>
-[% END %]
-[% IF menu_settings == 'hashtags' %]
-<div class="span3">
-	<ul class="nav nav-pills nav-stacked">
-		<li[% IF menu_subnav == 'check_hashtag' %] class="active"[% END %]><a href="/u/check_hashtag">Check Available Hashtag</a></li>
-		<li[% IF menu_subnav == 'hashtags' %] class="active"[% END %]><a href="/u/hashtags">Hashtags</a></li>
-		<li[% IF menu_subnav == 'register_hashtag' %] class="active"[% END %]><a href="/u/hashtags?new_tag=1">Register Hashtag</a></li>
-	</ul>
-</div>
-[% END %]
-[% IF menu_settings == 'ringpages' %]
-<div class="span3">
-	<ul class="nav nav-pills nav-stacked">
-		<li[% IF menu_subnav == 'ringpages' %] class="active"[% END %]><a href="/u/ringpages">Manage RingPages</a></li>
-		<li[% IF menu_subnav == 'new_ringpage' %] class="active"[% END %]><a href="/u/ringpages?new_ringpage=1">Create New RingPage</a></li>
-	</ul>
-</div>
-[% END %]
