@@ -279,7 +279,7 @@ textarea {
 }
 
 .logo-h1 {
-	background-image: url("../img/rm-logo.png");
+	background-image: url("../images/rm-logo.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 	text-indent: -999em;
@@ -339,6 +339,9 @@ textarea {
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
     text-shadow: none;
 }
 
@@ -354,11 +357,14 @@ textarea {
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#f4f4f4', GradientType=0);
     border: 1px solid #0077c2;
-
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    text-shadow: none;
 }
 
 #main-nav > li > a:hover, #main-nav > li.open > a {
-    background-color: #ccc;
+    background-color: #1b3148;
     background-image: -moz-linear-gradient(top, #ccc, #ccc);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ccc), to(#ccc));
     background-image: -webkit-linear-gradient(top, #ccc, #ccc);
@@ -440,25 +446,27 @@ textarea {
 	
 }
 
-/* --------------- TABLE NAMES ---------------- */
-
-.logo { 
-	
+.input-show {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
 }
 
-.theme { 
-	
+input[type="radio"]:checked ~ .input-show,
+input[type="checkbox"]:checked ~ .input-show {
+  opacity: 1;
+  overflow: visible;
+  vertical-align: baseline;
+  height: auto;
 }
 
-.media { 
-	
+.modal-options-ul li {
+	margin: 10px auto;
 }
 
-.text-content { 
-	
+.modal-options-ul li input {
+	display: inline-block!important;
+	vertical-align: baseline;
 }
 
-.background { 
-	
-}
 
