@@ -1,67 +1,78 @@
 [% menu_settings = 'ringpages' %]
 [% menu_subnav = page.form.new_ringpage ? 'new_ringpage' : 'ringpages' %]
 [% content = BLOCK %]
-<div class="container">
-	<div class="row">
-		<div class="tabbable">
-			<div class="span12">
-				[% INCLUDE u/settings/menu.html %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>RingPages</h2>
 			</div>
-			<div class="span12">
-				[% IF page.form.new_ringpage %]
-				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-					<fieldset>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="ringpage">RingPage:</label>
-							<div class="controls">
-								<div class="input-prepend">
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					[% INCLUDE u/settings/sub_menu.html %]
+				</div>
+				<div class="span12">
+					[% IF page.form.new_ringpage %]
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="ringpage">RingPage:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										[% page.field(
+										command => 'add',
+										type => 'text',
+										name => 'ringpage',
+										opts => { id => 'ringpage', style => 'width: 179px', },
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="template">Template:</label>
+								<div class="controls">
 									[% page.field(
 									command => 'add',
-									type => 'text',
-									name => 'ringpage',
-									opts => { id => 'ringpage', style => 'width: 179px', },
+									type => 'select',
+									name => 'template_name',
+									select => template_list,
+									selected => template_sel,
+									opts => template_opts,
 									) %]
 									[% IF page.value.error %]
 									<div>
-										<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
+										<span class="error" for="template" style="display: inline;">[% page.value.error %]</span>
 									</div>
 									[% END %]
 								</div>
 							</div>
-						</div>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="template">Template:</label>
-							<div class="controls">
-								[% page.field(
-								command => 'add',
-								type => 'select',
-								name => 'template_name',
-								select => template_list,
-								selected => template_sel,
-								opts => template_opts,
-								) %]
-								[% IF page.value.error %]
-								<div>
-									<span class="error" for="template" style="display: inline;">[% page.value.error %]</span>
+							<div class="control-group">
+								<div class="controls">
+									[% page.button(
+									command => 'add',
+									contents => 'Create RingPage',
+									opts => { class => 'btn btn-primary btn-large', },
+									) %]
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+									<a href="[% page.url() %]">Cancel</a>
 								</div>
-								[% END %]
 							</div>
-						</div>
-						<div class="control-group">
-							<div class="controls">
-								[% page.button(
-								command => 'add',
-								contents => 'Create RingPage',
-								opts => { class => 'btn btn-primary btn-large', },
-								) %]
-								&nbsp;&nbsp;|&nbsp;&nbsp;
-								<a href="[% page.url() %]">Cancel</a>
-							</div>
-						</div>
-					</fieldset>
-				</form>
-				[% ELSE %]
-				<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						</fieldset>
+					</form>
+					[% ELSE %]
+					<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 					<fieldset>
 						<div class="control-group">
 							<label class="control-label" for="ringpage">Create a new RingPage:</label>
@@ -71,46 +82,47 @@
 						</div>
 					</fieldset>
 				</form> -->
-				<table class="table table-bordered table-striped table-highlight">
-					<thead>
+					<table class="table table-bordered table-striped table-highlight">
+						<thead>
+							<tr>
+								<th>RingPage</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+						[% IF ringpages.size == 0 %]
 						<tr>
-							<th>RingPage</th>
-							<th>&nbsp;</th>
+							<td colspan="4">No RingPages.</td>
 						</tr>
-					</thead>
-					<tbody>
-					[% IF ringpages.size == 0 %]
-					<tr>
-						<td colspan="4">No RingPages.</td>
-					</tr>
-					[% ELSE %]
-					[% FOREACH row IN ringpages %]
-					<tr>
-						<td>[% row.ringpage %]</td>
-						<td>
-							[% page.link(
-							text => 'Delete',
-							command => 'remove',
-							args => [ row.id, ],
-							opts => {
-							onclick => "return confirm( 'Really Delete RingPage: $row.ringpage' )",
-							},
-							) %]
-							|
-							[% page.link(
-							text => 'Edit Details',
-							path => '/u/ringpage',
-							query => {
-							ringpage_id => row.id,
-							},
-							) %]
-						</td>
-					</tr>
+						[% ELSE %]
+						[% FOREACH row IN ringpages %]
+						<tr>
+							<td>[% row.ringpage %]</td>
+							<td>
+								[% page.link(
+								text => 'Delete',
+								command => 'remove',
+								args => [ row.id, ],
+								opts => {
+								onclick => "return confirm( 'Really Delete RingPage: $row.ringpage' )",
+								},
+								) %]
+								|
+								[% page.link(
+								text => 'Edit Details',
+								path => '/u/ringpage',
+								query => {
+								ringpage_id => row.id,
+								},
+								) %]
+							</td>
+						</tr>
+						[% END %]
+						[% END %]
+						</tbody>
+					</table>
 					[% END %]
-					[% END %]
-					</tbody>
-				</table>
-				[% END %]
+				</div>
 			</div>
 		</div>
 	</div>

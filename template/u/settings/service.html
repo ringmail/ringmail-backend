@@ -2,25 +2,37 @@
 [% menu_settings = 'account' %]
 [% menu_subnav = 'service' %]
 [% content = BLOCK %]
-<div class="container">
-	<div class="row">
-		<div class="tabbable">
-			<div class="span12">
-				[% INCLUDE u/settings/menu.html %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Account</h2>
 			</div>
-			<div class="span6">
-				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-					<fieldset>
-						[% payment %]
-					</fieldset>
-				</form>
-			</div>
-			<div class="span3">
-				<h3>Account Balance</h3>
-				<h5>$[% balance %]</h5>
-				<p>
-				You can use your RingMail Account Balance to reserve hashtags.
-				</p>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					[% INCLUDE u/settings/sub_menu.html %]
+				</div>
+				<div class="span6">
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							[% payment %]
+						</fieldset>
+					</form>
+				</div>
+				<div class="span3">
+					<h3>Account Balance</h3>
+					<h5>$[% balance %]</h5>
+					<p>
+					You can use your RingMail Account Balance to reserve hashtags.
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>

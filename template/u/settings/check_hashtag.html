@@ -2,62 +2,74 @@
 [% menu_settings = 'hashtags' %]
 [% menu_subnav = 'check_hashtag' %]
 [% content = BLOCK %]
-<div class="container">		
-	<div class="row">
-		<div class="tabbable">
-			<div class="span12">
-				[% INCLUDE u/settings/menu.html %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Hashtags</h2>
 			</div>
-			<div class="span12">
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">		
+		<div class="row">
+			<div class="tabbable">
 				<div class="span12">
-					[% IF page.value.hashtag.defined %]
-					[% IF page.value.hashtag == 0 %]
-					Available!
-					[% ELSE %]
-					Not available. 
-					[% END %]
-					[% END %]
+					[% INCLUDE u/settings/sub_menu.html %]
 				</div>
-				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-					<fieldset>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="hashtag">Hashtag:</label>
-							<div class="controls">
-								<div class="input-prepend">
-									<span class="add-on">#</span>
-									[% page.field(
-									command => 'check_hashtag',
-									type    => 'text',
-									name    => 'hashtag',
-									value   => page.form.hashtag,
-									opts    => {
-									id => 'hashtag',
-									style => 'width: 179px',
-									},
-									) %]
-									[% IF page.value.error %]
-									<div>
-										<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+				<div class="span12">
+					<div class="span12">
+						[% IF page.value.hashtag.defined %]
+						[% IF page.value.hashtag == 0 %]
+						Available!
+						[% ELSE %]
+						Not available. 
+						[% END %]
+						[% END %]
+					</div>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="hashtag">Hashtag:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										<span class="add-on">#</span>
+										[% page.field(
+										command => 'check_hashtag',
+										type    => 'text',
+										name    => 'hashtag',
+										value   => page.form.hashtag,
+										opts    => {
+										id => 'hashtag',
+										style => 'width: 179px',
+										},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
 									</div>
-									[% END %]
 								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<div class="controls">
-								[% page.button(
-								command  => 'check_hashtag',
-								contents => 'Check Hashtag',
-								opts     => {
-								class => 'btn btn-primary btn-large',
-								},
-								) %]
-								&nbsp;&nbsp;|&nbsp;&nbsp;
-								<a href="[% page.url() %]">Cancel</a>
+							<div class="control-group">
+								<div class="controls">
+									[% page.button(
+									command  => 'check_hashtag',
+									contents => 'Check Hashtag',
+									opts     => {
+									class => 'btn btn-primary btn-large',
+									},
+									) %]
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+									<a href="[% page.url() %]">Cancel</a>
+								</div>
 							</div>
-						</div>
-					</fieldset>
-				</form>
+						</fieldset>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
