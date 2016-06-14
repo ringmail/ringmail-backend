@@ -21,9 +21,9 @@ use Ring::Model::Template;
 
 extends 'Page::ring::user';
 
-around load => sub {
-    my ( $next, @args, ) = @_;
-    my ( $self, $param ) = get_param( @args, );
+sub load {
+    my ( @args, ) = @_;
+    my ( $self, $param, ) = get_param( @args, );
 
     my $content = $self->content();
     my $user    = $self->user();
@@ -43,23 +43,23 @@ around load => sub {
     my $ringpages = $ringpage->list( user_id => $user->id(), );
     $content->{ringpages} = $ringpages;
 
-    return $self->$next( $param, );
-};
+    return $self->SUPER::load( $param, );
+}
 
 sub add {
-    my ( $self, $data, $args ) = @_;
+    my ( $self, $form_data, $args ) = @_;
 
     my $user    = $self->user();
     my $factory = Ring::Model::RingPage->new();
 
-    if ( $factory->validate_ringpage( ringpage => $data->{ringpage}, ) ) {
+    if ( $factory->validate_ringpage( ringpage => $form_data->{ringpage}, ) ) {
 
-        if ( $factory->check_exists( ringpage => $data->{ringpage}, ) ) {
+        if ( $factory->check_exists( ringpage => $form_data->{ringpage}, ) ) {
             ::log('Dup');
         }
         else {
 
-            my $template_name = $data->{template_name};
+            my $template_name = $form_data->{template_name};
 
             my $template_model = Ring::Model::Template->new( caller => $self, );
             my $templates = $template_model->list();
@@ -69,12 +69,12 @@ sub add {
             for my $field ( @{ $template_structure->{fields} } ) {
                 my $name = $field->{name};
 
-                $field->{value} = $data->{$name};
+                $field->{value} = $form_data->{$name};
             }
 
             my $res = $factory->create(
                 fields        => encode_json $template_structure->{fields},
-                ringpage      => $data->{ringpage},
+                ringpage      => $form_data->{ringpage},
                 template_name => $template_name,
                 user_id       => $user->id(),
             );
@@ -104,10 +104,12 @@ sub add {
 }
 
 sub remove {
-    my ( $self, $data, $args ) = @_;
+    my ( $self, $form_data, $args ) = @_;
+
     my $user    = $self->user();
     my $page_id = $args->[0];
     my $factory = Ring::Model::RingPage->new();
+
     if ($factory->delete(
             id      => $page_id,
             user_id => $user->id(),
