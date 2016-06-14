@@ -43,33 +43,67 @@
 			</div> <!-- /#top-nav -->
 		</div> <!-- /.container -->
 	</div> <!-- /#topbar -->
-	<div id="header">
-		<div class="container">
-			<div style="position: relative; top: 24px; width: 280px; height: 32px; display: block;">&nbsp;</div>
-			<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<i class="icon-reorder"></i>
+<div id="header">
+	
+	<div class="container">
+		
+			<a href="/">
+				<h1 class="logo-h1">Ringmail</h1>
 			</a>
-			<div class="nav-collapse">
-				<ul id="main-nav" class="nav pull-right">
-					<li class="nav active">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-list-alt"></i>
-						<span>Control Panel</span>
+			
+		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        	<i class="icon-reorder"></i>
+      	</a>
+	
+	  		<ul class="logout-ul pull-right">
+				<li><a href="javascript:;"><i class="icon-user"></i>User Name</a></li>
+				<li><a href="u?do-1_2=1&amp;cmd-1_2=logout">Logout</a></li>
+			</ul>
+	  	
+		<div class="nav-collapse">
+			
+			<ul id="main-nav" class="nav pull-right">
+				<li class="nav-icon active">
+					<a href="/u/check_hashtag">Hashtags</a>
+				</li>
+				
+				<li class="nav-icon">
+					<a href="/u/ringpages">RingPages</a>
+				</li>
+				
+				<li class="nav-icon">
+					<a href="/u/domains">Domains</a>
+				</li>
+				
+				<li class="nav-icon">
+					<a href="/u/account/">Account</a>
+				</li>
+				
+				
+				
+				<!--li class="dropdown">					
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="icon-external-link"></i>
+						<span>Extras</span> 
+						<b class="caret"></b>
 					</a>	
-					</li>
-					<li class="nav" style="margin-left: 20px;">
-					<a href="[% page.url(
-						'path' => '/u',
-						'command' => 'logout',
-						) %]">
-						<span>Logout</span>
-						<i class="icon-chevron-right"></i>
-					</a>	
-					</li>
-				</ul>
-			</div> <!-- /.nav-collapse -->
-		</div> <!-- /.container -->
-	</div> <!-- /#header -->
+				
+					<ul class="dropdown-menu">							
+						<li><a href="./login.html">Login</a></li>
+						<li><a href="./signup.html">Signup</a></li>
+						<li><a href="./error.html">Error</a></li>
+						<li><a href="./skins.html">Skins</a></li>
+						<li><a href="./sticky.html">Sticky Footer</a></li>
+					</ul>    				
+				</li-->
+			</ul>
+			
+		</div> <!-- /.nav-collapse -->
+
+	</div> <!-- /.container -->
+	
+</div> <!-- /#header -->
+
 	<div id="masthead" style="padding-top: 8px; padding-bottom: 8px;">
 		<div class="container">
 			<div class="masthead-pad">
