@@ -10,10 +10,12 @@
 			</div>
 			<div class="span12">
 				<div class="span12">
+					[% IF page.value.hashtag.defined %]
 					[% IF page.value.hashtag == 0 %]
 					Available!
 					[% ELSE %]
 					Not available. 
+					[% END %]
 					[% END %]
 				</div>
 				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
