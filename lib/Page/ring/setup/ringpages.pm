@@ -49,12 +49,12 @@ sub load {
 sub add {
     my ( $self, $form_data, $args ) = @_;
 
-    my $user    = $self->user();
-    my $factory = Ring::Model::RingPage->new();
+    my $user           = $self->user();
+    my $ringpage_model = Ring::Model::RingPage->new();
 
-    if ( $factory->validate_ringpage( ringpage => $form_data->{ringpage}, ) ) {
+    if ( $ringpage_model->validate_ringpage( ringpage => $form_data->{ringpage}, ) ) {
 
-        if ( $factory->check_exists( ringpage => $form_data->{ringpage}, ) ) {
+        if ( $ringpage_model->check_exists( ringpage => $form_data->{ringpage}, ) ) {
             ::log('Dup');
         }
         else {
@@ -75,14 +75,14 @@ sub add {
                 $field->{value} = $value // $default;
             }
 
-            my $res = $factory->create(
+            my $ringpage = $ringpage_model->create(
                 fields        => encode_json $template_structure->{fields},
                 ringpage      => $form_data->{ringpage},
                 template_name => $template_name,
                 user_id       => $user->id(),
             );
-            if ( defined $res ) {
-                ::log( New => $res );
+            if ( defined $ringpage ) {
+                ::log( New => $ringpage );
 
                 my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
                 while ( my ( $button_text, $button_link, ) = $each_array->() ) {
@@ -92,12 +92,14 @@ sub add {
                     my $row = Note::Row::create(
                         ring_button => {
                             button      => $button_text,
-                            ringpage_id => $res->id(),
+                            ringpage_id => $ringpage->id(),
                             uri         => $button_link,
                             user_id     => $user->id(),
                         },
                     );
                 }
+
+                return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
 
             }
         }
@@ -109,11 +111,11 @@ sub add {
 sub remove {
     my ( $self, $form_data, $args ) = @_;
 
-    my $user    = $self->user();
-    my $page_id = $args->[0];
-    my $factory = Ring::Model::RingPage->new();
+    my $user           = $self->user();
+    my $page_id        = $args->[0];
+    my $ringpage_model = Ring::Model::RingPage->new();
 
-    if ($factory->delete(
+    if ($ringpage_model->delete(
             id      => $page_id,
             user_id => $user->id(),
         )
