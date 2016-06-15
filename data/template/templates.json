@@ -37,42 +37,42 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"",
+               "default":"/img/logo-ph.png",
                "label":"Logo",
                "value":""
             },
             {
                "name":"theme_name",
                "type":"text",
-               "default":"",
+               "default":"theme_1",
                "label":"Theme",
                "value":""
             },
             {
                "name":"color_1",
                "type":"text",
-               "default":"",
+               "default":"#28BBD2",
                "label":"Color 1",
                "value":""
             },
             {
                "name":"color_2",
                "type":"text",
-               "default":"",
+               "default":"#D4F2F6",
                "label":"Color 2",
                "value":""
             },
             {
                "name":"color_3",
                "type":"text",
-               "default":"",
+               "default":"#FFFFFF",
                "label":"Color 3",
                "value":""
             },
             {
                "name":"color_4",
                "type":"text",
-               "default":"",
+               "default":"#F2F2F2",
                "label":"Color 4",
                "value":""
             },
@@ -86,35 +86,35 @@
             {
                "name":"headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem Ipsum Dolor",
                "label":"Headline",
                "value":""
             },
             {
                "name":"subhead",
                "type":"text",
-               "default":"",
+               "default":"Adipscing elit enum lorem consectetur.",
                "label":"Subhead",
                "value":""
             },
             {
                "name":"body_headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in ipsum ligula morbi enum.",
                "label":"Body Headline",
                "value":""
             },
             {
                "name":"body",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor. Nullam pulvinar, @mauris_nec ultrices ullamcorper, risus mi maximus tortor, nec eleifend ante eros quis metus. Phasellus eu congue nibh.",
                "label":"Body",
                "value":""
             },
             {
                "name":"footer",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor.",
                "label":"Footer",
                "value":""
             },
@@ -215,42 +215,42 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"",
+               "default":"/img/logo-ph.png",
                "label":"Logo",
                "value":""
             },
             {
                "name":"theme_name",
                "type":"text",
-               "default":"",
+               "default":"theme_1",
                "label":"Theme",
                "value":""
             },
             {
                "name":"color_1",
                "type":"text",
-               "default":"",
+               "default":"#28BBD2",
                "label":"Color 1",
                "value":""
             },
             {
                "name":"color_2",
                "type":"text",
-               "default":"",
+               "default":"#D4F2F6",
                "label":"Color 2",
                "value":""
             },
             {
                "name":"color_3",
                "type":"text",
-               "default":"",
+               "default":"#FFFFFF",
                "label":"Color 3",
                "value":""
             },
             {
                "name":"color_4",
                "type":"text",
-               "default":"",
+               "default":"#F2F2F2",
                "label":"Color 4",
                "value":""
             },
@@ -264,35 +264,35 @@
             {
                "name":"headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem Ipsum Dolor",
                "label":"Headline",
                "value":""
             },
             {
                "name":"subhead",
                "type":"text",
-               "default":"",
+               "default":"Adipscing elit enum lorem consectetur.",
                "label":"Subhead",
                "value":""
             },
             {
                "name":"body_headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in ipsum ligula morbi enum.",
                "label":"Body Headline",
                "value":""
             },
             {
                "name":"body",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor. Nullam pulvinar, @mauris_nec ultrices ullamcorper, risus mi maximus tortor, nec eleifend ante eros quis metus. Phasellus eu congue nibh.",
                "label":"Body",
                "value":""
             },
             {
                "name":"footer",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor.",
                "label":"Footer",
                "value":""
             },
@@ -352,7 +352,7 @@
                "label":"YouTube URL",
                "value":""
             }
-		 ]
+         ]
       }
    },
    "v3_video":{
@@ -393,42 +393,42 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"",
+               "default":"/img/logo-ph.png",
                "label":"Logo",
                "value":""
             },
             {
                "name":"theme_name",
                "type":"text",
-               "default":"",
+               "default":"theme_1",
                "label":"Theme",
                "value":""
             },
             {
                "name":"color_1",
                "type":"text",
-               "default":"",
+               "default":"#28BBD2",
                "label":"Color 1",
                "value":""
             },
             {
                "name":"color_2",
                "type":"text",
-               "default":"",
+               "default":"#D4F2F6",
                "label":"Color 2",
                "value":""
             },
             {
                "name":"color_3",
                "type":"text",
-               "default":"",
+               "default":"#FFFFFF",
                "label":"Color 3",
                "value":""
             },
             {
                "name":"color_4",
                "type":"text",
-               "default":"",
+               "default":"#F2F2F2",
                "label":"Color 4",
                "value":""
             },
@@ -449,35 +449,35 @@
             {
                "name":"headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem Ipsum Dolor",
                "label":"Headline",
                "value":""
             },
             {
                "name":"subhead",
                "type":"text",
-               "default":"",
+               "default":"Adipscing elit enum lorem consectetur.",
                "label":"Subhead",
                "value":""
             },
             {
                "name":"body_headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in ipsum ligula morbi enum.",
                "label":"Body Headline",
                "value":""
             },
             {
                "name":"body",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor. Nullam pulvinar, @mauris_nec ultrices ullamcorper, risus mi maximus tortor, nec eleifend ante eros quis metus. Phasellus eu congue nibh.",
                "label":"Body",
                "value":""
             },
             {
                "name":"footer",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor.",
                "label":"Footer",
                "value":""
             },
@@ -537,7 +537,7 @@
                "label":"YouTube URL",
                "value":""
             }
-		 ]
+         ]
       }
    },
    "v4":{
@@ -578,42 +578,42 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"",
+               "default":"/img/logo-ph.png",
                "label":"Logo",
                "value":""
             },
             {
                "name":"theme_name",
                "type":"text",
-               "default":"",
+               "default":"theme_1",
                "label":"Theme",
                "value":""
             },
             {
                "name":"color_1",
                "type":"text",
-               "default":"",
+               "default":"#28BBD2",
                "label":"Color 1",
                "value":""
             },
             {
                "name":"color_2",
                "type":"text",
-               "default":"",
+               "default":"#D4F2F6",
                "label":"Color 2",
                "value":""
             },
             {
                "name":"color_3",
                "type":"text",
-               "default":"",
+               "default":"#FFFFFF",
                "label":"Color 3",
                "value":""
             },
             {
                "name":"color_4",
                "type":"text",
-               "default":"",
+               "default":"#F2F2F2",
                "label":"Color 4",
                "value":""
             },
@@ -627,35 +627,35 @@
             {
                "name":"headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem Ipsum Dolor",
                "label":"Headline",
                "value":""
             },
             {
                "name":"subhead",
                "type":"text",
-               "default":"",
+               "default":"Adipscing elit enum lorem consectetur.",
                "label":"Subhead",
                "value":""
             },
             {
                "name":"body_headline",
                "type":"text",
-               "default":"",
+               "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in ipsum ligula morbi enum.",
                "label":"Body Headline",
                "value":""
             },
             {
                "name":"body",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor. Nullam pulvinar, @mauris_nec ultrices ullamcorper, risus mi maximus tortor, nec eleifend ante eros quis metus. Phasellus eu congue nibh.",
                "label":"Body",
                "value":""
             },
             {
                "name":"footer",
                "type":"text",
-               "default":"",
+               "default":"Aenean non sollicitudin dolor, quis aliquet enim. Maecenas lobortis ligula sit amet finibus tempor.",
                "label":"Footer",
                "value":""
             },

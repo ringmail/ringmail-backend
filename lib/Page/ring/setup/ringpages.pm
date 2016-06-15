@@ -67,9 +67,12 @@ sub add {
             my $template_structure = $templates->{$template_name}->{structure};
 
             for my $field ( @{ $template_structure->{fields} } ) {
-                my $name = $field->{name};
 
-                $field->{value} = $form_data->{$name};
+                my $name    = $field->{name};
+                my $value   = $form_data->{$name};
+                my $default = $field->{default};
+
+                $field->{value} = $value // $default;
             }
 
             my $res = $factory->create(
