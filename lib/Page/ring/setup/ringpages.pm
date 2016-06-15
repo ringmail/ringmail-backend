@@ -82,9 +82,8 @@ sub add {
                 user_id       => $user->id(),
             );
             if ( defined $ringpage ) {
-                ::log( New => $ringpage );
 
-                my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
+                my $each_array = each_arrayref [ 'Call', ], [ 'ring://' . $user->row()->data( 'login', ), ];
                 while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
                     next if $button_text eq q{} or $button_link eq q{};
