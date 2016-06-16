@@ -1,4 +1,4 @@
-package Page::ring::setup::body_background_image;
+package Page::ring::setup::image;
 
 use strict;
 use warnings;
@@ -28,13 +28,13 @@ sub load {
     my $content;
     ::log( $user->aws_user_id(), );
     ::log( $hostname, );
-    if ( exists $uploads->{'f_d1-body_background_image'} ) {
-        my $file = $uploads->{'f_d1-body_background_image'}->path();
+    if ( exists $uploads->{'f_d1-image'} ) {
+        my $file = $uploads->{'f_d1-image'}->path();
         my $s3   = 'Note::AWS::S3'->new(
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', 'body_background_image.jpg';
+        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', 'image.jpg';
         $s3->upload(
             file         => $file,
             key          => $key,

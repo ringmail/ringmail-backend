@@ -41,25 +41,34 @@
 									<td>
 										<ul>
 											<li>
-											[% page.field(
-											command => 'edit',
-											type => 'file',
-											name => 'logo',
-											opts => {
-											id => 'f_d1-logo',
-											'data-url' => '/u/logo',
-											},
-											) %]
-											[% page.field(
-											command => 'edit',
-											type => 'hidden',
-											name => 'logo',
-											value => ringpage.logo,
-											opts => {
-											id => 'd1-logo',
-											},
-											) %]
-											500px x 500px (png, jpg, gif)
+											<div class="fileinput fileinput-new" data-provides="fileinput">
+												<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+													<img data-src="holder.js/500x500" alt="500px x 500px (png, jpg, gif)">
+												</div>
+												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+												<div>
+													<span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+														[% page.field(
+														command => 'edit',
+														type => 'file',
+														name => 'logo',
+														opts => {
+														id => 'f_d1-logo',
+														'data-url' => '/u/logo',
+														},
+														) %]
+														[% page.field(
+														command => 'edit',
+														type => 'hidden',
+														name => 'logo',
+														value => ringpage.logo,
+														opts => {
+														id => 'd1-logo',
+														},
+														) %]
+													</span>
+												</div>
+											</div>
 											</li>
 										</ul>
 									</td>
@@ -103,24 +112,34 @@
 									<td>
 										<ul>
 											<li>
-											[% page.field(
-											command => 'edit',
-											type => 'file',
-											name => 'image',
-											opts => {
-											id => 'f_d1-image',
-											'data-url' => '/u/image',
-											},
-											) %]
-											[% page.field(
-											command => 'edit',
-											type => 'hidden',
-											name => 'image',
-											value => ringpage.image,
-											opts => {
-											id => 'd1-image',
-											},
-											) %]
+											<div class="fileinput fileinput-new" data-provides="fileinput">
+												<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+													<img data-src="holder.js/500x500" alt="500px x 500px (png, jpg, gif)">
+												</div>
+												<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+												<div>
+													<span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span>
+														[% page.field(
+														command => 'edit',
+														type => 'file',
+														name => 'image',
+														opts => {
+														id => 'f_d1-image',
+														'data-url' => '/u/image',
+														},
+														) %]
+														[% page.field(
+														command => 'edit',
+														type => 'hidden',
+														name => 'image',
+														value => ringpage.image,
+														opts => {
+														id => 'd1-image',
+														},
+														) %]
+													</span>
+												</div>
+											</div>
 											</li>
 										</ul>
 									</td>
@@ -482,5 +501,26 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 		</div>
 	</form>
 </div>
+<script src="/js/jquery.fileupload.js"></script>
+<script>
+$(function () {
+		$('#f_d1-logo').fileupload({
+dataType: 'json',
+done: function (e, data) {
+$.each(data.result.files, function (index, file) {
+	$('#d1-logo').val( file.url );
+	});
+}
+});
+		$('#f_d1-image').fileupload({
+dataType: 'json',
+done: function (e, data) {
+$.each(data.result.files, function (index, file) {
+	$('#d1-image').val( file.url );
+	});
+}
+});
+		});
+</script>
 [% END %]
 [% INCLUDE layout/internal.html %]
