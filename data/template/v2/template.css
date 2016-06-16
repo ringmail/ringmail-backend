@@ -178,9 +178,9 @@ button:hover {
 	float: left;
 	width: 100%;
 	background-color: #000; /* delete, bg image will go here */
-	background-image: url("");
+	background-image: url('[% ringpage.image %]');
 	background-size: cover;
-	height: 500px;
+	min-height: 500px;
 }
 
 .ringpage-cta-section {
@@ -189,19 +189,27 @@ button:hover {
 	text-align: center;
 }
 
+
 .ringpage-cta-button {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
 	font-size: 40px;
 	color: #fff;
 	background-color: [% ringpage.color_1 %];
-	margin: 360px auto 0;
 	display: block;
 	padding: 22px 0 12px;
 	width: 50%;
 	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	border: 0;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;	
+}
+
+.ringpage-cta-section .ringpage-cta-button:first-of-type {
+	margin: 360px auto 40px;
+}
+
+.ringpage-cta-section .ringpage-cta-button:nth-of-type(2) {
+	margin: 20px auto 40px;
 }
 
 .ringpage-content-section-wrapper {

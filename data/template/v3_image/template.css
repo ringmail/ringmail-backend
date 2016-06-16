@@ -150,8 +150,8 @@ button:hover {
 .ringpage-video-section-wrapper {
 	float: left;
 	width: 100%;
-	background-color: #fff; /* delete, bg image will go here */
-	background-image: url("");
+	background-color: #000; /* delete, bg image will go here */
+	background-image: url('[% ringpage.image %]');
 	background-size: cover;
 }
 
@@ -309,7 +309,7 @@ button:hover {
 		border-radius: 50%;
 	}
 	.ringpage-cta-section-wrapper {
-		background-image: url("");
+		background-image: url('[% ringpage.image %]');
 		background-size: cover;
 
 	}
