@@ -165,5 +165,45 @@ sub get_target
 	return undef;
 }
 
+sub get_conversation
+{
+	my ($obj, $param) = get_param(@_);
+	my $from = $param->{'from_user_id'};
+	my $to = $param->{'to_user_id'};
+	my $target = $param->{'to_user_target_id'};
+	my $rc = new Note::Row(
+		'ring_conversation' => {
+			'from_user_id' => $from,
+			'to_user_id' => $to,
+			'to_user_target_id' => $target,
+		},
+	);
+	if ($rc->id())
+	{
+		return $rc->data('conversation_code');
+	}
+	else
+	{
+		my $conv;
+		my $sr = new String::Random();
+		my $tbl = sqltable('ring_conversation');
+		# create code
+		do {
+			$conv = $sr->randregex('[a-z0-9]{8}');
+		} while ($tbl->count(
+			'conversation_code' => $conv,
+		));
+		Note::Row::create(
+			'ring_conversation' => {
+				'conversation_code' => $conv,
+				'from_user_id' => $from,
+				'to_user_id' => $to,
+				'to_user_target_id' => $target,
+			},
+		);
+		return $conv;
+	}
+}
+
 1;
 
