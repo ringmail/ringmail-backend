@@ -471,12 +471,14 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 <script>
 $( function () {
 		$( '#f_d1-logo' ).fileupload( {
+formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
 done: function ( e, data ) {
 $( '#do-1_1' ).click();
 }
 } );
 		$( '#f_d1-image' ).fileupload( {
+formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
 done: function ( e, data ) {
 $( '#do-1_1' ).click();

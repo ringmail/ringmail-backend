@@ -59,7 +59,10 @@ sub load {
         ::log( $url, );
         $content = { files => [ { url => qq{$url}, }, ], };
 
-        my $ringpage_id = $param->{form}->{'a0-1_1'};
+        my $form        = $self->form();
+        my $ringpage_id = $form->{ringpage_id};
+
+        ::log( $ringpage_id, );
 
         my $ringpage_row = Note::Row->new(
             ring_page => {
