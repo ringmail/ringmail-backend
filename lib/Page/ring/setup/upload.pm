@@ -1,4 +1,4 @@
-package Page::ring::setup::logo;
+package Page::ring::setup::upload;
 
 use strict;
 use warnings;
@@ -23,19 +23,27 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $user          = $self->user();
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
     my ( $hostname, ) = ( $::app_config->{www_domain} =~ m{ ( [\w-]+ ) }xms, );
-    my $uploads       = $param->{request}->uploads();
+    my $uploads = $param->{request}->uploads();
 
     my $content;
 
-    if ( exists $uploads->{'f_d1-logo'} ) {
-        my $file = $uploads->{'f_d1-logo'}->path();
+    my @app_path            = @{ $self->path() };
+    my $app_path_last_index = $#app_path;
+    my $upload_type         = $app_path[$app_path_last_index];
+
+    my $field = join q{-}, 'f_d1', $upload_type;
+
+    if ( exists $uploads->{$field} ) {
+        my $file = $uploads->{$field}->path();
         my $s3   = 'Note::AWS::S3'->new(
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', 'logo.jpg';
+        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', join q{.}, $upload_type, 'jpg';
         $s3->upload(
             file         => $file,
             key          => $key,
@@ -50,6 +58,42 @@ sub load {
         );
         ::log( $url, );
         $content = { files => [ { url => qq{$url}, }, ], };
+
+        my $ringpage_id = $param->{form}->{'a0-1_1'};
+
+        my $ringpage_row = Note::Row->new(
+            ring_page => {
+                id      => $ringpage_id,
+                user_id => $user_id,
+            },
+        );
+
+        my $ringpage_row_data = $ringpage_row->data();
+
+        my $fields = decode_json $ringpage_row->data( 'fields', );
+
+        for my $field ( @{$fields} ) {
+
+            my $name = $field->{name};
+
+            next if $name ne $upload_type;
+
+            $field->{value} = qq{$url};
+        }
+
+        ::log( $fields, );
+
+        my $ringpage_model = Ring::Model::RingPage->new();
+
+        if ($ringpage_model->update(
+                fields  => encode_json $fields,
+                id      => $ringpage_id,
+                user_id => $user_id,
+            )
+            )
+        {
+        }
+
     }
     else {
         $content = { error => 'ERROR', };

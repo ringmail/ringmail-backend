@@ -9,6 +9,7 @@ use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
 use List::MoreUtils 'each_arrayref';
+use English '-no_match_vars';
 
 use Note::XML 'xml';
 use Note::Param;
@@ -20,10 +21,10 @@ use Ring::Model::Template;
 
 extends 'Page::ring::user';
 
-around load => sub {
-    my ( $next, @args, ) = @_;
+sub load {
+    my ( @args, ) = @_;
 
-    my ( $self, $param ) = get_param( @args, );
+    my ( $self, $param, ) = get_param( @args, );
 
     my $content     = $self->content();
     my $form        = $self->form();
@@ -45,8 +46,7 @@ around load => sub {
     }
 
     my $ringpage_row_data = $ringpage_row->data();
-
-    my $ringpage_fields = decode_json $ringpage_row_data->{fields};
+    my $ringpage_fields   = decode_json $ringpage_row_data->{fields};
 
     for my $field ( @{$ringpage_fields} ) {
 
@@ -72,8 +72,8 @@ around load => sub {
     $content->{ringpage}->{buttons} = $buttons;
     $content->{edit}                = $form->{edit} ? 1 : 0;
 
-    return $self->$next( $param, );
-};
+    return $self->SUPER::load( $param, );
+}
 
 sub edit {
     my ( $self, $form_data, $args, ) = @_;
@@ -111,11 +111,25 @@ sub edit {
 
     }
 
+    my $ringpage_fields = decode_json $ringpage_row->data( 'fields', );
+    my %ringpage_fields = map { $ARG->{name} => $ARG->{value} } @{$ringpage_fields};
+
     for my $field ( @{ $template_structure->{fields} } ) {
 
-        my $name = $field->{name};
+        my $name       = $field->{name};
+        my $form_value = $form_data->{$name};
 
-        $field->{value} = $form_data->{$name};
+        if ( defined $form_value ) {
+
+            $field->{value} = $form_value;
+
+        }
+        else {
+
+            $field->{value} = $ringpage_fields{$name};
+
+        }
+
     }
 
     my $ringpage_model = Ring::Model::RingPage->new();
