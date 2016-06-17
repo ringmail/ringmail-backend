@@ -64,7 +64,7 @@
 									<td class="td-label"><label>Theme</label></td>
 									<td>
 										<ul class="theme-ul">
-											[% FOREACH theme IN structure.themes %]
+											[% FOREACH theme IN ringpage_template.structure.themes %]
 											<li>
 											<ul>
 												<li><span class="input-group-addon">
@@ -205,10 +205,13 @@
 								<tr>
 									<td class="td-label"><label>Buttons</label></td>
 									<td class="td-inputs">
+										&nbsp;
+										[% IF buttons.size < ringpage_template.buttons %]
 										<ul class="radio-wrapper">
 											<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
 										</ul>
-										[% FOREACH button IN ringpage.buttons %]
+										[% END %]
+										[% FOREACH button IN buttons %]
 										<ul class="button-data-ul">
 											<li>
 											[% button.button %]

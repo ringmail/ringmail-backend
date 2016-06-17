@@ -57,20 +57,20 @@ sub load {
         $ringpage_row_data->{$name} = $value // $default;
     }
 
-    my $template_model     = Ring::Model::Template->new( caller => $self, );
-    my $templates          = $template_model->list();
-    my $template_name      = $ringpage_row_data->{template};
-    my $template_structure = $templates->{$template_name}->{structure};
+    my $template_model    = Ring::Model::Template->new( caller => $self, );
+    my $templates         = $template_model->list();
+    my $template_name     = $ringpage_row_data->{template};
+    my $ringpage_template = $templates->{$template_name};
 
     my $buttons = sqltable( 'ring_button', )->get(
         select => [ qw{ id button uri }, ],
         where  => { ringpage_id => $ringpage_row->id(), },
     );
 
-    $content->{structure}           = $template_structure;
-    $content->{ringpage}            = $ringpage_row_data;
-    $content->{ringpage}->{buttons} = $buttons;
-    $content->{edit}                = $form->{edit} ? 1 : 0;
+    $content->{ringpage_template} = $ringpage_template;
+    $content->{ringpage}          = $ringpage_row_data;
+    $content->{buttons}           = $buttons;
+    $content->{edit}              = $form->{edit} ? 1 : 0;
 
     return $self->SUPER::load( $param, );
 }
