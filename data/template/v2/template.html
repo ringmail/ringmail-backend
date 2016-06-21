@@ -18,7 +18,7 @@
 <div class="ringpage-cta-section-wrapper">
 	<section class="ringpage-cta-section">
 		[% FOREACH button IN ringpage.buttons %]
-		<button type="button" class="ringpage-cta-button btn-a" onClick="location.href='[% button.uri %]'">[% button.button %]</button>
+		<button type="button" class="ringpage-cta-button btn-[% button.letter %]" onClick="location.href='[% button.uri %]'">[% button.button %]</button>
 		[% END %]
 	</section>
 </div>
