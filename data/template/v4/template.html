@@ -42,46 +42,62 @@
 <div class="social-wrapper">
 	<nav class="social-nav">
 		<ul class="social-ul">
+			[% IF ringpage.homepage_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.homepage_url %]" title="Homepage">
 				<span class="home-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.facebook_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.facebook_url %]" title="Facebook">
 				<span class="fb-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.twitter_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.twitter_url %]" title="Twitter">
 				<span class="tw-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.instagram_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.instagram_url %]" title="Instagram">
 				<span class="inst-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.googleplus_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.googleplus_url %]" title="Google+">
 				<span class="gplus-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.pinterest_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.pinterest_url %]" title="Pinterest">
 				<span class="pin-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.linkedin_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.linkedin_url %]" title="LinkedIn">
 				<span class="lin-span"></span>
 			</a>
 			</li>
+			[% END %]
+			[% IF ringpage.youtube_url.length > 0 %]
 			<li class="social-li">
 			<a class="social-li-a" href="[% ringpage.youtube_url %]" title="YouTube">
 				<span class="ytube-span"></span>
 			</a>
 			</li>
+			[% END %]
 		</ul>
 	</nav>
 </div>	
