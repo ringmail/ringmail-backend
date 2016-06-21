@@ -19,7 +19,7 @@
 		<h1 class="ringpage-content-h1">[% ringpage.headline %]</h1>
 		<p class="ringpage-content-p">[% ringpage.subhead %]</p>
 		[% FOREACH button IN ringpage.buttons %]
-		<button type="button" class="ringpage-cta-button" onClick="location.href='[% button.uri %]'">[% button.button %]</button>
+		<button type="button" class="ringpage-cta-button" onClick="window.open='[% button.uri %]'">[% button.button %]</button>
 		[% END %]
 		<figure class="logo">
 			<img class="logo-img" src="[% ringpage.logo %]" alt="" />
