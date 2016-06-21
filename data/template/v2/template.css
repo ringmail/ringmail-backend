@@ -152,10 +152,15 @@ button:hover {
 	width: 100%;
 	height: 100px;
 	background-color: [% ringpage.color_2 %];
-	position: absolute;
+	z-index: 1000;
 }
 
 .logo {
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
 	margin: 20px auto;
 	display: block;
 	height: 150px;
@@ -167,11 +172,11 @@ button:hover {
 }
 
 .logo-img {
-	width: 150px;
-	height: 150px;
-	position: relative;
-	overflow: hidden;
-	border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 .ringpage-cta-section-wrapper {
@@ -179,21 +184,11 @@ button:hover {
 	width: 100%;
 	background-color: #000; /* delete, bg image will go here */
 	background: url('[% ringpage.image %]') no-repeat center center; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  margin-top: 84px;
-	min-height: 480px;
-
+	background-clip: content-box;
+    max-height: 500px;
+    min-height: 500px;
+    z-index: 500;
 }
-
-.ringpage-cta-section {
-	max-width: 800px;
-	margin: 0 auto;
-	text-align: center;
-}
-
 
 .ringpage-cta-button {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
@@ -207,14 +202,77 @@ button:hover {
     -moz-border-radius: 10px;
     border-radius: 10px;
     border: 0;	
+    margin: 0 auto;
 }
 
-.ringpage-cta-section .ringpage-cta-button:first-of-type {
-	margin: 360px auto 40px;
+.ringpage-cta-section .ringpage-cta-button.btn-a {
+	position: relative;
+	top: 380px;
+	margin: 20px auto;
 }
 
-.ringpage-cta-section .ringpage-cta-button:nth-of-type(2) {
-	margin: 20px auto 40px;
+.ringpage-cta-section .ringpage-cta-button.btn-b {
+	position: relative;
+	top: 180px;
+	margin: 0 auto;
+}
+
+.ringpage-cta-section .ringpage-cta-button.btn-c {
+    position: relative;
+	top: 0;
+	margin: 0 auto;
+}
+
+@media only screen and (max-width: 768px) {
+
+
+
+.ringpage-cta-section-wrapper {
+	width: 100%;
+	background-color: #000; /* delete, bg image will go here */
+	background-color: #000; /* delete, bg image will go here */
+	  background: url('[% ringpage.image %]') no-repeat center center;
+	  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
+  top: 32px;
+  min-height: 440px;
+}
+
+.ringpage-cta-button {	
+	font-family: 'HelveticaNeueLT Com 57 Cn';
+	font-size: 28px;
+	color: #fff;
+	background-color: [% ringpage.color_1 %];
+	display: block;
+	padding: 22px 0 12px;
+	width: 80%;
+	-webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;	
+    
+}
+
+.ringpage-cta-section .ringpage-cta-button.btn-a {
+	position: relative;
+	top: 280px;
+	margin: 0 auto;
+}
+
+.ringpage-cta-section .ringpage-cta-button.btn-b {
+	position: relative;
+	top: 130px;
+	margin: 0 auto;
+}
+
+.ringpage-cta-section .ringpage-cta-button.btn-c {
+    position: relative;
+	top: -20px;
+	margin: 0 auto;
+}
+
 }
 
 .ringpage-content-section-wrapper {
@@ -343,44 +401,7 @@ button:hover {
 		margin: 40px auto;
 		text-align: center;
 	}
-	.ringpage-cta-section-wrapper {
-		float: left;
-		width: 100%;
-		background: url('[% ringpage.image %]') no-repeat center center; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  min-height: 400px;
-    margin-top: 64px;
-}
 
-
-.ringpage-cta-button {
-	font-family: 'HelveticaNeueLT Com 57 Cn';
-	font-size: 28px;
-	color: #fff;
-	background-color: #28bbd2;
-	display: block;
-	padding: 22px 0 12px;
-	width: 80%;
-	-webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: 0;	
-}
-
-.ringpage-cta-section .ringpage-cta-button:first-of-type {
-
-	margin: 300px auto 20px;
-
-}
-
-.ringpage-cta-section .ringpage-cta-button:nth-of-type(2) {
-
-	margin: 0 auto 40px;
-
-}
 
 	.ringpage-content-section {
 		width: 90%;
