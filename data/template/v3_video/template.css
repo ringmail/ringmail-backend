@@ -406,9 +406,9 @@ button:hover {
 	margin: 10px 5px 10px 0;
 }
 
-.social-li:last-of-type) {
+.social-li:last-of-type {
 	margin-right: 0;
-
+	
 }
 
 .social-li-a {
@@ -419,26 +419,27 @@ button:hover {
 
 @media only screen and (max-width: 768px) { 
 
-	.social-nav {
-		margin: 10px auto 8px;
-	}	
+.social-nav {
+	margin: 10px auto 8px;
+}	
+	
+.social-ul {
+	width: 50%; 
+	margin-bottom: 10px;
+}
 
-	.social-ul {
-		width: 50%; 
-		margin-bottom: 10px;
-	}
+.social-li {
+	display: inline-block;
+	margin: 5px 5px 5px 0;
+}
 
-	.social-li {
-		display: inline-block;
-		margin: 5px 5px 5px 0;
-	}
-
-	.social-li:nth-of-type(4n) {
-		margin-right: 0;
-
-	}
+.social-li:nth-of-type(4n) {
+	margin-right: 0;
+	
+}
 
 }
+
 
 .home-span {
 	display: block;
