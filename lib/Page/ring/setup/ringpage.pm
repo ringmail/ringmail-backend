@@ -65,6 +65,7 @@ sub load {
     my $buttons = sqltable( 'ring_button', )->get(
         select => [ qw{ id button uri }, ],
         where  => { ringpage_id => $ringpage_row->id(), },
+        order  => 'id desc',
     );
 
     $content->{ringpage_template} = $ringpage_template;

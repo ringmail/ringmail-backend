@@ -37,7 +37,16 @@ sub load {
     my $buttons = sqltable( 'ring_button', )->get(
         select => [ qw{ button uri }, ],
         where  => { ringpage_id => $ringpage_id, },
+        order  => 'id desc',
     );
+
+    my $letter = 'a';
+
+    for my $button ( @{$buttons} ) {
+
+        $button->{letter} = $letter++;
+
+    }
 
     $self->content()->{ringpage}->{buttons} = $buttons;
 

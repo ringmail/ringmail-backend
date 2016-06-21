@@ -2,7 +2,7 @@
    "v2":{
       "title":"V2",
       "path":"v2",
-      "buttons":"2",
+      "buttons":"3",
       "structure":{
          "themes":[
             {
@@ -181,7 +181,7 @@
    "v3_image":{
       "title":"V3 Image",
       "path":"v3_image",
-      "buttons":"2",
+      "buttons":"3",
       "structure":{
          "themes":[
             {
@@ -360,7 +360,7 @@
    "v3_video":{
       "title":"V3 Video",
       "path":"v3_video",
-      "buttons":"2",
+      "buttons":"3",
       "structure":{
          "themes":[
             {
@@ -539,7 +539,7 @@
    "v4":{
       "title":"V4",
       "path":"v4",
-      "buttons":"2",
+      "buttons":"3",
       "structure":{
          "themes":[
             {
