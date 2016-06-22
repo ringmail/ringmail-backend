@@ -240,6 +240,7 @@ button:hover {
   -moz-background-size: contain;
   -o-background-size: contain;
   background-size: contain;
+  position: relative;
   top: 32px;
   min-height: 440px;
 }
