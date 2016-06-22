@@ -368,13 +368,7 @@ button:hover {
 	line-height: 1.4em;
 }
 
-.social-wrapper {
-	background-color: #000;
-}
 
-.social-nav {
-
-}
 
 @media only screen and (max-width: 768px) {
 
@@ -454,6 +448,7 @@ button:hover {
 	width: 100%;
 	display: block;
 	background-color: #000;
+	min-height: 60px;
 }
 
 .social-nav {
