@@ -390,6 +390,7 @@ button:hover {
 	width: 100%;
 	display: block;
 	background-color: #000;
+	min-height: 60px;
 }
 
 .social-nav {
