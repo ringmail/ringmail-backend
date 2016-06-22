@@ -167,20 +167,38 @@ button:hover {
 	right: 0;
 	margin: 20px auto;
 	display: block;
-	height: 150px;
-	width: 150px;
 	padding: 6px;
 	background-color: #fff;
-	border-radius: 80px;
-
+	
 }
 
 .logo-img {
-    width: 150px;
-    height: 150px;
     position: relative;
     overflow: hidden;
-    border-radius: 50%;
+    
+}
+
+.logo.circle {
+	height: 150px;
+	width: 150px;
+	
+}
+
+.logo.square {
+	height: 150px;
+	width: 400px;
+}
+
+.logo-img.circle {
+	border-radius: 50%;
+	width: 150px;
+    height: 150px;
+}
+
+.logo-img.square {
+	height: 150px;
+	width: 400px;
+	object-fit: cover;
 }
 
 .ringpage-cta-section-wrapper {
@@ -379,21 +397,45 @@ button:hover {
 		position: absolute;
 	}
 
-	.logo {
-		margin: 20px auto;
-		display: block;
-		height: 100px;
-		width: 100px;
-		padding: 4px;
-		border-radius: 60px;
-	}
+.logo {
+	margin: 20px auto;
+	display: block;
+	padding: 4px;
+	
+}
 
-	.logo-img {
-		width: 100px;
-		height: 100px;
-		overflow: hidden;
-		border-radius: 50%;
-	}
+
+.logo-img {
+    position: relative;
+    overflow: hidden;
+    
+}
+
+
+.logo.circle {
+	height: 100px;
+	width: 100px;
+	border-radius: 60px;
+	
+}
+
+.logo.square {
+	height: 100px;
+	width: 290px;
+	border-radius: 0;
+}
+
+.logo-img.circle {
+	border-radius: 50%;
+	width: 100px;
+    height: 100px;
+}
+
+.logo-img.square {
+	height: 100px;
+	width: 290px;
+	object-fit: cover;
+}
 
 	.ringpage-cta-section {
 		max-width: 800px;
