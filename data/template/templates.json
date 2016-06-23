@@ -38,9 +38,10 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"/img/logo-ph.png",
+               "default":null,
                "label":"Logo",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"logo_style",
@@ -224,9 +225,10 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"/img/logo-ph.png",
+               "default":null,
                "label":"Logo",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"logo_style",
@@ -417,9 +419,10 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"/img/logo-ph.png",
+               "default":null,
                "label":"Logo",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"logo_style",
@@ -603,9 +606,10 @@
             {
                "name":"logo",
                "type":"text",
-               "default":"/img/logo-ph.png",
+               "default":null,
                "label":"Logo",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"logo_style",
