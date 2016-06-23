@@ -43,6 +43,13 @@
                "value":""
             },
             {
+               "name":"logo_style",
+               "type":"text",
+               "default":"circle",
+               "label":"Round",
+               "value":""
+            },
+            {
                "name":"theme_name",
                "type":"text",
                "default":"theme_1",
@@ -219,6 +226,13 @@
                "type":"text",
                "default":"/img/logo-ph.png",
                "label":"Logo",
+               "value":""
+            },
+            {
+               "name":"logo_style",
+               "type":"text",
+               "default":"circle",
+               "label":"Round",
                "value":""
             },
             {
@@ -408,6 +422,13 @@
                "value":""
             },
             {
+               "name":"logo_style",
+               "type":"text",
+               "default":"circle",
+               "label":"Round",
+               "value":""
+            },
+            {
                "name":"theme_name",
                "type":"text",
                "default":"theme_1",
@@ -584,6 +605,13 @@
                "type":"text",
                "default":"/img/logo-ph.png",
                "label":"Logo",
+               "value":""
+            },
+            {
+               "name":"logo_style",
+               "type":"text",
+               "default":"circle",
+               "label":"Round",
                "value":""
             },
             {
