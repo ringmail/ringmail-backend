@@ -318,8 +318,12 @@ button:hover {
 	}
 	.ringpage-cta-section-wrapper {
 		background-image: url('[% ringpage.image %]');
-		background-size: cover;
-
+		-webkit-background-size: contain;
+        -moz-background-size: contain;
+        -o-background-size: contain;
+		background-size: contain;
+	    height:[% ringpage.image_height %]px;
+        
 	}
 
 	.ringpage-cta-button {
