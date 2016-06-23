@@ -204,7 +204,6 @@ button:hover {
 .ringpage-cta-section-wrapper {
 	float: left;
 	width: 100%;
-	background-color: #000; /* delete, bg image will go here */
 	background: url('[% ringpage.image %]') no-repeat center center; 
 	background-clip: content-box;
     max-height: 500px;
@@ -251,7 +250,6 @@ button:hover {
 
 .ringpage-cta-section-wrapper {
 	width: 100%;
-	background-color: #000; /* delete, bg image will go here */
 	  background: url('[% ringpage.image %]') no-repeat center center;
 	  -webkit-background-size: contain;
   -moz-background-size: contain;
