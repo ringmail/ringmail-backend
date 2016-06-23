@@ -181,7 +181,7 @@ button:hover {
 .logo.circle {
 	height: 150px;
 	width: 150px;
-	
+	border-radius: 50%;
 }
 
 .logo.square {
