@@ -264,6 +264,13 @@
                "value":""
             },
             {
+               "name":"image_height",
+               "type":"text",
+               "default":"0",
+               "label":"",
+               "value":""
+            },
+            {
                "name":"headline",
                "type":"text",
                "default":"Lorem Ipsum Dolor",

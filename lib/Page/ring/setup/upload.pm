@@ -7,11 +7,13 @@ use Moose;
 use POSIX 'strftime';
 use JSON::XS;
 use Readonly;
+use Image::Scale;
 
 use Note::Page;
 use Note::Param;
 use Note::AWS::S3;
 use Ring::User;
+use Ring::Model::RingPage;
 
 extends 'Note::Page';
 extends 'Page::ring::user';
@@ -39,7 +41,47 @@ sub load {
 
     if ( exists $uploads->{$field} ) {
         my $file = $uploads->{$field}->path();
-        my $s3   = 'Note::AWS::S3'->new(
+
+        ::log( $file, );
+
+        my $form        = $self->form();
+        my $ringpage_id = $form->{ringpage_id};
+
+        ::log( $ringpage_id, );
+
+        my $ringpage_row = Note::Row->new(
+            ring_page => {
+                id      => $ringpage_id,
+                user_id => $user_id,
+            },
+        );
+
+        my $template = $ringpage_row->data( 'template', );
+
+        my $fields = decode_json $ringpage_row->data( 'fields', );
+
+        if ( $upload_type eq 'image' and $template eq 'v3_image' ) {
+
+            my $image = Image::Scale->new( $file, );
+
+            $image->resize( { width => 750, }, );
+
+            my $image_height = $image->resized_height();
+
+            $image->save_jpeg( $file, );
+
+            for my $field ( @{$fields} ) {
+
+                my $name = $field->{name};
+
+                next if $name ne 'image_height';
+
+                $field->{value} = qq{$image_height};
+            }
+
+        }
+
+        my $s3 = 'Note::AWS::S3'->new(
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
@@ -58,22 +100,6 @@ sub load {
         );
         ::log( $url, );
         $content = { files => [ { url => qq{$url}, }, ], };
-
-        my $form        = $self->form();
-        my $ringpage_id = $form->{ringpage_id};
-
-        ::log( $ringpage_id, );
-
-        my $ringpage_row = Note::Row->new(
-            ring_page => {
-                id      => $ringpage_id,
-                user_id => $user_id,
-            },
-        );
-
-        my $ringpage_row_data = $ringpage_row->data();
-
-        my $fields = decode_json $ringpage_row->data( 'fields', );
 
         for my $field ( @{$fields} ) {
 
