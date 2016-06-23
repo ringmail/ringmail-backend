@@ -2,6 +2,7 @@ package Page::ring::setup::ringpage;
 
 use strict;
 use warnings;
+use constant::boolean;
 
 use Moose;
 use JSON::XS qw{ encode_json decode_json };
@@ -120,7 +121,12 @@ sub edit {
         my $name       = $field->{name};
         my $form_value = $form_data->{$name};
 
-        if ( defined $form_value ) {
+        if ( $field->{internal} == TRUE ) {
+
+            $field->{value} = $ringpage_fields{$name};
+
+        }
+        elsif ( defined $form_value ) {
 
             $field->{value} = $form_value;
 

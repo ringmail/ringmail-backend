@@ -88,9 +88,10 @@
             {
                "name":"image",
                "type":"text",
-               "default":"",
+               "default":null,
                "label":"Image",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"headline",
@@ -275,9 +276,10 @@
             {
                "name":"image",
                "type":"text",
-               "default":"",
+               "default":null,
                "label":"Image",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"image_height",
@@ -656,9 +658,10 @@
             {
                "name":"image",
                "type":"text",
-               "default":"",
+               "default":null,
                "label":"Image",
-               "value":""
+               "value":null,
+               "internal":"1"
             },
             {
                "name":"headline",
