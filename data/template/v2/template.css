@@ -169,36 +169,34 @@ button:hover {
 	display: block;
 	padding: 6px;
 	background-color: #fff;
-	
+	height: 150px;
+	width: 150px;
 }
 
 .logo-img {
+	height: 150px;
+	width: 150px;	
     position: relative;
     overflow: hidden;
     
 }
 
 .logo.circle {
-	height: 150px;
-	width: 150px;
+
 	border-radius: 50%;
 }
 
 .logo.square {
-	height: 150px;
-	width: 400px;
+	border-radius: none;
 }
 
 .logo-img.circle {
 	border-radius: 50%;
-	width: 150px;
-    height: 150px;
+
 }
 
 .logo-img.square {
-	height: 150px;
-	width: 400px;
-	object-fit: cover;
+	border-radius: none;
 }
 
 .ringpage-cta-section-wrapper {
@@ -398,11 +396,14 @@ button:hover {
 	margin: 20px auto;
 	display: block;
 	padding: 4px;
-	
+	height: 100px;
+	width: 100px;
 }
 
 
 .logo-img {
+	height: 100px;
+	width: 100px;
     position: relative;
     overflow: hidden;
     
@@ -410,28 +411,22 @@ button:hover {
 
 
 .logo.circle {
-	height: 100px;
-	width: 100px;
+
 	border-radius: 60px;
 	
 }
 
 .logo.square {
-	height: 100px;
-	width: 290px;
-	border-radius: 0;
+
+	border-radius: none;
 }
 
 .logo-img.circle {
 	border-radius: 50%;
-	width: 100px;
-    height: 100px;
 }
 
 .logo-img.square {
-	height: 100px;
-	width: 290px;
-	object-fit: cover;
+	border-radius: none;
 }
 
 	.ringpage-cta-section {

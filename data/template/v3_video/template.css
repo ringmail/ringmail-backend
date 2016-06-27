@@ -219,38 +219,35 @@ button:hover {
 	top: 120px;
 	margin: -80px auto 0;
 	display: block;
-
+	height: 150px;
+	width: 150px;
 	padding: 6px;
 	background-color: #fff;
 	
 }
 
 .logo-img {
-    
+    width: 150px;
+    height: 150px;
     overflow: hidden;
 }
 
 .logo.circle {
-	height: 150px;
-	width: 150px;
+
 	border-radius: 80px;	
 }
 
 .logo-img.circle {
-	width: 150px;
-    height: 150px;	
+	
     border-radius: 50%;
 }
 
 .logo.square {
-	height: 150px;
-	width: 400px;
+	border-radius: none;
 }
 
 .logo-img.square {
-	height: 150px;
-	width: 400px;
-	object-fit: cover;
+	border-radius: none;
 }
 
 
@@ -334,37 +331,33 @@ button:hover {
 .logo {
 	top: 110px;
 	display: block;
-
+	height: 100px;
+	width: 100px;
 	padding: 4px;
 	background-color: #fff;
 }
 
 .logo-img {
-
+	height: 100px;
+	width: 100px;
     overflow: hidden;
 }
 
 .logo.circle {
-	height: 100px;
-	width: 100px;
+
 	border-radius: 60px;	
 }
 
 .logo-img.circle {
-	width: 100px;
-    height: 100px;	
     border-radius: 50%;
 }
 
 .logo.square {
-	height: 100px;
-	width: 290px;
+	border-radius: none;
 }
 
 .logo-img.square {
-	height: 100px;
-	width: 290px;
-	object-fit: cover;
+	border-radius: none;
 }
 
 	.ringpage-cta-section-wrapper {
