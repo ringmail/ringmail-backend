@@ -1,4 +1,4 @@
-package Page::ring::app::conversation;
+package Page::ring::conversation;
 use strict;
 use warnings;
 
@@ -28,12 +28,15 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log('conversation request', {%$form, 'password' => ''});
-	my $user = Ring::User::login(
-		'login' => $form->{'login'},
-		'password' => $form->{'password'},
+	::log('conversation request', $form);
+	my $login = $form->{'login'};
+	$login =~ s/\%40/\@/;
+	my $user = new Note::Row(
+		'ring_user' => {
+			'login' => $login,
+		},
 	);
-	my $res = {'result' => 'error'};
+	my $res = ['error', 'error'];
 	if ($user)
 	{
 		my $uid = $user->id();
@@ -60,7 +63,7 @@ sub load
 				else
 				{
 					# error
-					$res->{'error'} = 'notfound';
+					$res = ['notfound', 'notfound'];
 				}
 			}
 			elsif ($type eq 'did')
@@ -77,25 +80,22 @@ sub load
 				else
 				{
 					# error
-					$res->{'error'} = 'notfound';
+					$res = ['notfound', 'notfound'];
 				}
 			}
 			if (defined($to_user))
 			{
-				my $code = $obj->setup_conv(
+				my $codes = $obj->setup_conv(
 					'from_user_id' => $uid,
 					'to_user_id' => $to_user,
 					'to_user_target_id' => $target,
 				);
-				$res = {
-					'result' => 'ok',
-					'code' => $code,
-				};
+				$res = $codes;
 			}
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	::log("Res:", $res);
 	return encode_json($res);
 }
 
@@ -105,20 +105,51 @@ sub setup_conv
 	my $uid = $param->{'from_user_id'};
 	my $to = $param->{'to_user_id'};
 	my $target = $param->{'to_user_target_id'};
+	my ($code, $reply) = ('error', 'error');
 	my $rt = new Ring::Route();
-	# setup request conversation
-	my $code = $rt->get_conversation(
-		'from_user_id' => $uid,
-		'to_user_id' => $to,
-		'to_user_target_id' => $target,
-	);
-	# setup reply conversation
-	$rt->get_conversation(
-		'from_user_id' => $to,
-		'to_user_id' => $uid,
-		'to_user_target_id' => undef,
-	);
-	return $code;
+    my $rc = new Note::Row(
+        'ring_conversation' => {
+            'from_user_id' => $uid,
+            'to_user_id' => $to,
+        },
+    );
+	if ($rc->id())
+	{
+		$code = $rc->data('conversation_code');
+		my $replyrc = new Note::Row(
+			'ring_conversation' => {
+				'from_user_id' => $to,
+				'to_user_id' => $uid,
+			},
+		);
+		if ($replyrc->id())
+		{
+			my $cur = $replyrc->data('to_user_target_id');
+			unless (defined($cur) && $cur == $target)
+			{
+				$replyrc->update({
+					'to_user_target_id' => $target,
+				});
+			}
+			$reply = $replyrc->data('conversation_code');
+		}
+	}
+	else
+	{
+		# setup request conversation
+		$code = $rt->get_conversation(
+			'from_user_id' => $uid,
+			'to_user_id' => $to,
+			'to_user_target_id' => undef,
+		);
+		# setup reply conversation
+		$reply = $rt->get_conversation(
+			'from_user_id' => $to,
+			'to_user_id' => $uid,
+			'to_user_target_id' => $target,
+		);
+	}
+	return [$code, $reply];
 }
 
 1;

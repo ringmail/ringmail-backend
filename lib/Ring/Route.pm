@@ -83,7 +83,7 @@ sub get_route
 	#::_log('Get Route', $param);
 	my $item = new Ring::Item();
 	my $trow = $obj->get_target($param);
-	::log("Target:", $trow);
+	#::log("Target:", $trow);
 	if (defined($trow) && $trow->{'id'})
 	{
 		my $tuid = $trow->data('user_id');
@@ -124,7 +124,7 @@ sub get_target
 			'email' => $em,
 			'no_create' => 1,
 		);
-		return undef unless (defined $erec->id());
+		return undef unless (defined $erec);
 		my $trow = new Note::Row(
 			'ring_target' => {
 				'email_id' => $erec->id(),
@@ -154,7 +154,7 @@ sub get_target
 			'did_number' => $num,
 			'no_create' => 1,
 		);
-		return undef unless (defined $erec->id());
+		return undef unless (defined $erec);
 		my $trow = new Note::Row(
 			'ring_target' => {
 				'did_id' => $erec->id(),
