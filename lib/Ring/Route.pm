@@ -83,7 +83,7 @@ sub get_route
 	#::_log('Get Route', $param);
 	my $item = new Ring::Item();
 	my $trow = $obj->get_target($param);
-	::log("Target:", $trow);
+	#::log("Target:", $trow);
 	if (defined($trow) && $trow->{'id'})
 	{
 		my $tuid = $trow->data('user_id');
@@ -124,7 +124,7 @@ sub get_target
 			'email' => $em,
 			'no_create' => 1,
 		);
-		return undef unless (defined $erec->id());
+		return undef unless (defined $erec);
 		my $trow = new Note::Row(
 			'ring_target' => {
 				'email_id' => $erec->id(),
@@ -154,7 +154,7 @@ sub get_target
 			'did_number' => $num,
 			'no_create' => 1,
 		);
-		return undef unless (defined $erec->id());
+		return undef unless (defined $erec);
 		my $trow = new Note::Row(
 			'ring_target' => {
 				'did_id' => $erec->id(),
@@ -163,6 +163,46 @@ sub get_target
 		return $trow;
 	}
 	return undef;
+}
+
+sub get_conversation
+{
+	my ($obj, $param) = get_param(@_);
+	my $from = $param->{'from_user_id'};
+	my $to = $param->{'to_user_id'};
+	my $target = $param->{'to_user_target_id'};
+	my $rc = new Note::Row(
+		'ring_conversation' => {
+			'from_user_id' => $from,
+			'to_user_id' => $to,
+			'to_user_target_id' => $target,
+		},
+	);
+	if ($rc->id())
+	{
+		return $rc->data('conversation_code');
+	}
+	else
+	{
+		my $conv;
+		my $sr = new String::Random();
+		my $tbl = sqltable('ring_conversation');
+		# create code
+		do {
+			$conv = $sr->randregex('[a-z0-9]{8}');
+		} while ($tbl->count(
+			'conversation_code' => $conv,
+		));
+		Note::Row::create(
+			'ring_conversation' => {
+				'conversation_code' => $conv,
+				'from_user_id' => $from,
+				'to_user_id' => $to,
+				'to_user_target_id' => $target,
+			},
+		);
+		return $conv;
+	}
 }
 
 1;
