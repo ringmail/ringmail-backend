@@ -146,8 +146,7 @@ sub cmd_fund {
         $rec->{'phone'} =~ s/\D//gxms;
     }
     my $user    = $self->user();
-    my $uid     = $user->id();
-    my $pmt     = Note::Payment->new($uid);
+    my $pmt     = Note::Payment->new( $user->id(), );
     my $carderr = q{};
     if ( not $data->{'cc_cvv2'} =~ /^\d{3,4}$/xms ) {
         push @err, 'Security Code: Required';
@@ -187,11 +186,11 @@ sub cmd_fund {
             'zip'        => $rec->{'zip'},
         );
 
-        my $act = ( has_account($uid) ) ? Note::Account->new($uid) : create_account($uid);
+        my $act = ( has_account( $user->id(), ) ) ? Note::Account->new( $user->id(), ) : create_account( $user->id(), );
 
         my $hashtags = sqltable('ring_cart')->get(
 
-            select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+            select => [ qw{ rh.hashtag rh.id }, ],
             table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
             join   => 'rh.id = rc.hashtag_id',
             where  => {
@@ -218,18 +217,33 @@ sub cmd_fund {
 
         for my $hashtag ( @{$hashtags} ) {
 
-            my $src = Note::Account->new( $uid, );
+            my $src = Note::Account->new( $user->id(), );
             my $dst = account_id('revenue_ringmail');
 
-            my $transaction = transaction(
+            my $transaction_id = transaction(
                 acct_dst => $dst,
                 acct_src => $src,
                 amount   => 1.99,                             # TODO fix
                 tx_type  => tx_type_id('purchase_hashtag'),
-                user_id  => $uid,
+                user_id  => $user->id(),
             );
 
-            ::log( '$transaction:', $transaction, );
+            my $cart = Note::Row->new(
+                ring_cart => {
+                    hashtag_id => $hashtag->{id},
+                    user_id    => $user->id(),
+                },
+            );
+
+            if ( $cart->id() ) {
+                $cart->update(
+                    {
+
+                        transaction_id => $transaction_id,
+
+                    },
+                );
+            }
 
         }
 
