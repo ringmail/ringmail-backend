@@ -84,23 +84,19 @@ sub load {
     my $account = Note::Account->new( $user->id() );
 
     my $hashtags = sqltable('ring_cart')->get(
-
         select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
         table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
         join   => 'rh.id = rc.hashtag_id',
-        where  => {
-
-            'rc.user_id' => $user->id(),
-            'rh.user_id' => $user->id(),
-
-        },
-
+        where  => [
+            {   'rc.user_id' => $user->id(),
+                'rh.user_id' => $user->id(),
+            } => and => { 'rc.transaction_id' => undef, },
+        ],
     );
 
-    $content->{balance}  = $account->balance();
-    $content->{payment}  = $self->show_payment_form();
-    $content->{hashtags} = $hashtags;
-    $content->{total}    = 1.99 * scalar @{$hashtags};
+    $content->{balance} = $account->balance();
+    $content->{payment} = $self->show_payment_form();
+    $content->{total}   = 1.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
@@ -189,17 +185,14 @@ sub cmd_fund {
         my $act = ( has_account( $user->id(), ) ) ? Note::Account->new( $user->id(), ) : create_account( $user->id(), );
 
         my $hashtags = sqltable('ring_cart')->get(
-
-            select => [ qw{ rh.hashtag rh.id }, ],
+            select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
             table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
             join   => 'rh.id = rc.hashtag_id',
-            where  => {
-
-                'rc.user_id' => $user->id(),
-                'rh.user_id' => $user->id(),
-
-            },
-
+            where  => [
+                {   'rc.user_id' => $user->id(),
+                    'rh.user_id' => $user->id(),
+                } => and => { 'rc.transaction_id' => undef, },
+            ],
         );
 
         my $total = 1.99 * scalar @{$hashtags};

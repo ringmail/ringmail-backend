@@ -29,17 +29,14 @@ sub load {
     my $content = $self->content();
 
     my $hashtags = sqltable('ring_cart')->get(
-
         select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
         table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
         join   => 'rh.id = rc.hashtag_id',
-        where  => {
-
-            'rc.user_id' => $user->id(),
-            'rh.user_id' => $user->id(),
-
-        },
-
+        where  => [
+            {   'rc.user_id' => $user->id(),
+                'rh.user_id' => $user->id(),
+            } => and => { 'rc.transaction_id' => undef, },
+        ],
     );
 
     $content->{hashtags} = $hashtags;
