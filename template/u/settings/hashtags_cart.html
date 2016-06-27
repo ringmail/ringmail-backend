@@ -1,0 +1,191 @@
+[% menu_settings = 'hashtags' %]
+[% menu_subnav = page.form.new_tag ? 'register_hashtag' : 'hashtags' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Hashtags</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">		
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					[% INCLUDE u/settings/sub_menu.html %]
+				</div>
+				<div class="span12">
+					[% IF page.form.new_tag %]
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="hashtag">Hashtag:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										<span class="add-on">#</span>
+										[% page.field(
+										'command' => 'hashtag_add',
+										'type' => 'text',
+										'name' => 'hashtag',
+										'opts' => {'id' => 'hashtag', 'style' => 'width: 179px'},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="category">Category:</label>
+								<div class="controls">
+									[% page.field(
+									'command' => 'hashtag_add',
+									'type' => 'select',
+									'name' => 'category',
+									'select' => category_list,
+									'selected' => category_sel,
+									'opts' => category_opts,
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="target">Destination:</label>
+								<div class="controls">
+									<div class="tabbable"> <!-- Only required for left/right tabs -->
+										<ul class="nav nav-tabs">
+											<li class="active"><a href="#tab1" data-toggle="tab">Target URL</a></li>
+											<li><a href="#tab2" data-toggle="tab">RingPage</a></li>
+										</ul>
+										<div class="tab-content">
+											<div class="tab-pane active" id="tab1">
+												[% page.field(
+												'command' => 'hashtag_add',
+												'type' => 'text',
+												'name' => 'target',
+												'opts' => {'id' => 'target'},
+												) %]
+												[% IF page.value.error %]
+												<div>
+													<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
+												</div>
+												[% END %]
+											</div>
+											<div class="tab-pane" id="tab2">
+												[% page.field(
+												'command' => 'hashtag_add',
+												'type' => 'select',
+												'name' => 'ringpage_id',
+												'select' => ringpage_list,
+												'selected' => ringpage_sel,
+												'opts' => ringpage_opts,
+												) %]
+												[% IF page.value.error %]
+												<div>
+													<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
+												</div>
+												[% END %]
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="target">Expires:</label>
+								<div class="controls">
+									<pre style="width: 200px;">Never</pre>
+								</div>
+							</div>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="target">Registration Fee:</label>
+								<div class="controls">
+									<pre style="width: 200px;">$1.99<br/><br/><strong>Your Balance:</strong><br/>$[% balance %]</pre>
+								</div>
+							</div>
+							<div class="control-group">
+								<div class="controls">
+									[% page.button(
+									'command' => 'hashtag_add',
+									'contents' => 'Create Hashtag',
+									'opts' => {'class' => 'btn btn-primary btn-large'},
+									) %]
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+									<a href="[% page.url() %]">Cancel</a>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					[% ELSE %]
+					<!-- <h2>Hashtags:</h2> -->
+					<p>Enable #Hashtags for RingMail Communications.</p>
+					<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label" for="hashtag">Register A New #Hashtag:</label>
+							<div class="controls">
+								<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_tag' => 1}) %]">Create #Hashtag</a>
+							</div>
+						</div>
+					</fieldset>
+				</form> -->
+					<table class="table table-bordered table-striped table-highlight">
+						<thead>
+							<tr>
+								<th>Hashtag</th>
+								<th>Target</th>
+								<th>Expires</th>
+								<th>Commands</th>
+							</tr>
+						</thead>
+						<tbody>
+						[% IF hashtag_table.size == 0 %]
+						<tr>
+							<td colspan="4">No #Hashtags Registered</td>
+						</tr>
+						[% ELSE %]
+						[% FOREACH row IN hashtag_table %]
+						<tr>
+							<td>#[% row.hashtag %]</td>
+							<td><a target="_blank" href="[% row.target_url %]">[% row.target_url %]</a></td>
+							<td>[% IF row.expires %][% row.expires %][% ELSE %]Never[% END %]</td>
+							<td>
+								[% page.link(
+								'text' => 'Delete',
+								'command' => 'hashtag_delete',
+								'args' => [row.id],
+								'opts' => {
+								'onclick' => "return confirm('Really Delete Hashtag: #$row.hashtag')",
+								},
+								) %]
+								|
+								[% page.link(
+								'text' => 'Edit Details',
+								'path' => '/u/hashtag',
+								'query' => {
+								'id' => row.id
+								},
+								) %]
+							</td>
+						</tr>
+						[% END %]
+						[% END %]
+						</tbody>
+					</table>
+					[% END %]
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

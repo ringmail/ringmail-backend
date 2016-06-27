@@ -264,12 +264,10 @@ sub show_payment_form {
         [   { 'style' => 'padding-left: 180px;', 'class' => 'form-actions' },
             0,
             $obj->button(
-                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, 'Add Funds', ),
+                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, 'Make Payment', ),
                 'command' => 'fund',
                 'opts'    => { 'class' => 'btn btn-large btn-info', },
             ),
-            0,
-            $obj->link( text => 'Register Hashtag', path => '/u/ringpages?new_ringpage=1', ),
         ],
     );
     return xml(@funding);

@@ -1,0 +1,40 @@
+[% menu_main = 'settings' %]
+[% menu_settings = 'account' %]
+[% menu_subnav = 'service' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Account</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					[% INCLUDE u/settings/sub_menu.html %]
+				</div>
+				<div class="span6">
+					[% FOREACH hashtag IN hashtags %]
+					<p>[% hashtag.hashtag %] $1.99</p>
+					[% END %]
+					<p><strong>Total:</strong> $[% total %]</p>
+				</div>
+				<div class="span6">
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							[% payment %]
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]
