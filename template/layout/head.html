@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>[% title %]</title>
+	<link href="/css/website/normalize.css" type="text/css" rel="stylesheet"> <!-- html5 boilerplate normalize -->
+	
+	<link href="/css/website/bootstrap.css" type="text/css" rel="stylesheet">
+	<link href="/css/website/main.css" type="text/css" rel="stylesheet">
+	<link href="/css/website/font-awesome.css" type="text/css" rel="stylesheet">
+	<link href="/css/website/structure.css" rel="stylesheet">
+	
+	[% IF page == "subpage-jumbo" %]
+	<link href="/css/website/jumbotron-narrow.css" rel="stylesheet">
+	[% END %]
+	<link rel="shortcut icon" href="/img/website/favicon.ico" type="image/x-icon" />
+	
+	<!-- Bootstrap >
+	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet"-->
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	  	<script src="/js/website/wufoo.js"></script>	
+	  	<script src="/js/website/bootstrap.js"></script>
+    
+
+		[% INCLUDE layout/track.html %]
+
+</head>
