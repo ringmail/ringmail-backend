@@ -15,7 +15,6 @@ use Note::AWS::S3;
 use Ring::User;
 use Ring::Model::RingPage;
 
-extends 'Note::Page';
 extends 'Page::ring::user';
 
 Readonly my $DAYS => 24 * 3_600;

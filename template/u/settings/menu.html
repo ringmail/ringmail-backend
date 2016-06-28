@@ -1,21 +1,20 @@
 <div id="header">
 	<div class="container">
 		<a href="/">
-			<h1 class="logo-h1">Ringmail</h1>
+			<h1 class="logo-h1">RingMail</h1>
 		</a>
 		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 			<i class="icon-reorder"></i>
 		</a>
 		<ul class="logout-ul pull-right">
+			<li><a href="/u/cart"><i class="icon-shopping-cart"></i> Cart ([% hashtags.size %])</a></li>
 			<li><a href="javascript:;"><i class="icon-user"></i>User Name</a></li>
 			<li><a href="u?do-1_2=1&amp;cmd-1_2=logout">Logout</a></li>
 		</ul>
 		<div class="nav-collapse">
-			<span class="span1"><a href="/u/cart"><i class="icon-shopping-cart"></i> Cart (0)</a></span>
 			<ul id="main-nav" class="nav pull-right">
 				<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u/check_hashtag">Hashtags</a></li>
 				<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
-				<li class="nav-icon[% IF menu_settings == 'domains' %] active[% END %]"><a href="/u/domains">Domains</a></li>
 				<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
 			</ul>
 		</div>

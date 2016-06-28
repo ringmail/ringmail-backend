@@ -3,19 +3,13 @@ package Page::ring::user;
 use strict;
 use warnings;
 
-use vars qw();
-
 use Moose;
-use JSON::XS 'encode_json';
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use Number::Format 'format_number';
 use POSIX 'strftime';
 
 use Note::XML 'xml';
-use Note::HTML 'htable', 'vtable';
 use Note::Param;
 use Note::Locale 'us_states', 'us_state_name';
+use Note::SQL::Table 'sqltable';
 
 use Ring::User;
 
@@ -25,6 +19,30 @@ has 'user' => (
     'is'  => 'rw',
     'isa' => 'Ring::User',
 );
+
+sub load {
+    my ( @args, ) = @_;
+
+    my ( $self, $param ) = get_param( @args, );
+
+    my $user    = $self->user();
+    my $content = $self->content();
+
+    my $hashtags = sqltable('ring_cart')->get(
+        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+        join   => 'rh.id = rc.hashtag_id',
+        where  => [
+            {   'rc.user_id' => $user->id(),
+                'rh.user_id' => $user->id(),
+            } => and => { 'rc.transaction_id' => undef, },
+        ],
+    );
+
+    $content->{hashtags} = $hashtags;
+
+    return $self->SUPER::load( $param, );
+}
 
 sub show_payment_form {
     my ( @args, ) = @_;
