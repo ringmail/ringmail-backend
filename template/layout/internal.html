@@ -1,3 +1,4 @@
+[% USE date %]
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -30,7 +31,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="span6">
-				Powered By <a href="http://dyl.com">DYL</a> &copy 2013, all rights reserved.
+				Powered By <a href="http://dyl.com">DYL</a> &copy [% date.format( date.now, '%Y' ) %], all rights reserved.
 			</div> 
 			<div id="builtby" class="span6">
 				<a href="/tos">RingMail Network Usage Policy</a>				
