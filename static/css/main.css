@@ -505,3 +505,14 @@ input[type="checkbox"]:checked ~ .input-show {
 .shape-ph-img {
 	margin: 0 10px 10px;
 }
+
+.nav-stacked li.active a, .nav-stacked li.active a:hover {
+    color: #ffffff;
+    background-color: #0077c2;
+    text-shadow: none;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover {
+    color: #ffffff;
+    background-color: #0077c2;
+    text-shadow: none;
+}
