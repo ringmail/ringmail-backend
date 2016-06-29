@@ -61,7 +61,7 @@ input[type="file"] {
 }
 
 .main-wrapper .td-label {
-	width: 15%;
+	width: 20%;
 	border-top: none!important;
 	border-right: none;
 	font-weight: bold;
@@ -226,6 +226,7 @@ textarea {
 
 .td-inputs .radio-wrapper button {
 	margin-bottom: 10px;
+	vertical-align: top;
 }
 
 .button-data-ul li {
@@ -244,18 +245,19 @@ textarea {
 }
 
 .button-data-ul li {
-	width: 75%;
+	width: 55%;
 	float: left;
+	margin:0 1%;
 }
 
 .button-data-ul li:first-of-type {
-	width: 20%;
-	margin-left: 1%;
+	width: 34%;
 }
 
 .button-data-ul li:last-of-type {
-	width: 4%;
-	float: right;
+	width: 20px;
+	height: 20px;
+	float: left;
 	color: #fff;
 	background-color: #ed5349;
 	border-radius: 20px;
@@ -264,7 +266,7 @@ textarea {
 .button-data-ul li i {
 	display: inline-block;
 	vertical-align: middle;
-	margin-left: 3px;
+	margin-left: 4px;
 }
 
 .button-data-ul li a:hover {
