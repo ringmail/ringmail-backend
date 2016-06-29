@@ -1,8 +1,7 @@
 {
    "class" : "Page::ring::setup::hashtags_cart",
    "command" : {
-      "hashtag_add" : "cmd_hashtag_add",
-      "hashtag_delete" : "cmd_hashtag_delete"
+      "hashtag_add" : "cmd_hashtag_add"
    },
    "init" : [
       "valid_user"
