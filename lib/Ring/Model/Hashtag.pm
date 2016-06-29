@@ -42,7 +42,7 @@ sub validate_target {
 
     my $target = $param->{target};
 
-    if ( $target =~ m{ \A $RE{URI}{HTTP}{-scheme=>qr|https?|} \z }xms ) {
+    if ( $target =~ m{ \A $RE{URI}{HTTP}{ -scheme => qr{ https? }xms, } \z }xms ) {
 
         return TRUE;
     }
