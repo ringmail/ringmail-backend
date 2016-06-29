@@ -67,46 +67,46 @@ sub load {
 }
 
 sub cmd_hashtag_add {
-    my ( $self, $form_data, $args ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
-    my $user   = $self->user();
-    my $uid    = $user->id();
-    my $tag    = lc( $form_data->{'hashtag'} );
-    my $target = $form_data->{'target'};
-    if ( $target ne q{} ) {
+    my $user             = $self->user();
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+    my $tag              = lc $form_data->{hashtag};
+    my $target           = $form_data->{target};
 
-        $target =~ s/^\s*//xms;    # trim whitespace
-        $target =~ s/\s*$//xms;
-        if ( not $target =~ m{^http(s)?://}xmsi ) {
-            $target = 'http://' . $target;
+    if ( length $target > 0 ) {
+
+        $target =~ s{ \A \s* }{}xms;    # trim whitespace
+        $target =~ s{ \s* \z }{}xms;
+        if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+            $target = "http://$target";
         }
 
     }
+
     my $hashtag_model = Ring::Model::Hashtag->new();
-    if ( $hashtag_model->validate_tag( 'tag' => $tag, ) ) {
-        if ( $hashtag_model->check_exists( 'tag' => $tag, ) ) {
+
+    if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
+        if ( $hashtag_model->check_exists( tag => $tag, ) ) {
             ::log('Dup');
         }
         else {
-            if ( $hashtag_model->validate_target( 'target' => $target, ) or defined $form_data->{ringpage_id} ) {
+            if ( $hashtag_model->validate_target( 'target' => $target, ) or defined $ringpage_id ) {
 
                 my $category = $form_data->{category};
-                my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-
-                ::log( $ringpage_id, );
 
                 my $hashtag = $hashtag_model->create(
                     category    => $category,
                     ringpage_id => $ringpage_id,
                     tag         => $tag,
                     target_url  => $target,
-                    user_id     => $uid,
+                    user_id     => $user->id(),
                 );
                 if ( defined $hashtag ) {
 
                     my $hashtag_id = $hashtag->id();
 
-                    ::log( 'New', $hashtag );
+                    ::log( "New Hashtag: #$hashtag", );
 
                     my $cart = Note::Row::create(
                         ring_cart => {
