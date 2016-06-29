@@ -21,6 +21,8 @@ use Note::SQL::Table 'sqltable';
 
 use Ring::User;
 
+use Ring::Model::Hashtag;
+
 extends 'Page::ring::user';
 
 my %payment_check = (
@@ -246,6 +248,30 @@ sub cmd_fund {
         ::_log( 'Attempt:', $attempt );
         return $self->redirect('/u/settings/processing');
     }
+}
+
+sub remove {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user = $self->user();
+
+    my ( $hashtag_id, ) = ( @{$args}, );
+
+    my $hashtag_model = Ring::Model::Hashtag->new();
+
+    if ($hashtag_model->delete(
+            user_id => $user->id(),
+            id      => $hashtag_id,
+        )
+        )
+    {
+        # display confirmation
+    }
+    else {
+        # failed
+    }
+
+    return;
 }
 
 1;
