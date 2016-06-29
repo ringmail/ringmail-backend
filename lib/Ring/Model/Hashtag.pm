@@ -2,147 +2,186 @@ package Ring::Model::Hashtag;
 
 use strict;
 use warnings;
+use constant::boolean;
 
 use Moose;
-use Data::Dumper;
-use Scalar::Util 'blessed', 'reftype';
-use POSIX 'strftime';
 use Regexp::Common 'URI';
 use Try::Tiny;
 use Carp 'croak';
+use English '-no_match_vars';
 
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+
 use Ring::User;
 
 sub validate_tag {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $tag = $param->{'tag'};
+
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $tag = $param->{tag};
+
     if ( $tag =~ m{ \A [a-z0-9_]+ \z }xms ) {
-        return 1;
+
+        return TRUE;
     }
-    return 0;
+    else {
+
+        return FALSE;
+    }
+
+    return;
 }
 
 sub validate_target {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $target = $param->{'target'};
+
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $target = $param->{target};
+
     if ( $target =~ m{ \A $RE{URI}{HTTP}{-scheme=>qr|https?|} \z }xms ) {
-        return 1;
+
+        return TRUE;
     }
-    return 0;
+    else {
+
+        return FALSE;
+    }
+
+    return;
 }
 
 sub check_exists {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $tag = lc( $param->{'tag'} );
-    if ( not $obj->validate_tag( 'tag' => $tag, ) ) {
-        croak(qq|Invalid hashtag: '$tag'|);
+
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $tag = lc $param->{tag};
+
+    if ( not $self->validate_tag( tag => $tag, ) ) {
+
+        croak( "Invalid hashtag: #$tag", );
     }
-    return sqltable('ring_hashtag')->count( 'hashtag' => $tag, );
+
+    return sqltable('ring_hashtag')->count( hashtag => $tag, );
 }
 
 sub create {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $tag = lc( $param->{'tag'} );
-    if ( not $obj->validate_tag( 'tag' => $tag, ) ) {
-        croak(qq|Invalid hashtag: '$tag'|);
-    }
-    my $uid     = $param->{'user_id'};
-    my $url     = $param->{'target_url'};
-    my $expires = $param->{'expires'};
-    my $trec;
 
-    ::log( $param, );
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $tag = lc $param->{tag};
+
+    if ( not $self->validate_tag( tag => $tag, ) ) {
+        croak( "Invalid hashtag: #$tag", );
+    }
+
+    my $hashtag_row;
 
     try {
-        $trec = Note::Row::create(
-            'ring_hashtag',
-            {
 
+        $hashtag_row = Note::Row::create(
+            ring_hashtag => {
                 category    => $param->{category},
                 hashtag     => $tag,
                 ringpage_id => $param->{ringpage_id},
-                target_url  => $url,
-                ts_expires  => $expires,
-                user_id     => $uid,
-
+                target_url  => $param->{target_url},
+                ts_expires  => $param->{expires},
+                user_id     => $param->{user_id},
             }
         );
+
     }
     catch {
-        my $err = $_;
+
+        my $err = $ARG;
+
         if ( $err =~ m{ Duplicate }xms ) {
+
             return undef;
         }
         else {
-            croak($err);
+
+            croak( $err, );
         }
+
     };
 
-    return $trec;
+    return $hashtag_row;
 }
 
 sub delete {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $rc = Note::Row->new(
-        'ring_hashtag' => {
-            'user_id' => $param->{'user_id'},
-            'id'      => $param->{'id'},
+
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $hashtag_row = Note::Row->new(
+        ring_hashtag => {
+            id      => $param->{id},
+            user_id => $param->{user_id},
         },
     );
-    if ( $rc->id() ) {
-        $rc->delete();
-        return 1;
+
+    if ( $hashtag_row->id() ) {
+
+        $hashtag_row->delete();
+
+        return TRUE;
     }
     else {
-        return 0;
+
+        return FALSE;
     }
+
+    return;
 }
 
 sub update {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $rc = Note::Row->new(
+
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $hashtag_row = Note::Row->new(
         ring_hashtag => {
             user_id => $param->{user_id},
             id      => $param->{id},
         },
     );
-    if ( $rc->id() ) {
-        $rc->update(
-            {
 
-                ringpage_id => $param->{ringpage_id},
+    if ( $hashtag_row->id() ) {
+
+        $hashtag_row->update(
+            {   ringpage_id => $param->{ringpage_id},
                 target_url  => $param->{target},
-
             },
         );
-        return 1;
+
+        return TRUE;
     }
     else {
-        return 0;
+
+        return FALSE;
     }
+
+    return;
 }
 
 sub get_user_hashtags {
     my ( @args, ) = @_;
-    my ( $obj, $param, ) = get_param( @args, );
-    my $uid = $param->{'user_id'};
-    my $q   = sqltable('ring_hashtag')->get(
-        'select' => [ 'id', 'hashtag', 'ts_expires as expires', 'target_url' ],
-        'where' => { 'user_id' => $uid, },
-        'order' => 'hashtag asc',
 
-        #		'limit' => '10',
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $hashtags = sqltable('ring_hashtag')->get(
+        select => [ 'id', 'hashtag', 'ts_expires as expires', 'target_url' ],
+        where => { user_id => $param->{user_id}, },
+        order => 'hashtag asc',
     );
-    return $q;
+
+    return $hashtags;
 }
 
 1;
