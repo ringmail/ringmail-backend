@@ -86,12 +86,9 @@ sub create {
 
         $hashtag_row = Note::Row::create(
             ring_hashtag => {
-                category    => $param->{category},
-                hashtag     => $tag,
-                ringpage_id => $param->{ringpage_id},
-                target_url  => $param->{target_url},
-                ts_expires  => $param->{expires},
-                user_id     => $param->{user_id},
+                hashtag    => $tag,
+                ts_expires => $param->{expires},
+                user_id    => $param->{user_id},
             }
         );
 

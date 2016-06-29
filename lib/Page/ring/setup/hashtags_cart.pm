@@ -91,34 +91,29 @@ sub cmd_hashtag_add {
             ::log('Dup');
         }
         else {
-            if ( $hashtag_model->validate_target( 'target' => $target, ) or defined $ringpage_id ) {
 
-                my $category = $form_data->{category};
+            my $category = $form_data->{category};
 
-                my $hashtag = $hashtag_model->create(
-                    category    => $category,
-                    ringpage_id => $ringpage_id,
-                    tag         => $tag,
-                    target_url  => $target,
-                    user_id     => $user->id(),
+            my $hashtag = $hashtag_model->create(
+                category    => $category,
+                ringpage_id => $ringpage_id,
+                tag         => $tag,
+                target_url  => $target,
+                user_id     => $user->id(),
+            );
+            if ( defined $hashtag ) {
+
+                my $hashtag_id = $hashtag->id();
+
+                ::log( "New Hashtag: #$hashtag", );
+
+                my $cart = Note::Row::create(
+                    ring_cart => {
+                        hashtag_id => $hashtag_id,
+                        user_id    => $user->id(),
+                    },
                 );
-                if ( defined $hashtag ) {
 
-                    my $hashtag_id = $hashtag->id();
-
-                    ::log( "New Hashtag: #$hashtag", );
-
-                    my $cart = Note::Row::create(
-                        ring_cart => {
-                            hashtag_id => $hashtag_id,
-                            user_id    => $user->id(),
-                        },
-                    );
-
-                }
-            }
-            else {
-                ::log('Bad Target');
             }
         }
     }
