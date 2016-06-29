@@ -128,6 +128,16 @@ sub edit {
         }
         elsif ( defined $form_value ) {
 
+            if ( $field->{text_type} eq 'url' ) {
+
+                if ( not $form_value =~ m{ \A http(s)?:// }xmsi ) {
+
+                    $form_value = 'http://' . $form_value;
+
+                }
+
+            }
+
             $field->{value} = $form_value;
 
         }

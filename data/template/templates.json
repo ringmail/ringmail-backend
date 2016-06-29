@@ -133,6 +133,7 @@
                "type":"text",
                "default":"",
                "label":"Homepage URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -140,6 +141,7 @@
                "type":"text",
                "default":"",
                "label":"Facebook URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -147,6 +149,7 @@
                "type":"text",
                "default":"",
                "label":"Twitter URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -154,6 +157,7 @@
                "type":"text",
                "default":"",
                "label":"Instagram URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -161,6 +165,7 @@
                "type":"text",
                "default":"",
                "label":"LinkedIn URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -168,6 +173,7 @@
                "type":"text",
                "default":"",
                "label":"Google+ URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -175,6 +181,7 @@
                "type":"text",
                "default":"",
                "label":"Pinterest URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -182,6 +189,7 @@
                "type":"text",
                "default":"",
                "label":"YouTube URL",
+               "text_type":"url",
                "value":""
             }
          ]
@@ -328,6 +336,7 @@
                "type":"text",
                "default":"",
                "label":"Homepage URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -335,6 +344,7 @@
                "type":"text",
                "default":"",
                "label":"Facebook URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -342,6 +352,7 @@
                "type":"text",
                "default":"",
                "label":"Twitter URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -349,6 +360,7 @@
                "type":"text",
                "default":"",
                "label":"Instagram URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -356,6 +368,7 @@
                "type":"text",
                "default":"",
                "label":"LinkedIn URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -363,6 +376,7 @@
                "type":"text",
                "default":"",
                "label":"Google+ URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -370,6 +384,7 @@
                "type":"text",
                "default":"",
                "label":"Pinterest URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -377,6 +392,7 @@
                "type":"text",
                "default":"",
                "label":"YouTube URL",
+               "text_type":"url",
                "value":""
             }
          ]
@@ -515,6 +531,7 @@
                "type":"text",
                "default":"",
                "label":"Homepage URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -522,6 +539,7 @@
                "type":"text",
                "default":"",
                "label":"Facebook URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -529,6 +547,7 @@
                "type":"text",
                "default":"",
                "label":"Twitter URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -536,6 +555,7 @@
                "type":"text",
                "default":"",
                "label":"Instagram URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -543,6 +563,7 @@
                "type":"text",
                "default":"",
                "label":"LinkedIn URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -550,6 +571,7 @@
                "type":"text",
                "default":"",
                "label":"Google+ URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -557,6 +579,7 @@
                "type":"text",
                "default":"",
                "label":"Pinterest URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -564,6 +587,7 @@
                "type":"text",
                "default":"",
                "label":"YouTube URL",
+               "text_type":"url",
                "value":""
             }
          ]
@@ -702,6 +726,7 @@
                "type":"text",
                "default":"",
                "label":"Homepage URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -709,6 +734,7 @@
                "type":"text",
                "default":"",
                "label":"Facebook URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -716,6 +742,7 @@
                "type":"text",
                "default":"",
                "label":"Twitter URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -723,6 +750,7 @@
                "type":"text",
                "default":"",
                "label":"Instagram URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -730,6 +758,7 @@
                "type":"text",
                "default":"",
                "label":"LinkedIn URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -737,6 +766,7 @@
                "type":"text",
                "default":"",
                "label":"Google+ URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -744,6 +774,7 @@
                "type":"text",
                "default":"",
                "label":"Pinterest URL",
+               "text_type":"url",
                "value":""
             },
             {
@@ -751,6 +782,7 @@
                "type":"text",
                "default":"",
                "label":"YouTube URL",
+               "text_type":"url",
                "value":""
             }
          ]
