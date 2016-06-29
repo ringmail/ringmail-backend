@@ -78,6 +78,7 @@ sub load {
         push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
     }
     else {
+
         push @categories, [ '(No Categories Created)' => 0, ];
     }
 
@@ -93,6 +94,7 @@ sub load {
         push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
     }
     else {
+
         push @ringpages, [ '(No RingPages Created)' => undef, ];
     }
 
@@ -103,24 +105,24 @@ sub load {
 }
 
 sub cmd_hashtag_edit {
-    my ( $self, $data, $args, ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
-    my $user = $self->user();
+    my $user             = $self->user();
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+    my $target           = $form_data->{target};
+    my ( $hashtag_id, )  = ( @{$args}, );
 
-    my $tagid  = $args->[0];
-    my $target = $data->{target};
     $target =~ s{ \A \s* }{}xms;    # trim whitespace
     $target =~ s{ \s* \z }{}xms;
     if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-        $target = 'http://' . $target;
+        $target = "http://$target";
     }
 
-    my ( $ringpage_id, ) = ( $data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+    my $hashtag_model = Ring::Model::Hashtag->new();
 
-    my $hashtag = Ring::Model::Hashtag->new();
-    if ( $hashtag->validate_target( 'target' => $target, ) ) {
-        if ($hashtag->update(
-                id          => $tagid,
+    if ( $hashtag_model->validate_target( target => $target, ) ) {
+        if ($hashtag_model->update(
+                id          => $hashtag_id,
                 ringpage_id => $ringpage_id,
                 target      => $target,
                 user_id     => $user->id(),
@@ -130,10 +132,12 @@ sub cmd_hashtag_edit {
             # display confirmation
         }
         else {
+
             # failed
         }
     }
     else {
+
         # invalid target
     }
 
