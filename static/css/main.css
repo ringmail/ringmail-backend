@@ -226,6 +226,7 @@ textarea {
 
 .td-inputs .radio-wrapper button {
 	margin-bottom: 10px;
+	vertical-align: top;
 }
 
 .button-data-ul li {
@@ -244,13 +245,13 @@ textarea {
 }
 
 .button-data-ul li {
-	width: 75%;
+	width: 60%;
 	float: left;
+	margin:0 1%;
 }
 
 .button-data-ul li:first-of-type {
-	width: 20%;
-	margin-left: 1%;
+	width: 34%;
 }
 
 .button-data-ul li:last-of-type {
