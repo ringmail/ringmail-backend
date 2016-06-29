@@ -21,7 +21,16 @@
 				</div>
 				<div class="span6">
 					[% FOREACH hashtag IN hashtags %]
-					<p>[% hashtag.hashtag %] $1.99</p>
+					<p>[% hashtag.hashtag %] $1.99 - 
+					[% page.link(
+					text => 'Delete',
+					command => 'remove',
+					args => [ hashtag.id, ],
+					opts => {
+					onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
+					},
+					) %]
+					</p>
 					[% END %]
 					<p><strong>Total:</strong> $[% total %]</p>
 				</div>
