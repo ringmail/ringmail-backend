@@ -66,15 +66,17 @@
 							<div class="controls">
 								<div class="tabbable"> <!-- Only required for left/right tabs -->
 									<ul class="nav nav-tabs">
-										<li class="active"><a href="#tab1" data-toggle="tab">Target URL</a></li>
-										<li><a href="#tab2" data-toggle="tab">RingPage</a></li>
+										<li class="[% IF ! ringpage.defined %] active[% END %]"><a href="#tab1" data-toggle="tab">Target URL</a></li>
+										<li class="[% IF ringpage.defined %] active[% END %]"><a href="#tab2" data-toggle="tab">RingPage</a></li>
 									</ul>
 									<div class="tab-content">
-										<div class="tab-pane active" id="tab1">
+										<div class="tab-pane[% IF ! ringpage.defined %] active[% END %]" id="tab1">
+											[% IF edit %]
 											[% page.field(
 											command => 'hashtag_edit',
 											type => 'text',
 											name => 'target',
+											value => target_url,
 											opts => {
 											id => 'target',
 											},
@@ -84,8 +86,12 @@
 												<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
 											</div>
 											[% END %]
+											[% ELSE %]
+											<a target="_blank" href="[% target_url %]">[% target_url %]</a>
+											[% END %]
 										</div>
-										<div class="tab-pane" id="tab2">
+										<div class="tab-pane[% IF ringpage.defined %] active[% END %]" id="tab2">
+											[% IF edit %]
 											[% page.field(
 											command => 'hashtag_edit',
 											type => 'select',
@@ -99,6 +105,9 @@
 												<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
 											</div>
 											[% END %]
+											[% ELSE %]
+											[% ringpage %]
+											[% END %]
 										</div>
 									</div>
 								</div>
@@ -110,46 +119,6 @@
 								<pre style="width: 200px;">Never</pre>
 							</div>
 						</div>
-						<table class="table table-bordered table-striped">
-							<tbody>
-							<tr>
-								<td><strong>Target URL</strong></td>
-								<td>
-									[% IF ! edit %]
-									<a target="_blank" href="[% target_url %]">[% target_url %]</a>
-									[% ELSE %]
-									[% page.field(
-									command => 'hashtag_edit',
-									type => 'text',
-									name => 'target',
-									value => target_url,
-									opts => {
-									id => 'target',
-									style => 'width: 80%;',
-									},
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							<tr>
-								<td><strong>RingPage</strong></td>
-								<td>
-									[% IF ! edit %]
-									[% ringpage %]
-									[% ELSE %]
-									[% page.field(
-									command => 'hashtag_edit',
-									type => 'select',
-									name => 'ringpage_id',
-									select => ringpage_list,
-									selected => ringpage_sel,
-									opts => ringpage_opts,
-									) %]
-									[% END %]
-								</td>
-							</tr>
-							</tbody>
-						</table>
 					</form>
 				</div>
 			</div>

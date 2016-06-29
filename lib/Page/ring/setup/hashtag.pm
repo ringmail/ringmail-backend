@@ -120,7 +120,7 @@ sub cmd_hashtag_edit {
 
     my $hashtag_model = Ring::Model::Hashtag->new();
 
-    if ( $hashtag_model->validate_target( target => $target, ) ) {
+    if ( $hashtag_model->validate_target( target => $target, ) or defined $ringpage_id ) {
         if ($hashtag_model->update(
                 id          => $hashtag_id,
                 ringpage_id => $ringpage_id,
