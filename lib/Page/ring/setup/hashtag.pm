@@ -5,15 +5,13 @@ use warnings;
 
 use Moose;
 use JSON::XS 'encode_json';
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
 use English '-no_match_vars';
 
 use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
+
 use Ring::Model::Hashtag;
 use Ring::Model::Category;
 use Ring::Model::RingPage;
@@ -22,13 +20,16 @@ extends 'Page::ring::user';
 
 sub load {
     my ( @args, ) = @_;
-    my ( $self, $param ) = get_param( @args, );
-    my $content = $self->content();
+
+    my ( $self, $param, ) = get_param( @args, );
+
     my $form    = $self->form();
     my $user    = $self->user();
-    my $uid     = $user->id();
-    my $id      = $form->{'id'};
-    if ( not $id =~ m{ \A \d+ \z }xms ) {
+    my $content = $self->content();
+
+    my $hashtag_id = $form->{id};
+
+    if ( not $hashtag_id =~ m{ \A \d+ \z }xms ) {
         return $self->redirect('/u/hashtags');
     }
 
@@ -40,8 +41,8 @@ sub load {
 
         my $hashtag = Note::Row->new(
             ring_hashtag => {
-                id      => $id,
-                user_id => $uid,
+                id      => $hashtag_id,
+                user_id => $user->id(),
             },
         );
 
@@ -55,7 +56,7 @@ sub load {
         my $ringpage_row = Note::Row->new(
             ring_page => {
                 id      => $hashtag->data( 'ringpage_id', ),
-                user_id => $uid,
+                user_id => $user->id(),
             },
         );
 
@@ -102,9 +103,10 @@ sub load {
 }
 
 sub cmd_hashtag_edit {
-    my ( $self, $data, $args ) = @_;
-    my $user   = $self->user();
-    my $uid    = $user->id();
+    my ( $self, $data, $args, ) = @_;
+
+    my $user = $self->user();
+
     my $tagid  = $args->[0];
     my $target = $data->{target};
     $target =~ s{ \A \s* }{}xms;    # trim whitespace
@@ -121,7 +123,7 @@ sub cmd_hashtag_edit {
                 id          => $tagid,
                 ringpage_id => $ringpage_id,
                 target      => $target,
-                user_id     => $uid,
+                user_id     => $user->id(),
             )
             )
         {
