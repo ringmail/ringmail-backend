@@ -246,7 +246,7 @@ sub cmd_fund {
         $sd->{'payment_attempt'} = $attempt;
         $self->session_write();
         ::_log( 'Attempt:', $attempt );
-        return $self->redirect('/u/settings/processing');
+        return $self->redirect('/u/processing');
     }
 }
 
