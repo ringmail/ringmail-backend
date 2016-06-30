@@ -42,81 +42,16 @@
 								</div>
 							</div>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="category">Category:</label>
-								<div class="controls">
-									[% page.field(
-									'command' => 'hashtag_add',
-									'type' => 'select',
-									'name' => 'category',
-									'select' => category_list,
-									'selected' => category_sel,
-									'opts' => category_opts,
-									) %]
-									[% IF page.value.error %]
-									<div>
-										<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
-									</div>
-									[% END %]
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="target">Destination:</label>
-								<div class="controls">
-									<div class="tabbable"> <!-- Only required for left/right tabs -->
-										<ul class="nav nav-tabs">
-											<li class="active"><a href="#tab1" data-toggle="tab">Target URL</a></li>
-											<li><a href="#tab2" data-toggle="tab">RingPage</a></li>
-										</ul>
-										<div class="tab-content">
-											<div class="tab-pane active" id="tab1">
-												[% page.field(
-												'command' => 'hashtag_add',
-												'type' => 'text',
-												'name' => 'target',
-												'opts' => {'id' => 'target'},
-												) %]
-												[% IF page.value.error %]
-												<div>
-													<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
-												</div>
-												[% END %]
-											</div>
-											<div class="tab-pane" id="tab2">
-												[% page.field(
-												'command' => 'hashtag_add',
-												'type' => 'select',
-												'name' => 'ringpage_id',
-												'select' => ringpage_list,
-												'selected' => ringpage_sel,
-												'opts' => ringpage_opts,
-												) %]
-												[% IF page.value.error %]
-												<div>
-													<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
-												</div>
-												[% END %]
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="target">Expires:</label>
-								<div class="controls">
-									<pre style="width: 200px;">Never</pre>
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="target">Registration Fee:</label>
 								<div class="controls">
-									<pre style="width: 200px;">$1.99<br/><br/><strong>Your Balance:</strong><br/>$[% balance %]</pre>
+									<pre style="width: 200px;">$1.99</pre>
 								</div>
 							</div>
 							<div class="control-group">
 								<div class="controls">
 									[% page.button(
 									'command' => 'hashtag_add',
-									'contents' => 'Create Hashtag',
+									'contents' => 'Add To Cart',
 									'opts' => {'class' => 'btn btn-primary btn-large'},
 									) %]
 									&nbsp;&nbsp;|&nbsp;&nbsp;
