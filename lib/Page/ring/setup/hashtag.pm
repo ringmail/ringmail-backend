@@ -99,6 +99,7 @@ sub load {
     }
 
     $content->{ringpage_list} = \@ringpages;
+
     $content->{ringpage_opts}->{id} = 'ringpage';
 
     return $self->SUPER::load( $param, );
@@ -124,7 +125,7 @@ sub cmd_hashtag_edit {
         if ($hashtag_model->update(
                 id          => $hashtag_id,
                 ringpage_id => $ringpage_id,
-                target      => $target,
+                target      => defined $ringpage_id ? undef : $target,
                 user_id     => $user->id(),
             )
             )

@@ -92,6 +92,7 @@
 										</div>
 										<div class="tab-pane[% IF ringpage.defined %] active[% END %]" id="tab2">
 											[% IF edit %]
+											[% ringpage_list.unshift( [ '(None Selected)', undef, ], ) %]
 											[% page.field(
 											command => 'hashtag_edit',
 											type => 'select',
