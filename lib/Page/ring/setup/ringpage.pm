@@ -6,10 +6,7 @@ use constant::boolean;
 
 use Moose;
 use JSON::XS qw{ encode_json decode_json };
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
-use List::MoreUtils 'each_arrayref';
+use List::MoreUtils qw{ each_arrayref first_value };
 use English '-no_match_vars';
 
 use Note::XML 'xml';
@@ -160,7 +157,7 @@ sub edit {
     {
         # display confirmation
 
-        my $each_array = each_arrayref [ $self->request()->parameters()->get_all( 'd1-button_id', ), ], [ $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ $self->request()->parameters()->get_all( 'd1-button_link', ), ];
+        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_link', ), ];
         while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
 
             if ( $button_id eq q{} ) {
