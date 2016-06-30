@@ -431,7 +431,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							<ul class="modal-ul">
 								<li>
 								<span class="input-group-addon">
-									<input class="modal-radio" type="radio" name="linktype" value="url" style="visibility: hidden;"/><label>Button Text</label>
+									<label>Button Text</label>
 									[% page.field(
 									command => 'edit',
 									type => 'text',
@@ -445,7 +445,6 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							<hr>
 							<ul class="modal-options-ul">
 								<li><span class="input-group-addon">
-									<input class="modal-radio" type="radio" name="linktype" value="url" checked />
 									<label>Link</label>
 									[% page.field(
 									command => 'edit',
@@ -458,7 +457,6 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 								</span>
 								</li>
 								<li><span class="input-group-addon">
-									<input class="modal-radio" type="radio" name="linktype" value="call" />
 									<label>Call</label>
 									[% page.field(
 									command => 'edit',
@@ -471,7 +469,6 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 								</span>
 								</li>
 								<li><span class="input-group-addon">
-									<input class="modal-radio" type="radio" name="linktype" value="video" />
 									<label>Video</label>
 									[% page.field(
 									command => 'edit',
@@ -484,7 +481,6 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 								</span>
 								</li>
 								<li><span class="input-group-addon">
-									<input class="modal-radio" type="radio" name="linktype" value="chat" />
 									<label>Chat</label>
 									[% page.field(
 									command => 'edit',
