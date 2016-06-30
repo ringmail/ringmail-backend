@@ -1,110 +1,85 @@
 /* ladt resets */
-
 .main-wrapper td {
 	margin: 0;
 	padding: 0;
 	vertical-align: text-top;
 }
-
 .main-wrapper td label {
 	margin: 0;
 	padding: 0;
 }
-
 .table tbody tr td {
 	padding: 0;
 }
-
 label, input, button, select, textarea {
 	display: inline-block;
 }
-
 select, input[type="file"] {
 	display: inline-block;
 	height: inherit;
 	line-height: inherit;
 }
-
 input[type="file"] {
 	display: inline-block;
 	height: inherit;
 	line-height: 10px;
 }
-
 /* ladt styles */
-
 .main-wrapper {
 }
-
 .main-wrapper .table tbody tr td {
 	padding: 10px 15px;
 }
-
 .main-wrapper ul {
 	margin: 0 auto;
 	padding: 0;
 }
-
 .radio-wrapper {
-
 }
-
 .main-wrapper ul li {
 	list-style-type: none;
 	padding: 0;
 }
-
 .radio-wrapper label, .radio-wrapper input {
 	padding: 0;
 	display: inline-block;
 	vertical-align: middle;
 }
-
 .main-wrapper .td-label {
 	width: 20%;
 	border-top: none!important;
 	border-right: none;
 	font-weight: bold;
 }
-
 .td-options tr, .td-inputs tr {
 	display: flex;
 }
-
 table td td {
 	border: none !important;
 }
-
 .main-wrapper .td-options {
 	width: 25%;
 	border-top: none!important;
 }
-
 .main-wrapper .td-options-2 {
 	width: 15%;
 	border-top: none!important;
 }
-
 .td-label {
 	line-height: inherit;
 }
-
 .main-wrapper .td-inputs {
 	border-top: none!important;
 }
-
 .main-wrapper input {
 	margin: 0;
 }
-
 .radio-wrapper input {
 	width: 20%;
 }
-
 .main-wrapper .radio-wrapper label:first-of-type {
 	margin-left: 0;
 }
-
 .theme-ul li {
 	text-align: center;
 	display: inline-block;
@@ -116,7 +91,6 @@ table td td {
 .theme-ul ul li:first-of-type {
 	border: none;
 }
-
 .theme-ul ul li {
 	float: left;
 	display: inline-block;
@@ -124,33 +98,25 @@ table td td {
 	width: 18px;
 	box-sizing: border-box;
 	margin: 0;
-
 }
-
 .theme-ul ul li span input {
 	display: inline-block;
 	vertical-align: baseline;
 	margin-right: 4px;
-
 }
-
 textarea {
 	margin-bottom: 0;
 }
-
 .swatch input {
 	width: 5%;
 	padding:  1px 3px;
 }
-
 .inputs-ul li {
 	margin: 10px 0;
 }
-
 .main-wrapper .td-label label {
 	font-weight: 600;
 }
-
 .modal-header.add-button {
 	background-color: #f8f8f8;
 	background-image: -moz-linear-gradient(top, #ffffff, #ededed);
@@ -160,62 +126,50 @@ textarea {
 	background-image: linear-gradient(to bottom, #ffffff, #ededed);
 	border: 1px solid #c9c9c9;
 }
-
 .modal-body {
 	margin: 0 auto;
 }
-
 .modal-ul, .modal-options-ul {
 	margin: 0 auto;
 	width: 70%;
 }
-
 .modal-ul li, .modal-options-ul li {
 	list-style-type: none;
 }
-
 .modal-ul li {
 }
-
 .modal-options-ul li label {
 	width: 25%;
 	display: inline-block;
 	vertical-align: baseline;
 }
-
 .modal-ul li label {
 	width: 25%;
 	display: inline-block;
 	vertical-align: baseline;
 }
-
 .modal-options-ul li input {
 	display: inline-block;
 	vertical-align: baseline;
 }
-
 .modal-options-ul li span {
 	display: inline-block;
 	vertical-align: baseline;
 	width: 100%;
 }
-
 .modal-options-ul li .modal-radio {
 	display: inline-block;
 	vertical-align: baseline;
 	margin-right: 10px;
 }
-
 .modal-ul li .modal-radio {
 	display: inline-block;
 	vertical-align: baseline;
 	margin-right: 12px;
 }
-
 .modal-header .close {
 	color: #333;
 }
-
 .main-wrapper .buttons .button-data-ul {
 	width:100%;
 	box-sizing: border-box;
@@ -223,37 +177,31 @@ textarea {
 	margin: 10px auto;
 	float: left;
 }
-
 .td-inputs .radio-wrapper button {
 	margin-bottom: 10px;
 	vertical-align: top;
 }
-
 .button-data-ul li {
 	font-size: 14px;
 	display: inline-block;
 	vertical-align: text-top;
 	margin: 10px 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-
-    -ms-word-break: break-all;
-    /* This is the dangerous one in WebKit, as it breaks things wherever */
-    word-break: break-all;
-    /* Instead use this non-standard one: */
-    word-break: break-word;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	word-break: break-all;
+	/* Instead use this non-standard one: */
+	word-break: break-word;
 }
-
 .button-data-ul li {
 	width: 55%;
 	float: left;
 	margin:0 1%;
 }
-
 .button-data-ul li:first-of-type {
 	width: 34%;
 }
-
 .button-data-ul li:last-of-type {
 	width: 20px;
 	height: 20px;
@@ -262,13 +210,11 @@ textarea {
 	background-color: #ed5349;
 	border-radius: 20px;
 }
-
 .button-data-ul li i {
 	display: inline-block;
 	vertical-align: middle;
 	margin-left: 4px;
 }
-
 .button-data-ul li a:hover {
 	text-decoration: none;
 	cursor: hand;
@@ -276,18 +222,15 @@ textarea {
 	opacity: .75;
 	color: #fff;
 }
-
 .delbtn-a {
 	color: #fff;
 }
-
 #header {
 	background-color: #f4f4f4;
 	-webkit-box-shadow: inset 0 1px 0 #f4f4f4;
 	-moz-box-shadow: inset 0 1px 0 #f4f4f4;
 	box-shadow: inset 0 1px 0 #f4f4f4;
 }
-
 .logo-h1 {
 	background-image: url("../img/rm-logo.png");
 	background-repeat: no-repeat;
@@ -299,24 +242,20 @@ textarea {
 	display: inline-block;
 	margin-top: 10px;
 }
-
 .logout-ul {
 	display: block;
 	float: right;
 	margin-top: 9px;
 }
-
 .logout-ul li {
 	display: inline-block;
 }
-
 .nav-collapse {
 	position: relative;
 	display: block;
 	float: right;
 	clear: right
 }
-
 #main-nav {
 	position: relative;
 	display: inline-block;
@@ -352,7 +291,6 @@ textarea {
 	box-shadow: none;
 	text-shadow: none;
 }
-
 #main-nav > li > a, #main-nav > li > a:hover, #main-nav > li.open > a {
 	color: #0077c2;
 	text-decoration: none;
@@ -370,7 +308,6 @@ textarea {
 	box-shadow: none;
 	text-shadow: none;
 }
-
 #main-nav > li > a:hover, #main-nav > li.open > a {
 	background-color: #1b3148;
 	background-image: -moz-linear-gradient(top, #ccc, #ccc);
@@ -380,7 +317,6 @@ textarea {
 	background-image: linear-gradient(to bottom, #ccc, #ccc);
 	background-repeat: repeat-x;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc', endColorstr='#ccc', GradientType=0);
-
 }
 #main-nav > li.active > a {
 	color: #fff;
@@ -392,11 +328,9 @@ textarea {
 	box-shadow: none;
 	text-shadow: none;
 }
-
 .nav>li>a {
 	display: block;
 }
-
 #masthead {
 	background-color: #0077c2;
 	background-image: -moz-linear-gradient(top, #0077c2, #0077c2);
@@ -409,29 +343,23 @@ textarea {
 	box-shadow: none;
 	text-shadow: none;
 }
-
 #masthead h2, #masthead p {
 	margin-left: 10px;
 }
-
 #masthead a {
 	color: #fff;
 	text-decoration: underline;
 }
-
 #topbar {
 	background: #f4f4f4;
 	border-bottom: none;
 }
-
 #topbar #top-nav > ul > li > a {
 	color: #0077c2;
 }
-
 .masthead-text {
 	color: #fff;
 }
-
 #footer {
 	padding: 20px 0;
 	color: #ffffff;
@@ -441,23 +369,18 @@ textarea {
 	-moz-box-shadow: none;
 	box-shadow: none;
 }
-
 #footer a {
 	color: #fff;
 	text-decoration: underline;
 }
-
 #preview {
 	float: right;
-
 }
-
 .input-show {
 	opacity: 0;
 	height: 0;
 	overflow: hidden;
 }
-
 input[type="radio"]:checked ~ .input-show,
 input[type="checkbox"]:checked ~ .input-show {
 	opacity: 1;
@@ -465,16 +388,13 @@ input[type="checkbox"]:checked ~ .input-show {
 	vertical-align: baseline;
 	height: auto;
 }
-
 .modal-options-ul li {
 	margin: 10px auto;
 }
-
 .modal-options-ul li input {
 	display: inline-block!important;
 	vertical-align: baseline;
 }
-
 .img-preview {
 	max-height: 50px;
 	max-width: 50px;
@@ -503,18 +423,16 @@ input[type="checkbox"]:checked ~ .input-show {
 .fileinput .btn {
 	vertical-align: top;
 }
-
 .shape-ph-img {
 	margin: 0 10px 10px;
 }
-
 .nav-stacked li.active a, .nav-stacked li.active a:hover {
-    color: #ffffff;
-    background-color: #0077c2;
-    text-shadow: none;
+	color: #ffffff;
+	background-color: #0077c2;
+	text-shadow: none;
 }
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover {
-    color: #ffffff;
-    background-color: #0077c2;
-    text-shadow: none;
+	color: #ffffff;
+	background-color: #0077c2;
+	text-shadow: none;
 }

@@ -1,44 +1,30 @@
 [% page = "thank-you" %]
 [% title = "RingMail | Get in the Loop" %]
 [% content = BLOCK %]
-
-
-
-		
-	<div class="ringmail-thankyou-wrapper">
-		<section class="ringmail-home-highlight-section">
-			
-			<h2 class="home-highlight-header-h2">Thank You</h2>
-			
-			<p class="home-secure-p">Thank you for requesting information about RingMail. One of our representatives will get in touch with you shortly</p>
-			
-		</section>
-	</div>		
-
-
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
-
-  <!-- FlexSlider -->
-  <script defer src="js/jquery.flexslider.js"></script>
-
-  <script type="text/javascript">
+<div class="ringmail-thankyou-wrapper">
+	<section class="ringmail-home-highlight-section">
+		<h2 class="home-highlight-header-h2">Thank You</h2>
+		<p class="home-secure-p">Thank you for requesting information about RingMail. One of our representatives will get in touch with you shortly</p>
+	</section>
+</div>		
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+<!-- FlexSlider -->
+<script type="text/javascript">
 $(window).load(function() {
-  $('.iphone-slider').flexslider({
-    animation: "slide",
-    directionNav: false,
-    controlNav: false
-  });
+		$('.iphone-slider').flexslider({
+animation: "slide",
+directionNav: false,
+controlNav: false
 });
-  </script>
-  
-    <script type="text/javascript">
+		});
+</script>
+<script type="text/javascript">
 $(window).load(function() {
-  $('.flexslider').flexslider({
-    animation: "slide"
-  });
+		$('.flexslider').flexslider({
+animation: "slide"
 });
-  </script>
-
+		});
+</script>
 [% END %]
 [% INCLUDE layout/root_template.html %]
