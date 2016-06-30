@@ -55,7 +55,11 @@
 								</div>
 								[% END %]
 								[% ELSE %]
+								[% IF category.defined %]
 								[% category %]
+								[% ELSE %]
+								<p>Please edit hashtag to set.</p>
+								[% END %]
 								[% END %]
 							</div>
 						</div>
@@ -85,7 +89,11 @@
 											</div>
 											[% END %]
 											[% ELSE %]
+											[% IF target_url.defined %]
 											<a target="_blank" href="[% target_url %]">[% target_url %]</a>
+											[% ELSE %]
+											<p>Please edit hashtag to set.</p>
+											[% END %]
 											[% END %]
 										</div>
 										<div class="tab-pane[% IF ringpage.defined %] active[% END %]" id="tab2">
@@ -105,7 +113,11 @@
 											</div>
 											[% END %]
 											[% ELSE %]
+											[% IF ringpage.defined %]
 											[% ringpage %]
+											[% ELSE %]
+											<p>Please edit hashtag to set.</p>
+											[% END %]
 											[% END %]
 										</div>
 									</div>
