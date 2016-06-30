@@ -200,13 +200,13 @@ sub cmd_fund {
         my $total = 1.99 * scalar @{$hashtags};
 
         my $attempt = $pmt->card_payment(
-            'processor' => 'paypal',
-            'card_id'   => $cid,
-            'nofork'    => 1,
-            'amount'    => $total,
-            'ip'        => $self->env()->{'REMOTE_ADDR'},
-            'callback'  => sub {
-                ::_log( 'New Balance:', $act->balance() );
+            processor => 'paypal',
+            card_id   => $cid,
+            nofork    => 1,
+            amount    => $total,
+            ip        => $self->env()->{'REMOTE_ADDR'},
+            callback  => sub {
+                ::_log( "New Balance: \$${ \$act->balance() }", );
             },
         );
 
