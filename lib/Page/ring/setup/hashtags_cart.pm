@@ -105,7 +105,7 @@ sub cmd_hashtag_add {
 
                 my $hashtag_id = $hashtag->id();
 
-                ::log( "New Hashtag: #$hashtag", );
+                ::log( "New Hashtag: #$tag", );
 
                 my $cart = Note::Row::create(
                     ring_cart => {
