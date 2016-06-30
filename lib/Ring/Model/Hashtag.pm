@@ -152,8 +152,12 @@ sub update {
     if ( $hashtag_row->id() ) {
 
         $hashtag_row->update(
-            {   ringpage_id => $param->{ringpage_id},
+            {
+
+                category    => $param->{category},
+                ringpage_id => $param->{ringpage_id},
                 target_url  => $param->{target},
+
             },
         );
 

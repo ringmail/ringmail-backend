@@ -109,8 +109,9 @@ sub cmd_hashtag_edit {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user             = $self->user();
-    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+    my $category         = $form_data->{category};
     my $target           = $form_data->{target};
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
     my ( $hashtag_id, )  = ( @{$args}, );
 
     $target =~ s{ \A \s* }{}xms;    # trim whitespace
@@ -123,6 +124,7 @@ sub cmd_hashtag_edit {
 
     if ( $hashtag_model->validate_target( target => $target, ) or defined $ringpage_id ) {
         if ($hashtag_model->update(
+                category    => $category,
                 id          => $hashtag_id,
                 ringpage_id => $ringpage_id,
                 target      => defined $ringpage_id ? undef : $target,
