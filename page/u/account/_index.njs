@@ -1,7 +1,7 @@
 {
-   "class" : "Page::ring::setup::email",
+   "class" : "Page::ring::setup::password",
    "init" : [
       "valid_user"
    ],
-   "template" : "u/settings/emails.html"
+   "template" : "u/settings/password.html"
 }

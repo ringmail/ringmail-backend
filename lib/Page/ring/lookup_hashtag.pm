@@ -32,7 +32,7 @@ sub load {
             my $ringpage_id = $hashtag->data('ringpage_id');
 
             $url = do { length $hashtag->data('target_url') ? $hashtag->data('target_url') : undef; }
-                // $self->url( path => '/ringpage/html', query => { ringpage_id => $ringpage_id, }, );
+                // $self->url( path => '/ringpage', query => { ringpage_id => $ringpage_id, }, );
 
         }
         else {

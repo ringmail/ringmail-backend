@@ -50,16 +50,14 @@ sub load {
 
     $self->content()->{ringpage}->{buttons} = $buttons;
 
-    my @app_path            = @{ $self->path() };
-    my $app_path_last_index = $#app_path;
-    my $template_type       = $app_path[$app_path_last_index];
+    my ( $app_path, ) = @{ $self->path() };
 
     my $template_filename;
-    if ( $template_type eq 'html' ) {
+    if ( $app_path eq 'ringpage' ) {
         $self->response()->content_type('text/html; charset=utf-8');
         $template_filename = 'template.html';
     }
-    elsif ( $template_type eq 'css' ) {
+    elsif ( $app_path eq 'ringpage_css' ) {
         $self->response()->content_type('text/css; charset=utf-8');
         $template_filename = 'template.css';
     }
