@@ -23,6 +23,8 @@ sub check_hashtag {
 
     my ( $self, $param ) = get_param( @args, );
 
+    return if not length $param->{hashtag} > 0;
+
     $self->form()->{hashtag} = $param->{hashtag};
 
     my $hashtag_model = Ring::Model::Hashtag->new();

@@ -67,7 +67,7 @@
 							<div class="control-group">
 								<label class="control-label" for="hashtag">Register A New #Hashtag:</label>
 								<div class="controls">
-									<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_tag' => 1}) %]">Create #Hashtag</a>
+									<a class="btn btn-large btn-secondary" href="[% page.url( path => '/u/hashtags', query => { new_tag => 1, }, ) %]">Create #Hashtag</a>
 								</div>
 							</div>
 						</fieldset>
@@ -76,9 +76,7 @@
 						<thead>
 							<tr>
 								<th>Hashtag</th>
-								<th>Target</th>
-								<th>Expires</th>
-								<th>Commands</th>
+								<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -90,18 +88,7 @@
 						[% FOREACH row IN hashtag_table %]
 						<tr>
 							<td>#[% row.hashtag %]</td>
-							<td><a target="_blank" href="[% row.target_url %]">[% row.target_url %]</a></td>
-							<td>[% IF row.expires %][% row.expires %][% ELSE %]Never[% END %]</td>
 							<td>
-								[% page.link(
-								'text' => 'Delete',
-								'command' => 'hashtag_delete',
-								'args' => [row.id],
-								'opts' => {
-								'onclick' => "return confirm('Really Delete Hashtag: #$row.hashtag')",
-								},
-								) %]
-								|
 								[% page.link(
 								'text' => 'Edit Details',
 								'path' => '/u/hashtag',
