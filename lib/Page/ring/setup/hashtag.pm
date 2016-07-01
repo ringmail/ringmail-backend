@@ -33,71 +33,41 @@ sub load {
         return $self->redirect('/u/hashtags');
     }
 
+    my $hashtag = Note::Row->new(
+        ring_hashtag => {
+            id      => $hashtag_id,
+            user_id => $user->id(),
+        },
+    );
+
+    if ( not defined $hashtag->id() ) {
+        return $self->redirect('/u/hashtags');
+    }
+
     my $category_model = Ring::Model::Category->new();
     my $categories     = $category_model->list();
     my %categories     = map { $ARG->{id} => $ARG->{category} } @{$categories};
+    my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
-    {
+    my $ringpage_row = Note::Row->new(
+        ring_page => {
+            id      => $hashtag->data( 'ringpage_id', ),
+            user_id => $user->id(),
+        },
+    );
 
-        my $hashtag = Note::Row->new(
-            ring_hashtag => {
-                id      => $hashtag_id,
-                user_id => $user->id(),
-            },
-        );
+    my $ringpage = defined $ringpage_row->id() ? $ringpage_row->data( 'ringpage', ) : undef;
 
-        if ( not defined $hashtag->id() ) {
-            return $self->redirect('/u/hashtags');
-        }
-
-        my $ringpage_row = Note::Row->new(
-            ring_page => {
-                id      => $hashtag->data( 'ringpage_id', ),
-                user_id => $user->id(),
-            },
-        );
-
-        my $ringpage = defined $ringpage_row->id() ? $ringpage_row->data( 'ringpage', ) : undef;
-
-        $content->{category_sel} = $hashtag->data( 'category_id', );
-        $content->{category}     = $categories{ $hashtag->data( 'category_id', ) };
-        $content->{edit}         = ( $form->{edit} ) ? 1 : 0;
-        $content->{hashtag}      = $hashtag->data( 'hashtag', );
-        $content->{ringpage_sel} = $hashtag->data( 'ringpage_id', );
-        $content->{ringpage}     = $ringpage;
-        $content->{target_url}   = $hashtag->data( 'target_url', );
-
-    }
-
-    my @categories;
-
-    if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
-    }
-    else {
-
-        push @categories, [ '(No Categories Created)' => 0, ];
-    }
-
-    $content->{category_list} = \@categories;
-    $content->{category_opts}->{id} = 'category';
-
-    my $ringpage = Ring::Model::RingPage->new();
-    my $ringpages = $ringpage->list( user_id => $user->id(), );
-
-    my @ringpages;
-
-    if ( scalar @{$ringpages} ) {
-        push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
-    }
-    else {
-
-        push @ringpages, [ '(No RingPages Created)' => undef, ];
-    }
-
-    $content->{ringpage_list} = \@ringpages;
-
-    $content->{ringpage_opts}->{id} = 'ringpage';
+    $content->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
+    $content->{category_sel}  = $hashtag->data( 'category_id', );
+    $content->{category}      = $categories{ $hashtag->data( 'category_id', ) };
+    $content->{edit}          = ( $form->{edit} ) ? 1 : 0;
+    $content->{hashtag}       = $hashtag->data( 'hashtag', );
+    $content->{ringpage_list} = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
+    $content->{ringpage_sel}  = $hashtag->data( 'ringpage_id', );
+    $content->{ringpage}      = $ringpage;
+    $content->{target_url}    = $hashtag->data( 'target_url', );
 
     return $self->SUPER::load( $param, );
 }

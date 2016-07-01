@@ -47,7 +47,9 @@
 								name => 'category_id',
 								select => category_list,
 								selected => category_sel,
-								opts => category_opts,
+								opts => {
+								id => 'category',
+								},
 								) %]
 								[% IF page.value.error %]
 								<div>
@@ -105,7 +107,9 @@
 											name => 'ringpage_id',
 											select => ringpage_list,
 											selected => ringpage_sel,
-											opts => ringpage_opts,
+											opts => {
+											id => 'ringpage',
+											},
 											) %]
 											[% IF page.value.error %]
 											<div>

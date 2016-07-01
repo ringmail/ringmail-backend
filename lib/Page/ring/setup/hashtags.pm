@@ -25,42 +25,24 @@ extends 'Page::ring::user';
 sub load {
     my ( @args, ) = @_;
 
-    my ( $self, $param ) = get_param( @args, );
+    my ( $self, $param, ) = get_param( @args, );
 
-    my $content       = $self->content();
-    my $user          = $self->user();
-    my $account       = Note::Account->new( $user->id() );
-    my $uid           = $user->id();
-    my $hashtag_model = Ring::Model::Hashtag->new();
-    my $ht            = $hashtag_model->get_user_hashtags( 'user_id' => $uid, );
-
-    $content->{balance} = $account->balance();
-    $content->{'hashtag_table'} = $ht;
-
+    my $content        = $self->content();
+    my $user           = $self->user();
+    my $account        = Note::Account->new( $user->id(), );
     my $category_model = Ring::Model::Category->new();
     my $categories     = $category_model->list();
+    my $hashtag_model  = Ring::Model::Hashtag->new();
+    my $hashtags       = $hashtag_model->get_user_hashtags( user_id => $user->id(), );
+    my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
-    my @categories;
-
-    push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
-
-    $content->{category_list}       = \@categories;
-    $content->{category_sel}        = 0;
+    $content->{balance}             = $account->balance();
+    $content->{category_list}       = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
     $content->{category_opts}->{id} = 'category';
-
-    my $ringpage = Ring::Model::RingPage->new();
-    my $ringpages = $ringpage->list( user_id => $user->id(), );
-
-    my @ringpages;
-
-    if ( scalar @{$ringpages} ) {
-        push @ringpages, map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages};
-    }
-    else {
-        push @ringpages, [ '(No RingPages Created)' => undef, ];
-    }
-
-    $content->{ringpage_list} = \@ringpages;
+    $content->{category_sel}        = 0;
+    $content->{hashtag_table}       = $hashtags;
+    $content->{ringpage_list}       = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
     $content->{ringpage_opts}->{id} = 'ringpage';
 
     return $self->SUPER::load( $param, );
