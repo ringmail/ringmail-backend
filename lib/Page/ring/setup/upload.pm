@@ -36,7 +36,7 @@ sub load {
     my $app_path_last_index = $#app_path;
     my $upload_type         = $app_path[$app_path_last_index];
 
-    my $field = join q{-}, 'f_d1', $upload_type;
+    my $field = "f_d2-$upload_type";
 
     if ( exists $uploads->{$field} ) {
         my $file = $uploads->{$field}->path();

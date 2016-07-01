@@ -157,7 +157,7 @@ sub edit {
     {
         # display confirmation
 
-        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_text', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd1-button_link', ), ];
+        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_link', ), ];
         while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
 
             if ( $button_id eq q{} ) {
