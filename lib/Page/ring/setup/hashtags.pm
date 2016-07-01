@@ -37,12 +37,12 @@ sub load {
     $content->{balance} = $account->balance();
     $content->{'hashtag_table'} = $ht;
 
-    my $category = Ring::Model::Category->new( caller => $self, );
-    my $categories = $category->list();
+    my $category_model = Ring::Model::Category->new();
+    my $categories     = $category_model->list();
 
     my @categories;
 
-    push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
+    push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
 
     $content->{category_list}       = \@categories;
     $content->{category_sel}        = 0;
@@ -92,10 +92,8 @@ sub cmd_hashtag_add {
         }
         else {
 
-            my $category = $form_data->{category};
-
             my $hashtag = $hashtag_model->create(
-                category    => $category,
+                category_id => $form_data->{category_id},
                 ringpage_id => $ringpage_id,
                 tag         => $tag,
                 target_url  => $target,

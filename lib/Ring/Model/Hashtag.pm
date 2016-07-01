@@ -154,7 +154,7 @@ sub update {
         $hashtag_row->update(
             {
 
-                category    => $param->{category},
+                category_id => $param->{category_id},
                 ringpage_id => $param->{ringpage_id},
                 target_url  => $param->{target},
 

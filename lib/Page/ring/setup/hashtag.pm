@@ -33,9 +33,9 @@ sub load {
         return $self->redirect('/u/hashtags');
     }
 
-    my $category_model = Ring::Model::Category->new( caller => $self, );
+    my $category_model = Ring::Model::Category->new();
     my $categories     = $category_model->list();
-    my %categories     = map { $ARG->{name} => $ARG->{title} } @{$categories};
+    my %categories     = map { $ARG->{id} => $ARG->{category} } @{$categories};
 
     {
 
@@ -50,9 +50,6 @@ sub load {
             return $self->redirect('/u/hashtags');
         }
 
-        my $category_name  = $hashtag->data( 'category', );
-        my $category_title = $categories{$category_name};
-
         my $ringpage_row = Note::Row->new(
             ring_page => {
                 id      => $hashtag->data( 'ringpage_id', ),
@@ -62,8 +59,8 @@ sub load {
 
         my $ringpage = defined $ringpage_row->id() ? $ringpage_row->data( 'ringpage', ) : undef;
 
-        $content->{category_sel} = $hashtag->data( 'category', );
-        $content->{category}     = $category_title;
+        $content->{category_sel} = $hashtag->data( 'category_id', );
+        $content->{category}     = $categories{ $hashtag->data( 'category_id', ) };
         $content->{edit}         = ( $form->{edit} ) ? 1 : 0;
         $content->{hashtag}      = $hashtag->data( 'hashtag', );
         $content->{ringpage_sel} = $hashtag->data( 'ringpage_id', );
@@ -75,7 +72,7 @@ sub load {
     my @categories;
 
     if ( scalar @{$categories} ) {
-        push @categories, map { [ $ARG->{title} => $ARG->{name}, ]; } @{$categories};
+        push @categories, map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories};
     }
     else {
 
@@ -109,7 +106,6 @@ sub cmd_hashtag_edit {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user             = $self->user();
-    my $category         = $form_data->{category};
     my $target           = $form_data->{target};
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
     my ( $hashtag_id, )  = ( @{$args}, );
@@ -124,7 +120,7 @@ sub cmd_hashtag_edit {
 
     if ( $hashtag_model->validate_target( target => $target, ) or defined $ringpage_id ) {
         if ($hashtag_model->update(
-                category    => $category,
+                category_id => $form_data->{category_id},
                 id          => $hashtag_id,
                 ringpage_id => $ringpage_id,
                 target      => defined $ringpage_id ? undef : $target,
