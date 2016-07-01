@@ -127,7 +127,7 @@ sub edit {
 
             if ( $field->{text_type} eq 'url' ) {
 
-                if ( not $form_value =~ m{ \A http(s)?:// }xmsi ) {
+                if ( not $form_value =~ m{ \A http(s)?:// }xmsi and length $form_value > 0 ) {
 
                     $form_value = 'http://' . $form_value;
 
