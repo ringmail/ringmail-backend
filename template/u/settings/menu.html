@@ -8,8 +8,11 @@
 		</a>
 		<ul class="logout-ul pull-right">
 			<li><a href="/u/cart"><i class="icon-shopping-cart"></i> Cart ([% hashtags.size %])</a></li>
-			<li><a href="javascript:;"><i class="icon-user"></i>User Name</a></li>
-			<li><a href="u?do-1_2=1&amp;cmd-1_2=logout">Logout</a></li>
+			<li>[% page.link(
+			text => 'Logout',
+			path => '/u',
+			command => 'logout',
+			) %]</li>
 		</ul>
 		<div class="nav-collapse">
 			<ul id="main-nav" class="nav pull-right">
