@@ -83,7 +83,7 @@ sub load {
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', join q{.}, $upload_type, 'jpg';
+        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', $ringpage_id, join q{.}, $upload_type, 'jpg';
         $s3->upload(
             file         => $file,
             key          => $key,
