@@ -16,12 +16,12 @@ sub load {
     my ( $self, $param ) = get_param( @args, );
 
     return $self->SUPER::load( $param, );
-};
+}
 
 sub check_hashtag {
     my ( @args, ) = @_;
 
-    my ( $self, $param ) = get_param( @args, );
+    my ( $self, $param, ) = get_param( @args, );
 
     return if not length $param->{hashtag} > 0;
 
