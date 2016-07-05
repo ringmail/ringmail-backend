@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Moose;
-use POSIX 'strftime';
 use JSON::XS;
 use Readonly;
 use Image::Scale;
@@ -90,7 +89,6 @@ sub load {
             key          => $key,
             bucket       => 'ringmail1',
             content_type => 'image/jpeg',
-            expires      => strftime( '%F', gmtime( time() + ( $DAYS * 1 ) ) ),
             acl_short    => 'public-read',
         );
         my $url = $s3->download_url(
