@@ -108,10 +108,10 @@ sub add {
 }
 
 sub remove {
-    my ( $self, $form_data, $args ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
     my $user           = $self->user();
-    my $page_id        = $args->[0];
+    my ( $page_id, )   = @{$args};
     my $ringpage_model = Ring::Model::RingPage->new();
 
     if ($ringpage_model->delete(
