@@ -95,7 +95,9 @@ sub load {
             key    => $key,
             bucket => 'ringmail1',
         );
+
         ::log( $url, );
+
         $content = { files => [ { url => qq{$url}, }, ], };
 
         for my $field ( @{$fields} ) {
