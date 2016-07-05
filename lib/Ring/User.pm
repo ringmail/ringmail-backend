@@ -795,12 +795,9 @@ sub login
 sub aws_user_id {
     my ( @args, ) = @_;
 
-    my $random_string = random_regex( '[A-Za-z0-9]{32}', );
-
-    ::log( $random_string, );
+    my $random_string = random_regex '[A-Za-z0-9]{32}';
 
     return $random_string;
 }
 
 1;
-
