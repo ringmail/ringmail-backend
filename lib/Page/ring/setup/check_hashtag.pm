@@ -10,12 +10,12 @@ use Ring::Model::Hashtag;
 
 extends 'Page::ring::user';
 
-around load => sub {
-    my ( $next, @args, ) = @_;
+sub load {
+    my ( @args, ) = @_;
 
     my ( $self, $param ) = get_param( @args, );
 
-    return $self->$next( $param, );
+    return $self->SUPER::load( $param, );
 };
 
 sub check_hashtag {
