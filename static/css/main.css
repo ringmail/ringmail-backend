@@ -8,9 +8,6 @@
 	margin: 0;
 	padding: 0;
 }
-.table tbody tr td {
-	padding: 0;
-}
 label, input, button, select, textarea {
 	display: inline-block;
 }
