@@ -80,7 +80,7 @@ sub show_payment_form {
     my $rc      = {};
     my @funding = (
         'div',
-        [ { 'style' => 'text-align: center;' }, 'h5', [ {}, 0, 'Billing Details' ], ],
+        [ {}, 'h2', [ {}, 0, 'Billing Details' ], ],
         'div',
         [   { 'class' => 'control-group' },
             'label',
@@ -282,7 +282,7 @@ sub show_payment_form {
         [   { 'style' => 'padding-left: 180px;', 'class' => 'form-actions' },
             0,
             $obj->button(
-                'text' => xml( 'i', [ { 'class' => 'icon-check' }, 0, '' ], 0, 'Make Payment', ),
+                'text' => xml( 'i', [ {}, 0, '' ], 0, 'Make Payment', ),
                 'command' => 'fund',
                 'opts'    => { 'class' => 'btn btn-large btn-info', },
             ),
