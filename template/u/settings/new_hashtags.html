@@ -15,25 +15,24 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-
-				</div>
-				<div class="span12">
-
-				</div>
-				<div class="span12">
-					[% IF page.form.new_tag %]
+					<div class="span12">
+						<h2>Search Available Hashtags</h2>
+					</div>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="hashtag">Hashtag:</label>
 								<div class="controls">
 									<div class="input-prepend">
 										<span class="add-on">#</span>
 										[% page.field(
-										'command' => 'hashtag_add',
-										'type' => 'text',
-										'name' => 'hashtag',
-										'opts' => {'id' => 'hashtag', 'style' => 'width: 179px'},
+										command => 'search',
+										type    => 'text',
+										name    => 'hashtag',
+										value   => page.form.hashtag,
+										opts    => {
+										id => 'hashtag',
+										style => 'width: 179px',
+										},
 										) %]
 										[% IF page.value.error %]
 										<div>
@@ -41,61 +40,85 @@
 										</div>
 										[% END %]
 									</div>
-								</div>
-							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="target">Registration Fee:</label>
-								<div class="controls">
-									<pre style="width: 200px;">$1.99</pre>
-								</div>
-							</div>
-							<div class="control-group">
-								<div class="controls">
 									[% page.button(
-									'command' => 'hashtag_add',
-									'contents' => 'Add To Cart',
-									'opts' => {'class' => 'btn btn-primary btn-large'},
+									command  => 'search',
+									contents => 'Search',
+									opts     => {
+									class => 'btn btn-primary btn-large',
+									},
 									) %]
-									&nbsp;&nbsp;|&nbsp;&nbsp;
-									<a href="[% page.url() %]">Cancel</a>
 								</div>
+							</div>
+							<div class="span12">
+								[% IF page.value.hashtag.defined %]
+								[% IF page.value.hashtag == 0 %]
+								<div class="span12">
+									<h4>Great news! #[% page.form.hashtag %] is available</h4>
+									<div class="span3">
+										<pre style="width: 200px;"> #[% page.form.hashtag %] | $99.99 </pre>
+									</div>
+									<div class="span3">
+										[% page.button(
+										command  => 'add_to_cart',
+										contents => 'Add To Cart',
+										opts     => {
+										class => 'btn btn-primary btn-large',
+										},
+										) %]
+									</div>
+									<div class="span3">
+										[% page.button(
+										command  => 'add_to_cart',
+										contents => 'Buy It Now',
+										opts     => {
+										class => 'btn btn-primary btn-large',
+										},
+										) %]
+									</div>
+								</div>
+								[% ELSE %]
+								<div class="span12">
+									<h4>Sorry, #[% page.form.hashtag %] is unavailable</h4>
+								</div>
+								[% END %]
+								[% END %]
 							</div>
 						</fieldset>
 					</form>
-					[% ELSE %]
-					<p>Enable #Hashtags for RingMail Communications.</p>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-						<fieldset>
-							<div class="control-group">
-								<label class="control-label" for="hashtag">Register A New #Hashtag:</label>
-								<div class="controls">
-									<a class="btn btn-large btn-secondary" href="[% page.url( path => '/u/hashtags', query => { new_tag => 1, }, ) %]">Create #Hashtag</a>
-								</div>
-							</div>
-						</fieldset>
-					</form>
+				</div>
+				<div class="span12">
+				</div>
+				<div class="span12">
+					<div class="span12">
+						<h2>Shopping Cart</h2>
+					</div>
 					<table class="table table-bordered table-striped table-highlight">
 						<thead>
 							<tr>
 								<th>Hashtag</th>
-								<th>&nbsp;</th>
+								<th>Price</th>
+								<th>Duration</th>
+								<th>Remove</th>
 							</tr>
 						</thead>
 						<tbody>
-						[% IF hashtag_table.size == 0 %]
+						[% IF hashtags.size == 0 %]
 						<tr>
 							<td colspan="4">No #Hashtags Registered</td>
 						</tr>
 						[% ELSE %]
-						[% FOREACH row IN hashtag_table %]
+						[% FOREACH row IN hashtags %]
 						<tr>
 							<td>#[% row.hashtag %]</td>
+							<td>$99.99</td>
+							<td>1 year</td>
 							<td>
 								[% page.link(
-								'text' => 'Edit Details',
-								'path' => '/u/hashtag',
-								'query' => {
-								'id' => row.id
+								text => '[ X ]',
+								command => 'remove',
+								args => [ hashtag.id, ],
+								opts => {
+								onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
 								},
 								) %]
 							</td>
@@ -104,7 +127,16 @@
 						[% END %]
 						</tbody>
 					</table>
-					[% END %]
+					<p>
+					<strong>Total:</strong> $[% total %]
+					[% page.link(
+					text => 'Check Out',
+					path => '/u/cart',
+					opts => {
+					class => 'btn btn-primary btn-large',
+					},
+					) %]
+					</p>
 				</div>
 			</div>
 		</div>
