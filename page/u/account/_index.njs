@@ -1,7 +1,10 @@
 {
-   "class" : "Page::ring::setup::password",
+   "class" : "Page::ring::setup::account",
+   "command" : {
+      "change_password" : "change_password"
+   },
    "init" : [
       "valid_user"
    ],
-   "template" : "u/settings/password.html"
+   "template" : "u/settings/account.html"
 }
