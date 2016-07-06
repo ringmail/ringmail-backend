@@ -16,10 +16,6 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					[% INCLUDE u/settings/sub_menu.html %]
-				</div>
-				<div class="span12">
-					[% IF page.form.new_ringpage %]
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
@@ -65,23 +61,10 @@
 									contents => 'Create RingPage',
 									opts => { class => 'btn btn-primary btn-large', },
 									) %]
-									&nbsp;&nbsp;|&nbsp;&nbsp;
-									<a href="[% page.url() %]">Cancel</a>
 								</div>
 							</div>
 						</fieldset>
 					</form>
-					[% ELSE %]
-					<!-- <form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-					<fieldset>
-						<div class="control-group">
-							<label class="control-label" for="ringpage">Create a new RingPage:</label>
-							<div class="controls">
-								<a class="btn btn-large btn-secondary" href="[% page.url('query' => {'new_ringpage' => 1}) %]">Create RingPage</a>
-							</div>
-						</div>
-					</fieldset>
-				</form> -->
 					<table class="table table-bordered table-striped table-highlight">
 						<thead>
 							<tr>
@@ -121,7 +104,6 @@
 						[% END %]
 						</tbody>
 					</table>
-					[% END %]
 				</div>
 			</div>
 		</div>

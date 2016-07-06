@@ -17,12 +17,47 @@
 					[% INCLUDE u/settings/sub_menu.html %]
 				</div>
 				<div class="span6">
-					[% FOREACH hashtag IN hashtags %]
-					<p>
-					[% hashtag.hashtag %]
-					</p>
-					[% END %]
-					<p><strong>Total:</strong> $[% total %]</p>
+					<div class="span9 cart-start">
+						<h2>Shopping Cart</h2>
+						<table class="table table-bordered table-highlight table-cart">
+							<thead>
+								<tr>
+									<th>Hashtag</th>
+									<th>Price</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% IF hashtags.size == 0 %]
+							<tr>
+								<td colspan="4">No #Hashtags Added To Cart</td>
+							</tr>
+							[% ELSE %]
+							[% FOREACH hashtag IN hashtags %]
+							<tr>
+								<td>#[% hashtag.hashtag %]</td>
+								<td>$99.99</td>
+								<td>
+									[% page.link(
+									text => '[ X ]',
+									command => 'remove_from_cart',
+									args => [ hashtag.id, ],
+									opts => {
+									onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
+									},
+									) %]
+								</td>
+							</tr>
+							[% END %]
+							[% END %]
+							</tbody>
+						</table>
+						<div class="span9">
+							<p class="cart-total-p">
+							Total: $[% total %]
+							</p>
+						</div>
+					</div>
 				</div>
 				<div class="span6">
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
