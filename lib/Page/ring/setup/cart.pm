@@ -1,27 +1,21 @@
 package Page::ring::setup::cart;
 
-use strict;
-use warnings;
-
-use Moose;
-use JSON::XS 'encode_json';
-use Data::Dumper;
+use constant::boolean;
 use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
-
-use Note::Account qw(account_id transaction tx_type_id);
-
-use Note::XML 'xml';
-use Note::Param;
-use Note::Account 'has_account', 'create_account';
-use Note::Payment;
+use JSON::XS 'encode_json';
+use Moose;
+use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Check;
 use Note::Locale;
+use Note::Param;
+use Note::Payment;
 use Note::SQL::Table 'sqltable';
-
-use Ring::User;
-
+use Note::XML 'xml';
+use POSIX 'strftime';
 use Ring::Model::Hashtag;
+use Ring::User;
+use strict;
+use warnings;
 
 extends 'Page::ring::user';
 
@@ -40,7 +34,7 @@ my %payment_check = (
     ),
     'address2' => Note::Check->new(
         'type'        => 'regex',
-        'chars_empty' => 1,
+        'chars_empty' => TRUE,
         'chars'       => 'A-Za-z0-9.- #/',
     ),
     'city' => Note::Check->new(
@@ -69,7 +63,7 @@ my %payment_check = (
             if ( not length($ph) == 10 ) {
                 Note::Check::fail('Invalid phone number');
             }
-            return 1;
+            return TRUE;
         },
     ),
 );
@@ -98,7 +92,7 @@ sub load {
 
     $content->{balance} = $account->balance();
     $content->{payment} = $self->show_payment_form();
-    $content->{total}   = 1.99 * scalar @{$hashtags};
+    $content->{total}   = 99.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
@@ -197,12 +191,12 @@ sub cmd_fund {
             ],
         );
 
-        my $total = 1.99 * scalar @{$hashtags};
+        my $total = 99.99 * scalar @{$hashtags};
 
         my $attempt = $pmt->card_payment(
             processor => 'paypal',
             card_id   => $cid,
-            nofork    => 1,
+            nofork    => TRUE,
             amount    => $total,
             ip        => $self->env()->{'REMOTE_ADDR'},
             callback  => sub {
@@ -218,7 +212,7 @@ sub cmd_fund {
             my $transaction_id = transaction(
                 acct_dst => $dst,
                 acct_src => $src,
-                amount   => 1.99,                             # TODO fix
+                amount   => 99.99,                            # TODO fix
                 tx_type  => tx_type_id('purchase_hashtag'),
                 user_id  => $user->id(),
             );

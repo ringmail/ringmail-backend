@@ -70,7 +70,7 @@ sub search {
     return;
 }
 
-sub cmd_hashtag_add {
+sub add_to_cart {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user             = $self->user();
@@ -118,6 +118,83 @@ sub cmd_hashtag_add {
 
             }
         }
+    }
+
+    return;
+}
+
+sub buy_it_now {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user             = $self->user();
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+    my $tag              = lc $form_data->{hashtag};
+    my $target           = $form_data->{target};
+
+    if ( length $target > 0 ) {
+
+        $target =~ s{ \A \s* }{}xms;    # trim whitespace
+        $target =~ s{ \s* \z }{}xms;
+        if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+            $target = "http://$target";
+        }
+
+    }
+
+    my $hashtag_model = Ring::Model::Hashtag->new();
+
+    if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
+        if ( $hashtag_model->check_exists( tag => $tag, ) ) {
+            ::log('Dup');
+        }
+        else {
+
+            my $hashtag = $hashtag_model->create(
+                category_id => $form_data->{category_id},
+                ringpage_id => $ringpage_id,
+                tag         => $tag,
+                target_url  => $target,
+                user_id     => $user->id(),
+            );
+            if ( defined $hashtag ) {
+
+                my $hashtag_id = $hashtag->id();
+
+                ::log( "New Hashtag: #$tag", );
+
+                my $cart = Note::Row::create(
+                    ring_cart => {
+                        hashtag_id => $hashtag_id,
+                        user_id    => $user->id(),
+                    },
+                );
+
+            }
+        }
+    }
+
+    return $self->redirect('/u/cart');
+}
+
+sub remove_from_cart {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user = $self->user();
+
+    my ( $hashtag_id, ) = ( @{$args}, );
+
+    my $hashtag_model = Ring::Model::Hashtag->new();
+
+    if ($hashtag_model->delete(
+            user_id => $user->id(),
+            id      => $hashtag_id,
+        )
+        )
+    {
+        # display confirmation
+    }
+    else {
+        # failed
     }
 
     return;

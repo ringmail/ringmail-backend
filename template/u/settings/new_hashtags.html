@@ -58,6 +58,12 @@
 										<pre style="width: 200px;"> #[% page.form.hashtag %] | $99.99 </pre>
 									</div>
 									<div class="span3">
+										[% page.field(
+										command => 'add_to_cart',
+										type    => 'hidden',
+										name    => 'hashtag',
+										value   => page.form.hashtag,
+										) %]
 										[% page.button(
 										command  => 'add_to_cart',
 										contents => 'Add To Cart',
@@ -67,8 +73,14 @@
 										) %]
 									</div>
 									<div class="span3">
+										[% page.field(
+										command => 'buy_it_now',
+										type    => 'hidden',
+										name    => 'hashtag',
+										value   => page.form.hashtag,
+										) %]
 										[% page.button(
-										command  => 'add_to_cart',
+										command  => 'buy_it_now',
 										contents => 'Buy It Now',
 										opts     => {
 										class => 'btn btn-primary btn-large',
@@ -104,18 +116,18 @@
 						<tbody>
 						[% IF hashtags.size == 0 %]
 						<tr>
-							<td colspan="4">No #Hashtags Registered</td>
+							<td colspan="4">No #Hashtags Added To Cart</td>
 						</tr>
 						[% ELSE %]
-						[% FOREACH row IN hashtags %]
+						[% FOREACH hashtag IN hashtags %]
 						<tr>
-							<td>#[% row.hashtag %]</td>
+							<td>#[% hashtag.hashtag %]</td>
 							<td>$99.99</td>
 							<td>1 year</td>
 							<td>
 								[% page.link(
 								text => '[ X ]',
-								command => 'remove',
+								command => 'remove_from_cart',
 								args => [ hashtag.id, ],
 								opts => {
 								onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
