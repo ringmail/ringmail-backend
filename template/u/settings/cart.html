@@ -14,9 +14,6 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					[% INCLUDE u/settings/sub_menu.html %]
-				</div>
-				<div class="span12">
 					<h2>Add Hashtag</h2>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
@@ -99,12 +96,12 @@
 							</tr>
 						</thead>
 						<tbody>
-						[% IF hashtags.size == 0 %]
+						[% IF cart.size == 0 %]
 						<tr>
 							<td colspan="4">No #Hashtags Added To Cart</td>
 						</tr>
 						[% ELSE %]
-						[% FOREACH hashtag IN hashtags %]
+						[% FOREACH hashtag IN cart %]
 						<tr>
 							<td>#[% hashtag.hashtag %]</td>
 							<td>$99.99</td>

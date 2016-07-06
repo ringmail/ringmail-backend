@@ -7,7 +7,8 @@
 			<i class="icon-reorder"></i>
 		</a>
 		<ul class="logout-ul pull-right">
-			<li><a href="/u/cart"><i class="icon-shopping-cart"></i> Cart ([% hashtags.size %])</a></li>
+			<li><a href="/u/cart"><i class="fa fa-shopping-cart"></i> Cart ([% cart.size %])</a></li>
+			<li style="color:#08c;"> &nbsp; | &nbsp; </li>
 			<li>[% page.link(
 			text => 'Logout',
 			path => '/u',
