@@ -1,25 +1,19 @@
 package Page::ring::setup::new_hashtags;
 
-use strict;
-use warnings;
-
-use Moose;
-use JSON::XS 'encode_json';
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
 use English '-no_match_vars';
-
-use Note::XML 'xml';
+use HTML::Entities 'encode_entities';
+use JSON::XS 'encode_json';
+use Moose;
+use Note::Account qw{ account_id transaction tx_type_id };
 use Note::Param;
-use Note::Account qw(account_id transaction tx_type_id);
 use Note::Row;
 use Note::SQL::Table 'sqltable';
-
-use Ring::User;
-use Ring::Model::Hashtag;
 use Ring::Model::Category;
+use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
+use Ring::User;
+use strict;
+use warnings;
 
 extends 'Page::ring::user';
 
@@ -42,7 +36,7 @@ sub load {
         where  => [
             {   'rc.user_id' => $user->id(),
                 'rh.user_id' => $user->id(),
-            } => and => { 'rc.transaction_id' => undef, },
+            },
         ],
     );
 
@@ -55,125 +49,69 @@ sub load {
 }
 
 sub search {
-    my ( @args, ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
-    my ( $self, $param, ) = get_param( @args, );
+    return if not length $form_data->{hashtag} > 0;
 
-    return if not length $param->{hashtag} > 0;
-
-    $self->form()->{hashtag} = $param->{hashtag};
+    $self->form()->{hashtag} = $form_data->{hashtag};
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    $self->value()->{hashtag} = $hashtag_model->check_exists( tag => $param->{hashtag}, );
+    my $exists = $hashtag_model->check_exists( tag => $form_data->{hashtag}, );
 
-    return;
-}
+    $self->value()->{hashtag} = $exists;
 
-sub add_to_cart {
-    my ( $self, $form_data, $args, ) = @_;
+    if ( not $exists ) {
 
-    my $user             = $self->user();
-    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-    my $tag              = lc $form_data->{hashtag};
-    my $target           = $form_data->{target};
+        my $user             = $self->user();
+        my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+        my $tag              = lc $form_data->{hashtag};
+        my $target           = $form_data->{target};
 
-    if ( length $target > 0 ) {
+        if ( length $target > 0 ) {
 
-        $target =~ s{ \A \s* }{}xms;    # trim whitespace
-        $target =~ s{ \s* \z }{}xms;
-        if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-            $target = "http://$target";
+            $target =~ s{ \A \s* }{}xms;    # trim whitespace
+            $target =~ s{ \s* \z }{}xms;
+            if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+                $target = "http://$target";
+            }
+
         }
 
-    }
+        if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
+            if ( $hashtag_model->check_exists( tag => $tag, ) ) {
+                ::log('Dup');
+            }
+            else {
 
-    my $hashtag_model = Ring::Model::Hashtag->new();
-
-    if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
-        if ( $hashtag_model->check_exists( tag => $tag, ) ) {
-            ::log('Dup');
-        }
-        else {
-
-            my $hashtag = $hashtag_model->create(
-                category_id => $form_data->{category_id},
-                ringpage_id => $ringpage_id,
-                tag         => $tag,
-                target_url  => $target,
-                user_id     => $user->id(),
-            );
-            if ( defined $hashtag ) {
-
-                my $hashtag_id = $hashtag->id();
-
-                ::log( "New Hashtag: #$tag", );
-
-                my $cart = Note::Row::create(
-                    ring_cart => {
-                        hashtag_id => $hashtag_id,
-                        user_id    => $user->id(),
-                    },
+                my $hashtag = $hashtag_model->create(
+                    category_id => $form_data->{category_id},
+                    ringpage_id => $ringpage_id,
+                    tag         => $tag,
+                    target_url  => $target,
+                    user_id     => $user->id(),
                 );
+                if ( defined $hashtag ) {
 
+                    my $hashtag_id = $hashtag->id();
+
+                    ::log( "New Hashtag: #$tag", );
+
+                    my $cart = Note::Row::create(
+                        ring_cart => {
+                            hashtag_id => $hashtag_id,
+                            user_id    => $user->id(),
+                        },
+                    );
+
+                }
             }
         }
+
+        return $self->redirect('/u/cart');
     }
 
     return;
-}
-
-sub buy_it_now {
-    my ( $self, $form_data, $args, ) = @_;
-
-    my $user             = $self->user();
-    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-    my $tag              = lc $form_data->{hashtag};
-    my $target           = $form_data->{target};
-
-    if ( length $target > 0 ) {
-
-        $target =~ s{ \A \s* }{}xms;    # trim whitespace
-        $target =~ s{ \s* \z }{}xms;
-        if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-            $target = "http://$target";
-        }
-
-    }
-
-    my $hashtag_model = Ring::Model::Hashtag->new();
-
-    if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
-        if ( $hashtag_model->check_exists( tag => $tag, ) ) {
-            ::log('Dup');
-        }
-        else {
-
-            my $hashtag = $hashtag_model->create(
-                category_id => $form_data->{category_id},
-                ringpage_id => $ringpage_id,
-                tag         => $tag,
-                target_url  => $target,
-                user_id     => $user->id(),
-            );
-            if ( defined $hashtag ) {
-
-                my $hashtag_id = $hashtag->id();
-
-                ::log( "New Hashtag: #$tag", );
-
-                my $cart = Note::Row::create(
-                    ring_cart => {
-                        hashtag_id => $hashtag_id,
-                        user_id    => $user->id(),
-                    },
-                );
-
-            }
-        }
-    }
-
-    return $self->redirect('/u/cart');
 }
 
 sub remove_from_cart {

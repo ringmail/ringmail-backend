@@ -1,17 +1,14 @@
 package Page::ring::user;
 
+use Moose;
+use Note::Locale 'us_states', 'us_state_name';
+use Note::Param;
+use Note::SQL::Table 'sqltable';
+use Note::XML 'xml';
+use POSIX 'strftime';
+use Ring::User;
 use strict;
 use warnings;
-
-use Moose;
-use POSIX 'strftime';
-
-use Note::XML 'xml';
-use Note::Param;
-use Note::Locale 'us_states', 'us_state_name';
-use Note::SQL::Table 'sqltable';
-
-use Ring::User;
 
 extends 'Note::Page';
 
@@ -28,7 +25,7 @@ sub load {
     my $user    = $self->user();
     my $content = $self->content();
 
-    my $hashtags = sqltable('ring_cart')->get(
+    my $cart = sqltable('ring_cart')->get(
         select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
         table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
         join   => 'rh.id = rc.hashtag_id',
@@ -39,7 +36,7 @@ sub load {
         ],
     );
 
-    $content->{hashtags} = $hashtags;
+    $content->{cart} = $cart;
 
     return $self->SUPER::load( $param, );
 }
