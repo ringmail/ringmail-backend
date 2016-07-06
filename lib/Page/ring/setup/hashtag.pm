@@ -1,20 +1,16 @@
 package Page::ring::setup::hashtag;
 
+use English '-no_match_vars';
+use JSON::XS 'encode_json';
+use Moose;
+use Note::Param;
+use Note::XML 'xml';
+use Ring::Model::Category;
+use Ring::Model::Hashtag;
+use Ring::Model::RingPage;
+use Ring::User;
 use strict;
 use warnings;
-
-use Moose;
-use JSON::XS 'encode_json';
-use English '-no_match_vars';
-
-use Note::XML 'xml';
-use Note::Param;
-
-use Ring::User;
-
-use Ring::Model::Hashtag;
-use Ring::Model::Category;
-use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
@@ -27,7 +23,7 @@ sub load {
     my $user    = $self->user();
     my $content = $self->content();
 
-    my $hashtag_id = $form->{id};
+    my $hashtag_id = $form->{hashtag_id};
 
     if ( not $hashtag_id =~ m{ \A \d+ \z }xms ) {
         return $self->redirect('/u/hashtags');

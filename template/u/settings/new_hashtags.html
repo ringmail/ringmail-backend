@@ -24,10 +24,10 @@
 										<span class="add-on">#</span>
 										[% page.field(
 										command => 'search',
-										type    => 'text',
-										name    => 'hashtag',
-										value   => page.form.hashtag,
-										opts    => {
+										type => 'text',
+										name => 'hashtag',
+										value => page.form.hashtag,
+										opts => {
 										id => 'hashtag',
 										style => 'width: 179px',
 										},
@@ -39,9 +39,9 @@
 										[% END %]
 									</div>
 									[% page.button(
-									command  => 'search',
+									command => 'search',
 									contents => 'Add',
-									opts     => {
+									opts => {
 									class => 'btn btn-primary btn-medium',
 									},
 									) %]
@@ -54,27 +54,27 @@
 								<pre class="hashtag-available"> #[% page.form.hashtag %] | $99.99 </pre>
 								[% page.field(
 								command => 'add_to_cart',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'add_to_cart',
+								command => 'add_to_cart',
 								contents => 'Add To Cart',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
 								[% page.field(
 								command => 'buy_it_now',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'buy_it_now',
+								command => 'buy_it_now',
 								contents => 'Buy It Now',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
@@ -112,9 +112,9 @@
 							<td>
 								[% page.link(
 								text => 'Edit Details',
-								path => '/u/ringpage',
+								path => '/u/hashtag',
 								query => {
-								ringpage_id => row.id,
+								hashtag_id => hashtag.id
 								},
 								) %]
 							</td>

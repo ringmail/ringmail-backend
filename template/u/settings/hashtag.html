@@ -16,14 +16,11 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					[% INCLUDE u/settings/sub_menu.html %]
-				</div>
-				<div class="span12">
-					<form method="post" action="[% page.url( query => { id => page.form.id, }, ) %]" style="margin: 0px; padding: 0px;">
+					<form method="post" action="[% page.url( query => { hashtag_id => page.form.hashtag_id, }, ) %]" style="margin: 0px; padding: 0px;">
 						<div>
 							<p style="text-align: right;">
 							[% IF ! edit %]
-							<a href="[% page.url( query => { id => page.form.id, edit => 1, }, ) %]" class="btn">Edit Hashtag</a>
+							<a href="[% page.url( query => { hashtag_id => page.form.hashtag_id, edit => 1, }, ) %]" class="btn">Edit Hashtag</a>
 							[% ELSE %]
 							[% page.button(
 							command => 'hashtag_edit',
@@ -32,7 +29,7 @@
 							type => 'submit',
 							class => 'btn btn-primary',
 							},
-							args => [ page.form.id, ],
+							args => [ page.form.hashtag_id, ],
 							) %]
 							[% END %]
 							</p>

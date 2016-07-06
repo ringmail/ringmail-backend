@@ -16,9 +16,6 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					[% INCLUDE u/settings/sub_menu.html %]
-				</div>
-				<div class="span12">
 					[% IF page.form.new_tag %]
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
@@ -90,10 +87,10 @@
 							<td>#[% row.hashtag %]</td>
 							<td>
 								[% page.link(
-								'text' => 'Edit Details',
-								'path' => '/u/hashtag',
-								'query' => {
-								'id' => row.id
+								text => 'Edit Details',
+								path => '/u/hashtag',
+								query => {
+								hashtag_id => row.id
 								},
 								) %]
 							</td>
