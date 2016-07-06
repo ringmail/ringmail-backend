@@ -107,7 +107,7 @@
 							<td>$99.99</td>
 							<td>
 								[% page.link(
-								text => '[ X ]',
+								text => '<span class="remove-btn"><i class="fa fa-minus"></i></span>',
 								command => 'remove_from_cart',
 								args => [ hashtag.id, ],
 								opts => {
