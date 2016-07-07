@@ -26,7 +26,7 @@ sub load {
     my $content = $self->content();
 
     my $cart = sqltable('ring_cart')->get(
-        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+        select => [ qw{ rh.hashtag rh.id rc.hashtag_id rc.transaction_id }, ],
         table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
         join   => 'rh.id = rc.hashtag_id',
         where  => [
@@ -36,7 +36,8 @@ sub load {
         ],
     );
 
-    $content->{cart} = $cart;
+    $content->{cart}  = $cart;
+    $content->{total} = 99.99 * scalar @{$cart};
 
     return $self->SUPER::load( $param, );
 }

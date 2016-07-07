@@ -108,7 +108,13 @@
 						<tr>
 							<td>#[% hashtag.hashtag %]</td>
 							<td>$99.99</td>
-							<td><span class="label label-primary">Paid</span></td>
+							<td>
+								[% IF hashtag.transaction_id.defined %]
+								<span class="label label-primary">Paid</span>
+								[% ELSE %]
+								<span class="label label-primary">Pending</span>
+								[% END %]
+							</td>
 							<td>
 								[% page.link(
 								text => 'Edit Details',
@@ -119,6 +125,8 @@
 								) %]
 							</td>
 							<td>
+								[% IF hashtag.transaction_id.defined %]
+								[% ELSE %]
 								[% page.link(
 								text => '<span class="remove-btn"><i class="fa fa-minus"></i></span>',
 								command => 'remove_from_cart',
@@ -127,6 +135,7 @@
 								onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
 								},
 								) %]
+								[% END %]
 							</td>
 						</tr>
 						[% END %]

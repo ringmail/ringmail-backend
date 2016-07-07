@@ -73,26 +73,9 @@ sub load {
 
     my ( $self, $param ) = get_param(@args);
 
-    my $form = $self->form();
-
     my $content = $self->content();
-    my $user    = $self->user();
-    my $account = Note::Account->new( $user->id() );
 
-    my $hashtags = sqltable('ring_cart')->get(
-        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
-        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
-        join   => 'rh.id = rc.hashtag_id',
-        where  => [
-            {   'rc.user_id' => $user->id(),
-                'rh.user_id' => $user->id(),
-            } => and => { 'rc.transaction_id' => undef, },
-        ],
-    );
-
-    $content->{balance} = $account->balance();
     $content->{payment} = $self->show_payment_form();
-    $content->{total}   = 99.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
