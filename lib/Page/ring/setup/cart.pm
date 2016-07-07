@@ -298,20 +298,21 @@ sub remove_from_cart {
 
     my $user = $self->user();
 
-    my ( $hashtag_id, ) = ( @{$args}, );
-
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    if ($hashtag_model->delete(
-            user_id => $user->id(),
-            id      => $hashtag_id,
-        )
-        )
-    {
-        # display confirmation
-    }
-    else {
-        # failed
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
+
+        if ($hashtag_model->delete(
+                user_id => $user->id(),
+                id      => $hashtag_id,
+            )
+            )
+        {
+            # display confirmation
+        }
+        else {
+            # failed
+        }
     }
 
     return;
