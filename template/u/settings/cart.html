@@ -23,10 +23,10 @@
 										<span class="add-on">#</span>
 										[% page.field(
 										command => 'search',
-										type    => 'text',
-										name    => 'hashtag',
-										value   => page.form.hashtag,
-										opts    => {
+										type => 'text',
+										name => 'hashtag',
+										value => page.form.hashtag,
+										opts => {
 										id => 'hashtag',
 										style => 'width: 179px',
 										},
@@ -38,9 +38,9 @@
 										[% END %]
 									</div>
 									[% page.button(
-									command  => 'search',
+									command => 'search',
 									contents => 'Add',
-									opts     => {
+									opts => {
 									class => 'btn btn-primary btn-medium',
 									},
 									) %]
@@ -53,27 +53,27 @@
 								<pre class="hashtag-available"> #[% page.form.hashtag %] | $99.99 </pre>
 								[% page.field(
 								command => 'add_to_cart',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'add_to_cart',
+								command => 'add_to_cart',
 								contents => 'Add To Cart',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
 								[% page.field(
 								command => 'buy_it_now',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'buy_it_now',
+								command => 'buy_it_now',
 								contents => 'Buy It Now',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
@@ -87,39 +87,58 @@
 				</div>
 				<div class="span12 cart-start">
 					<h2>Shopping Cart</h2>
-					<table class="table table-bordered table-highlight table-cart">
-						<thead>
+					<form method="post" action="[% page.url() %]">
+						<table class="table table-bordered table-highlight table-cart">
+							<thead>
+								<tr>
+									<th>Hashtag</th>
+									<th>Price</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% IF cart.size == 0 %]
 							<tr>
-								<th>Hashtag</th>
-								<th>Price</th>
-								<th>Remove</th>
+								<td colspan="3">No Hashtags.</td>
 							</tr>
-						</thead>
-						<tbody>
-						[% IF cart.size == 0 %]
-						<tr>
-							<td colspan="3">No Hashtags.</td>
-						</tr>
-						[% ELSE %]
-						[% FOREACH hashtag IN cart %]
-						<tr>
-							<td>#[% hashtag.hashtag %]</td>
-							<td>$99.99</td>
-							<td>
-								[% page.link(
-								text => '<span class="remove-btn"><i class="fa fa-minus"></i></span>',
-								command => 'remove_from_cart',
-								args => [ hashtag.id, ],
-								opts => {
-								onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
-								},
-								) %]
-							</td>
-						</tr>
-						[% END %]
-						[% END %]
-						</tbody>
-					</table>
+							[% ELSE %]
+							[% pending = 0 %]
+							[% FOREACH hashtag IN cart %]
+							<tr>
+								<td>#[% hashtag.hashtag %]</td>
+								<td>$99.99</td>
+								<td>
+									[% pending = pending + 1 %]
+									<!-- [% page.field(
+									command => 'remove_from_cart',
+									type => 'radio',
+									name => 'hashtag_id',
+									value => hashtag.id,
+									) %] -->
+									<input type="checkbox" name="d4-hashtag_id" value="[% hashtag.id %]" />
+								</td>
+							</tr>
+							[% END %]
+							[% END %]
+							[% IF pending > 0 %]
+							<tr>
+								<td colspan="2">
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'remove_from_cart',
+									text => 'Remove',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</td>
+							</tr>
+							[% END %]
+							</tbody>
+						</table>
+					</form>
 					<div class="span12">
 						<p class="cart-total-p">
 						Total: $[% total %]
