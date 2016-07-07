@@ -78,7 +78,7 @@ sub show_payment_form {
     my $rc      = {};
     my @funding = (
         'div',
-        [ {}, 'h2', [ {}, 0, 'Billing Details' ], ],
+        [ {}, 'h2', [ {}, 0, 'Pay With Credit Card' ], ],
         'div',
         [   { 'class' => 'control-group' },
             'label',

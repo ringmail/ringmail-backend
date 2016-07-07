@@ -145,13 +145,25 @@
 						</p>
 					</div>
 				</div>
-				<div class="span6">
+				[% IF total > 0 %]
+				<div class="span12">
+					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+						<h2>Pay With PayPal</h2>
+						<input type="hidden" name="cmd" value="_xclick" />
+						<input type="hidden" name="business" value="arkadiy@dyl.com" />
+						<input type="hidden" name="amount" value="[% total %]" />
+						<input type="image" name="submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" alt="PayPal - The safer, easier way to pay online" border="0" />
+						<img src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" width="1" height="1" border="0" />
+					</form>
+				</div>
+				<div class="span12">
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							[% payment %]
 						</fieldset>
 					</form>
 				</div>
+				[% END %]
 			</div>
 		</div>
 	</div>
