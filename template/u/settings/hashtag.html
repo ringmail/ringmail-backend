@@ -66,10 +66,13 @@
 							<label class="control-label" for="target">Destination:</label>
 							<div class="controls">
 								<div class="tabbable"> <!-- Only required for left/right tabs -->
-									<ul class="nav nav-tabs">
-										<li class="[% IF ! ringpage.defined %] active[% END %]"><a href="#tab1" data-toggle="tab">Target URL</a></li>
-										<li class="[% IF ringpage.defined %] active[% END %]"><a href="#tab2" data-toggle="tab">RingPage</a></li>
-									</ul>
+									<label class="radio" for="radio1">Target URL<input id="radio1" class="radio" type="radio" name="intervaltype" data-target="#tab1"[% IF ! ringpage.defined %] checked[% END %] /></label>
+									<label class="radio" for="radio2" style="padding-left: 40px;">RingPage<input id="radio2" class="radio" type="radio" name="intervaltype" data-target="#tab2"[% IF ringpage.defined %] checked[% END %] /></label>
+									<script>
+$('input[name="intervaltype"]').click(function () {
+		$(this).tab('show');
+		});
+									</script>
 									<div class="tab-content">
 										<div class="tab-pane[% IF ! ringpage.defined %] active[% END %]" id="tab1">
 											[% IF edit %]
