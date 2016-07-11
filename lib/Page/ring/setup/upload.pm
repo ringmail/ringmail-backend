@@ -96,7 +96,11 @@ sub load {
             bucket => 'ringmail1',
         );
 
+		# remove '?...' args for public URLs
+		$url =~ s/\?.*$//;
+
         ::log( $url, );
+
 
         $content = { files => [ { url => qq{$url}, }, ], };
 

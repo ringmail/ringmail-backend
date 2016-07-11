@@ -42,12 +42,24 @@ sub load
 				'ring_hashtag' => {
 					'hashtag' => $tag,
 				},
-				'select' => ['target_url'],
+				'select' => ['target_url', 'ringpage_id'],
 			);
 			my $url;
 			if ($trow->id())
 			{
-				$url = $trow->data('target_url');
+				if ($trow->data('ringpage_id'))
+				{
+					$url = $obj->url(
+						'path' => '/ringpage',
+						'query' => {
+							'ringpage_id' => $trow->data('ringpage_id'),
+						},
+					);
+				}
+				else
+				{
+					$url = $trow->data('target_url');
+				}
 			}
 			else
 			{
