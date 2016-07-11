@@ -14,128 +14,96 @@
 <div id="content">
 	<div class="container">
 		<div class="row">
-			<div class="tabbable">
-				<div class="span12">
-					<form method="post" action="[% page.url( query => { hashtag_id => page.form.hashtag_id, }, ) %]" style="margin: 0px; padding: 0px;">
-						<div>
-							<p style="text-align: right;">
-							[% IF ! edit %]
-							<a href="[% page.url( query => { hashtag_id => page.form.hashtag_id, edit => 1, }, ) %]" class="btn">Edit Hashtag</a>
-							[% ELSE %]
-							[% page.button(
+			<div class="span12">
+				<form method="post" action="[% page.url( query => { hashtag_id => page.form.hashtag_id, }, ) %]" style="margin: 0px; padding: 0px;">
+					<div class="control-group[% IF page.value.error %] error[% END %]">
+						<label class="control-label" for="category">Category:</label>
+						<div class="controls">
+							[% page.field(
 							command => 'hashtag_edit',
-							text => 'Save Changes',
+							type => 'select',
+							name => 'category_id',
+							select => category_list,
+							selected => category_sel,
 							opts => {
-							type => 'submit',
-							class => 'btn btn-primary',
+							id => 'category',
 							},
-							args => [ page.form.hashtag_id, ],
 							) %]
+							[% IF page.value.error %]
+							<div>
+								<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
+							</div>
 							[% END %]
-							</p>
 						</div>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="category">Category:</label>
-							<div class="controls">
-								[% IF edit %]
-								[% page.field(
-								command => 'hashtag_edit',
-								type => 'select',
-								name => 'category_id',
-								select => category_list,
-								selected => category_sel,
-								opts => {
-								id => 'category',
-								},
-								) %]
-								[% IF page.value.error %]
+					</div>
+					<div class="control-group[% IF page.value.error %] error[% END %]">
+						<label class="control-label" for="target">Destination:</label>
+						<div class="controls">
+							<div>
+								<label class="radio" for="radio1">Target URL<input id="radio1" class="radio" type="radio" name="destination" [% IF ! ringpage.defined %]checked [% END %]/></label>
 								<div>
-									<span class="error" for="category" style="display: inline;">[% page.value.error %]</span>
-								</div>
-								[% END %]
-								[% ELSE %]
-								[% IF category.defined %]
-								[% category %]
-								[% ELSE %]
-								<p>Please edit hashtag to set.</p>
-								[% END %]
-								[% END %]
-							</div>
-						</div>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="target">Destination:</label>
-							<div class="controls">
-								<div class="tabbable"> <!-- Only required for left/right tabs -->
-									<label class="radio" for="radio1">Target URL<input id="radio1" class="radio" type="radio" name="intervaltype" data-target="#tab1"[% IF ! ringpage.defined %] checked[% END %] /></label>
-									<label class="radio" for="radio2" style="padding-left: 40px;">RingPage<input id="radio2" class="radio" type="radio" name="intervaltype" data-target="#tab2"[% IF ringpage.defined %] checked[% END %] /></label>
-									<script>
-$('input[name="intervaltype"]').click(function () {
-		$(this).tab('show');
-		});
-									</script>
-									<div class="tab-content">
-										<div class="tab-pane[% IF ! ringpage.defined %] active[% END %]" id="tab1">
-											[% IF edit %]
-											[% page.field(
-											command => 'hashtag_edit',
-											type => 'text',
-											name => 'target',
-											value => target_url,
-											opts => {
-											id => 'target',
-											},
-											) %]
-											[% IF page.value.error %]
-											<div>
-												<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
-											</div>
-											[% END %]
-											[% ELSE %]
-											[% IF target_url.defined %]
-											<a target="_blank" href="[% target_url %]">[% target_url %]</a>
-											[% ELSE %]
-											<p>Please edit hashtag to set.</p>
-											[% END %]
-											[% END %]
-										</div>
-										<div class="tab-pane[% IF ringpage.defined %] active[% END %]" id="tab2">
-											[% IF edit %]
-											[% ringpage_list.unshift( [ '(None Selected)', undef, ], ) %]
-											[% page.field(
-											command => 'hashtag_edit',
-											type => 'select',
-											name => 'ringpage_id',
-											select => ringpage_list,
-											selected => ringpage_sel,
-											opts => {
-											id => 'ringpage',
-											},
-											) %]
-											[% IF page.value.error %]
-											<div>
-												<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
-											</div>
-											[% END %]
-											[% ELSE %]
-											[% IF ringpage.defined %]
-											[% ringpage %]
-											[% ELSE %]
-											<p>Please edit hashtag to set.</p>
-											[% END %]
-											[% END %]
-										</div>
+									[% page.field(
+									command => 'hashtag_edit',
+									type => 'text',
+									name => 'target',
+									value => target_url,
+									opts => {
+									id => 'target',
+									},
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="target" style="display: inline;">[% page.value.error %]</span>
 									</div>
+									[% END %]
+								</div>
+								<label class="radio" for="radio2">RingPage<input id="radio2" class="radio" type="radio" name="destination" [% IF ringpage.defined %]checked [% END %] /></label>
+								<div>
+									[% ringpage_list.unshift( [ '(None Selected)', undef, ], ) %]
+									Select RingPage:
+									[% page.field(
+									command => 'hashtag_edit',
+									type => 'select',
+									name => 'ringpage_id',
+									select => ringpage_list,
+									selected => ringpage_sel,
+									opts => {
+									id => 'ringpage',
+									},
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
+									<br />
+									Or, Create RingPage:
+									[% page.link(
+									text => 'Create New RingPage',
+									path => '/u/ringpages',
+									query => {
+									hashtag_id => page.form.hashtag_id,
+									},
+									opts => {
+									class => 'btn btn-small',
+									},
+									) %]
 								</div>
 							</div>
 						</div>
-						<div class="control-group[% IF page.value.error %] error[% END %]">
-							<label class="control-label" for="target">Expires:</label>
-							<div class="controls">
-								<pre style="width: 200px;">Never</pre>
-							</div>
-						</div>
-					</form>
-				</div>
+					</div>
+					<div>
+						[% page.button(
+						command => 'hashtag_edit',
+						text => 'Save Changes',
+						opts => {
+						type => 'submit',
+						class => 'btn btn-primary',
+						},
+						args => [ page.form.hashtag_id, ],
+						) %]
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
