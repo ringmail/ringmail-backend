@@ -138,9 +138,7 @@ sub delete {
 }
 
 sub update {
-    my ( @args, ) = @_;
-
-    my ( $self, $param, ) = get_param( @args, );
+    my ( $self, $param, ) = get_param( @_ );
 
     my $hashtag_row = Note::Row->new(
         ring_hashtag => {
