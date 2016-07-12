@@ -15,6 +15,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="span12">
+				<h4> &nbsp;</h4>
 				<form method="post" action="[% page.url( query => { hashtag_id => page.form.hashtag_id, }, ) %]" style="margin: 0px; padding: 0px;">
 					<div class="control-group[% IF page.value.error %] error[% END %]">
 						<label class="control-label" for="category">Category:</label>
@@ -49,6 +50,7 @@
 									value => target_url,
 									opts => {
 									id => 'target',
+									placeholder => 'http://www.yourlinkhere.com',
 									},
 									) %]
 									[% IF page.value.error %]
@@ -60,7 +62,7 @@
 								<label class="radio" for="radio2">RingPage<input id="radio2" class="radio" type="radio" name="destination" [% IF ringpage.defined %]checked [% END %] /></label>
 								<div>
 									[% ringpage_list.unshift( [ '(None Selected)', undef, ], ) %]
-									Select RingPage:
+									<p class="ringpage-select-p">Select RingPage:
 									[% page.field(
 									command => 'hashtag_edit',
 									type => 'select',
@@ -69,25 +71,27 @@
 									selected => ringpage_sel,
 									opts => {
 									id => 'ringpage',
+									class => 'ringpage-select',
 									},
 									) %]
 									[% IF page.value.error %]
+									</p>
 									<div>
 										<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
 									</div>
 									[% END %]
-									<br />
-									Or, Create RingPage:
+									<p class="ringpage-select-p">Create RingPage:
 									[% page.link(
-									text => 'Create New RingPage',
+									text => 'Create RingPage',
 									path => '/u/ringpages',
 									query => {
 									hashtag_id => page.form.hashtag_id,
 									},
 									opts => {
-									class => 'btn btn-small',
+									class => 'btn btn-small create-ringpage-btn',
 									},
 									) %]
+									</p>
 								</div>
 							</div>
 						</div>
