@@ -1,23 +1,15 @@
 package Page::ring::setup::ringpages;
 
-use strict;
-use warnings;
-
-use Moose;
-use JSON::XS qw{ decode_json encode_json };
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
 use English '-no_match_vars';
+use JSON::XS 'encode_json';
 use List::MoreUtils 'each_arrayref';
-
-use Note::XML 'xml';
+use Moose;
 use Note::Param;
-use Note::Account qw(account_id transaction tx_type_id);
-use Note::Row;
-
-use Ring::User;
+use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::Model::Template;
+use strict;
+use warnings;
 
 extends 'Page::ring::user';
 
@@ -96,6 +88,22 @@ sub add {
                             user_id     => $user->id(),
                         },
                     );
+                }
+
+                my $hashtag_model = Ring::Model::Hashtag->new();
+
+                if ($hashtag_model->update(
+                        id          => $form_data->{hashtag_id},
+                        ringpage_id => $ringpage->id(),
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
                 }
 
                 return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
