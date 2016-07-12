@@ -95,22 +95,35 @@ sub add {
 
                 if ( defined $hashtag_id ) {
 
-                    my $hashtag_model = Ring::Model::Hashtag->new();
+                    my $hashtag_row = Note::Row->new(
+                        ring_hashtag => {
+                            id      => $hashtag_id,
+                            user_id => $user->id(),
+                        },
+                    );
 
-                    if ($hashtag_model->update(
-                            id          => $hashtag_id,
-                            ringpage_id => $ringpage->id(),
-                            user_id     => $user->id(),
-                        )
-                        )
-                    {
-                        # display confirmation
+                    my $hashtag_row_data = $hashtag_row->data();
+
+                    if ( defined $hashtag_row ) {
+
+                        my $hashtag_model = 'Ring::Model::Hashtag'->new();
+
+                        if ($hashtag_model->update(
+                                category_id => $hashtag_row_data->{category_id},
+                                id          => $hashtag_id,
+                                ringpage_id => $ringpage->id(),
+                                user_id     => $user->id(),
+                            )
+                            )
+                        {
+                            # display confirmation
+                        }
+                        else {
+
+                            # failed
+                        }
+
                     }
-                    else {
-
-                        # failed
-                    }
-
                 }
 
                 return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
