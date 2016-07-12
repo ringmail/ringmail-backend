@@ -75,7 +75,10 @@ sub load {
 
     my $content = $self->content();
 
-    $content->{payment} = $self->show_payment_form();
+    my $config = $main::note_config->config();
+
+    $content->{payment}         = $self->show_payment_form();
+    $content->{paypal_business} = $config->{paypal_business};
 
     return $self->SUPER::load( $param, );
 }
