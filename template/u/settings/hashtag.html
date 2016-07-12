@@ -41,7 +41,19 @@
 						<label class="control-label" for="target">Destination:</label>
 						<div class="controls">
 							<div>
-								<label class="radio" for="radio1">Target URL<input id="radio1" class="radio" type="radio" name="destination" [% IF ! ringpage.defined %]checked [% END %]/></label>
+								<label class="radio" for="radio1">Target URL
+									[% page.field(
+									command => 'hashtag_edit',
+									type => 'radio',
+									name => 'destination',
+									value => 'target_url',
+									checked => ! ringpage.defined,
+									opts => {
+									id => 'radio1',
+									class => 'radio',
+									},
+									) %]
+								</label>
 								<div>
 									[% page.field(
 									command => 'hashtag_edit',
@@ -59,7 +71,19 @@
 									</div>
 									[% END %]
 								</div>
-								<label class="radio" for="radio2">RingPage<input id="radio2" class="radio" type="radio" name="destination" [% IF ringpage.defined %]checked [% END %] /></label>
+								<label class="radio" for="radio2">RingPage
+									[% page.field(
+									command => 'hashtag_edit',
+									type => 'radio',
+									name => 'destination',
+									value => 'ringpage',
+									checked => ringpage.defined,
+									opts => {
+									id => 'radio1',
+									class => 'radio',
+									},
+									) %]
+								</label>
 								<div>
 									[% ringpage_list.unshift( [ '(None Selected)', undef, ], ) %]
 									<p class="ringpage-select-p">Select RingPage:
@@ -81,15 +105,16 @@
 									</div>
 									[% END %]
 									<p class="ringpage-select-p">Create RingPage:
-									[% page.link(
+									[% page.button(
+									command => 'hashtag_edit',
 									text => 'Create RingPage',
-									path => '/u/ringpages',
-									query => {
-									hashtag_id => page.form.hashtag_id,
-									},
+									type => 'submit',
 									opts => {
 									class => 'btn btn-small create-ringpage-btn',
 									},
+									args => [
+									page.form.hashtag_id,
+									],
 									) %]
 									</p>
 								</div>
@@ -100,11 +125,10 @@
 						[% page.button(
 						command => 'hashtag_edit',
 						text => 'Save Changes',
-						opts => {
 						type => 'submit',
+						opts => {
 						class => 'btn btn-primary',
 						},
-						args => [ page.form.hashtag_id, ],
 						) %]
 					</div>
 				</form>

@@ -71,10 +71,18 @@ sub load {
 sub cmd_hashtag_edit {
     my ( $self, $form_data, $args, ) = @_;
 
+    ::log( $self, );
+    ::log( $form_data, );
+    ::log( $args, );
+
     my $user             = $self->user();
-    my $target           = $form_data->{target};
+    my $form             = $self->form();
+    my ( $hashtag_id, )  = ( $self->form->{hashtag_id} =~ m{ \A ( \d+ ) \z }xms );
+    my ( $destination, ) = ( $form_data->{destination} =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $target, )      = ( $form_data->{target}, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-    my ( $hashtag_id, )  = ( @{$args}, );
+
+    ::log( $hashtag_id, );
 
     $target =~ s{ \A \s* }{}xms;    # trim whitespace
     $target =~ s{ \s* \z }{}xms;
@@ -84,26 +92,62 @@ sub cmd_hashtag_edit {
 
     my $hashtag_model = Ring::Model::Hashtag->new();
 
-    if ( $hashtag_model->validate_target( target => $target, ) or defined $ringpage_id ) {
-        if ($hashtag_model->update(
-                category_id => $form_data->{category_id},
-                id          => $hashtag_id,
-                ringpage_id => $ringpage_id,
-                target      => defined $ringpage_id ? undef : $target,
-                user_id     => $user->id(),
-            )
-            )
-        {
-            # display confirmation
-        }
-        else {
+    if ( defined $destination ) {
 
-            # failed
-        }
-    }
-    else {
+        if ( $destination eq 'target_url' ) {
 
-        # invalid target
+            if ( $hashtag_model->validate_target( target => $target, ) ) {
+                if ($hashtag_model->update(
+                        category_id => $form_data->{category_id},
+                        id          => $hashtag_id,
+                        target      => $target,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
+            }
+            else {
+
+                # invalid target
+            }
+
+        }
+
+        if ( $destination eq 'ringpage' ) {
+
+            if ( defined $ringpage_id ) {
+                if ($hashtag_model->update(
+                        category_id => $form_data->{category_id},
+                        id          => $hashtag_id,
+                        ringpage_id => $ringpage_id,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
+            }
+            else {
+
+                # invalid target
+            }
+
+            if (1) {
+
+                return $self->redirect( $self->url( path => '/u/ringpages', query => { hashtag_id => $hashtag_id, }, ), );
+            }
+        }
+
     }
 
     return;
