@@ -71,34 +71,29 @@ sub load {
 sub cmd_hashtag_edit {
     my ( $self, $form_data, $args, ) = @_;
 
-    ::log( $self, );
-    ::log( $form_data, );
-    ::log( $args, );
-
     my $user             = $self->user();
     my $form             = $self->form();
     my ( $hashtag_id, )  = ( $self->form->{hashtag_id} =~ m{ \A ( \d+ ) \z }xms );
+    my ( $category_id, ) = ( $form_data->{category_id} =~ m{ \A ( \d+ ) \z }xms );
     my ( $destination, ) = ( $form_data->{destination} =~ m{ \A ( \w+ ) \z }xms, );
     my ( $target, )      = ( $form_data->{target}, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
 
-    ::log( $hashtag_id, );
-
-    $target =~ s{ \A \s* }{}xms;    # trim whitespace
-    $target =~ s{ \s* \z }{}xms;
-    if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-        $target = "http://$target";
-    }
-
-    my $hashtag_model = Ring::Model::Hashtag->new();
-
     if ( defined $destination ) {
+
+        my $hashtag_model = Ring::Model::Hashtag->new();
 
         if ( $destination eq 'target_url' ) {
 
+            $target =~ s{ \A \s* }{}xms;    # trim whitespace
+            $target =~ s{ \s* \z }{}xms;
+            if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+                $target = "http://$target";
+            }
+
             if ( $hashtag_model->validate_target( target => $target, ) ) {
                 if ($hashtag_model->update(
-                        category_id => $form_data->{category_id},
+                        category_id => $category_id,
                         id          => $hashtag_id,
                         target      => $target,
                         user_id     => $user->id(),
@@ -123,7 +118,7 @@ sub cmd_hashtag_edit {
 
             if ( defined $ringpage_id ) {
                 if ($hashtag_model->update(
-                        category_id => $form_data->{category_id},
+                        category_id => $category_id,
                         id          => $hashtag_id,
                         ringpage_id => $ringpage_id,
                         user_id     => $user->id(),
@@ -142,10 +137,31 @@ sub cmd_hashtag_edit {
                 # invalid target
             }
 
-            if (1) {
+        }
 
-                return $self->redirect( $self->url( path => '/u/ringpages', query => { hashtag_id => $hashtag_id, }, ), );
+        if ( $destination eq 'ringpage_new' ) {
+
+            if ( defined $ringpage_id ) {
+                if ($hashtag_model->update(
+                        category_id => $category_id,
+                        id          => $hashtag_id,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
             }
+            else {
+
+                # invalid target
+            }
+
+            return $self->redirect( $self->url( path => '/u/ringpages', query => { hashtag_id => $hashtag_id, }, ), );
         }
 
     }

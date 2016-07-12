@@ -71,7 +71,7 @@
 									</div>
 									[% END %]
 								</div>
-								<label class="radio" for="radio2">RingPage
+								<label class="radio" for="radio2">Existing RingPage
 									[% page.field(
 									command => 'hashtag_edit',
 									type => 'radio',
@@ -104,20 +104,19 @@
 										<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
 									</div>
 									[% END %]
-									<p class="ringpage-select-p">Create RingPage:
-									[% page.button(
-									command => 'hashtag_edit',
-									text => 'Create RingPage',
-									type => 'submit',
-									opts => {
-									class => 'btn btn-small create-ringpage-btn',
-									},
-									args => [
-									page.form.hashtag_id,
-									],
-									) %]
-									</p>
 								</div>
+								<label class="radio" for="radio2">New RingPage
+									[% page.field(
+									command => 'hashtag_edit',
+									type => 'radio',
+									name => 'destination',
+									value => 'ringpage_new',
+									opts => {
+									id => 'radio1',
+									class => 'radio',
+									},
+									) %]
+								</label>
 							</div>
 						</div>
 					</div>
