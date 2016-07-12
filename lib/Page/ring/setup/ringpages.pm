@@ -31,8 +31,8 @@ sub load {
     $content->{template_sel}        = 0;
     $content->{template_opts}->{id} = 'template_name';
 
-    my $ringpage = Ring::Model::RingPage->new();
-    my $ringpages = $ringpage->list( user_id => $user->id(), );
+    my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpages = $ringpage_model->list( user_id => $user->id(), );
     $content->{ringpages} = $ringpages;
 
     return $self->SUPER::load( $param, );
@@ -43,10 +43,11 @@ sub add {
 
     my $user           = $self->user();
     my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpage_name  = $form_data->{ringpage};
 
-    if ( $ringpage_model->validate_ringpage( ringpage => $form_data->{ringpage}, ) ) {
+    if ( $ringpage_model->validate_ringpage( ringpage => $ringpage_name, ) ) {
 
-        if ( $ringpage_model->check_exists( ringpage => $form_data->{ringpage}, ) ) {
+        if ( $ringpage_model->check_exists( ringpage => $ringpage_name, ) ) {
             ::log('Dup');
         }
         else {
@@ -69,7 +70,7 @@ sub add {
 
             my $ringpage = $ringpage_model->create(
                 fields        => encode_json $template_structure->{fields},
-                ringpage      => $form_data->{ringpage},
+                ringpage      => $ringpage_name,
                 template_name => $template_name,
                 user_id       => $user->id(),
             );
@@ -90,20 +91,26 @@ sub add {
                     );
                 }
 
-                my $hashtag_model = Ring::Model::Hashtag->new();
+                my ( $hashtag_id, ) = ( $form_data->{hashtag_id} =~ m{ \A ( \d+ ) \z }xms, );
 
-                if ($hashtag_model->update(
-                        id          => $form_data->{hashtag_id},
-                        ringpage_id => $ringpage->id(),
-                        user_id     => $user->id(),
-                    )
-                    )
-                {
-                    # display confirmation
-                }
-                else {
+                if ( defined $hashtag_id ) {
 
-                    # failed
+                    my $hashtag_model = Ring::Model::Hashtag->new();
+
+                    if ($hashtag_model->update(
+                            id          => $hashtag_id,
+                            ringpage_id => $ringpage->id(),
+                            user_id     => $user->id(),
+                        )
+                        )
+                    {
+                        # display confirmation
+                    }
+                    else {
+
+                        # failed
+                    }
+
                 }
 
                 return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
@@ -118,20 +125,25 @@ sub add {
 sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user           = $self->user();
-    my ( $page_id, )   = @{$args};
-    my $ringpage_model = Ring::Model::RingPage->new();
+    my $user = $self->user();
+    my ( $ringpage_id, ) = @{$args};
 
-    if ($ringpage_model->delete(
-            id      => $page_id,
-            user_id => $user->id(),
-        )
-        )
-    {
-        # display confirmation
-    }
-    else {
-        # failed
+    if ( $ringpage_id =~ m{ \A ( \d+ ) \z }xms ) {
+
+        my $ringpage_model = Ring::Model::RingPage->new();
+
+        if ($ringpage_model->delete(
+                id      => $ringpage_id,
+                user_id => $user->id(),
+            )
+            )
+        {
+            # display confirmation
+        }
+        else {
+            # failed
+        }
+
     }
 
     return;
