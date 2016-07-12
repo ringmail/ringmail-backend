@@ -516,7 +516,7 @@ h2 {
 	-moz-box-shadow: none;
 	box-shadow: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-} 
+}
 .table-highlight.table-bordered {
 	border-top: 1px solid #fff;
 }
@@ -542,19 +542,15 @@ h2 {
 #content {
 	margin-top: 0;
 }
-
 .ringpage-select {
 	width: 10.5%;
 	display: inline-block;
 	vertical-align: middle;
 	margin-bottom: 0;
 }
-
 .create-ringpage-btn {
-	
-width: 8.5%;
+	width: 8.5%;
 }
-
 .ringpage-select-p {
 	line-height: 20px;
 	margin: 20px 0;
