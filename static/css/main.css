@@ -555,3 +555,14 @@ h2 {
 	line-height: 20px;
 	margin: 20px 0;
 }
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+	margin: 0;
+}
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+	display: inline-block;
+	margin-right: 10px;
+	margin-top: 3px;
+}
+.radio, .checkbox {
+	padding-left: 0;
+}
