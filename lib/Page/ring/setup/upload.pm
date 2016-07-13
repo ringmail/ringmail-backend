@@ -1,18 +1,17 @@
 package Page::ring::setup::upload;
 
-use strict;
-use warnings;
-
-use Moose;
-use JSON::XS;
-use Readonly;
 use Image::Scale;
-
+use JSON::XS;
+use Moose;
+use Note::AWS::S3;
 use Note::Page;
 use Note::Param;
-use Note::AWS::S3;
-use Ring::User;
+use POSIX 'strftime';
+use Readonly;
 use Ring::Model::RingPage;
+use Ring::User;
+use strict;
+use warnings;
 
 extends 'Page::ring::user';
 
@@ -60,7 +59,7 @@ sub load {
 
         if ( $upload_type eq 'image' and $template eq 'v3_image' ) {
 
-            my $image = Image::Scale->new( $file, );
+            my $image = 'Image::Scale'->new( $file, );
 
             $image->resize( { width => 750, }, );
 
@@ -96,11 +95,10 @@ sub load {
             bucket => 'ringmail1',
         );
 
-		# remove '?...' args for public URLs
-		$url =~ s/\?.*$//;
+        # remove '?...' args for public URLs
+        $url =~ s{ [?] .* \z }{}xms;
 
         ::log( $url, );
-
 
         $content = { files => [ { url => qq{$url}, }, ], };
 
@@ -115,7 +113,7 @@ sub load {
 
         ::log( $fields, );
 
-        my $ringpage_model = Ring::Model::RingPage->new();
+        my $ringpage_model = 'Ring::Model::RingPage'->new();
 
         if ($ringpage_model->update(
                 fields  => encode_json $fields,
