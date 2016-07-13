@@ -4,6 +4,7 @@ use constant::boolean;
 use Crypt::CBC;
 use HTML::Entities 'encode_entities';
 use JSON::XS 'encode_json';
+use MIME::Base64;
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Check;
@@ -17,7 +18,6 @@ use Ring::Model::Hashtag;
 use Ring::User;
 use strict;
 use warnings;
-use MIME::Base64;
 
 extends 'Page::ring::user';
 
