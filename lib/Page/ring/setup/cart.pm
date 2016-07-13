@@ -1,6 +1,7 @@
 package Page::ring::setup::cart;
 
 use constant::boolean;
+use Crypt::CBC;
 use HTML::Entities 'encode_entities';
 use JSON::XS 'encode_json';
 use Moose;
@@ -16,6 +17,7 @@ use Ring::Model::Hashtag;
 use Ring::User;
 use strict;
 use warnings;
+use MIME::Base64;
 
 extends 'Page::ring::user';
 
@@ -77,8 +79,16 @@ sub load {
 
     my $config = $main::note_config->config();
 
-    $content->{payment}         = $self->show_payment_form();
-    $content->{paypal_business} = $config->{paypal_business};
+    my $key = $config->{paypal_key};
+
+    my $cipher = 'Crypt::CBC'->new( -key => $key, );
+
+    my $ciphertext         = $cipher->encrypt( '', );
+    my $ciphertext_encoded = encode_base64 $ciphertext;
+
+    $content->{payment}                 = $self->show_payment_form();
+    $content->{paypal_hosted_button_id} = $config->{paypal_hosted_button_id};
+    $content->{paypal_ciphertext}       = $ciphertext_encoded;
 
     return $self->SUPER::load( $param, );
 }
