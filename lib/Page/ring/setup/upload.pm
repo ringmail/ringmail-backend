@@ -6,16 +6,12 @@ use Moose;
 use Note::AWS::S3;
 use Note::Page;
 use Note::Param;
-use POSIX 'strftime';
-use Readonly;
 use Ring::Model::RingPage;
 use Ring::User;
 use strict;
 use warnings;
 
 extends 'Page::ring::user';
-
-Readonly my $DAYS => 24 * 3_600;
 
 sub load {
     my ( @args, ) = @_;
