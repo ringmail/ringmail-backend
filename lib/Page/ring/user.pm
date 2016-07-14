@@ -1,5 +1,8 @@
 package Page::ring::user;
 
+use Crypt::CBC;
+use JSON::XS qw{ encode_json decode_json };
+use MIME::Base64;
 use Moose;
 use Note::Locale 'us_states', 'us_state_name';
 use Note::Param;
@@ -36,8 +39,19 @@ sub load {
         ],
     );
 
-    $content->{cart}  = $cart;
-    $content->{total} = 99.99 * scalar @{$cart};
+    my @hashtag_ids        = map { $_->{hashtag_id}; } @{$cart};
+    my $config             = $main::note_config->config();
+    my $key                = $config->{paypal_key};
+    my $cipher             = 'Crypt::CBC'->new( -key => $key, );
+    my $ciphertext         = $cipher->encrypt( encode_json [ $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, ], );
+    my $ciphertext_encoded = encode_base64 $ciphertext;
+
+    my $plaintext = $cipher->decrypt( decode_base64 $ciphertext_encoded, );
+
+    $content->{cart}                    = $cart;
+    $content->{paypal_ciphertext}       = $ciphertext_encoded;
+    $content->{paypal_hosted_button_id} = $config->{paypal_hosted_button_id};
+    $content->{total}                   = 99.99 * scalar @{$cart};
 
     return $self->SUPER::load( $param, );
 }
