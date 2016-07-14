@@ -18,15 +18,21 @@ sub load {
 
     my ( $self, $param ) = get_param( @args, );
 
-    my $request = $self->request();
     my $form    = $self->form();
+    my $request = $self->request();
+
+    my $config = $main::note_config->config();
+
+    my $paypal_hostname = $config->{paypal_hostname};
+    my $paypal_key      = $config->{paypal_key};
 
     my $ua = LWP::UserAgent->new( ssl_opts => { verify_hostname => 0, }, );
-    my $req = HTTP::Request->new( 'POST', 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr', );
 
+    my $req = HTTP::Request->new( POST => $paypal_hostname, );
+
+    $req->content( join q{&}, $request->content(), 'cmd=_notify-validate', );
     $req->content_type( 'application/x-www-form-urlencoded', );
     $req->header( Host => 'www.paypal.com', );
-    $req->content( join q{&}, $request->content(), 'cmd=_notify-validate', );
 
     my $res = $ua->request( $req, );
 
@@ -46,8 +52,7 @@ sub load {
 
         if ( defined $ciphertext_encoded and length $ciphertext_encoded > 0 ) {
 
-            my $config    = $main::note_config->config();
-            my $key       = $config->{paypal_key};
+            my $key       = $paypal_key;
             my $cipher    = 'Crypt::CBC'->new( -key => $key, );
             my $plaintext = $cipher->decrypt( decode_base64 $ciphertext_encoded, );
 
