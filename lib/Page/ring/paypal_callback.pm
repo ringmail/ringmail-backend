@@ -10,6 +10,7 @@ use Note::Param;
 use Note::Row;
 use strict;
 use warnings;
+use Note::Payment;
 
 extends 'Note::Page';
 
@@ -62,16 +63,21 @@ sub load {
 
             if ( $amount == $payment_gross ) {
 
+                transaction(
+                    acct_dst => ( has_account( $user_id, ) ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, ),
+                    acct_src => account_id( 'payment_paypal_checkout', ),
+                    amount   => $amount,
+                    tx_type  => tx_type_id( 'paypal_checkout', ),
+                    user_id  => $user_id,
+                );
+
                 for my $hashtag_id (@hashtag_ids) {
 
-                    my $src = Note::Account->new( $user_id, );
-                    my $dst = account_id('revenue_ringmail');
-
                     my $transaction_id = transaction(
-                        acct_dst => $dst,
-                        acct_src => $src,
-                        amount   => 99.99,                            # TODO fix
-                        tx_type  => tx_type_id('purchase_hashtag'),
+                        acct_dst => account_id( 'revenue_ringmail', ),
+                        acct_src => ( has_account( $user_id, ) ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, ),
+                        amount   => 99.99,
+                        tx_type  => tx_type_id( 'purchase_hashtag', ),
                         user_id  => $user_id,
                     );
 
