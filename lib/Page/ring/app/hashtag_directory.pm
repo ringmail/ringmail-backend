@@ -22,32 +22,32 @@ extends 'Note::Page';
 
 no warnings 'uninitialized';
 
-our %DIRECTORY = (
-	'Lifestyle' => {
-		'pattern' => 'wov',
-		'color' => 'grapefruit',
-	},
-	'Technology' => {
-		'pattern' => 'squared_metal',
-		'color' => 'denim',
-	},
-	'Stocks' => {
-		'pattern' => 'swirl_pattern',
-		'color' => 'grass',
-	},
-	'News' => {
-		'pattern' => 'upfeathers',
-		'color' => 'turquoise',
-	},
-	'Shopping' => {
-		'pattern' => 'dimension',
-		'color' => 'banana',
-	},
-	'Boom' => {
-		'pattern' => 'upfeathers',
-		'color' => 'turquoise',
-	},
-);
+#our %DIRECTORY = (
+#	'Lifestyle' => {
+#		'pattern' => 'wov',
+#		'color' => 'grapefruit',
+#	},
+#	'Technology' => {
+#		'pattern' => 'squared_metal',
+#		'color' => 'denim',
+#	},
+#	'Stocks' => {
+#		'pattern' => 'swirl_pattern',
+#		'color' => 'grass',
+#	},
+#	'News' => {
+#		'pattern' => 'upfeathers',
+#		'color' => 'turquoise',
+#	},
+#	'Shopping' => {
+#		'pattern' => 'dimension',
+#		'color' => 'banana',
+#	},
+#	'Boom' => {
+#		'pattern' => 'upfeathers',
+#		'color' => 'turquoise',
+#	},
+#);
 
 sub load
 {
@@ -61,46 +61,81 @@ sub load
 	my $res = {'result' => 'error'};
 	if ($user)
 	{
-		$res->{'result'} = 'ok';
-		my $path = $form->{'path'};
-		if ($path eq 'root')
+		my $cid = $form->{'category_id'};
+		if ($cid =~ /^\d+$/)
 		{
-			my @cat = ();
-			foreach my $c (
-				'Lifestyle',
-				'Technology',
-				'Stocks',
-				'News',
-				'Shopping',
-				'Boom',
-			) {
-				push @cat, {
-					'type' => 'hashtag_category',
-					'name' => $c,
-					%{$DIRECTORY{$c}},
-				};
-			}
-			$res->{'directory'} = \@cat;
-		}
-		elsif (exists $DIRECTORY{$path})
-		{
-			my @cat = (
-				{
-					'type' => 'hashtag_category_header',
-					'name' => $path,
-					%{$DIRECTORY{$path}},
-				}
-			);
-			foreach my $i (1..10)
+			if ($cid == 0)
 			{
-				my $tag = '#tag'. $i;
-				push @cat, {
-					'type' => 'hashtag',
-					'label' => $tag,
-					'session_id' => $tag,
-				};
+				my $dq = sqltable('ring_category')->get(
+					'select' => [
+						'c.id',
+						'c.category',
+					],
+					'table' => 'ring_category c',
+					'where' => 'exists (select * from ring_hashtag h where h.category_id=c.id)',
+					'order' => 'category asc',
+				);
+				my @cat = ();
+				foreach my $c (@$dq)
+				{
+					push @cat, {
+						'type' => 'hashtag_category',
+						'name' => $c->{'category'},
+						'id' => $c->{'id'},
+						'pattern' => 'squared_metal',
+						'color' => 'denim',
+					};
+				}
+				$res->{'directory'} = \@cat;
+				$res->{'result'} = 'ok';
 			}
-			$res->{'directory'} = \@cat;
+			else
+			{
+				my $catrc = new Note::Row('ring_category' => {'id' => $cid});
+				if ($catrc->id())
+				{
+					my @cat = (
+						{
+							'type' => 'hashtag_category_header',
+							'name' => $catrc->data('category'),
+							'id' => $cid,
+							'pattern' => 'squared_metal',
+							'color' => 'denim',
+						}
+					);
+					my $tq = sqltable('ring_hashtag')->get(
+						'select' => [
+							'hashtag',
+							'target_url',
+							'ringpage_id',
+						],
+						'where' => {
+							'category_id' => $cid,
+						},
+						'order' => 'hashtag',
+					);
+					my %seen = ();
+					foreach my $i (@$tq)
+					{
+						if ($i->{'target_url'})
+						{
+							next if ($seen{$i->{'target_url'}}++);
+						}
+						if ($i->{'ringpage_id'})
+						{
+							next if ($seen{$i->{'ringpage_id'}}++);
+						}
+						my $tag = '#'. $i->{'hashtag'};
+						push @cat, {
+							'type' => 'hashtag',
+							'label' => $tag,
+							'session_tag' => $tag,
+						};
+					}
+					$res->{'directory'} = \@cat;
+					$res->{'result'} = 'ok';
+				}
+			}
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
