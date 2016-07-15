@@ -225,6 +225,10 @@
 											<ul class="radio-wrapper">
 												<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
 											</ul>
+											[% ELSE %]
+											<ul class="radio-wrapper">
+												<li class="blank-li">&nbsp;</li>
+											</ul>
 											[% END %]
 											[% FOREACH button IN buttons %]
 											<ul class="button-data-ul">

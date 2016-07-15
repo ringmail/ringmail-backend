@@ -53,7 +53,7 @@ sub load {
 
         my $fields = decode_json $ringpage_row->data( 'fields', );
 
-        if ( $upload_type eq 'image' and $template eq 'v3_image' ) {
+        if ( $upload_type eq 'image' ) {
 
             my $image = 'Image::Scale'->new( $file, );
 

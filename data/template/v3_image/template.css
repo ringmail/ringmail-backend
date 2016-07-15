@@ -143,6 +143,7 @@ button:hover {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
+	height:[% ringpage.image_height %]px;
 }
 .ringpage-image-section {
 	max-width: 800px;

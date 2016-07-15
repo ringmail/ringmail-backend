@@ -2,7 +2,7 @@
 .main-wrapper td {
 	margin: 0;
 	padding: 0;
-	vertical-align: text-top;
+	vertical-align: top;
 }
 .main-wrapper td label {
 	margin: 0;
@@ -30,6 +30,7 @@ input[type="file"] {
 .main-wrapper ul {
 	margin: 0 auto;
 	padding: 0;
+	vertical-align: top;
 }
 .radio-wrapper {
 }
@@ -111,6 +112,9 @@ textarea {
 .inputs-ul li {
 	margin: 10px 0;
 }
+.inputs-ul li:first-of-type {
+	margin: 0 0 10px;
+}
 .main-wrapper .td-label label {
 	font-weight: 600;
 }
@@ -171,8 +175,23 @@ textarea {
 	width:100%;
 	box-sizing: border-box;
 	display: block;
-	margin: 10px auto;
 	float: left;
+}
+.td-inputs ul {
+	margin: 10px auto;	
+}
+.td-inputs ul:nth-of-type(2) {
+	margin: 0 auto 10px;
+}
+.td-inputs ul:first-of-type {
+	margin: 0 auto 0;
+}
+.blank-li {
+	height: 0;
+	margin: 0 auto;
+}
+.td-inputs {
+	vertical-align: top;
 }
 .td-inputs .radio-wrapper button {
 	margin-bottom: 10px;
@@ -221,6 +240,9 @@ textarea {
 }
 .button-data-ul li a:link, .button-data-ul li a:active, .button-data-ul li a:visited {
 	color: #fff;
+}
+.main-wrapper .buttons .button-data-ul:first-of-type {
+	margin-top: 0;
 }
 .delbtn-a {
 	width: 21px;
