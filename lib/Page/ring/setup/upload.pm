@@ -57,7 +57,7 @@ sub load {
 
             my $image = 'Image::Scale'->new( $file, );
 
-            $image->resize( { width => 750, }, );
+            $image->resize( { width => 375, }, );
 
             my $image_height = $image->resized_height();
 
