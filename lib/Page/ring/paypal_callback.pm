@@ -65,9 +65,9 @@ sub load {
 
                 transaction(
                     acct_dst => ( has_account( $user_id, ) ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, ),
-                    acct_src => account_id( 'payment_paypal_checkout', ),
+                    acct_src => account_id( 'payment_paypal', ),
                     amount   => $amount,
-                    tx_type  => tx_type_id( 'paypal_checkout', ),
+                    tx_type  => tx_type_id( 'payment_paypal', ),
                     user_id  => $user_id,
                 );
 

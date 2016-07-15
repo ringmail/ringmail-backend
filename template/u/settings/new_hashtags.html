@@ -127,9 +127,6 @@
 									) %]
 								</td>
 								<td>
-									[% IF hashtag.transaction_id.defined %]
-									&nbsp;
-									[% ELSE %]
 									[% pending = pending + 1 %]
 									<!-- [% page.field(
 									command => 'remove_from_cart',
@@ -138,7 +135,6 @@
 									value => hashtag.id,
 									) %] -->
 									<input type="checkbox" name="d4-hashtag_id" value="[% hashtag.id %]" />
-									[% END %]
 								</td>
 							</tr>
 							[% END %]
@@ -154,6 +150,7 @@
 									text => 'Remove',
 									opts => {
 									class => 'btn btn-primary',
+									onclick => "return confirm( 'Are you sure you would like to remove your hashtags?' );",
 									},
 									) %]
 								</td>

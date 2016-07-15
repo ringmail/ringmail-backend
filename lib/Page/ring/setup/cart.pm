@@ -171,7 +171,7 @@ sub cmd_fund {
 
         my $total = 99.99 * scalar @{$hashtags};
 
-        my $attempt = $pmt->card_payment(
+        my $attempt_id = $pmt->card_payment(
             processor => 'paypal',
             card_id   => $cid,
             nofork    => TRUE,
@@ -182,42 +182,56 @@ sub cmd_fund {
             },
         );
 
-        for my $hashtag ( @{$hashtags} ) {
+        if ( defined $attempt_id ) {
 
-            my $src = Note::Account->new( $user->id(), );
-            my $dst = account_id('revenue_ringmail');
+            my $attempt = 'Note::Row'->new( payment_attempt => $attempt_id, );
 
-            my $transaction_id = transaction(
-                acct_dst => $dst,
-                acct_src => $src,
-                amount   => 99.99,                            # TODO fix
-                tx_type  => tx_type_id('purchase_hashtag'),
-                user_id  => $user->id(),
-            );
+            if ( $attempt->data('accepted') == 1 ) {
 
-            my $cart = Note::Row->new(
-                ring_cart => {
-                    hashtag_id => $hashtag->{id},
-                    user_id    => $user->id(),
-                },
-            );
+                for my $hashtag ( @{$hashtags} ) {
 
-            if ( $cart->id() ) {
-                $cart->update(
-                    {
+                    my $src = Note::Account->new( $user->id(), );
+                    my $dst = account_id('revenue_ringmail');
 
-                        transaction_id => $transaction_id,
+                    my $transaction_id = transaction(
+                        acct_dst => $dst,
+                        acct_src => $src,
+                        amount   => 99.99,                            # TODO fix
+                        tx_type  => tx_type_id('purchase_hashtag'),
+                        user_id  => $user->id(),
+                    );
 
-                    },
-                );
+                    my $cart = Note::Row->new(
+                        ring_cart => {
+                            hashtag_id => $hashtag->{id},
+                            user_id    => $user->id(),
+                        },
+                    );
+
+                    if ( $cart->id() ) {
+                        $cart->update(
+                            {
+
+                                transaction_id => $transaction_id,
+
+                            },
+                        );
+                    }
+
+                }
+
             }
 
         }
 
-        my $sd = $self->session();
-        $sd->{'payment_attempt'} = $attempt;
+        my $session = $self->session();
+
+        $session->{'payment_attempt'} = $attempt_id;
+
         $self->session_write();
-        ::_log( 'Attempt:', $attempt );
+
+        ::log( "Attempt: $attempt_id", );
+
         return $self->redirect('/u/processing');
     }
 }
