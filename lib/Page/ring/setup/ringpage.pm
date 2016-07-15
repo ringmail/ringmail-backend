@@ -200,7 +200,7 @@ sub edit {
         # failed
     }
 
-    return;
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { ringpage_id => $ringpage_id, }, ), );
 }
 
 sub button_delete {
