@@ -33,14 +33,17 @@ sub push_message
 			'ring_user_apns' => {
 				'user_id' => $uid,
 			},
+			'select' => [qw/main_token push_app/],
 		);
 		if ($rc->id())
 		{
 			my $apns = $rc->data('main_token');
+			my $app = $rc->data('push_app');
 			if (defined($apns) && length($apns))
 			{
 				my $body = $param->{'from'}. ': '. $param->{'body'};
 				my $params = {
+					'app' => $app,
 					'token' => $apns,
 					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
 					'loc-key' => 'CHAT',
@@ -69,6 +72,7 @@ sub push_call
 			'ring_user_apns' => {
 				'user_id' => $uid,
 			},
+			'select' => [qw/voip_token/],
 		);
 		if ($rc->id())
 		{
@@ -115,7 +119,8 @@ sub apns_push
 	}
 	else
 	{
-		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns'});
+		::log("PUSH CONFIG:", $::app_config->{'push_apns'}->{$param->{'app'}});
+		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns'}->{$param->{'app'}});
 		my $data = $param->{'data'};
 		$data ||= {};
 		$apns->queue_notification(
