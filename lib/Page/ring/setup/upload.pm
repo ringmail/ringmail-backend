@@ -66,7 +66,7 @@ sub load {
 
             my ( $buttons, ) = ( $form->{buttons} =~ m{ \A (\d+) \z }xms, );
 
-            if ( $buttons > 0 and $image_height < $buttons * 80 + 200 ) {
+            if ( $buttons > 0 and $image_height < $buttons * 90 + 200 ) {
 
                 return encode_json { error => 'size', };
             }

@@ -176,12 +176,17 @@ button:hover {
 	float: left;
 	width: 100%;
 	background-color: #000; /* delete, bg image will go here */
+	[% IF ringpage.image == '' %]
+	background: url('/img/image-ph.jpg') no-repeat center center;
+	height: 290px;
+	[% ELSE %]
 	background: url('[% ringpage.image %]') no-repeat center center;
+	height: [% ringpage.image_height %]px;
+	[% END %]
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	height:[% ringpage.image_height %]px;
 	z-index: 500;
 }
 .ringpage-cta-button {
@@ -200,28 +205,38 @@ button:hover {
 }
 .ringpage-cta-section .ringpage-cta-button.btn-a {
 	position: relative;
-	top: 180px;
+	top: 160px;
+	margin: 0 auto;
+}
+.ringpage-cta-section .ringpage-cta-button.btn-a {
+	position: relative;
+	top: [% IF ringpage.buttons.size > 1 %]90px[% END %];
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-b {
 	position: relative;
-	top: 200px;
+	top: 100px;
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-c {
 	position: relative;
-	top: 220px;
+	top: 110px;
 	margin: 0 auto;
 }
 @media only screen and (max-width: 768px) {
 	.ringpage-cta-section-wrapper {
 		width: 100%;
+		[% IF ringpage.image == '' %]
+		background-image: url('/img/image-ph.jpg');
+		height: 290px;
+		[% ELSE %]
 		background-image: url('[% ringpage.image %]');
+		height: [% ringpage.image_height %]px;
+		[% END %]
 		-webkit-background-size: contain;
 		-moz-background-size: contain;
 		-o-background-size: contain;
 		background-size: contain;
-		height:[% ringpage.image_height %]px;
 		position: relative;
 		top: 32px;
 	}
@@ -240,17 +255,22 @@ button:hover {
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-a {
 		position: relative;
-		top: 180px;
+		top: 160px;
+		margin: 0 auto;
+	}
+	.ringpage-cta-section .ringpage-cta-button.btn-a {
+		position: relative;
+		top: [% IF ringpage.buttons.size > 1 %]90px[% END %];
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-b {
 		position: relative;
-		top: 200px;
+		top: 100px;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-c {
 		position: relative;
-		top: 220px;
+		top: 110px;
 		margin: 0 auto;
 	}
 }
