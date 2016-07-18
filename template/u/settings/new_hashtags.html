@@ -118,6 +118,7 @@
 									[% END %]
 								</td>
 								<td>
+									[% IF hashtag.transaction_id.defined %]
 									[% page.link(
 									text => 'Edit Details',
 									path => '/u/hashtag',
@@ -125,6 +126,9 @@
 									hashtag_id => hashtag.id
 									},
 									) %]
+									[% ELSE %]
+									&nbsp;
+									[% END %]
 								</td>
 								<td>
 									[% pending = pending + 1 %]
