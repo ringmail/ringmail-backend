@@ -598,3 +598,7 @@ h2 {
 	vertical-align: middle;
 	line-height: 28px;
 }
+.bar {
+	height: 18px;
+	background: green;
+}
