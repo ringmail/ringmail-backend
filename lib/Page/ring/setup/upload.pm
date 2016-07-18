@@ -18,13 +18,15 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $user    = $self->user();
+    my $user     = $self->user();
+    my $form     = $self->form();
+    my $response = $self->response();
+
     my $user_id = $user->id();
 
     my ( $hostname, ) = ( $::app_config->{www_domain} =~ m{ ( [\w-]+ ) }xms, );
-    my $uploads = $param->{request}->uploads();
 
-    my $content;
+    my $uploads = $param->{request}->uploads();
 
     my @app_path            = @{ $self->path() };
     my $app_path_last_index = $#app_path;
@@ -32,12 +34,13 @@ sub load {
 
     my $field = "f_d2-$upload_type";
 
+    $response->content_type( 'application/json', );
+
     if ( exists $uploads->{$field} ) {
         my $file = $uploads->{$field}->path();
 
         ::log( $file, );
 
-        my $form        = $self->form();
         my $ringpage_id = $form->{ringpage_id};
 
         ::log( $ringpage_id, );
@@ -60,6 +63,13 @@ sub load {
             $image->resize( { width => 375, }, );
 
             my $image_height = $image->resized_height();
+
+            my ( $buttons, ) = ( $form->{buttons} =~ m{ \A (\d+) \z }xms, );
+
+            if ( $buttons > 0 and $image_height < $buttons * 80 + 200 ) {
+
+                return encode_json { error => 'size', };
+            }
 
             $image->save_jpeg( $file, );
 
@@ -96,8 +106,6 @@ sub load {
 
         ::log( $url, );
 
-        $content = { files => [ { url => qq{$url}, }, ], };
-
         for my $field ( @{$fields} ) {
 
             my $name = $field->{name};
@@ -120,16 +128,13 @@ sub load {
         {
         }
 
+        return encode_json { files => [ { url => qq{$url}, }, ], };
     }
     else {
-        $content = { error => 'ERROR', };
+
+        return encode_json { error => 'ERROR', };
     }
 
-    my $response = $self->response();
-
-    $response->content_type( 'application/json', );
-
-    return encode_json( $content, );
 }
 
 1;
