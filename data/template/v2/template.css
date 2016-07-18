@@ -178,7 +178,7 @@ button:hover {
 	background-color: #000; /* delete, bg image will go here */
 	[% IF ringpage.image == '' %]
 	background: url('/img/image-ph.jpg') no-repeat center center;
-	height: 290px;
+	height: 470px;
 	[% ELSE %]
 	background: url('[% ringpage.image %]') no-repeat center center;
 	height: [% ringpage.image_height %]px;
@@ -228,7 +228,7 @@ button:hover {
 		width: 100%;
 		[% IF ringpage.image == '' %]
 		background-image: url('/img/image-ph.jpg');
-		height: 290px;
+		height: 470px;
 		[% ELSE %]
 		background-image: url('[% ringpage.image %]');
 		height: [% ringpage.image_height %]px;
