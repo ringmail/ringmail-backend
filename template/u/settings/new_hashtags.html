@@ -15,7 +15,7 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					<h2>Search Available Hashtags</h2>
+					<h2>Add Hashtag</h2>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
@@ -24,10 +24,10 @@
 										<span class="add-on">#</span>
 										[% page.field(
 										command => 'search',
-										type    => 'text',
-										name    => 'hashtag',
-										value   => page.form.hashtag,
-										opts    => {
+										type => 'text',
+										name => 'hashtag',
+										value => page.form.hashtag,
+										opts => {
 										id => 'hashtag',
 										style => 'width: 179px',
 										},
@@ -39,9 +39,9 @@
 										[% END %]
 									</div>
 									[% page.button(
-									command  => 'search',
-									contents => 'Search',
-									opts     => {
+									command => 'search',
+									contents => 'Add',
+									opts => {
 									class => 'btn btn-primary btn-medium',
 									},
 									) %]
@@ -54,27 +54,27 @@
 								<pre class="hashtag-available"> #[% page.form.hashtag %] | $99.99 </pre>
 								[% page.field(
 								command => 'add_to_cart',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'add_to_cart',
+								command => 'add_to_cart',
 								contents => 'Add To Cart',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
 								[% page.field(
 								command => 'buy_it_now',
-								type    => 'hidden',
-								name    => 'hashtag',
-								value   => page.form.hashtag,
+								type => 'hidden',
+								name => 'hashtag',
+								value => page.form.hashtag,
 								) %]
 								[% page.button(
-								command  => 'buy_it_now',
+								command => 'buy_it_now',
 								contents => 'Buy It Now',
-								opts     => {
+								opts => {
 								class => 'btn btn-primary btn-medium',
 								},
 								) %]
@@ -86,53 +86,83 @@
 						</fieldset>
 					</form>
 				</div>
-				<div class="span9 cart-start">
-					<h2>Shopping Cart</h2>
-					<table class="table table-bordered table-highlight table-cart">
-						<thead>
+				<div class="span12 cart-start">
+					<h2>My Hashtags</h2>
+					<form method="post" action="[% page.url() %]">
+						<table class="table table-bordered table-highlight table-cart">
+							<thead>
+								<tr>
+									<th>Hashtag</th>
+									<th>Price</th>
+									<th>Status</th>
+									<th>Edit Details</th>
+									<th>Remove</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% IF hashtags.size == 0 %]
 							<tr>
-								<th>Hashtag</th>
-								<th>Price</th>
-								<th>Remove</th>
+								<td colspan="5">No Hashtags.</td>
 							</tr>
-						</thead>
-						<tbody>
-						[% IF hashtags.size == 0 %]
-						<tr>
-							<td colspan="4">No #Hashtags Added To Cart</td>
-						</tr>
-						[% ELSE %]
-						[% FOREACH hashtag IN hashtags %]
-						<tr>
-							<td>#[% hashtag.hashtag %]</td>
-							<td>$99.99</td>
-							<td>
-								[% page.link(
-								text => '[ X ]',
-								command => 'remove_from_cart',
-								args => [ hashtag.id, ],
-								opts => {
-								onclick => "return confirm( 'Remove $hashtag.hashtag?' )",
-								},
-								) %]
-							</td>
-						</tr>
-						[% END %]
-						[% END %]
-						</tbody>
-					</table>
-					<div class="span9">
-						<p class="cart-total-p">
-						Total: $[% total %]
-						[% page.link(
-						text => 'Check Out',
-						path => '/u/cart',
-						opts => {
-						class => 'btn btn-primary btn-medium',
-						},
-						) %]
-						</p>
-					</div>
+							[% ELSE %]
+							[% pending = 0 %]
+							[% FOREACH hashtag IN hashtags %]
+							<tr>
+								<td>#[% hashtag.hashtag %]</td>
+								<td>$99.99</td>
+								<td>
+									[% IF hashtag.transaction_id.defined %]
+									<span class="label label-primary">Paid</span>
+									[% ELSE %]
+									<span class="label label-primary">Pending</span>
+									[% END %]
+								</td>
+								<td>
+									[% IF hashtag.transaction_id.defined %]
+									[% page.link(
+									text => 'Edit Details',
+									path => '/u/hashtag',
+									query => {
+									hashtag_id => hashtag.id
+									},
+									) %]
+									[% ELSE %]
+									&nbsp;
+									[% END %]
+								</td>
+								<td>
+									[% pending = pending + 1 %]
+									<!-- [% page.field(
+									command => 'remove_from_cart',
+									type => 'radio',
+									name => 'hashtag_id',
+									value => hashtag.id,
+									) %] -->
+									<input type="checkbox" name="d4-hashtag_id" value="[% hashtag.id %]" />
+								</td>
+							</tr>
+							[% END %]
+							[% END %]
+							[% IF pending > 0 %]
+							<tr>
+								<td colspan="4">
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'remove_from_cart',
+									text => 'Remove',
+									opts => {
+									class => 'btn btn-primary',
+									onclick => "return confirm( 'Are you sure you would like to remove your hashtags?' );",
+									},
+									) %]
+								</td>
+							</tr>
+							[% END %]
+							</tbody>
+						</table>
+					</form>
 				</div>
 			</div>
 		</div>

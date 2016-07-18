@@ -1,20 +1,16 @@
 package Page::ring::setup::hashtag;
 
+use English '-no_match_vars';
+use JSON::XS 'encode_json';
+use Moose;
+use Note::Param;
+use Note::XML 'xml';
+use Ring::Model::Category;
+use Ring::Model::Hashtag;
+use Ring::Model::RingPage;
+use Ring::User;
 use strict;
 use warnings;
-
-use Moose;
-use JSON::XS 'encode_json';
-use English '-no_match_vars';
-
-use Note::XML 'xml';
-use Note::Param;
-
-use Ring::User;
-
-use Ring::Model::Hashtag;
-use Ring::Model::Category;
-use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 
@@ -27,7 +23,7 @@ sub load {
     my $user    = $self->user();
     my $content = $self->content();
 
-    my $hashtag_id = $form->{id};
+    my $hashtag_id = $form->{hashtag_id};
 
     if ( not $hashtag_id =~ m{ \A \d+ \z }xms ) {
         return $self->redirect('/u/hashtags');
@@ -76,38 +72,98 @@ sub cmd_hashtag_edit {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user             = $self->user();
-    my $target           = $form_data->{target};
+    my $form             = $self->form();
+    my ( $hashtag_id, )  = ( $self->form->{hashtag_id} =~ m{ \A ( \d+ ) \z }xms );
+    my ( $category_id, ) = ( $form_data->{category_id} =~ m{ \A ( \d+ ) \z }xms );
+    my ( $destination, ) = ( $form_data->{destination} =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $target, )      = ( $form_data->{target}, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-    my ( $hashtag_id, )  = ( @{$args}, );
 
-    $target =~ s{ \A \s* }{}xms;    # trim whitespace
-    $target =~ s{ \s* \z }{}xms;
-    if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-        $target = "http://$target";
-    }
+    if ( defined $destination ) {
 
-    my $hashtag_model = Ring::Model::Hashtag->new();
+        my $hashtag_model = Ring::Model::Hashtag->new();
 
-    if ( $hashtag_model->validate_target( target => $target, ) or defined $ringpage_id ) {
-        if ($hashtag_model->update(
-                category_id => $form_data->{category_id},
-                id          => $hashtag_id,
-                ringpage_id => $ringpage_id,
-                target      => defined $ringpage_id ? undef : $target,
-                user_id     => $user->id(),
-            )
-            )
-        {
-            # display confirmation
+        if ( $destination eq 'target_url' ) {
+
+            $target =~ s{ \A \s* }{}xms;    # trim whitespace
+            $target =~ s{ \s* \z }{}xms;
+            if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+                $target = "http://$target";
+            }
+
+            if ( $hashtag_model->validate_target( target => $target, ) ) {
+                if ($hashtag_model->update(
+                        category_id => $category_id,
+                        id          => $hashtag_id,
+                        target      => $target,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
+            }
+            else {
+
+                # invalid target
+            }
+
         }
-        else {
 
-            # failed
+        if ( $destination eq 'ringpage' ) {
+
+            if ( defined $ringpage_id ) {
+                if ($hashtag_model->update(
+                        category_id => $category_id,
+                        id          => $hashtag_id,
+                        ringpage_id => $ringpage_id,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
+            }
+            else {
+
+                # invalid target
+            }
+
         }
-    }
-    else {
 
-        # invalid target
+        if ( $destination eq 'ringpage_new' ) {
+
+            if ( defined $ringpage_id ) {
+                if ($hashtag_model->update(
+                        category_id => $category_id,
+                        id          => $hashtag_id,
+                        user_id     => $user->id(),
+                    )
+                    )
+                {
+                    # display confirmation
+                }
+                else {
+
+                    # failed
+                }
+            }
+            else {
+
+                # invalid target
+            }
+
+            return $self->redirect( $self->url( path => '/u/ringpages', query => { hashtag_id => $hashtag_id, }, ), );
+        }
+
     }
 
     return;

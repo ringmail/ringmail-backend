@@ -2,7 +2,8 @@
    "class" : "Page::ring::setup::cart",
    "command" : {
       "fund" : "cmd_fund",
-      "remove" : "remove"
+      "remove_from_cart" : "remove_from_cart",
+      "search" : "search"
    },
    "init" : [
       "valid_user"

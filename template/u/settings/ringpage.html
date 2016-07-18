@@ -18,24 +18,8 @@
 				<div class="tabbable">
 					<div class="row">
 						<div class="main-wrapper">
-							<div class="span12">
-								[% INCLUDE u/settings/sub_menu.html %]
-							</div>
+							<h2>&nbsp;</h2>
 							<div class="span6 pull-left">
-								<div>
-									<p style="text-align: right;">
-									[% page.button(
-									command => 'edit',
-									text => 'Save Changes',
-									opts => {
-									type => 'submit',
-									class => 'btn btn-primary',
-									id => 'do-1_1',
-									}
-									args => [ page.form.ringpage_id, ],
-									) %]
-									</p>
-								</div>
 								<table class="table table-bordered logo">
 									<tbody>
 									<tr>
@@ -76,6 +60,9 @@
 												) %]
 												</li>
 											</ul>
+											<div id="progress_logo">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
 										</td>
 									</tr>
 									</tbody>
@@ -129,6 +116,9 @@
 												) %]
 												</li>
 											</ul>
+											<div id="progress_image">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
 										</td>
 									</tr>
 									</tbody>
@@ -239,7 +229,32 @@
 										<td class="td-inputs">
 											[% IF buttons.size < ringpage_template.buttons %]
 											<ul class="radio-wrapper">
-												<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
+												<li>
+												[% IF ringpage.image_height < buttons.size * 80 + 200 %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												class=> 'btn btn-primary btn-lg',
+												onclick => "alert('Uploaded image is too short to fit all the buttons.'); return false;",
+												},	
+												) %]
+												[% ELSE %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												class=> 'btn btn-primary btn-lg',
+												'data-toggle' => 'modal',
+												'data-target' => '#addButtonModal',
+												},	
+												) %]
+												[% END %]
+												</li>
+											</ul>
+											[% ELSE %]
+											<ul class="radio-wrapper">
+												<li class="blank-li">&nbsp;</li>
 											</ul>
 											[% END %]
 											[% FOREACH button IN buttons %]
@@ -390,7 +405,7 @@
 									<p style="text-align: right;">
 									[% page.button(
 									command => 'edit',
-									text => 'Save Changes',
+									text => 'Update',
 									opts => {
 									type => 'submit',
 									class => 'btn btn-primary',
@@ -498,7 +513,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							[% page.button(
 							command => 'edit',
-							text => 'Save Changes',
+							text => 'Add',
 							opts => {
 							type => 'submit',
 							class => 'btn btn-primary',
@@ -520,16 +535,37 @@ formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
 done: function ( e, data ) {
 $( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_logo .bar').css(
+	'width',
+	progress + '%'
+	);
 }
 } );
 		$( '#f_d1-image' ).fileupload( {
-formData: { ringpage_id: '[% page.form.ringpage_id %]' },
+formData: {
+ringpage_id: '[% page.form.ringpage_id %]',
+buttons: '[% buttons.size %]'
+},
 dataType: 'json',
 done: function ( e, data ) {
+if ( data.result.error == 'size' ) {
+alert('Uploaded image is too short to fit all the buttons.');
+return false;
+}
 $( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_image .bar').css(
+	'width',
+	progress + '%'
+	);
 }
 } );
-		});
+});
 </script>
 [% END %]
 [% INCLUDE layout/internal.html %]

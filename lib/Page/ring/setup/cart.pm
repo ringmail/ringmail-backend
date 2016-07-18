@@ -1,17 +1,12 @@
 package Page::ring::setup::cart;
 
 use constant::boolean;
-use HTML::Entities 'encode_entities';
-use JSON::XS 'encode_json';
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Check;
-use Note::Locale;
 use Note::Param;
 use Note::Payment;
 use Note::SQL::Table 'sqltable';
-use Note::XML 'xml';
-use POSIX 'strftime';
 use Ring::Model::Hashtag;
 use Ring::User;
 use strict;
@@ -73,26 +68,9 @@ sub load {
 
     my ( $self, $param ) = get_param(@args);
 
-    my $form = $self->form();
-
     my $content = $self->content();
-    my $user    = $self->user();
-    my $account = Note::Account->new( $user->id() );
 
-    my $hashtags = sqltable('ring_cart')->get(
-        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
-        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
-        join   => 'rh.id = rc.hashtag_id',
-        where  => [
-            {   'rc.user_id' => $user->id(),
-                'rh.user_id' => $user->id(),
-            } => and => { 'rc.transaction_id' => undef, },
-        ],
-    );
-
-    $content->{balance} = $account->balance();
     $content->{payment} = $self->show_payment_form();
-    $content->{total}   = 99.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
@@ -193,7 +171,7 @@ sub cmd_fund {
 
         my $total = 99.99 * scalar @{$hashtags};
 
-        my $attempt = $pmt->card_payment(
+        my $attempt_id = $pmt->card_payment(
             processor => 'paypal',
             card_id   => $cid,
             nofork    => TRUE,
@@ -204,65 +182,146 @@ sub cmd_fund {
             },
         );
 
-        for my $hashtag ( @{$hashtags} ) {
+        if ( defined $attempt_id ) {
 
-            my $src = Note::Account->new( $user->id(), );
-            my $dst = account_id('revenue_ringmail');
+            my $attempt = 'Note::Row'->new( payment_attempt => $attempt_id, );
 
-            my $transaction_id = transaction(
-                acct_dst => $dst,
-                acct_src => $src,
-                amount   => 99.99,                            # TODO fix
-                tx_type  => tx_type_id('purchase_hashtag'),
-                user_id  => $user->id(),
-            );
+            if ( $attempt->data('accepted') == 1 ) {
 
-            my $cart = Note::Row->new(
-                ring_cart => {
-                    hashtag_id => $hashtag->{id},
-                    user_id    => $user->id(),
-                },
-            );
+                for my $hashtag ( @{$hashtags} ) {
 
-            if ( $cart->id() ) {
-                $cart->update(
-                    {
+                    my $src = Note::Account->new( $user->id(), );
+                    my $dst = account_id('revenue_ringmail');
 
-                        transaction_id => $transaction_id,
+                    my $transaction_id = transaction(
+                        acct_dst => $dst,
+                        acct_src => $src,
+                        amount   => 99.99,                            # TODO fix
+                        tx_type  => tx_type_id('purchase_hashtag'),
+                        user_id  => $user->id(),
+                    );
 
-                    },
-                );
+                    my $cart = Note::Row->new(
+                        ring_cart => {
+                            hashtag_id => $hashtag->{id},
+                            user_id    => $user->id(),
+                        },
+                    );
+
+                    if ( $cart->id() ) {
+                        $cart->update(
+                            {
+
+                                transaction_id => $transaction_id,
+
+                            },
+                        );
+                    }
+
+                }
+
             }
 
         }
 
-        my $sd = $self->session();
-        $sd->{'payment_attempt'} = $attempt;
+        my $session = $self->session();
+
+        $session->{'payment_attempt'} = $attempt_id;
+
         $self->session_write();
-        ::_log( 'Attempt:', $attempt );
+
+        ::log( "Attempt: $attempt_id", );
+
         return $self->redirect('/u/processing');
     }
 }
 
-sub remove {
+sub search {
+    my ( $self, $form_data, $args, ) = @_;
+
+    return if not length $form_data->{hashtag} > 0;
+
+    $self->form()->{hashtag} = $form_data->{hashtag};
+
+    my $hashtag_model = 'Ring::Model::Hashtag'->new();
+
+    my $exists = $hashtag_model->check_exists( tag => $form_data->{hashtag}, );
+
+    $self->value()->{hashtag} = $exists;
+
+    if ( not $exists ) {
+
+        my $user             = $self->user();
+        my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
+        my $tag              = lc $form_data->{hashtag};
+        my $target           = $form_data->{target};
+
+        if ( length $target > 0 ) {
+
+            $target =~ s{ \A \s* }{}xms;    # trim whitespace
+            $target =~ s{ \s* \z }{}xms;
+            if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
+                $target = "http://$target";
+            }
+
+        }
+
+        if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
+            if ( $hashtag_model->check_exists( tag => $tag, ) ) {
+                ::log('Dup');
+            }
+            else {
+
+                my $hashtag = $hashtag_model->create(
+                    category_id => $form_data->{category_id},
+                    ringpage_id => $ringpage_id,
+                    tag         => $tag,
+                    target_url  => $target,
+                    user_id     => $user->id(),
+                );
+                if ( defined $hashtag ) {
+
+                    my $hashtag_id = $hashtag->id();
+
+                    ::log( "New Hashtag: #$tag", );
+
+                    my $cart = Note::Row::create(
+                        ring_cart => {
+                            hashtag_id => $hashtag_id,
+                            user_id    => $user->id(),
+                        },
+                    );
+
+                }
+            }
+        }
+
+        return $self->redirect('/u/cart');
+    }
+
+    return;
+}
+
+sub remove_from_cart {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user = $self->user();
 
-    my ( $hashtag_id, ) = ( @{$args}, );
+    my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    my $hashtag_model = Ring::Model::Hashtag->new();
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
 
-    if ($hashtag_model->delete(
-            user_id => $user->id(),
-            id      => $hashtag_id,
-        )
-        )
-    {
-        # display confirmation
-    }
-    else {
-        # failed
+        if ($hashtag_model->delete(
+                user_id => $user->id(),
+                id      => $hashtag_id,
+            )
+            )
+        {
+            # display confirmation
+        }
+        else {
+            # failed
+        }
     }
 
     return;

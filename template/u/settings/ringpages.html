@@ -16,10 +16,19 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
+					<h2>Create RingPage</h2>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						[% IF page.form.hashtag_id.defined %]
+						[% page.field(
+						command => 'add',
+						type => 'hidden',
+						name => 'hashtag_id',
+						value => page.form.hashtag_id,
+						) %]
+						[% END %]
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="ringpage">RingPage:</label>
+								<label class="control-label" for="ringpage">Title:</label>
 								<div class="controls">
 									<div class="input-prepend">
 										[% page.field(
@@ -59,12 +68,14 @@
 									[% page.button(
 									command => 'add',
 									contents => 'Create RingPage',
-									opts => { class => 'btn btn-primary btn-large', },
+									opts => { class => 'btn btn-primary btn-medium', },
 									) %]
 								</div>
 							</div>
 						</fieldset>
 					</form>
+					[% IF ! page.form.hashtag_id.defined %]
+					<h2>Manage RingPages</h2>
 					<table class="table table-bordered table-striped table-highlight">
 						<thead>
 							<tr>
@@ -104,6 +115,7 @@
 						[% END %]
 						</tbody>
 					</table>
+					[% END %]
 				</div>
 			</div>
 		</div>

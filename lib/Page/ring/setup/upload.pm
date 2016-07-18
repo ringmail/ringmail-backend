@@ -1,35 +1,32 @@
 package Page::ring::setup::upload;
 
+use Image::Scale;
+use JSON::XS;
+use Moose;
+use Note::AWS::S3;
+use Note::Page;
+use Note::Param;
+use Ring::Model::RingPage;
+use Ring::User;
 use strict;
 use warnings;
 
-use Moose;
-use JSON::XS;
-use Readonly;
-use Image::Scale;
-
-use Note::Page;
-use Note::Param;
-use Note::AWS::S3;
-use Ring::User;
-use Ring::Model::RingPage;
-
 extends 'Page::ring::user';
-
-Readonly my $DAYS => 24 * 3_600;
 
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $user    = $self->user();
+    my $user     = $self->user();
+    my $form     = $self->form();
+    my $response = $self->response();
+
     my $user_id = $user->id();
 
     my ( $hostname, ) = ( $::app_config->{www_domain} =~ m{ ( [\w-]+ ) }xms, );
-    my $uploads = $param->{request}->uploads();
 
-    my $content;
+    my $uploads = $param->{request}->uploads();
 
     my @app_path            = @{ $self->path() };
     my $app_path_last_index = $#app_path;
@@ -37,12 +34,13 @@ sub load {
 
     my $field = "f_d2-$upload_type";
 
+    $response->content_type( 'application/json', );
+
     if ( exists $uploads->{$field} ) {
         my $file = $uploads->{$field}->path();
 
         ::log( $file, );
 
-        my $form        = $self->form();
         my $ringpage_id = $form->{ringpage_id};
 
         ::log( $ringpage_id, );
@@ -58,13 +56,20 @@ sub load {
 
         my $fields = decode_json $ringpage_row->data( 'fields', );
 
-        if ( $upload_type eq 'image' and $template eq 'v3_image' ) {
+        if ( $upload_type eq 'image' ) {
 
-            my $image = Image::Scale->new( $file, );
+            my $image = 'Image::Scale'->new( $file, );
 
-            $image->resize( { width => 750, }, );
+            $image->resize( { width => 375, }, );
 
             my $image_height = $image->resized_height();
+
+            my ( $buttons, ) = ( $form->{buttons} =~ m{ \A (\d+) \z }xms, );
+
+            if ( $buttons > 0 and $image_height < $buttons * 80 + 200 ) {
+
+                return encode_json { error => 'size', };
+            }
 
             $image->save_jpeg( $file, );
 
@@ -96,9 +101,10 @@ sub load {
             bucket => 'ringmail1',
         );
 
-        ::log( $url, );
+        # remove '?...' args for public URLs
+        $url =~ s{ [?] .* \z }{}xms;
 
-        $content = { files => [ { url => qq{$url}, }, ], };
+        ::log( $url, );
 
         for my $field ( @{$fields} ) {
 
@@ -111,7 +117,7 @@ sub load {
 
         ::log( $fields, );
 
-        my $ringpage_model = Ring::Model::RingPage->new();
+        my $ringpage_model = 'Ring::Model::RingPage'->new();
 
         if ($ringpage_model->update(
                 fields  => encode_json $fields,
@@ -122,16 +128,13 @@ sub load {
         {
         }
 
+        return encode_json { files => [ { url => qq{$url}, }, ], };
     }
     else {
-        $content = { error => 'ERROR', };
+
+        return encode_json { error => 'ERROR', };
     }
 
-    my $response = $self->response();
-
-    $response->content_type( 'application/json', );
-
-    return encode_json( $content, );
 }
 
 1;

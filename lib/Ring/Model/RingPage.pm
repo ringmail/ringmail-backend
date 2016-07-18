@@ -1,29 +1,24 @@
 package Ring::Model::RingPage;
 
-use strict;
-use warnings;
-
-use Moose;
-use Data::Dumper;
-use Scalar::Util 'blessed', 'reftype';
-use POSIX 'strftime';
-use Regexp::Common 'URI';
-use Try::Tiny;
 use Carp 'croak';
-
+use constant::boolean;
+use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Ring::User;
+use strict;
+use Try::Tiny;
+use warnings;
 
 sub validate_ringpage {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
     if ( $ringpage =~ qr{\A [\w\s]+ \z}xms ) {
-        return 1;
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 sub check_exists {
@@ -81,11 +76,18 @@ sub delete {
         },
     );
     if ( $rc->id() ) {
-        $rc->delete();
-        return 1;
+
+        try {
+            $rc->delete();
+        }
+        catch {
+            return undef;
+        };
+
+        return TRUE;
     }
     else {
-        return 0;
+        return FALSE;
     }
 }
 
@@ -107,10 +109,10 @@ sub update {
 
             }
         );
-        return 1;
+        return TRUE;
     }
     else {
-        return 0;
+        return FALSE;
     }
 }
 
