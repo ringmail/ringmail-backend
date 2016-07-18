@@ -64,7 +64,7 @@ sub load
 			else
 			{
 				# default
-				$url = 'http://'. $::app_config->{'www_domain'};
+				$url = 'http://'. $::app_config->{'www_domain'}. '/hashtag_available';
 			}
 			$res = {
 				'result' => 'ok',
