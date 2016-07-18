@@ -188,6 +188,7 @@ button:hover {
 	-o-background-size: cover;
 	background-size: cover;
 	z-index: 500;
+	top: 100px;
 }
 .ringpage-cta-button {
 	font-family: 'HelveticaNeueLT Com 57 Cn';
@@ -222,6 +223,13 @@ button:hover {
 	position: relative;
 	top: 110px;
 	margin: 0 auto;
+}
+.ringpage-content-section-wrapper {
+	float: left;
+	margin-top: 0;
+	width: 100%;
+	background-color: [% ringpage.color_2 %];
+	color: #32352f;
 }
 @media only screen and (max-width: 768px) {
 	.ringpage-cta-section-wrapper {
@@ -273,13 +281,9 @@ button:hover {
 		top: 110px;
 		margin: 0 auto;
 	}
-}
-.ringpage-content-section-wrapper {
-	float: left;
-	margin-top: 74px;
-	width: 100%;
-	background-color: [% ringpage.color_2 %];
-	color: #32352f;
+	.ringpage-content-section-wrapper {
+		margin-top: 73px;
+	}	
 }
 .ringpage-content-section {
 	max-width: 800px;
