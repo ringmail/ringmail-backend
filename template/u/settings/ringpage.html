@@ -230,7 +230,7 @@
 											[% IF buttons.size < ringpage_template.buttons %]
 											<ul class="radio-wrapper">
 												<li>
-												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 200 > ringpage.image_height %]
+												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 200 > ringpage.image_height and ringpage.template_name == 'v2' %]
 												[% page.button(
 												command => 'add_button',
 												text => 'Add Button',
