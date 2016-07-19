@@ -118,7 +118,7 @@ sub edit {
         my $name       = $field->{name};
         my $form_value = $form_data->{$name};
 
-        if ( $field->{internal} == TRUE ) {
+        if ( defined $field->{internal} and $field->{internal} == TRUE ) {
 
             $field->{value} = $ringpage_fields{$name};
 

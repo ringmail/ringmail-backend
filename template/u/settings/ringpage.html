@@ -54,8 +54,8 @@
 												type => 'file',
 												name => 'logo',
 												opts => {
-												id => 'f_d1-logo',
 												'data-url' => '/u/upload/logo',
+												id => 'f_d1-logo',
 												},
 												) %]
 												</li>
@@ -110,8 +110,8 @@
 												type => 'file',
 												name => 'image',
 												opts => {
-												id => 'f_d1-image',
 												'data-url' => '/u/upload/image',
+												id => 'f_d1-image',
 												},
 												) %]
 												</li>
@@ -265,9 +265,9 @@
 												command => 'add_button',
 												text => 'Add Button',
 												opts => {
-												class=> 'btn btn-primary btn-lg',
-												'data-toggle' => 'modal',
 												'data-target' => '#addButtonModal',
+												'data-toggle' => 'modal',
+												class=> 'btn btn-primary btn-lg',
 												},	
 												) %]
 												[% END %]
@@ -296,6 +296,15 @@
 												class=>'delbtn-a',
 												},
 												) %]
+												<button type="button" class="btn btn-primary btn-xs edit_button"
+													data-button_id="[% button.id %]"
+													data-button_link="[% button.uri %]"
+													data-button_text="[% button.button %]"
+													data-target="#addButtonModal"
+													data-toggle="modal"
+													/>
+													E
+												</button>
 												</li>
 											</ul>
 											[% END %]
@@ -463,7 +472,14 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							<h4 class="modal-title">Add Button</h4>
 						</div>
 						<div class="modal-body">
-							<p></p>
+							[% page.field(
+							command => 'edit',
+							type => 'hidden',
+							name => 'button_id',
+							opts => {
+							class => 'button_id',
+							},
+							) %]
 							<ul class="modal-ul">
 								<li>
 								<span class="input-group-addon">
@@ -473,6 +489,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_text',
 									opts => {
+									class => 'button_text',
 									placeholder => 'Text',
 									},
 									) %]
@@ -487,6 +504,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									class => 'button_link',
 									placeholder => 'URL',
 									},
 									) %]
@@ -534,7 +552,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							[% page.button(
 							command => 'edit',
-							text => 'Add',
+							text => 'Save',
 							opts => {
 							type => 'submit',
 							class => 'btn btn-primary',
@@ -587,6 +605,11 @@ $('#progress_image .bar').css(
 }
 } );
 });
+$(document).on( "click", '.edit_button',function(e) {
+		$(".button_id").val($(this).data('button_id'));
+		$(".button_link").val($(this).data('button_link'));
+		$(".button_text").val($(this).data('button_text'));
+		});
 </script>
 [% END %]
 [% INCLUDE layout/internal.html %]
