@@ -41,11 +41,13 @@ sub load {
 
     my @hashtag_ids = map { $_->{hashtag_id}; } @{$cart};
 
-    my $paypal_data        = join q{ }, sprintf( '%X', $user->id(), ), 99.99 * scalar @{$cart}, map { sprintf '%X', $_; } @hashtag_ids;
+    my @paypal_data = ( $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, );
+
+    my $paypal_data_string = sprintf join( q{ }, ( '%X', ) x @paypal_data, ), @paypal_data;    # Newer Perl can use '%A' for floating-point hex.
     my $config             = $main::note_config->config();
     my $key                = $config->{paypal_key};
     my $cipher             = 'Crypt::CBC'->new( -key => $key, );
-    my $ciphertext         = $cipher->encrypt( $paypal_data, );
+    my $ciphertext         = $cipher->encrypt( $paypal_data_string, );
     my $ciphertext_encoded = encode_base64 $ciphertext;
 
     $content->{cart}                    = $cart;
