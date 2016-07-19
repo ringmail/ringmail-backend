@@ -24,7 +24,7 @@
 									<tbody>
 									<tr>
 										<td class="td-label"><label>Logo</label></td>
-										<td>
+										<td class="logo-inputs">
 											<ul>
 												<li>
 												[% page.field(
@@ -287,6 +287,17 @@
 												[% button.uri %]
 												</li>
 												<li>
+												<a class="edit_button"
+													data-button_id="[% button.id %]"
+													data-button_link="[% button.uri %]"
+													data-button_text="[% button.button %]"
+													data-target="#addButtonModal"
+													data-toggle="modal"
+													/>
+													Edit
+												</a>
+												</li>
+												<li>
 												[% page.link(
 												text => '<i class="fa fa-minus"></i>',
 												command => 'button_delete',
@@ -296,15 +307,6 @@
 												class=>'delbtn-a',
 												},
 												) %]
-												<button type="button" class="btn btn-primary btn-xs edit_button"
-													data-button_id="[% button.id %]"
-													data-button_link="[% button.uri %]"
-													data-button_text="[% button.button %]"
-													data-target="#addButtonModal"
-													data-toggle="modal"
-													/>
-													E
-												</button>
 												</li>
 											</ul>
 											[% END %]
@@ -468,7 +470,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header add-button">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 class="modal-title">Add Button</h4>
 						</div>
 						<div class="modal-body">
@@ -549,7 +551,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							</ul>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-default" id="close" data-dismiss="modal">Close</button>
 							[% page.button(
 							command => 'edit',
 							text => 'Save',
@@ -609,6 +611,11 @@ $(document).on( "click", '.edit_button',function(e) {
 		$(".button_id").val($(this).data('button_id'));
 		$(".button_link").val($(this).data('button_link'));
 		$(".button_text").val($(this).data('button_text'));
+		});
+$(document).on( "click", '#close',function(e) {
+		$(".button_id").val(null);
+		$(".button_link").val(null);
+		$(".button_text").val(null);
 		});
 </script>
 [% END %]
