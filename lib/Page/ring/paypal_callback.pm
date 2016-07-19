@@ -1,9 +1,8 @@
 package Page::ring::paypal_callback;
 
 use Crypt::CBC;
-use JSON::XS qw{ encode_json decode_json };
 use LWP::UserAgent;
-use MIME::Base64;
+use MIME::Base64 qw{ decode_base64 };
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Param;
@@ -57,7 +56,12 @@ sub load {
             my $cipher    = 'Crypt::CBC'->new( -key => $key, );
             my $plaintext = $cipher->decrypt( decode_base64 $ciphertext_encoded, );
 
-            my ( $user_id, $amount, @hashtag_ids, ) = @{ decode_json $plaintext };
+            my ( $user_id_hex, $amount, @hashtag_ids_hex, ) = split qr{ \s }xms, $plaintext;
+
+            my $user_id = hex $user_id_hex;
+            my @hashtag_ids = map { hex; } @hashtag_ids_hex;
+
+            ::log( $user_id, $amount, @hashtag_ids, );
 
             my $payment_gross = $form->{payment_gross};
 
