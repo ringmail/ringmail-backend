@@ -124,6 +124,27 @@
 									</tbody>
 								</table>
 								[% END %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Title</label></td>
+										<td>
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'title',
+												value => ringpage.title,
+												opts => {
+												placeholder => 'Title',
+												},
+												) %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
 								[% IF ringpage.video_url.defined %]
 								<table class="table table-bordered media">
 									<tbody>
