@@ -24,7 +24,7 @@
 									<tbody>
 									<tr>
 										<td class="td-label"><label>Logo</label></td>
-										<td>
+										<td class="logo-inputs">
 											<ul>
 												<li>
 												[% page.field(
@@ -54,8 +54,8 @@
 												type => 'file',
 												name => 'logo',
 												opts => {
-												id => 'f_d1-logo',
 												'data-url' => '/u/upload/logo',
+												id => 'f_d1-logo',
 												},
 												) %]
 												</li>
@@ -87,8 +87,6 @@
 													</span></li>
 													<li style="background-color:[% theme.color_1 %];"></li>
 													<li style="background-color:[% theme.color_2 %];"></li>
-													<li style="background-color:[% theme.color_3 %];"></li>
-													<li style="background-color:[% theme.color_4 %];"></li>
 												</ul>
 												</li>
 												[% END %]
@@ -110,8 +108,8 @@
 												type => 'file',
 												name => 'image',
 												opts => {
-												id => 'f_d1-image',
 												'data-url' => '/u/upload/image',
+												id => 'f_d1-image',
 												},
 												) %]
 												</li>
@@ -124,6 +122,27 @@
 									</tbody>
 								</table>
 								[% END %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Title</label></td>
+										<td>
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'title',
+												value => ringpage.title,
+												opts => {
+												placeholder => 'Title',
+												},
+												) %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
 								[% IF ringpage.video_url.defined %]
 								<table class="table table-bordered media">
 									<tbody>
@@ -230,7 +249,7 @@
 											[% IF buttons.size < ringpage_template.buttons %]
 											<ul class="radio-wrapper">
 												<li>
-												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 200 > ringpage.image_height %]
+												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 200 > ringpage.image_height and ringpage.template_name == 'v2' %]
 												[% page.button(
 												command => 'add_button',
 												text => 'Add Button',
@@ -244,9 +263,9 @@
 												command => 'add_button',
 												text => 'Add Button',
 												opts => {
-												class=> 'btn btn-primary btn-lg',
-												'data-toggle' => 'modal',
 												'data-target' => '#addButtonModal',
+												'data-toggle' => 'modal',
+												class=> 'btn btn-primary btn-lg',
 												},	
 												) %]
 												[% END %]
@@ -264,6 +283,17 @@
 												</li>
 												<li>
 												[% button.uri %]
+												</li>
+												<li>
+												<a class="edit_button"
+													data-button_id="[% button.id %]"
+													data-button_link="[% button.uri %]"
+													data-button_text="[% button.button %]"
+													data-target="#addButtonModal"
+													data-toggle="modal"
+													/>
+													Edit
+												</a>
 												</li>
 												<li>
 												[% page.link(
@@ -406,11 +436,11 @@
 									[% page.button(
 									command => 'edit',
 									text => 'Update',
-									opts => {
 									type => 'submit',
+									opts => {
 									class => 'btn btn-primary',
 									id => 'do-1_1',
-									}
+									},
 									args => [ page.form.ringpage_id, ],
 									) %]
 									</p>
@@ -438,11 +468,28 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header add-button">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							[% page.button(
+							command => 'edit',
+							text => '<span aria-hidden="true">&times;</span>',
+							type => 'button',
+							opts => {
+							'aria-label' => 'Close',
+							class => 'close',
+							'data-dismiss' => 'modal',
+							id => 'close',
+							},
+							) %]
 							<h4 class="modal-title">Add Button</h4>
 						</div>
 						<div class="modal-body">
-							<p></p>
+							[% page.field(
+							command => 'edit',
+							type => 'hidden',
+							name => 'button_id',
+							opts => {
+							class => 'button_id',
+							},
+							) %]
 							<ul class="modal-ul">
 								<li>
 								<span class="input-group-addon">
@@ -452,6 +499,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_text',
 									opts => {
+									class => 'button_text',
 									placeholder => 'Text',
 									},
 									) %]
@@ -466,6 +514,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									class => 'button_link',
 									placeholder => 'URL',
 									},
 									) %]
@@ -510,14 +559,23 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							</ul>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							[% page.button(
 							command => 'edit',
-							text => 'Add',
+							text => 'Close',
+							type => 'button',
 							opts => {
+							class => 'btn btn-default',
+							'data-dismiss' => 'modal',
+							id => 'close',
+							},
+							) %]
+							[% page.button(
+							command => 'edit',
+							text => 'Save',
 							type => 'submit',
+							opts => {
 							class => 'btn btn-primary',
-							}
+							},
 							args => [ page.form.ringpage_id, ],
 							) %]
 						</div>
@@ -566,6 +624,16 @@ $('#progress_image .bar').css(
 }
 } );
 });
+$(document).on( "click", '.edit_button',function(e) {
+		$(".button_id").val($(this).data('button_id'));
+		$(".button_link").val($(this).data('button_link'));
+		$(".button_text").val($(this).data('button_text'));
+		});
+$(document).on( "click", '#close',function(e) {
+		$(".button_id").val(null);
+		$(".button_link").val(null);
+		$(".button_text").val(null);
+		});
 </script>
 [% END %]
 [% INCLUDE layout/internal.html %]

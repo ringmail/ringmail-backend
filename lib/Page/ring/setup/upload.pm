@@ -64,11 +64,15 @@ sub load {
 
             my $image_height = $image->resized_height();
 
-            my ( $buttons, ) = ( $form->{buttons} =~ m{ \A (\d+) \z }xms, );
+            if ( $template eq 'v2' ) {
 
-            if ( $buttons > 0 and $buttons * 90 + 200 > $image_height ) {
+                my ( $buttons, ) = ( $form->{buttons} =~ m{ \A (\d+) \z }xms, );
 
-                return encode_json { error => 'size', };
+                if ( $buttons > 0 and $buttons * 90 + 200 > $image_height ) {
+
+                    return encode_json { error => 'size', };
+                }
+
             }
 
             $image->save_jpeg( $file, );

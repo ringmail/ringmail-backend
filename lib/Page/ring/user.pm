@@ -1,10 +1,10 @@
 package Page::ring::user;
 
+use constant::boolean;
 use Crypt::CBC;
-use JSON::XS qw{ encode_json decode_json };
-use MIME::Base64;
+use MIME::Base64 qw{ encode_base64 };
 use Moose;
-use Note::Locale 'us_states', 'us_state_name';
+use Note::Locale qw{ us_states us_state_name };
 use Note::Param;
 use Note::SQL::Table 'sqltable';
 use Note::XML 'xml';
@@ -39,14 +39,16 @@ sub load {
         ],
     );
 
-    my @hashtag_ids        = map { $_->{hashtag_id}; } @{$cart};
+    my @hashtag_ids = map { $_->{hashtag_id}; } @{$cart};
+
+    my @paypal_data = ( $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, );
+
+    my $paypal_data_string = sprintf join( q{ }, ( '%X', ) x @paypal_data, ), @paypal_data;    # Newer Perl can use '%A' for floating-point hex.
     my $config             = $main::note_config->config();
     my $key                = $config->{paypal_key};
     my $cipher             = 'Crypt::CBC'->new( -key => $key, );
-    my $ciphertext         = $cipher->encrypt( encode_json [ $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, ], );
+    my $ciphertext         = $cipher->encrypt( $paypal_data_string, );
     my $ciphertext_encoded = encode_base64 $ciphertext;
-
-    my $plaintext = $cipher->decrypt( decode_base64 $ciphertext_encoded, );
 
     $content->{cart}                    = $cart;
     $content->{paypal_ciphertext}       = $ciphertext_encoded;

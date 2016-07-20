@@ -71,6 +71,7 @@ table td td {
 }
 .main-wrapper input {
 	margin: 0;
+	width: 98%;
 }
 .radio-wrapper input {
 	width: 20%;
@@ -104,6 +105,13 @@ table td td {
 }
 textarea {
 	margin-bottom: 0;
+	width: 97.5%;
+}
+.logo-inputs input {
+	width: 3%;
+}
+.logo-inputs input:last-of-type {
+	width: 50%;
 }
 .swatch input {
 	width: 5%;
@@ -211,12 +219,19 @@ textarea {
 	word-break: break-word;
 }
 .button-data-ul li {
-	width: 55%;
+	width: 40%;
 	float: left;
-	margin:0 1%;
+	margin:0 0 0 1%;
 }
 .button-data-ul li:first-of-type {
-	width: 34%;
+	width: 36%;
+}
+.button-data-ul li:nth-of-type(3) {
+	width: 13%;
+}
+.button-data-ul li:nth-of-type(3) a:hover {
+	text-decoration: underline;
+	color: #08c;
 }
 .button-data-ul li:last-of-type {
 	width: 20px;
@@ -600,5 +615,10 @@ h2 {
 }
 .bar {
 	height: 18px;
-	background: green;
+	background: #0077c2;
+}
+@media (max-width: 1200px) {
+	.logo-inputs input:last-of-type {
+		width: 100%;
+	}
 }
