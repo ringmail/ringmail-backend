@@ -95,6 +95,7 @@
 									<th>Hashtag</th>
 									<th>Price</th>
 									<th>Status</th>
+									<th>Destination</th>
 									<th>Edit Details</th>
 									<th>Remove</th>
 								</tr>
@@ -115,6 +116,23 @@
 									<span class="label label-primary">Paid</span>
 									[% ELSE %]
 									<span class="label label-primary">Pending</span>
+									[% END %]
+								</td>
+								<td>
+									[% IF hashtag.ringpage_id.defined %]
+									[% page.link(
+									text => hashtag.ringpage,
+									path => '/u/ringpage',
+									query => {
+									ringpage_id => hashtag.ringpage_id,
+									},
+									) %]
+									[% ELSE %]
+									[% IF hashtag.target_url.length > 35 %]
+									[% hashtag.target_url.substr( 0, 35 ) %]...
+									[% ELSE %]
+									[% hashtag.target_url %]
+									[% END %]
 									[% END %]
 								</td>
 								<td>
@@ -145,7 +163,7 @@
 							[% END %]
 							[% IF pending > 0 %]
 							<tr>
-								<td colspan="4">
+								<td colspan="5">
 									&nbsp;
 								</td>
 								<td>

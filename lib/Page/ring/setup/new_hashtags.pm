@@ -31,10 +31,11 @@ sub load {
     my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
     my $hashtags = sqltable('ring_cart')->get(
-        select => [ qw{ rh.hashtag rh.id rc.hashtag_id rc.transaction_id }, ],
-        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
-        join   => 'rh.id = rc.hashtag_id',
-        where  => [
+        select    => [ qw{ rh.hashtag rh.id rc.hashtag_id rc.transaction_id rh.target_url rh.ringpage_id rp.ringpage }, ],
+        table     => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+        join      => 'rh.id = rc.hashtag_id',
+        join_left => [ [ 'ring_page AS rp' => 'rh.ringpage_id = rp.id', ], ],
+        where     => [
             {   'rc.user_id' => $user->id(),
                 'rh.user_id' => $user->id(),
             },
