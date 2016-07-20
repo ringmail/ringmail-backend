@@ -1,21 +1,19 @@
 package Page::ring::setup::ringpage;
 
-use strict;
-use warnings;
 use constant::boolean;
-
-use Moose;
+use English '-no_match_vars';
+use HTML::Escape 'escape_html';
 use JSON::XS qw{ encode_json decode_json };
 use List::MoreUtils qw{ each_arrayref first_value };
-use English '-no_match_vars';
-
-use Note::XML 'xml';
+use Moose;
 use Note::Param;
 use Note::SQL::Table 'sqltable';
-
-use Ring::User;
+use Note::XML 'xml';
 use Ring::Model::RingPage;
 use Ring::Model::Template;
+use Ring::User;
+use strict;
+use warnings;
 
 extends 'Page::ring::user';
 
@@ -116,7 +114,7 @@ sub edit {
     for my $field ( @{ $template_structure->{fields} } ) {
 
         my $name       = $field->{name};
-        my $form_value = $form_data->{$name};
+        my $form_value = escape_html $form_data->{$name};
 
         if ( defined $field->{internal} and $field->{internal} == TRUE ) {
 
