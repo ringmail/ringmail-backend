@@ -438,8 +438,8 @@
 									[% page.button(
 									command => 'edit',
 									text => 'Update',
-									opts => {
 									type => 'submit',
+									opts => {
 									class => 'btn btn-primary',
 									id => 'do-1_1',
 									}
@@ -470,7 +470,17 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header add-button">
-							<button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							[% page.button(
+							command => 'edit',
+							text => '<span aria-hidden="true">&times;</span>',
+							type => 'button',
+							opts => {
+							'aria-label' => 'Close',
+							class => 'close',
+							'data-dismiss' => 'modal',
+							id => 'close',
+							}
+							) %]
 							<h4 class="modal-title">Add Button</h4>
 						</div>
 						<div class="modal-body">
@@ -551,14 +561,23 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							</ul>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" id="close" data-dismiss="modal">Close</button>
+							[% page.button(
+							command => 'edit',
+							text => 'Close',
+							type => 'button',
+							opts => {
+							class => 'btn btn-default',
+							'data-dismiss' => 'modal',
+							id => 'close',
+							}
+							) %]
 							[% page.button(
 							command => 'edit',
 							text => 'Save',
-							opts => {
 							type => 'submit',
+							opts => {
 							class => 'btn btn-primary',
-							}
+							},
 							args => [ page.form.ringpage_id, ],
 							) %]
 						</div>
