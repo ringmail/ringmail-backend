@@ -88,6 +88,7 @@ sub load
 				}
 				$res->{'directory'} = \@cat;
 				$res->{'result'} = 'ok';
+				$obj->{'response'}->header('Cache-Control', 'max-age='. 3600);
 			}
 			else
 			{
