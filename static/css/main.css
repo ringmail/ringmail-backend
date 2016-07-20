@@ -219,15 +219,15 @@ textarea {
 	word-break: break-word;
 }
 .button-data-ul li {
-	width: 45%;
+	width: 40%;
 	float: left;
-	margin:0 1%;
+	margin:0 0 0 1%;
 }
 .button-data-ul li:first-of-type {
-	width: 34%;
+	width: 36%;
 }
 .button-data-ul li:nth-of-type(3) {
-	width: 8%;
+	width: 13%;
 }
 .button-data-ul li:nth-of-type(3) a:hover {
 	text-decoration: underline;
@@ -616,4 +616,9 @@ h2 {
 .bar {
 	height: 18px;
 	background: #0077c2;
+}
+@media (max-width: 1200px) {
+	.logo-inputs input:last-of-type {
+		width: 100%;
+	}
 }
