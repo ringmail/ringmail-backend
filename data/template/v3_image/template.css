@@ -378,15 +378,12 @@ button:hover {
 		margin: 10px auto 8px;
 	}	
 	.social-ul {
-		width: 50%;
+		width: 100%;
 		margin-bottom: 10px;
 	}
 	.social-li {
 		display: inline-block;
-		margin: 5px 5px 5px 0;
-	}
-	.social-li:nth-of-type(4n) {
-		margin-right: 0;
+		margin: 6px 3px 0 3px;
 	}
 }
 .home-span {
