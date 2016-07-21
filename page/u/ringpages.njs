@@ -5,7 +5,8 @@
       "remove" : "remove"
    },
    "init" : [
-      "valid_user"
+      "valid_user",
+      "role_admin"
    ],
    "template" : "u/settings/ringpages.html"
 }

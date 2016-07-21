@@ -15,6 +15,8 @@ use warnings;
 
 extends 'Note::Page';
 
+with 'Ring::User::Admin';
+
 has 'user' => (
     'is'  => 'rw',
     'isa' => 'Ring::User',
