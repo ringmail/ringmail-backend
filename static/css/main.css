@@ -312,7 +312,7 @@ textarea {
 .logout-ul li {
 	display: inline-block;
 }
-.nav-collapse {
+.nav-mine {
 	position: relative;
 	display: block;
 	float: right;
@@ -415,7 +415,8 @@ textarea {
 	-moz-box-shadow: none;
 	box-shadow: none;
 	text-shadow: none;
-	padding: 10px 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 #masthead h2, #masthead p {
 	margin-left: 0;
@@ -620,5 +621,23 @@ h2 {
 @media (max-width: 1200px) {
 	.logo-inputs input:last-of-type {
 		width: 100%;
+	}
+}
+.nav {
+	float: right;
+}
+@media (max-width: 500px) {
+	#header {
+		height: 130px;
+	}
+	.nav-mine {
+		float: none;
+		position: absolute;
+		top: 89px;
+		margin: 0 7.75%;
+	}
+	.nav {
+		float: none;
+		margin: 0 auto;
 	}
 }

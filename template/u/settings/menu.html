@@ -1,9 +1,6 @@
 <div id="header">
 	<div class="container">
 		<h1 class="logo-h1">RingMail</h1>
-		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-			<i class="icon-reorder"></i>
-		</a>
 		<ul class="logout-ul pull-right">
 			<li><a href="/u/cart"><i class="fa fa-shopping-cart"></i> Cart ([% cart.size %])</a></li>
 			<li style="color:#08c;"> &nbsp; | &nbsp; </li>
@@ -13,8 +10,8 @@
 			command => 'logout',
 			) %]</li>
 		</ul>
-		<div class="nav-collapse">
-			<ul id="main-nav" class="nav pull-right">
+		<div class="nav-mine">
+			<ul id="main-nav" class="nav">
 				<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u">Hashtags</a></li>
 				<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
 				<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
