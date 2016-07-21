@@ -263,7 +263,7 @@
 												command => 'add_button',
 												text => 'Add Button',
 												opts => {
-												'data-target' => '#addButtonModal',
+												'data-target' => '#editButtonsModal',
 												'data-toggle' => 'modal',
 												class=> 'btn btn-primary btn-lg',
 												},	
@@ -285,12 +285,12 @@
 												[% button.uri %]
 												</li>
 												<li>
-												<a class="edit_button"
+												<a id="edit_buttons"
 													data-button_id="[% button.id %]"
 													data-button_link="[% button.uri %]"
 													data-button_position="[% button.position %]"
 													data-button_text="[% button.button %]"
-													data-target="#addButtonModal"
+													data-target="#editButtonsModal"
 													data-toggle="modal"
 													/>
 													Edit
@@ -451,21 +451,10 @@
 						<div class="span6 pull-right">
 							<div id="preview"></div>
 						</div>
-						<script>
-bioMp(document.getElementById('preview'), {
-url: '/ringpage?ringpage_id=[% page.form.ringpage_id %]',
-view: 'front',
-image: '/img/iphone6_front_white.png',
-scale: '.8'
-});
-$('#addButtonModal').on('shown.bs.modal', function () {
-		$('#myInput').focus()
-		})
-						</script>
 					</div>
 				</div>
 			</div>
-			<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
+			<div class="modal fade" id="editButtonsModal" tabindex="-1" role="dialog" aria-labelledby="editButtonsModal">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header add-button">
@@ -477,7 +466,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							'aria-label' => 'Close',
 							class => 'close',
 							'data-dismiss' => 'modal',
-							id => 'close',
+							id => 'edit_buttons_close',
 							},
 							) %]
 							<h4 class="modal-title">Add Button</h4>
@@ -570,7 +559,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							opts => {
 							class => 'btn btn-default',
 							'data-dismiss' => 'modal',
-							id => 'close',
+							id => 'edit_buttons_close',
 							},
 							) %]
 							[% page.button(
@@ -591,7 +580,28 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 </div>
 <script src="/js/jquery.fileupload.js"></script>
 <script>
+bioMp(document.getElementById('preview'), {
+url: '/ringpage?ringpage_id=[% page.form.ringpage_id %]',
+view: 'front',
+image: '/img/iphone6_front_white.png',
+scale: '.8'
+});
+
+$('#editButtonsModal').on('shown.bs.modal', function () {
+		$('#myInput').focus()
+		});
+
+$('#editButtonsModal').on('hidden.bs.modal', function () {
+		$('#button_id').val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$('#button_text').val(null);
+		});
+
 $( function () {
+
 		$( '#f_d1-logo' ).fileupload( {
 formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
@@ -606,6 +616,7 @@ $('#progress_logo .bar').css(
 	);
 }
 } );
+
 		$( '#f_d1-image' ).fileupload( {
 formData: {
 ringpage_id: '[% page.form.ringpage_id %]',
@@ -627,19 +638,22 @@ $('#progress_image .bar').css(
 	);
 }
 } );
+
 });
-$(document).on( "click", '.edit_button',function(e) {
-		$("#button_id").val($(this).data('button_id'));
+
+$(document).on( 'click', '#edit_buttons',function(e) {
+		$('#button_id').val($(this).data('button_id'));
 		$('#button_link_' + $(this).data('button_position')).val($(this).data('button_link'));
-		$("#button_text").val($(this).data('button_text'));
+		$('#button_text').val($(this).data('button_text'));
 		});
-$(document).on( "click", '#close',function(e) {
-		$("#button_id").val(null);
+
+$(document).on( 'click', '#edit_buttons_close',function(e) {
+		$('#button_id').val(null);
 		$('#button_link_1').val(null);
 		$('#button_link_2').val(null);
 		$('#button_link_3').val(null);
 		$('#button_link_4').val(null);
-		$("#button_text").val(null);
+		$('#button_text').val(null);
 		});
 </script>
 [% END %]
