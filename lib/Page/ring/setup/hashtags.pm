@@ -1,24 +1,15 @@
 package Page::ring::setup::hashtags;
 
+use English '-no_match_vars';
+use Moose;
+use Note::Param;
+use Note::Row;
+use Ring::Model::Category;
+use Ring::Model::Hashtag;
+use Ring::Model::RingPage;
+use Ring::User;
 use strict;
 use warnings;
-
-use Moose;
-use JSON::XS 'encode_json';
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
-use English '-no_match_vars';
-
-use Note::XML 'xml';
-use Note::Param;
-use Note::Account qw(account_id transaction tx_type_id);
-use Note::Row;
-
-use Ring::User;
-use Ring::Model::Hashtag;
-use Ring::Model::Category;
-use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 

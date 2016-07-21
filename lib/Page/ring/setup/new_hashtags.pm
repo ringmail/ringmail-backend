@@ -1,15 +1,10 @@
 package Page::ring::setup::new_hashtags;
 
 use English '-no_match_vars';
-use HTML::Entities 'encode_entities';
-use JSON::XS 'encode_json';
 use Moose;
-use Note::Account qw{ account_id transaction tx_type_id };
 use Note::Param;
-use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Ring::Model::Category;
-use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::User;
 use strict;

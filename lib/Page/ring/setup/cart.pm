@@ -117,7 +117,8 @@ sub cmd_fund {
         $rec->{'phone'} =~ s/\D//gxms;
     }
     my $user    = $self->user();
-    my $pmt     = Note::Payment->new( $user->id(), );
+    my $user_id = $user->id();
+    my $pmt     = Note::Payment->new( $user_id, );
     my $carderr = q{};
     if ( not $data->{'cc_cvv2'} =~ /^\d{3,4}$/xms ) {
         push @err, 'Security Code: Required';
@@ -157,15 +158,15 @@ sub cmd_fund {
             'zip'        => $rec->{'zip'},
         );
 
-        my $act = ( has_account( $user->id(), ) ) ? Note::Account->new( $user->id(), ) : create_account( $user->id(), );
+        my $act = ( has_account( $user_id, ) ) ? Note::Account->new( $user_id, ) : create_account( $user_id, );
 
         my $hashtags = sqltable('ring_cart')->get(
             select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
             table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
             join   => 'rh.id = rc.hashtag_id',
             where  => [
-                {   'rc.user_id' => $user->id(),
-                    'rh.user_id' => $user->id(),
+                {   'rc.user_id' => $user_id,
+                    'rh.user_id' => $user_id,
                 } => and => { 'rc.transaction_id' => undef, },
             ],
         );
@@ -191,7 +192,7 @@ sub cmd_fund {
 
                 for my $hashtag ( @{$hashtags} ) {
 
-                    my $src = Note::Account->new( $user->id(), );
+                    my $src = Note::Account->new( $user_id, );
                     my $dst = account_id('revenue_ringmail');
 
                     my $transaction_id = transaction(
@@ -199,21 +200,38 @@ sub cmd_fund {
                         acct_src => $src,
                         amount   => 99.99,                            # TODO fix
                         tx_type  => tx_type_id('purchase_hashtag'),
-                        user_id  => $user->id(),
+                        user_id  => $user_id,
                     );
 
-                    my $cart = Note::Row->new(
+                    my $hashtag_id = $hashtag->{id};
+
+                    my $cart_row = Note::Row->new(
                         ring_cart => {
-                            hashtag_id => $hashtag->{id},
-                            user_id    => $user->id(),
+                            hashtag_id => $hashtag_id,
+                            user_id    => $user_id,
                         },
                     );
 
-                    if ( $cart->id() ) {
-                        $cart->update(
+                    my $hashtag_row = Note::Row->new(
+                        ring_hashtag => {
+                            id      => $hashtag_id,
+                            user_id => $user_id,
+                        },
+                    );
+
+                    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
+                        $cart_row->update(
                             {
 
                                 transaction_id => $transaction_id,
+
+                            },
+                        );
+
+                        $hashtag_row->update(
+                            {
+
+                                paid => TRUE,
 
                             },
                         );
@@ -238,7 +256,8 @@ sub cmd_fund {
 sub search {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user = $self->user();
+    my $user     = $self->user();
+    my $user_id  = $user->id();
     my ( $tag, ) = ( $form_data->{hashtag} =~ m{ ( [\s\w]+ ) }xms, );
     my ( $category_id, ) = ( $form_data->{category_id} // '' =~ m{ \A ( \d+ ) \z }xms, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // '' =~ m{ \A ( \d+ ) \z }xms );
@@ -279,7 +298,7 @@ sub search {
                 ringpage_id => $ringpage_id,
                 tag         => $tag,
                 target_url  => $target,
-                user_id     => $user->id(),
+                user_id     => $user_id,
             );
             if ( defined $hashtag ) {
 
@@ -288,7 +307,7 @@ sub search {
                 my $cart = Note::Row::create(
                     ring_cart => {
                         hashtag_id => $hashtag_id,
-                        user_id    => $user->id(),
+                        user_id    => $user_id,
                     },
                 );
 
@@ -304,14 +323,15 @@ sub search {
 sub remove_from_cart {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user = $self->user();
+    my $user    = $self->user();
+    my $user_id = $user->id();
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
     for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
 
         if ($hashtag_model->delete(
-                user_id => $user->id(),
+                user_id => $user_id,
                 id      => $hashtag_id,
             )
             )

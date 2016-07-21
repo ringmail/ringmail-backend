@@ -1,12 +1,12 @@
 package Page::ring::paypal_callback;
 
+use constant::boolean;
 use Crypt::CBC;
 use LWP::UserAgent;
 use MIME::Base64 qw{ decode_base64 };
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Param;
-use Note::Payment;
 use Note::Row;
 use strict;
 use warnings;
@@ -80,18 +80,33 @@ sub load {
                         user_id  => $user_id,
                     );
 
-                    my $cart = Note::Row->new(
+                    my $cart_row = Note::Row->new(
                         ring_cart => {
                             hashtag_id => $hashtag_id,
                             user_id    => $user_id,
                         },
                     );
 
-                    if ( $cart->id() ) {
-                        $cart->update(
+                    my $hashtag_row = Note::Row->new(
+                        ring_hashtag => {
+                            id      => $hashtag_id,
+                            user_id => $user_id,
+                        },
+                    );
+
+                    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
+                        $cart_row->update(
                             {
 
                                 transaction_id => $transaction_id,
+
+                            },
+                        );
+
+                        $hashtag_row->update(
+                            {
+
+                                paid => TRUE,
 
                             },
                         );
