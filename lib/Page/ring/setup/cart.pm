@@ -7,6 +7,7 @@ use Note::Check;
 use Note::Param;
 use Note::Payment;
 use Note::SQL::Table 'sqltable';
+use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
 use Ring::User;
 use strict;
@@ -230,8 +231,6 @@ sub cmd_fund {
 
         $self->session_write();
 
-        ::log( "Attempt: $attempt_id", );
-
         return $self->redirect('/u/processing');
     }
 }
@@ -239,22 +238,29 @@ sub cmd_fund {
 sub search {
     my ( $self, $form_data, $args, ) = @_;
 
-    return if not length $form_data->{hashtag} > 0;
+    my $user = $self->user();
+    my ( $tag, ) = ( $form_data->{hashtag} =~ m{ ( [\s\w]+ ) }xms, );
+    my ( $category_id, ) = ( $form_data->{category_id} // '' =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // '' =~ m{ \A ( \d+ ) \z }xms );
+    my $target = $form_data->{target} // '';
 
-    $self->form()->{hashtag} = $form_data->{hashtag};
+    return if not defined $tag;
+
+    $tag =~ s{$RE{ws}{crop}}{}gxms;
+    $tag =~ s{ [\s_]+ }{_}gxms;
+    $tag = lc $tag;
+
+    return if not length $tag > 0;
+
+    $self->form()->{hashtag} = $tag;
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    my $exists = $hashtag_model->check_exists( tag => $form_data->{hashtag}, );
+    my $exists = $hashtag_model->check_exists( tag => $tag, );
 
     $self->value()->{hashtag} = $exists;
 
     if ( not $exists ) {
-
-        my $user             = $self->user();
-        my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-        my $tag              = lc $form_data->{hashtag};
-        my $target           = $form_data->{target};
 
         if ( length $target > 0 ) {
 
@@ -267,32 +273,25 @@ sub search {
         }
 
         if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
-            if ( $hashtag_model->check_exists( tag => $tag, ) ) {
-                ::log('Dup');
-            }
-            else {
 
-                my $hashtag = $hashtag_model->create(
-                    category_id => $form_data->{category_id},
-                    ringpage_id => $ringpage_id,
-                    tag         => $tag,
-                    target_url  => $target,
-                    user_id     => $user->id(),
+            my $hashtag = $hashtag_model->create(
+                category_id => $category_id,
+                ringpage_id => $ringpage_id,
+                tag         => $tag,
+                target_url  => $target,
+                user_id     => $user->id(),
+            );
+            if ( defined $hashtag ) {
+
+                my $hashtag_id = $hashtag->id();
+
+                my $cart = Note::Row::create(
+                    ring_cart => {
+                        hashtag_id => $hashtag_id,
+                        user_id    => $user->id(),
+                    },
                 );
-                if ( defined $hashtag ) {
 
-                    my $hashtag_id = $hashtag->id();
-
-                    ::log( "New Hashtag: #$tag", );
-
-                    my $cart = Note::Row::create(
-                        ring_cart => {
-                            hashtag_id => $hashtag_id,
-                            user_id    => $user->id(),
-                        },
-                    );
-
-                }
             }
         }
 
