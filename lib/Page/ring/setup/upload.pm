@@ -1,13 +1,12 @@
 package Page::ring::setup::upload;
 
 use Image::Scale;
-use JSON::XS;
+use JSON::XS qw{ encode_json decode_json };
 use Moose;
 use Note::AWS::S3;
 use Note::Page;
 use Note::Param;
 use Ring::Model::RingPage;
-use Ring::User;
 use strict;
 use warnings;
 

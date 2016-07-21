@@ -9,7 +9,6 @@ use Note::Payment;
 use Note::SQL::Table 'sqltable';
 use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
-use Ring::User;
 use strict;
 use warnings;
 
