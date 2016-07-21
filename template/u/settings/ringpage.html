@@ -20,6 +20,20 @@
 						<div class="main-wrapper">
 							<h2>&nbsp;</h2>
 							<div class="span6 pull-left">
+								<div>
+									<p style="text-align: right;">
+									[% page.button(
+									command => 'edit',
+									text => 'Update',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary btn-hide',
+									id => 'do-1_1',
+									},
+									args => [ page.form.ringpage_id, ],
+									) %]
+									</p>
+								</div>
 								<table class="table table-bordered logo">
 									<tbody>
 									<tr>
@@ -586,11 +600,9 @@ view: 'front',
 image: '/img/iphone6_front_white.png',
 scale: '.8'
 });
-
 $('#editButtonsModal').on('shown.bs.modal', function () {
 		$('#myInput').focus()
 		});
-
 $('#editButtonsModal').on('hidden.bs.modal', function () {
 		$('#button_id').val(null);
 		$('#button_link_1').val(null);
@@ -599,9 +611,7 @@ $('#editButtonsModal').on('hidden.bs.modal', function () {
 		$('#button_link_4').val(null);
 		$('#button_text').val(null);
 		});
-
 $( function () {
-
 		$( '#f_d1-logo' ).fileupload( {
 formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
@@ -616,7 +626,6 @@ $('#progress_logo .bar').css(
 	);
 }
 } );
-
 		$( '#f_d1-image' ).fileupload( {
 formData: {
 ringpage_id: '[% page.form.ringpage_id %]',
@@ -638,15 +647,12 @@ $('#progress_image .bar').css(
 	);
 }
 } );
-
 });
-
 $(document).on( 'click', '#edit_buttons',function(e) {
 		$('#button_id').val($(this).data('button_id'));
 		$('#button_link_' + $(this).data('button_position')).val($(this).data('button_link'));
 		$('#button_text').val($(this).data('button_text'));
 		});
-
 $(document).on( 'click', '#edit_buttons_close',function(e) {
 		$('#button_id').val(null);
 		$('#button_link_1').val(null);
