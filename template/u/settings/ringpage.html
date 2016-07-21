@@ -288,6 +288,7 @@
 												<a class="edit_button"
 													data-button_id="[% button.id %]"
 													data-button_link="[% button.uri %]"
+													data-button_position="[% button.position %]"
 													data-button_text="[% button.button %]"
 													data-target="#addButtonModal"
 													data-toggle="modal"
@@ -487,7 +488,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							type => 'hidden',
 							name => 'button_id',
 							opts => {
-							class => 'button_id',
+							id => 'button_id',
 							},
 							) %]
 							<ul class="modal-ul">
@@ -499,7 +500,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_text',
 									opts => {
-									class => 'button_text',
+									id => 'button_text',
 									placeholder => 'Text',
 									},
 									) %]
@@ -514,7 +515,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
-									class => 'button_link',
+									id => 'button_link_1',
 									placeholder => 'URL',
 									},
 									) %]
@@ -527,6 +528,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_2',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -539,6 +541,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_3',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -551,6 +554,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_4',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -625,14 +629,17 @@ $('#progress_image .bar').css(
 } );
 });
 $(document).on( "click", '.edit_button',function(e) {
-		$(".button_id").val($(this).data('button_id'));
-		$(".button_link").val($(this).data('button_link'));
-		$(".button_text").val($(this).data('button_text'));
+		$("#button_id").val($(this).data('button_id'));
+		$('#button_link_' + $(this).data('button_position')).val($(this).data('button_link'));
+		$("#button_text").val($(this).data('button_text'));
 		});
 $(document).on( "click", '#close',function(e) {
-		$(".button_id").val(null);
-		$(".button_link").val(null);
-		$(".button_text").val(null);
+		$("#button_id").val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$("#button_text").val(null);
 		});
 </script>
 [% END %]

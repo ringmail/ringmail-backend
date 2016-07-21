@@ -59,7 +59,7 @@ sub load {
     my $ringpage_template = $templates->{$template_name};
 
     my $buttons = sqltable( 'ring_button', )->get(
-        select => [ qw{ id button uri }, ],
+        select => [ qw{ id button uri position }, ],
         where  => { ringpage_id => $ringpage_row->id(), },
         order  => 'id',
     );
@@ -155,18 +155,23 @@ sub edit {
     {
         # display confirmation
 
-        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_link', ), ];
-        while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
+        my $button_position;
+
+        my ( $button_link, ) = map { $button_position++; length > 0 ? { position => $button_position, button_link => $_, } : (); } $self->request()->parameters()->get_all( 'd2-button_link', );
+
+        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        while ( my ( $button_id, $button_text, ) = $each_array->() ) {
 
             if ( $button_id eq q{} ) {
 
-                next if $button_text eq q{} or $button_link eq q{};
+                next if $button_text eq q{} or not defined $button_link;
 
                 my $button_row = Note::Row::create(
                     ring_button => {
                         button      => $button_text,
+                        position    => $button_link->{position},
                         ringpage_id => $ringpage_id,
-                        uri         => $button_link,
+                        uri         => $button_link->{button_link},
                         user_id     => $user->id(),
                     },
                 );
@@ -177,7 +182,7 @@ sub edit {
 
                 my $button_row = Note::Row->new( ring_button => $button_id, );
 
-                if ( $button_text eq q{} or $button_link eq q{} ) {
+                if ( $button_text eq q{} or not defined $button_link ) {
 
                     $button_row->delete();
 
@@ -185,7 +190,12 @@ sub edit {
 
                 else {
 
-                    $button_row->update( { button => $button_text, uri => $button_link, }, );
+                    $button_row->update(
+                        {   button   => $button_text,
+                            position => $button_link->{position},
+                            uri      => $button_link->{button_link},
+                        },
+                    );
 
                 }
 
