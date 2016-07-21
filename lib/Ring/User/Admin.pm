@@ -18,7 +18,7 @@ sub role_admin {
 
     ::log( $ring_user_admin_row, );
 
-    $self->is_admin( $ring_user_admin_row->id() ? TRUE : FALSE, );
+    $self->is_admin( defined $ring_user_admin_row->id() ? TRUE : FALSE, );
 
     return TRUE;
 }
