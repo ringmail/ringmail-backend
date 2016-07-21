@@ -6,7 +6,6 @@ use Note::Param;
 use Note::SQL::Table 'sqltable';
 use Ring::Model::Category;
 use Ring::Model::RingPage;
-use Ring::User;
 use strict;
 use warnings;
 

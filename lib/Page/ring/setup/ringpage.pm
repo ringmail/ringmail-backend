@@ -8,10 +8,8 @@ use List::MoreUtils qw{ each_arrayref first_value };
 use Moose;
 use Note::Param;
 use Note::SQL::Table 'sqltable';
-use Note::XML 'xml';
 use Ring::Model::RingPage;
 use Ring::Model::Template;
-use Ring::User;
 use strict;
 use warnings;
 
