@@ -8,10 +8,9 @@ use List::MoreUtils qw{ each_arrayref first_value };
 use Moose;
 use Note::Param;
 use Note::SQL::Table 'sqltable';
+use Regexp::Common 'URI';
 use Ring::Model::RingPage;
 use Ring::Model::Template;
-use strict;
-use warnings;
 
 extends 'Page::ring::user';
 
@@ -155,9 +154,15 @@ sub edit {
 
         my $button_position;
 
-        my ( $button_link, ) = map { $button_position++; length > 0 ? { position => $button_position, button_link => $_, } : (); } $self->request()->parameters()->get_all( 'd2-button_link', );
+        my @button_links = $self->request()->parameters()->get_all( 'd2-button_link', );
 
-        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        for my $button_link (@button_links) {
+            ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI} ) }xms, );
+        }
+
+        my ( $button_link, ) = map { $button_position++; length > 0 ? { position => $button_position, button_link => $_, } : (); } @button_links;
+
+        my $each_array = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
         while ( my ( $button_id, $button_text, ) = $each_array->() ) {
 
             if ( $button_id eq q{} ) {
