@@ -642,5 +642,20 @@ h2 {
 	}
 }
 .btn-hide {
-	display: none;
+	visibility: invisible;
+	height: 0;
+	margin: 0;
+	width: 0;
+	padding: 0;
+	border: 0;
+	text-shadow: none;
+	/* height: 0;
+	width: 0;
+	text-shadow: none;
+	background: none;
+	background-color: transparent;
+	color: transparent;
+	text-indent: -99999em;
+	border: none;
+	border-color: none; */
 }
