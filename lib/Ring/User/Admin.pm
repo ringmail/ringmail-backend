@@ -1,7 +1,7 @@
 package Ring::User::Admin;
 
-use Moose::Role;
 use constant::boolean;
+use Moose::Role;
 use Note::Row;
 
 has is_admin => ( is => 'rw', isa => 'Bool', default => FALSE, );
