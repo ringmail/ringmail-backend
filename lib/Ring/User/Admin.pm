@@ -14,9 +14,20 @@ sub role_admin {
 
     my $ring_user_admin_row = Note::Row->new( ring_user_admin => { user_id => $user_id, }, );
 
-    $self->is_admin( defined $ring_user_admin_row->id() ? TRUE : FALSE, );
+    if ( defined $ring_user_admin_row->id() ) {
 
-    return TRUE;
+        $self->is_admin( TRUE, );
+
+        return TRUE;
+    }
+    else {
+
+        $self->is_admin( FALSE, );
+
+        return FALSE;
+    }
+
+    return FALSE;
 }
 
 1;
