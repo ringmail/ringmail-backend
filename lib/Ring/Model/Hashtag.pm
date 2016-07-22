@@ -1,20 +1,14 @@
 package Ring::Model::Hashtag;
 
-use strict;
-use warnings;
-use constant::boolean;
-
-use Moose;
-use Regexp::Common 'URI';
-use Try::Tiny;
 use Carp 'croak';
+use constant::boolean;
 use English '-no_match_vars';
-
+use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
-
-use Ring::User;
+use Regexp::Common 'URI';
+use Try::Tiny;
 
 sub validate_tag {
     my ( @args, ) = @_;
@@ -116,7 +110,7 @@ sub delete {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $hashtag_row = Note::Row->new(
+    my $hashtag_row = 'Note::Row'->new(
         ring_hashtag => {
             id      => $param->{id},
             user_id => $param->{user_id},
@@ -138,9 +132,11 @@ sub delete {
 }
 
 sub update {
-    my ( $self, $param, ) = get_param( @_ );
+    my ( @args, ) = @_;
 
-    my $hashtag_row = Note::Row->new(
+    my ( $self, $param, ) = get_param( @args, );
+
+    my $hashtag_row = 'Note::Row'->new(
         ring_hashtag => {
             user_id => $param->{user_id},
             id      => $param->{id},
