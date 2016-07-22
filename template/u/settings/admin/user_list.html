@@ -16,6 +16,67 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>&nbsp;</h2>
+					<form method="post" action="[% page.url() %]">
+						<table class="table table-bordered table-highlight table-cart">
+							<thead>
+								<tr>
+									<th>Login</th>
+									<th>Admin</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% IF user_list.size == 0 %]
+							<tr>
+								<td colspan="2">No Users.</td>
+							</tr>
+							[% ELSE %]
+							[% pending = 0 %]
+							[% FOREACH user IN users %]
+							<tr>
+								<td>[% user.login %]</td>
+								<td>
+									[% IF user.id == user.user_id %]
+									[% page.field(
+									command => 'make_admin',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									checked => undef,
+									value => user.id,
+									},
+									) %]
+									[% ELSE %]
+									[% page.field(
+									command => 'make_admin',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									value => user.id,
+									},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							[% END %]
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'make_admin',
+									text => 'Make Admin',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</td>
+							</tr>
+							[% END %]
+							</tbody>
+						</table>
+					</form>
 				</div>
 			</div>
 		</div>

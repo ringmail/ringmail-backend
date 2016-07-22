@@ -1,6 +1,8 @@
 {
    "class" : "Page::ring::setup::admin::user_list",
-   "command" : {},
+   "command" : {
+      "make_admin" : "make_admin"
+   },
    "init" : [
       "valid_user",
       "role_admin"
