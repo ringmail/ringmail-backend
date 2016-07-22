@@ -52,7 +52,12 @@ sub load {
     my $ciphertext         = $cipher->encrypt( $paypal_data_string, );
     my $ciphertext_encoded = encode_base64 $ciphertext;
 
+    $self->role_admin();
+
+    my $is_admin = $self->is_admin();
+
     $content->{cart}                    = $cart;
+    $content->{is_admin}                = $is_admin;
     $content->{paypal_ciphertext}       = $ciphertext_encoded;
     $content->{paypal_hosted_button_id} = $config->{paypal_hosted_button_id};
     $content->{total}                   = 99.99 * scalar @{$cart};

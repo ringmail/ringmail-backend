@@ -18,10 +18,6 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $is_admin = $self->is_admin();
-
-    ::log( $is_admin ? 'Admin!' : 'Not admin.', );
-
     my $content = $self->content();
     my $user    = $self->user();
 

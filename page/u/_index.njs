@@ -6,8 +6,7 @@
       "search" : "search"
    },
    "init" : [
-      "valid_user",
-      "role_admin"
+      "valid_user"
    ],
    "template" : "u/settings/new_hashtags.html"
 }
