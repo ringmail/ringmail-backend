@@ -117,7 +117,7 @@ sub delete {
         },
     );
 
-    if ( $hashtag_row->id() ) {
+    if ( defined $hashtag_row->id() ) {
 
         $hashtag_row->delete();
 
