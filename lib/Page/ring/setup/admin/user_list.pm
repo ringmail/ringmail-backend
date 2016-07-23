@@ -1,11 +1,12 @@
 package Page::ring::setup::admin::user_list;
 
 use English '-no_match_vars';
+use List::MoreUtils 'singleton';
 use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
-use List::MoreUtils 'singleton';
+use Quantum::Superpositions qw{ any all eigenstates };
 
 extends 'Page::ring::user';
 
@@ -46,9 +47,8 @@ sub make_admin {
     my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd2-user_id', );
 
     my @users_admin_delete = singleton @users, @users_checked;
-    my @users_admin_add    = singleton @users, @users_admin;
 
-    ::log( \@users, \@users_admin, \@users_checked, \@users_admin_delete, \@users_admin_add, );
+    my @users_admin_add = eigenstates( any( @users_checked, ) != all( @users_admin, ) );
 
     for my $user_id (@users_admin_delete) {
 
