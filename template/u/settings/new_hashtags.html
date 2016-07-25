@@ -128,10 +128,14 @@
 									},
 									) %]
 									[% ELSE %]
+									[% IF hashtag.target_url.defined %]
 									[% IF hashtag.target_url.length > 35 %]
 									[% hashtag.target_url.substr( 0, 35 ) %]...
 									[% ELSE %]
 									[% hashtag.target_url %]
+									[% END %]
+									[% ELSE %]
+									&nbsp;
 									[% END %]
 									[% END %]
 								</td>
