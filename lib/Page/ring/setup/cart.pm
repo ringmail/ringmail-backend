@@ -257,15 +257,15 @@ sub search {
 
     my $user     = $self->user();
     my $user_id  = $user->id();
-    my ( $tag, ) = ( $form_data->{hashtag} =~ m{ ( [\s\w]+ ) }xms, );
-    my ( $category_id, ) = ( $form_data->{category_id} // '' =~ m{ \A ( \d+ ) \z }xms, );
-    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // '' =~ m{ \A ( \d+ ) \z }xms );
-    my $target = $form_data->{target} // '';
+    my ( $tag, ) = ( $form_data->{hashtag} =~ m{ ( [\s\w-]+ ) }xms, );
+    my ( $category_id, ) = ( $form_data->{category_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // q{} =~ m{ \A ( \d+ ) \z }xms );
+    my $target = $form_data->{target} // q{};
 
     return if not defined $tag;
 
     $tag =~ s{$RE{ws}{crop}}{}gxms;
-    $tag =~ s{ [\s_]+ }{_}gxms;
+    $tag =~ s{ [\s_-]+ }{_}gxms;
     $tag = lc $tag;
 
     return if not length $tag > 0;
