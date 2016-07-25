@@ -257,19 +257,23 @@ sub search {
 
     my $user     = $self->user();
     my $user_id  = $user->id();
-    my ( $tag, ) = ( $form_data->{hashtag} =~ m{ ( [\s\w-]+ ) }xms, );
+    my ( $tag, ) = ( lc( $form_data->{hashtag} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
     my ( $category_id, ) = ( $form_data->{category_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // q{} =~ m{ \A ( \d+ ) \z }xms );
     my $target = $form_data->{target} // q{};
 
     return if not defined $tag;
 
-    $tag =~ s{ [_-]+ }{ }gxms;
+    $tag =~ s{ [_\#\,\-]+ }{ }gxms;
     $tag =~ s{$RE{ws}{crop}}{}gxms;
     $tag =~ s{ \s+ }{_}gxms;
-    $tag = lc $tag;
 
     return if not length $tag > 0;
+
+    if ( length $tag > 140 ) {
+
+        return;
+    }
 
     $self->form()->{hashtag} = $tag;
 
@@ -344,6 +348,73 @@ sub remove_from_cart {
     }
 
     return;
+}
+
+sub apply_coupon_code {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
+    my $hashtags = sqltable('ring_cart')->get(
+        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+        join   => 'rh.id = rc.hashtag_id',
+        where  => [
+            {   'rc.user_id' => $user_id,
+                'rh.user_id' => $user_id,
+            } => and => { 'rc.transaction_id' => undef, },
+        ],
+    );
+
+    my ( $hashtag, ) = ( @{$hashtags}, );
+
+    my $account_source      = account_id('coupon_source');
+    my $account_destination = account_id('coupon_destination');
+
+    my $transaction_id = transaction(
+        acct_dst => $account_destination,
+        acct_src => $account_source,
+        amount   => 99.99,
+        tx_type  => tx_type_id('coupon'),
+        user_id  => $user_id,
+    );
+
+    my $hashtag_id = $hashtag->{id};    # TODO
+
+    my $cart_row = Note::Row->new(
+        ring_cart => {
+            hashtag_id => $hashtag_id,
+            user_id    => $user_id,
+        },
+    );
+
+    my $hashtag_row = Note::Row->new(
+        ring_hashtag => {
+            id      => $hashtag_id,
+            user_id => $user_id,
+        },
+    );
+
+    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
+        $cart_row->update(
+            {
+
+                transaction_id => $transaction_id,
+
+            },
+        );
+
+        $hashtag_row->update(
+            {
+
+                paid => TRUE,
+
+            },
+        );
+    }
+
+    return $self->redirect('/u/processing');
 }
 
 1;
