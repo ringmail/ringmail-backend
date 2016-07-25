@@ -42,95 +42,91 @@ sub load {
 sub add {
     my ( $self, $form_data, $args ) = @_;
 
-    my $user           = $self->user();
-    my $ringpage_model = Ring::Model::RingPage->new();
-    my $ringpage_name  = $form_data->{ringpage};
+    my $user               = $self->user();
+    my $ringpage_model     = Ring::Model::RingPage->new();
+    my ( $ringpage_name, ) = ( $form_data->{ringpage} =~ m{ \A ( [\w\s]+ ) \z }xms, );
+    my ( $template_name, ) = ( $form_data->{template_name} =~ m{ \A ( \w+ ) \z }xms, );
 
-    if ( $ringpage_model->validate_ringpage( ringpage => $ringpage_name, ) ) {
+    my ( $hashtag_id, ) = ( $form_data->{hashtag_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
 
-        if ( $ringpage_model->check_exists( ringpage => $ringpage_name, ) ) {
-            ::log('Dup');
+    if ( defined $ringpage_name ) {
+
+        my $template_model = Ring::Model::Template->new( caller => $self, );
+        my $templates = $template_model->list();
+
+        my $template_structure = $templates->{$template_name}->{structure};
+
+        for my $field ( @{ $template_structure->{fields} } ) {
+
+            my $name    = $field->{name};
+            my $value   = $form_data->{$name};
+            my $default = $field->{default};
+
+            $field->{value} = $value // $default;
         }
-        else {
 
-            my $template_name = $form_data->{template_name};
+        my $ringpage = $ringpage_model->create(
+            fields        => encode_json $template_structure->{fields},
+            ringpage      => $ringpage_name,
+            template_name => $template_name,
+            user_id       => $user->id(),
+        );
+        if ( defined $ringpage ) {
 
-            my $template_model = Ring::Model::Template->new( caller => $self, );
-            my $templates = $template_model->list();
+            my $each_array = each_arrayref [ 'Call', ], [ 'ring://' . $user->row()->data( 'login', ), ];
+            while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
-            my $template_structure = $templates->{$template_name}->{structure};
+                next if $button_text eq q{} or $button_link eq q{};
 
-            for my $field ( @{ $template_structure->{fields} } ) {
-
-                my $name    = $field->{name};
-                my $value   = $form_data->{$name};
-                my $default = $field->{default};
-
-                $field->{value} = $value // $default;
+                my $row = Note::Row::create(
+                    ring_button => {
+                        button      => $button_text,
+                        ringpage_id => $ringpage->id(),
+                        uri         => $button_link,
+                        user_id     => $user->id(),
+                    },
+                );
             }
 
-            my $ringpage = $ringpage_model->create(
-                fields        => encode_json $template_structure->{fields},
-                ringpage      => $ringpage_name,
-                template_name => $template_name,
-                user_id       => $user->id(),
-            );
-            if ( defined $ringpage ) {
+            if ( defined $hashtag_id ) {
 
-                my $each_array = each_arrayref [ 'Call', ], [ 'ring://' . $user->row()->data( 'login', ), ];
-                while ( my ( $button_text, $button_link, ) = $each_array->() ) {
+                my $hashtag_row = Note::Row->new(
+                    ring_hashtag => {
+                        id      => $hashtag_id,
+                        user_id => $user->id(),
+                    },
+                );
 
-                    next if $button_text eq q{} or $button_link eq q{};
+                my $hashtag_row_data = $hashtag_row->data();
 
-                    my $row = Note::Row::create(
-                        ring_button => {
-                            button      => $button_text,
+                if ( defined $hashtag_row ) {
+
+                    my $hashtag_model = 'Ring::Model::Hashtag'->new();
+
+                    if ($hashtag_model->update(
+                            category_id => $hashtag_row_data->{category_id},
+                            id          => $hashtag_id,
                             ringpage_id => $ringpage->id(),
-                            uri         => $button_link,
                             user_id     => $user->id(),
-                        },
-                    );
-                }
-
-                my ( $hashtag_id, ) = ( $form_data->{hashtag_id} =~ m{ \A ( \d+ ) \z }xms, );
-
-                if ( defined $hashtag_id ) {
-
-                    my $hashtag_row = Note::Row->new(
-                        ring_hashtag => {
-                            id      => $hashtag_id,
-                            user_id => $user->id(),
-                        },
-                    );
-
-                    my $hashtag_row_data = $hashtag_row->data();
-
-                    if ( defined $hashtag_row ) {
-
-                        my $hashtag_model = 'Ring::Model::Hashtag'->new();
-
-                        if ($hashtag_model->update(
-                                category_id => $hashtag_row_data->{category_id},
-                                id          => $hashtag_id,
-                                ringpage_id => $ringpage->id(),
-                                user_id     => $user->id(),
-                            )
-                            )
-                        {
-                            # display confirmation
-                        }
-                        else {
-
-                            # failed
-                        }
-
+                        )
+                        )
+                    {
+                        # display confirmation
                     }
+                    else {
+
+                        # failed
+                    }
+
                 }
-
-                return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
-
             }
+
+            return $self->redirect( $self->url( path => '/u/ringpage', query => { ringpage_id => $ringpage->id(), }, ), );
+
         }
+    }
+    else {
+
     }
 
     return;
@@ -146,7 +142,7 @@ sub remove {
 
         my $ringpage_model = Ring::Model::RingPage->new();
 
-        if ($ringpage_model->delete(
+        if ($ringpage_model->remove(
                 id      => $ringpage_id,
                 user_id => $user->id(),
             )
