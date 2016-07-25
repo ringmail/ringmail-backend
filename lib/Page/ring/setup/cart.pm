@@ -264,8 +264,9 @@ sub search {
 
     return if not defined $tag;
 
+    $tag =~ s{ [_-]+ }{ }gxms;
     $tag =~ s{$RE{ws}{crop}}{}gxms;
-    $tag =~ s{ [\s_-]+ }{_}gxms;
+    $tag =~ s{ \s+ }{_}gxms;
     $tag = lc $tag;
 
     return if not length $tag > 0;
