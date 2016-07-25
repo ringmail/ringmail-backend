@@ -109,13 +109,14 @@
 								<td>$99.99</td>
 								<td>
 									[% pending = pending + 1 %]
-									<!-- [% page.field(
+									[% page.field(
 									command => 'remove_from_cart',
-									type => 'radio',
+									type => 'checkbox',
 									name => 'hashtag_id',
+									opts => {
 									value => hashtag.id,
-									) %] -->
-									<input type="checkbox" name="d4-hashtag_id" value="[% hashtag.id %]" />
+									},
+									) %]
 								</td>
 							</tr>
 							[% END %]
