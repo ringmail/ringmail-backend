@@ -33,7 +33,16 @@
 							[% pending = 0 %]
 							[% FOREACH user IN users %]
 							<tr>
-								<td>[% user.login %]</td>
+								<td>
+									[% page.link(
+									command => 'login',
+									text => user.login,
+									args => [ user.id, ],
+									opts => {
+									onclick => "return confirm( 'Really login as $user.login?' );",
+									},
+									) %]
+								</td>
 								<td>
 									[% IF user.id == user.user_id %]
 									[% page.field(

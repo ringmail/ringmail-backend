@@ -1,5 +1,6 @@
 package Page::ring::setup::admin::user_list;
 
+use constant::boolean;
 use English '-no_match_vars';
 use List::MoreUtils 'singleton';
 use Moose;
@@ -66,6 +67,26 @@ sub make_admin {
         my $user_admin_row = 'Note::Row::create'->( ring_user_admin => { user_id => $user_id, }, );
 
     }
+
+    return;
+}
+
+sub login {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my ( $user_id, ) = ( @{$args}, );
+
+    my $session = $self->session();
+
+    $session->{login_ringmail} = $user_id;
+
+    $self->session_write();
+
+    my $user = 'Ring::User'->new( $session->{login_ringmail}, );
+
+    $self->user( $user, );
+
+    $self->redirect( $self->url( path => '/u', ), );
 
     return;
 }
