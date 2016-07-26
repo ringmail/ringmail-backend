@@ -120,7 +120,7 @@ sub edit {
         }
         elsif ( defined $form_value ) {
 
-            if ( $field->{text_type} eq 'url' ) {
+            if ( defined $field->{text_type} and $field->{text_type} eq 'url' ) {
 
                 if ( not $form_value =~ m{ \A http(s)?:// }xmsi and length $form_value > 0 ) {
 
@@ -169,14 +169,14 @@ sub edit {
             ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI} ) }xms, );
         }
 
-        my ( $button_link, ) = map { $button_position++; length > 0 ? { position => $button_position, button_link => $_, } : (); } @button_links;
+        my ( $button_link, ) = map { $button_position++; ( defined and length > 0 ) ? { position => $button_position, button_link => $_, } : (); } @button_links;
 
         my $each_array = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
         while ( my ( $button_id, $button_text, ) = $each_array->() ) {
 
-            if ( $button_id eq q{} ) {
+            if ( not defined $button_id or $button_id eq q{} ) {
 
-                next if $button_text eq q{} or not defined $button_link;
+                next if not defined $button_text or $button_text eq q{} or not defined $button_link;
 
                 my $button_row = Note::Row::create(
                     ring_button => {

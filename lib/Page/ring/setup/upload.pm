@@ -38,11 +38,7 @@ sub load {
     if ( exists $uploads->{$field} ) {
         my $file = $uploads->{$field}->path();
 
-        ::log( $file, );
-
         my $ringpage_id = $form->{ringpage_id};
-
-        ::log( $ringpage_id, );
 
         my $ringpage_row = Note::Row->new(
             ring_page => {
@@ -107,8 +103,6 @@ sub load {
         # remove '?...' args for public URLs
         $url =~ s{ [?] .* \z }{}xms;
 
-        ::log( $url, );
-
         for my $field ( @{$fields} ) {
 
             my $name = $field->{name};
@@ -117,8 +111,6 @@ sub load {
 
             $field->{value} = qq{$url};
         }
-
-        ::log( $fields, );
 
         my $ringpage_model = 'Ring::Model::RingPage'->new();
 
