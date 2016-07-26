@@ -126,6 +126,8 @@ sub edit {
 
                     $form_value = "http://$form_value";
 
+                    ( $form_value, ) = ( $form_value =~ m{ ( $RE{URI} ) }xms, );
+
                 }
 
             }
