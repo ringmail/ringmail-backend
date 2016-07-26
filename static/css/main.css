@@ -316,7 +316,7 @@ textarea {
 	position: relative;
 	display: block;
 	float: right;
-	clear: right
+	clear: right;
 }
 #main-nav {
 	position: relative;
@@ -618,6 +618,49 @@ h2 {
 	height: 18px;
 	background: #0077c2;
 }
+.nav-toggle {
+	clear:right;
+	display: none;
+	position: relative;
+	float: right;
+	padding: 6px 10px 9px;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	margin-left: 20px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+.nav-toggle .toggle-bar:first-of-type {
+	margin-top: 0;
+}
+.nav-toggle .sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+.nav-toggle .toggle-bar {
+	background-color: #888;
+}
+.nav-toggle .toggle-bar {
+	display: block;
+	width: 22px;
+	height: 2px;
+	border-radius: 1px;
+	margin-top: 4px;
+}
+.nav-mine-m {
+}
+.nav-mine-collapse {
+	clear: left;
+	float: left;
+}
 @media (max-width: 1200px) {
 	.logo-inputs input:last-of-type {
 		width: 100%;
@@ -626,19 +669,16 @@ h2 {
 .nav {
 	float: right;
 }
-@media (max-width: 500px) {
-	#header {
-		height: 130px;
+@media (max-width: 690px) {
+	#header .container {
+		height: auto;
+		overflow: visible;
 	}
 	.nav-mine {
-		float: none;
-		position: absolute;
-		top: 89px;
-		margin: 0 7.75%;
+		display: none;
 	}
-	.nav {
-		float: none;
-		margin: 0 auto;
+	.nav-toggle {
+		display: block;
 	}
 }
 .btn-hide {
@@ -658,4 +698,50 @@ h2 {
 	text-indent: -99999em;
 	border: none;
 	border-color: none; */
+}
+@media (max-width: 690px) {
+	#main-nav > li {
+		display: block;
+		float: none;
+	}
+	#main-nav > li > a {
+		padding: 6px 4px 10px;
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: .025em;
+		color: #ffffff;
+		background: transparent;
+		border: none;
+		-moz-background-clip: padding;
+		-webkit-background-clip: padding-box;
+		background-clip: padding-box;
+		text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+	}
+	#main-nav > li > a,
+	#main-nav > li > a:hover,
+	#main-nav > li.open > a {
+		color: #333;
+		text-decoration: none;
+		background-color: transparent;
+		background-image: none;
+		border: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+	#main-nav > li > a:hover,
+	#main-nav > li.open > a {
+		background-color: transparent;
+	}
+	#main-nav > li.active > a {
+		color: #0077c2;
+		background-color: transparent;
+		background-image: none;
+		filter: none !important;
+		border: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+		text-shadow: none;
+	}
 }
