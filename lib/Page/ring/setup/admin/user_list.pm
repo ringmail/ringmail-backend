@@ -45,7 +45,7 @@ sub make_admin {
 
     my @users         = map { $ARG->{id} + 0 } @{$users};
     my @users_admin   = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
-    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd2-user_id', );
+    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd3-user_id', );
 
     my @users_admin_delete = singleton @users, @users_checked;
 
@@ -68,7 +68,7 @@ sub make_admin {
 
     }
 
-    return;
+    return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
 }
 
 sub login {
