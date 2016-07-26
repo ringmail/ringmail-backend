@@ -4,9 +4,26 @@ use constant::boolean;
 use Moose::Role;
 use Note::Row;
 
-has is_admin => ( is => 'rw', isa => 'Bool', default => FALSE, );
+has is_admin => ( is => 'rw', isa => 'Bool', );
 
 sub role_admin {
+    my ( $self, ) = @_;
+
+    $self->check_admin();
+
+    if ( $self->is_admin() ) {
+
+        return TRUE;
+    }
+    else {
+
+        $self->redirect( $self->url( path => '/login', ), );
+    }
+
+    return;
+}
+
+sub check_admin {
     my ( $self, ) = @_;
 
     my $user    = $self->user();
@@ -17,17 +34,13 @@ sub role_admin {
     if ( defined $ring_user_admin_row->id() ) {
 
         $self->is_admin( TRUE, );
-
-        return TRUE;
     }
     else {
 
         $self->is_admin( FALSE, );
-
-        return FALSE;
     }
 
-    return FALSE;
+    return $self->is_admin();
 }
 
 1;
