@@ -124,7 +124,7 @@ sub edit {
 
                 if ( not $form_value =~ m{ \A http(s)?:// }xmsi and length $form_value > 0 ) {
 
-                    $form_value = 'http://' . $form_value;
+                    $form_value = "http://$form_value";
 
                 }
 
@@ -157,6 +157,13 @@ sub edit {
         my @button_links = $self->request()->parameters()->get_all( 'd2-button_link', );
 
         for my $button_link (@button_links) {
+
+            if ( not $button_link =~ m{ \A http(s)?:// }xmsi and length $button_link > 0 ) {
+
+                $button_link = "http://$button_link";
+
+            }
+
             ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI} ) }xms, );
         }
 
