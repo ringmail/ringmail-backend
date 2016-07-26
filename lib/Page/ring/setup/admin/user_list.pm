@@ -78,7 +78,8 @@ sub login {
 
     my $session = $self->session();
 
-    $session->{login_ringmail} = $user_id;
+    $session->{login_ringmail}          = $user_id;
+    $session->{login_ringmail_original} = $self->user()->id();
 
     $self->session_write();
 

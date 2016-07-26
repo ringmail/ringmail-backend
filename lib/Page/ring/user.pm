@@ -330,11 +330,26 @@ sub valid_user {
 }
 
 sub cmd_logout {
-    my ($obj) = @_;
-    my $sd = $obj->session();
-    delete $sd->{'login_ringmail'};
-    $obj->session_write();
-    $obj->redirect( $obj->url( 'path' => '/' ) );
+    my ( $self, ) = @_;
+
+    my $sd = $self->session();
+
+    if ( $sd->{login_ringmail_original} ) {
+
+        $sd->{login_ringmail} = $sd->{login_ringmail_original};
+
+        delete $sd->{login_ringmail_original};
+        $self->session_write();
+        $self->redirect( $self->url( path => '/u', ), );
+
+    }
+    else {
+
+        delete $sd->{login_ringmail};
+        $self->session_write();
+        $self->redirect( $self->url( path => '/', ), );
+
+    }
 
     return;
 }
