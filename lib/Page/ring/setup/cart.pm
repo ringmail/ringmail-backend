@@ -356,62 +356,76 @@ sub apply_coupon_code {
     my $user    = $self->user();
     my $user_id = $user->id();
 
-    my $hashtags = sqltable('ring_cart')->get(
-        select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
-        table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
-        join   => 'rh.id = rc.hashtag_id',
-        where  => [
-            {   'rc.user_id' => $user_id,
-                'rh.user_id' => $user_id,
-            } => and => { 'rc.transaction_id' => undef, },
-        ],
-    );
+    my ( $coupon_code, ) = ( $form_data->{coupon_code} =~ m{ \A ( [[:alpha:]]{4} [[:digit:]]{4} ) \z }xms, );
 
-    my ( $hashtag, ) = ( @{$hashtags}, );
-
-    my $account_source      = account_id('coupon_source');
-    my $account_destination = account_id('coupon_destination');
-
-    my $transaction_id = transaction(
-        acct_dst => $account_destination,
-        acct_src => $account_source,
-        amount   => 99.99,
-        tx_type  => tx_type_id('coupon'),
-        user_id  => $user_id,
-    );
-
-    my $hashtag_id = $hashtag->{id};    # TODO
-
-    my $cart_row = Note::Row->new(
-        ring_cart => {
-            hashtag_id => $hashtag_id,
-            user_id    => $user_id,
+    my $coupon_row = Note::Row->new(
+        coupon => {
+            code           => $coupon_code,
+            transaction_id => undef,
+            user_id        => undef,
         },
     );
 
-    my $hashtag_row = Note::Row->new(
-        ring_hashtag => {
-            id      => $hashtag_id,
-            user_id => $user_id,
-        },
-    );
+    if ( defined $coupon_row->id() ) {
 
-    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
-        $cart_row->update(
-            {
+        my $account_source      = account_id('coupon_source');
+        my $account_destination = account_id('coupon_destination');
+        my $tx_type_id          = tx_type_id('coupon');
 
-                transaction_id => $transaction_id,
+        my $transaction_id = transaction(
+            acct_dst => $account_destination,
+            acct_src => $account_source,
+            amount   => 99.99,
+            tx_type  => $tx_type_id,
+            user_id  => $user_id,
+        );
 
+        my $hashtags = sqltable('ring_cart')->get(
+            select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+            table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+            join   => 'rh.id = rc.hashtag_id',
+            where  => [
+                {   'rc.user_id' => $user_id,
+                    'rh.user_id' => $user_id,
+                } => and => { 'rc.transaction_id' => undef, },
+            ],
+        );
+
+        my ( $hashtag, ) = ( @{$hashtags}, );
+
+        my $hashtag_id = $hashtag->{id};
+
+        my $hashtag_row = Note::Row->new(
+            ring_hashtag => {
+                id      => $hashtag_id,
+                user_id => $user_id,
             },
         );
 
-        $hashtag_row->update(
-            {
+        if ( defined $hashtag_row->id() ) {
 
-                paid => TRUE,
+            my $cart_row = Note::Row->new(
+                ring_cart => {
+                    hashtag_id => $hashtag_id,
+                    user_id    => $user_id,
+                },
+            );
 
-            },
-        );
+            if ( defined $cart_row->id() ) {
+
+                if ( $cart_row->update( { transaction_id => $transaction_id, }, ) ) {
+
+                    if ( $hashtag_row->update( { paid => TRUE, }, ) ) {
+
+                        $coupon_row->update(
+                            {   transaction_id => $transaction_id,
+                                user_id        => $user_id,
+                            },
+                        );
+                    }
+                }
+            }
+        }
     }
 
     return $self->redirect('/u/processing');

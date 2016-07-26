@@ -16,6 +16,38 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>&nbsp;</h2>
+					[% page.link(
+					command => 'add',
+					text => 'Add Coupon',
+					opts => {
+					class => 'btn btn-primary',
+					},
+					) %]
+				</div>
+				<div class="span12">
+					<h2>Coupons</h2>
+					<table class="table table-bordered table-highlight">
+						<thead>
+							<tr>
+								<th>Code</th>
+								<th>Redeemed</th>
+							</tr>
+						</thead>
+						<tbody>
+						[% FOREACH coupon IN coupons %]
+						<tr>
+							<td>[% coupon.code %]</td>
+							<td>
+								[% IF coupon.transaction_id.defined %]
+								Yes
+								[% ELSE %]
+								No
+								[% END %]
+							</td>
+						</tr>
+						[% END %]
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
