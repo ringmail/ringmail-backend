@@ -72,7 +72,7 @@ sub load
 					'type' => 'did',
 					'did' => $dest,
 				);
-				if (defined $target->id())
+				if (defined $target)
 				{
 					$to_user = $target->data('user_id');
 					$target = $target->id();
