@@ -41,7 +41,7 @@ sub load {
 sub add {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $ringpage_name, ) = ( $form_data->{ringpage} =~ m{ \A ( [\w\s]+ ) \z }xms, );
+    my ( $ringpage_name, ) = ( $form_data->{ringpage_name} =~ m{ \A ( [\w\s]+ ) \z }xms, );
     my ( $template_name, ) = ( $form_data->{template_name} =~ m{ \A ( \w+ ) \z }xms, );
 
     my ( $hashtag_id, ) = ( $form_data->{hashtag_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
@@ -128,8 +128,8 @@ sub add {
     }
     else {
 
-        $self->form()->{ringpage}  = $form_data->{ringpage};
-        $self->value()->{ringpage} = $form_data->{ringpage};
+        $self->form()->{ringpage_name} = $form_data->{ringpage_name};
+        $self->value()->{error}        = "RingPage name '$form_data->{ringpage_name}' is invalid.";
 
     }
 

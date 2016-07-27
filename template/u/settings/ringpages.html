@@ -28,28 +28,29 @@
 						[% END %]
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<label class="control-label" for="ringpage">Title:</label>
+								<label class="control-label" for="ringpage_name">Title:</label>
 								<div class="controls">
 									<div class="input-prepend">
 										[% page.field(
 										command => 'add',
 										type => 'text',
-										name => 'ringpage',
-										value => page.form.ringpage,
+										name => 'ringpage_name',
+										value => page.form.ringpage_name,
 										opts => {
-										id => 'ringpage',
+										id => 'ringpage_name',
 										style => 'width: 179px',
+										maxlength => 64,
 										},
 										) %]
 										[% IF page.value.error %]
 										<div>
-											<span class="error" for="ringpage" style="display: inline;">[% page.value.error %]</span>
+											<span class="error" for="ringpage_name" style="display: inline;">[% page.value.error %]</span>
 										</div>
 										[% END %]
 									</div>
 								</div>
 							</div>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
+							<div class="control-group">
 								<label class="control-label" for="template">Template:</label>
 								<div class="controls">
 									[% page.field(
@@ -61,11 +62,6 @@
 									id => 'template_name',
 									},
 									) %]
-									[% IF page.value.error %]
-									<div>
-										<span class="error" for="template" style="display: inline;">[% page.value.error %]</span>
-									</div>
-									[% END %]
 								</div>
 							</div>
 							<div class="control-group">
