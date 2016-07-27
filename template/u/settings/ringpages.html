@@ -17,7 +17,7 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Create RingPage</h2>
-					<form method="post" action="[% page.url( query => { hashtag_id => page.form.hashtag_id, }, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<form method="post" action="[% page.url( query => page.form.hashtag_id.defined ? { hashtag_id => page.form.hashtag_id, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						[% IF page.form.hashtag_id.defined %]
 						[% page.field(
 						command => 'add',

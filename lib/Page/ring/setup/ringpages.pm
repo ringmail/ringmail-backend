@@ -1,10 +1,12 @@
 package Page::ring::setup::ringpages;
 
 use English '-no_match_vars';
+use HTML::Escape 'escape_html';
 use JSON::XS 'encode_json';
 use List::MoreUtils 'each_arrayref';
 use Moose;
 use Note::Param;
+use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::Model::Template;
@@ -41,10 +43,9 @@ sub load {
 sub add {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $ringpage_name, ) = ( $form_data->{ringpage_name} =~ m{ \A ( [\w\s]+ ) \z }xms, );
-    my ( $template_name, ) = ( $form_data->{template_name} =~ m{ \A ( \w+ ) \z }xms, );
-
-    my ( $hashtag_id, ) = ( $form_data->{hashtag_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $ringpage_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{ringpage_name} ) ) =~ m{ \A ( [[:alpha:][:digit:][:punct:][:space:]]+ ) \z }xms, );
+    my ( $template_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{template_name} ) ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $hashtag_id, )    = ( escape_html( $RE{ws}{crop}->subs( $form_data->{hashtag_id} // q{} ) ) =~ m{ \A ( \d+ ) \z }xms, );
 
     if ( defined $ringpage_name ) {
 
@@ -57,11 +58,11 @@ sub add {
 
         for my $field ( @{ $template_structure->{fields} } ) {
 
-            my $name    = $field->{name};
-            my $value   = $form_data->{$name};
-            my $default = $field->{default};
+            my $name       = $field->{name};
+            my $form_value = defined( $form_data->{$name} ) ? escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) ) : undef;
+            my $default    = $field->{default};
 
-            $field->{value} = $value // $default;
+            $field->{value} = $form_value // $default;
         }
 
         my $ringpage_model = Ring::Model::RingPage->new();

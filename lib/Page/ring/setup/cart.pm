@@ -9,8 +9,6 @@ use Note::Payment;
 use Note::SQL::Table 'sqltable';
 use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
-use strict;
-use warnings;
 
 extends 'Page::ring::user';
 

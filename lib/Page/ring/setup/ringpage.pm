@@ -9,6 +9,7 @@ use Moose;
 use Note::Param;
 use Note::SQL::Table 'sqltable';
 use Regexp::Common 'URI';
+use Regexp::Common 'whitespace';
 use Ring::Model::RingPage;
 use Ring::Model::Template;
 
@@ -111,7 +112,7 @@ sub edit {
     for my $field ( @{ $template_structure->{fields} } ) {
 
         my $name       = $field->{name};
-        my $form_value = escape_html $form_data->{$name};
+        my $form_value = escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) );
 
         if ( defined $field->{internal} and $field->{internal} == TRUE ) {
 
