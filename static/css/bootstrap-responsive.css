@@ -890,7 +890,7 @@
     margin: 0;
   }
   .modal.fade {
-    top: -100px;
+    top: -100%;
   }
   .modal.fade.in {
     top: 20px;

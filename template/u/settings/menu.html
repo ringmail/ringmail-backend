@@ -21,5 +21,26 @@
 				[% END %]
 			</ul>
 		</div>
+		<div class="panel-heading" role="tab" id="mobile-nav">
+			<a class="nav-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="toggle-bar"></span>
+				<span class="toggle-bar"></span>
+				<span class="toggle-bar"></span>
+			</a>
+		</div>
+		<div id="collapseOne" class="panel-collapse collapse nav-mine-collapse" role="tabpanel" aria-labelledby="mobile-nav">
+			<div class="nav-mine-m">
+				<ul id="main-nav" class="nav">
+					<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u">Hashtags</a></li>
+					<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
+					<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
+					[% IF is_admin %]
+					<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>
+					<li class="nav-icon[% IF menu_settings == 'admin/coupons' %] active[% END %]"><a href="/u/admin/coupons">Coupons</a></li>
+					[% END %]
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>
