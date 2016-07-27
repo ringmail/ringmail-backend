@@ -8,8 +8,6 @@ use Note::Param;
 use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::Model::Template;
-use strict;
-use warnings;
 
 extends 'Page::ring::user';
 
@@ -19,7 +17,13 @@ sub load {
     my ( $self, $param, ) = get_param( @args, );
 
     my $content = $self->content();
+    my $form    = $self->form();
     my $user    = $self->user();
+
+    my $user_id = $user->id();
+
+    my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpages = $ringpage_model->list( user_id => $user_id, );
 
     my $template = Ring::Model::Template->new( caller => $self, );
     my $templates = $template->list();
@@ -28,28 +32,23 @@ sub load {
 
     push @templates, map { [ $templates->{$ARG}->{title} => $ARG, ]; } sort keys $templates;
 
-    $content->{template_list}       = \@templates;
-    $content->{template_sel}        = 0;
-    $content->{template_opts}->{id} = 'template_name';
-
-    my $ringpage_model = Ring::Model::RingPage->new();
-    my $ringpages = $ringpage_model->list( user_id => $user->id(), );
-    $content->{ringpages} = $ringpages;
+    $content->{ringpages}     = $ringpages;
+    $content->{template_list} = \@templates;
 
     return $self->SUPER::load( $param, );
 }
 
 sub add {
-    my ( $self, $form_data, $args ) = @_;
+    my ( $self, $form_data, $args, ) = @_;
 
-    my $user               = $self->user();
-    my $ringpage_model     = Ring::Model::RingPage->new();
     my ( $ringpage_name, ) = ( $form_data->{ringpage} =~ m{ \A ( [\w\s]+ ) \z }xms, );
     my ( $template_name, ) = ( $form_data->{template_name} =~ m{ \A ( \w+ ) \z }xms, );
 
     my ( $hashtag_id, ) = ( $form_data->{hashtag_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
 
     if ( defined $ringpage_name ) {
+
+        my $user = $self->user();
 
         my $template_model = Ring::Model::Template->new( caller => $self, );
         my $templates = $template_model->list();
@@ -64,6 +63,8 @@ sub add {
 
             $field->{value} = $value // $default;
         }
+
+        my $ringpage_model = Ring::Model::RingPage->new();
 
         my $ringpage = $ringpage_model->create(
             fields        => encode_json $template_structure->{fields},
@@ -127,6 +128,9 @@ sub add {
     }
     else {
 
+        $self->form()->{ringpage}  = $form_data->{ringpage};
+        $self->value()->{ringpage} = $form_data->{ringpage};
+
     }
 
     return;
@@ -136,6 +140,9 @@ sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user = $self->user();
+
+    my $user_id = $user->id();
+
     my ( $ringpage_id, ) = @{$args};
 
     if ( $ringpage_id =~ m{ \A ( \d+ ) \z }xms ) {
@@ -144,7 +151,7 @@ sub remove {
 
         if ($ringpage_model->remove(
                 id      => $ringpage_id,
-                user_id => $user->id(),
+                user_id => $user_id,
             )
             )
         {

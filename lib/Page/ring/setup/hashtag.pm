@@ -26,7 +26,7 @@ sub load {
     my $hashtag_id = $form->{hashtag_id};
 
     if ( not $hashtag_id =~ m{ \A \d+ \z }xms ) {
-        return $self->redirect('/u/hashtags');
+        return $self->redirect('/u');
     }
 
     my $hashtag = Note::Row->new(
@@ -37,7 +37,7 @@ sub load {
     );
 
     if ( not defined $hashtag->id() ) {
-        return $self->redirect('/u/hashtags');
+        return $self->redirect('/u');
     }
 
     my $category_model = Ring::Model::Category->new();
