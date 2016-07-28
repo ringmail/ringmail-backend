@@ -1,13 +1,16 @@
 package Page::ring::setup::admin::user_list;
 
 use constant::boolean;
+use Email::Valid;
 use English '-no_match_vars';
+use HTML::Escape 'escape_html';
 use List::MoreUtils 'singleton';
 use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Quantum::Superpositions qw{ any all eigenstates };
+use Regexp::Common 'whitespace';
 
 extends 'Page::ring::user';
 
@@ -45,7 +48,7 @@ sub make_admin {
 
     my @users         = map { $ARG->{id} + 0 } @{$users};
     my @users_admin   = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
-    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd3-user_id', );
+    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd4-user_id', );
 
     my @users_admin_delete = singleton @users, @users_checked;
 
@@ -90,6 +93,32 @@ sub login {
     $self->redirect( $self->url( path => '/u', ), );
 
     return;
+}
+
+sub add_user {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my ( $email, ) = ( $form_data->{email}, );
+
+    if (Email::Valid->address(
+            -address  => $email,
+            -mxcheck  => TRUE,
+            -tldcheck => TRUE,
+        )
+        )
+    {
+
+        ::log( $email, );
+
+    }
+    else {
+
+        $self->form()->{email}  = $form_data->{email};
+        $self->value()->{error} = "Email '$form_data->{email}' is invalid.";
+
+    }
+
+    return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
 }
 
 1;

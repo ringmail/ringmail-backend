@@ -1,6 +1,7 @@
 {
    "class" : "Page::ring::setup::admin::user_list",
    "command" : {
+      "add_user" : "add_user",
       "login" : "login",
       "make_admin" : "make_admin"
    },
