@@ -426,7 +426,7 @@ sub apply_coupon_code {
         }
     }
 
-    return $self->redirect('/u/processing');
+    return $self->redirect('/u');
 }
 
 1;
