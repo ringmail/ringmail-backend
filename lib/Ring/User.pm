@@ -46,6 +46,19 @@ has 'row' => (
 	},
 );
 
+has email => (
+    is      => 'rw',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub {
+        my ( $self, ) = @_;
+
+        my $user_row = $self->row();
+
+        return $user_row->data( 'login', );
+    },
+);
+
 our %usercheck = (
 	'first_name' => new Note::Check(
 		'type' => 'regex',
