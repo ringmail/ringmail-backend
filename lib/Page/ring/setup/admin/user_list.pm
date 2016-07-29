@@ -11,6 +11,7 @@ use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Quantum::Superpositions qw{ any all eigenstates };
+use Ref::Util 'is_arrayref';
 use Regexp::Common 'whitespace';
 use Ring::API;
 use String::Random 'random_regex';
@@ -101,9 +102,13 @@ sub login {
 sub add_user {
     my ( $self, $form_data, $args, ) = @_;
 
+    my $form = $self->form();
+
     my ( $email, ) = ( $form_data->{email}, );
 
-    if (Email::Valid->address(
+    $form->{email} = $email;
+
+    if (my $email_valid = Email::Valid->address(
             -address  => $email,
             -mxcheck  => TRUE,
             -tldcheck => TRUE,
@@ -111,30 +116,47 @@ sub add_user {
         )
     {
 
-        ::log( $email, );
+        $form->{email} = $email_valid;
 
         my $password = random_regex '[A-Za-z0-9]{12}';
 
-        my $user = Ring::API->cmd(
+        my $response = Ring::API->cmd(
             path => [ qw{ user create }, ],
             data => {
-                email     => $email,
+                email     => $email_valid,
                 password  => $password,
                 password2 => $password,
             },
         );
 
-        ::log( $user, );
+        ::log( $response, );
+
+        if ( exists $response->{errors} ) {
+
+            my ( $error, ) = ( @{ $response->{errors} }, );
+
+            if ( is_arrayref $error ) {
+
+                my ( $type, $message, ) = ( @{$error}, );
+
+                $self->value()->{error} = $message;
+
+                return;
+
+            }
+
+        }
 
     }
     else {
 
-        $self->form()->{email}  = $form_data->{email};
         $self->value()->{error} = "Email '$form_data->{email}' is invalid.";
+
+        return;
 
     }
 
-    return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+    return;
 }
 
 1;
