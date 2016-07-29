@@ -240,14 +240,7 @@ button:hover {
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-b {
-	bottom: [% IF ringpage.buttons.size > 2 %]130px[% END %];
-	left: 0;
-	right: 0;
-	margin: 0 auto;
-}
-.ringpage-cta-section .ringpage-cta-button.btn-c {
-	position: absolute;
-	bottom: 30px;
+	bottom: [% IF ringpage.buttons.size > 2 %]110px[% END %];
 	left: 0;
 	right: 0;
 	margin: 0 auto;
@@ -300,7 +293,7 @@ button:hover {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 30px;
+		bottom: 32px;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-a {
@@ -311,7 +304,7 @@ button:hover {
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-b {
 		position: absolute;
-		bottom: 30px;
+		bottom: 32px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
@@ -330,7 +323,7 @@ button:hover {
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-c {
 		position: absolute;
-		bottom: 30px;
+		bottom: 32px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
