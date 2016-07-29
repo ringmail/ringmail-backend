@@ -215,30 +215,37 @@ button:hover {
 	position: absolute;
 	left: 0;
 	right: 0;
-	bottom: 12px;
+	bottom: 30px;
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-a {
-	bottom: [% IF ringpage.buttons.size > 1 %]90px[% END %];
+	bottom: [% IF ringpage.buttons.size > 1 %]110px[% END %];
 	left: 0;
 	right: 0;
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-b {
 	position: absolute;
-	bottom: 12px;
+	bottom: 30px;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-a {
-	bottom: [% IF ringpage.buttons.size > 2 %]168px[% END %];
+	bottom: [% IF ringpage.buttons.size > 2 %]188px[% END %];
 	left: 0;
 	right: 0;
 	margin: 0 auto;
 }
 .ringpage-cta-section .ringpage-cta-button.btn-b {
-	bottom: [% IF ringpage.buttons.size > 2 %]90px[% END %];
+	bottom: [% IF ringpage.buttons.size > 2 %]110px[% END %];
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+}
+.ringpage-cta-section .ringpage-cta-button.btn-c {
+	position: absolute;
+	bottom: 30px;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
@@ -284,37 +291,37 @@ button:hover {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 12px;
+		bottom: 30px;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-a {
-		bottom: [% IF ringpage.buttons.size > 1 %]90px[% END %];
+		bottom: [% IF ringpage.buttons.size > 1 %]110px[% END %];
 		left: 0;
 		right: 0;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-b {
 		position: absolute;
-		bottom: 12px;
+		bottom: 30px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-a {
-		bottom: [% IF ringpage.buttons.size > 2 %]168px[% END %];
+		bottom: [% IF ringpage.buttons.size > 2 %]188px[% END %];
 		left: 0;
 		right: 0;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-b {
-		bottom: [% IF ringpage.buttons.size > 2 %]90px[% END %];
+		bottom: [% IF ringpage.buttons.size > 2 %]110px[% END %];
 		left: 0;
 		right: 0;
 		margin: 0 auto;
 	}
 	.ringpage-cta-section .ringpage-cta-button.btn-c {
 		position: absolute;
-		bottom: 12px;
+		bottom: 30px;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
