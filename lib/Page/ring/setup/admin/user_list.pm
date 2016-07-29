@@ -5,12 +5,15 @@ use Email::Valid;
 use English '-no_match_vars';
 use HTML::Escape 'escape_html';
 use List::MoreUtils 'singleton';
+use Math::Random::Secure 'rand';
 use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Quantum::Superpositions qw{ any all eigenstates };
 use Regexp::Common 'whitespace';
+use Ring::API;
+use String::Random 'random_regex';
 
 extends 'Page::ring::user';
 
@@ -109,6 +112,19 @@ sub add_user {
     {
 
         ::log( $email, );
+
+        my $password = random_regex '[A-Za-z0-9]{12}';
+
+        my $user = Ring::API->cmd(
+            path => [ qw{ user create }, ],
+            data => {
+                email     => $email,
+                password  => $password,
+                password2 => $password,
+            },
+        );
+
+        ::log( $user, );
 
     }
     else {
