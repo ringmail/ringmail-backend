@@ -129,8 +129,6 @@ sub add_user {
             },
         );
 
-        ::log( $response, );
-
         if ( exists $response->{errors} ) {
 
             my ( $error, ) = ( @{ $response->{errors} }, );
