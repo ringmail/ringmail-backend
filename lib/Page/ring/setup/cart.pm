@@ -1,6 +1,8 @@
 package Page::ring::setup::cart;
 
 use constant::boolean;
+use JSON::XS 'decode_json';
+use LWP::UserAgent;
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
 use Note::Check;
@@ -427,6 +429,88 @@ sub apply_coupon_code {
     }
 
     return $self->redirect('/u');
+}
+
+sub payment {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $headers = HTTP::Headers->new();
+
+    my $username = 'AYDX6jW35XcRljAJ0WLgmSmq-JAs5h5drD5HmJp9pfl4tGOk3ScPrRYGWUnhB8iG2sSfKbMRzZ3drYti';
+    my $password = 'EKvMOY03V_J0EkzzWxzt9XEJHwTF6QiO4tAC_-R481fgj44lLxorGYACY3G66Q1D-G-Qw6mgaLDIFzC7';
+
+    $headers->authorization_basic( $username, $password, );
+
+    my $uri = 'https://api.sandbox.paypal.com';
+
+    my $request = HTTP::Request->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
+
+    my $ua = LWP::UserAgent->new;
+
+    my $response = $ua->request( $request, );
+
+    my $access_token;
+    my $token_type;
+
+    if ( $response->is_success ) {
+
+        my $response_content = decode_json $response->content;
+
+        $access_token = $response_content->{access_token};
+        $token_type   = $response_content->{token_type};
+
+        ::log( $access_token, );
+        ::log( $token_type, );
+
+        my $headers = HTTP::Headers->new( Authorization => "$token_type $access_token", );
+
+        $headers->content_type( 'application/json', );
+
+        my $request = HTTP::Request->new(
+            POST => "$uri/v1/payments/payment",
+            $headers, q{
+{
+  "intent":"sale",
+  "redirect_urls":{
+    "return_url":"http://example.com/your_redirect_url.html",
+    "cancel_url":"http://example.com/your_cancel_url.html"
+  },
+  "payer":{
+    "payment_method":"paypal"
+  },
+  "transactions":[
+    {
+      "amount":{
+        "total":"7.47",
+        "currency":"USD"
+      }
+    }
+  ]
+}
+},
+        );
+
+        my $ua = LWP::UserAgent->new;
+
+        my $response = $ua->request( $request, );
+
+        if ( $response->is_success ) {
+
+            my $response_content = decode_json $response->content;
+
+            ::log( $response_content, );
+
+        }
+        else {
+            ::log( $response->status_line(), );
+        }
+
+    }
+    else {
+        ::log( $response->status_line(), );
+    }
+
+    return;
 }
 
 1;
