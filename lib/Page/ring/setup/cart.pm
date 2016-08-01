@@ -434,6 +434,9 @@ sub apply_coupon_code {
 sub payment {
     my ( $self, $form_data, $args, ) = @_;
 
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
     my $headers = HTTP::Headers->new();
 
     my $username = 'AYDX6jW35XcRljAJ0WLgmSmq-JAs5h5drD5HmJp9pfl4tGOk3ScPrRYGWUnhB8iG2sSfKbMRzZ3drYti';
@@ -466,17 +469,33 @@ sub payment {
 
         $headers->content_type( 'application/json', );
 
+        my $return_url = $self->redirect( $self->url( path => 'u', ), );
+        my $cancel_url = $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+
+        my $hashtags = sqltable('ring_cart')->get(
+            select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+            table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+            join   => 'rh.id = rc.hashtag_id',
+            where  => [
+                {   'rc.user_id' => $user_id,
+                    'rh.user_id' => $user_id,
+                } => and => { 'rc.transaction_id' => undef, },
+            ],
+        );
+
+        my $total = 99.99 * scalar @{$hashtags};
+
         my %cart = (
 
             intent        => 'sale',
             redirect_urls => {
-                return_url => 'http://example.com/your_redirect_url.html',
-                cancel_url => 'http://example.com/your_cancel_url.html',
+                return_url => $return_url,
+                cancel_url => $cancel_url,
             },
             payer        => { payment_method => 'paypal', },
             transactions => [
                 {   amount => {
-                        total    => '7.47',
+                        total    => $total,
                         currency => 'USD',
                     },
                 },
@@ -506,6 +525,12 @@ sub payment {
             my $response_content = decode_json $response->content;
 
             ::log( $response_content, );
+
+            my ( $link_self, $link_approval_url, $link_execute, ) = ( @{ $response_content->{links} }, );
+
+            my $redirect = $link_approval_url->{href};
+
+            return $self->redirect( $redirect, );
 
         }
         else {
