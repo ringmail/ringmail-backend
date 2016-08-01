@@ -68,6 +68,9 @@ sub load {
 
     my ( $self, $param ) = get_param(@args);
 
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
     my $form = $self->form();
 
     my ( $payer_id, $payment_id, ) = ( $form->{PayerID}, $form->{paymentId}, );
@@ -115,6 +118,81 @@ sub load {
             if ( $response->is_success ) {
 
                 my $response_content = decode_json $response->content;
+
+                ::log( $response_content, );
+
+                my $transactions = $response_content->{transactions};
+
+                my ( $transaction, ) = ( @{$transactions}, );
+
+                my $amount = $transaction->{amount};
+
+                my $total = $amount->{total};
+
+                transaction(
+                    acct_dst => ( has_account( $user_id, ) ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, ),
+                    acct_src => account_id( 'payment_paypal', ),
+                    amount   => $total,
+                    tx_type  => tx_type_id( 'payment_paypal', ),
+                    user_id  => $user_id,
+                );
+
+                my $hashtags = sqltable('ring_cart')->get(
+                    select => [ qw{ rh.hashtag rh.id rc.hashtag_id }, ],
+                    table  => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+                    join   => 'rh.id = rc.hashtag_id',
+                    where  => [
+                        {   'rc.user_id' => $user_id,
+                            'rh.user_id' => $user_id,
+                        } => and => { 'rc.transaction_id' => undef, },
+                    ],
+                );
+
+                for my $hashtag ( @{$hashtags} ) {
+
+                    my $hashtag_id = $hashtag->{id};
+
+                    my $transaction_id = transaction(
+                        acct_dst => account_id( 'revenue_ringmail', ),
+                        acct_src => ( has_account( $user_id, ) ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, ),
+                        amount   => 99.99,
+                        tx_type  => tx_type_id( 'purchase_hashtag', ),
+                        user_id  => $user_id,
+                    );
+
+                    my $cart_row = Note::Row->new(
+                        ring_cart => {
+                            hashtag_id => $hashtag_id,
+                            user_id    => $user_id,
+                        },
+                    );
+
+                    my $hashtag_row = Note::Row->new(
+                        ring_hashtag => {
+                            id      => $hashtag_id,
+                            user_id => $user_id,
+                        },
+                    );
+
+                    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
+                        $cart_row->update(
+                            {
+
+                                transaction_id => $transaction_id,
+
+                            },
+                        );
+
+                        $hashtag_row->update(
+                            {
+
+                                paid => TRUE,
+
+                            },
+                        );
+                    }
+
+                }
 
                 return $self->redirect( $self->url( path => 'u', ), );
             }
