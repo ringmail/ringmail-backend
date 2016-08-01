@@ -1,7 +1,7 @@
 package Page::ring::setup::cart;
 
 use constant::boolean;
-use JSON::XS 'decode_json';
+use JSON::XS qw{ encode_json decode_json };
 use LWP::UserAgent;
 use Moose;
 use Note::Account qw{ account_id transaction tx_type_id has_account create_account };
@@ -466,33 +466,40 @@ sub payment {
 
         $headers->content_type( 'application/json', );
 
+        my %cart = (
+
+            intent        => 'sale',
+            redirect_urls => {
+                return_url => 'http://example.com/your_redirect_url.html',
+                cancel_url => 'http://example.com/your_cancel_url.html',
+            },
+            payer        => { payment_method => 'paypal', },
+            transactions => [
+                {   amount => {
+                        total    => '7.47',
+                        currency => 'USD',
+                    },
+                },
+            ],
+
+        );
+
+        ::log( \%cart, );
+
+        ::log( encode_json \%cart, );
+
         my $request = HTTP::Request->new(
             POST => "$uri/v1/payments/payment",
-            $headers, q{
-{
-  "intent":"sale",
-  "redirect_urls":{
-    "return_url":"http://example.com/your_redirect_url.html",
-    "cancel_url":"http://example.com/your_cancel_url.html"
-  },
-  "payer":{
-    "payment_method":"paypal"
-  },
-  "transactions":[
-    {
-      "amount":{
-        "total":"7.47",
-        "currency":"USD"
-      }
-    }
-  ]
-}
-},
+            $headers, encode_json \%cart,
         );
+
+        ::log( $request, );
 
         my $ua = LWP::UserAgent->new;
 
         my $response = $ua->request( $request, );
+
+        ::log( $response, );
 
         if ( $response->is_success ) {
 
