@@ -5,15 +5,16 @@
 			<li><a href="/u/cart"><i class="fa fa-shopping-cart"></i> Cart ([% cart.size %])</a></li>
 			<li style="color:#08c;"> &nbsp; | &nbsp; </li>
 			<li>[% page.link(
-			text => 'Logout',
-			path => '/u',
-			command => 'logout',
+				text => 'Logout',
+				path => '/u',
+				command => 'logout',
 			) %]</li>
 		</ul>
 		<div class="nav-mine">
 			<ul id="main-nav" class="nav">
 				<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u">Hashtags</a></li>
 				<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
+				<li class="nav-icon[% IF menu_settings == 'domains' %] active[% END %]"><a href="/u/domains">Domains</a></li>
 				<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
 				[% IF is_admin %]
 				<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>

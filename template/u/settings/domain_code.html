@@ -1,14 +1,21 @@
-[% menu_main = 'settings' %]
 [% menu_settings = 'domains' %]
 [% content = BLOCK %]
-<div class="container">		
-	<div class="row">
-		<div class="tabbable">
-			<div class="span3">
-				[% INCLUDE u/settings/menu.html %]
-			</div> <!-- /.span3 -->
-			<div class="span9">
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
 				<h2>Verify Domain: [% page.value.domain %]</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="tabbable">
+			<div class="span12">
+				<h3> &nbsp; </h3>
 				[% IF verify_progress %]
 				<div id="checking">
 					<h3>Checking Domain Verification... <span id="progress"> </span></h3>
@@ -17,7 +24,7 @@
 					</div>
 				</div>
 				<div id="checking_error" style="display: none;">
-					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<h5>&laquo; <a href="/u/domains">Back To Domains List</a></h5>
 					<div class="alert alert-error">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<h4>An Error Occurred</h4>
@@ -28,7 +35,7 @@
 					</div> 
 				</div>
 				<div id="checking_failure" style="display: none;">
-					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<h5>&laquo; <a href="/u/domains">Back To Domains List</a></h5>
 					<div class="alert alert-error">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<h4>Verification Failed</h4>
@@ -37,20 +44,20 @@
 						<br/>
 						Unable to verify your domain at this time.<br/>Please make you have correctly followed these instructions:<br/>
 						<a class="btn btn-small" href="[% page.url(
-							'path' => '/u/settings/domain_code',
+							'path' => '/u/domain_code',
 							'query' => {'id' => page.form.id},
 						) %]">Domain Verification Instructions</a>
 					</div> 
 				</div>
 				<div id="checking_ok" style="display: none;">
-					<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+					<h5>&laquo; <a href="/u/domains">Back To Domains List</a></h5>
 					<div class="alert alert-success">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<h4>Domain Verified</h4>
 						<br/>
 						Your domain has been successfully verified.<br/>This domain is now available for use with RingMail.<br/>
 						<a class="btn btn-small" href="[% page.url(
-							'path' => '/u/settings/domains',
+							'path' => '/u/domains',
 							'query' => {'id' => page.form.id},
 						) %]">Setup Domain Routing</a>
 					</div> 
@@ -87,7 +94,7 @@ $.ajax({
 $('#progress').html("Starting Check");
 				</script>
 				[% ELSE %]
-				<h5>&laquo; <a href="/u/settings/domains">Back To Domains List</a></h5>
+				<h5>&laquo; <a href="/u/domains">Back To Domains List</a></h5>
 				<div class="faq-container">
 					<ol class="faqList faq-list">
 						<li id="faq-1">
@@ -138,6 +145,7 @@ $('#progress').html("Starting Check");
 			</div> <!-- /#tab1 -->
 		</div>
 	</div>
+</div>
 </div>
 [% END %]
 [% INCLUDE layout/internal.html %]
