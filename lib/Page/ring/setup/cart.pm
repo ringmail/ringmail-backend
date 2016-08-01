@@ -68,6 +68,65 @@ sub load {
 
     my ( $self, $param ) = get_param(@args);
 
+    my $form = $self->form();
+
+    my ( $payer_id, $payment_id, ) = ( $form->{PayerID}, $form->{paymentId}, );
+
+    if ( defined $payer_id and defined $payment_id ) {
+
+        my $headers = HTTP::Headers->new();
+
+        my $username = 'AYDX6jW35XcRljAJ0WLgmSmq-JAs5h5drD5HmJp9pfl4tGOk3ScPrRYGWUnhB8iG2sSfKbMRzZ3drYti';
+        my $password = 'EKvMOY03V_J0EkzzWxzt9XEJHwTF6QiO4tAC_-R481fgj44lLxorGYACY3G66Q1D-G-Qw6mgaLDIFzC7';
+
+        $headers->authorization_basic( $username, $password, );
+
+        my $uri = 'https://api.sandbox.paypal.com';
+
+        my $request = HTTP::Request->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
+
+        my $ua = LWP::UserAgent->new;
+
+        my $response = $ua->request( $request, );
+
+        my $access_token;
+        my $token_type;
+
+        if ( $response->is_success ) {
+
+            my $response_content = decode_json $response->content;
+
+            $access_token = $response_content->{access_token};
+            $token_type   = $response_content->{token_type};
+
+            my $headers = HTTP::Headers->new( Authorization => "$token_type $access_token", );
+
+            $headers->content_type( 'application/json', );
+
+            my $request = HTTP::Request->new(
+                POST => "$uri/v1/payments/payment/$payment_id/execute",
+                $headers, encode_json { payer_id => $payer_id, }
+            );
+
+            my $ua = LWP::UserAgent->new;
+
+            my $response = $ua->request( $request, );
+
+            if ( $response->is_success ) {
+
+                my $response_content = decode_json $response->content;
+
+                return $self->redirect( $self->url( path => 'u', ), );
+            }
+            else {
+            }
+
+        }
+        else {
+        }
+
+    }
+
     my $content = $self->content();
 
     $content->{payment} = $self->show_payment_form();
@@ -248,7 +307,7 @@ sub cmd_fund {
 
         $self->session_write();
 
-        return $self->redirect('/u/processing');
+        return $self->redirect( $self->url( path => 'u', ), );
     }
 }
 
@@ -318,7 +377,7 @@ sub search {
             }
         }
 
-        return $self->redirect('/u/cart');
+        return $self->redirect( $self->url( path => join( q{/}, qw{ u cart }, ), ), );
     }
 
     return;
@@ -428,7 +487,7 @@ sub apply_coupon_code {
         }
     }
 
-    return $self->redirect('/u');
+    return $self->redirect( $self->url( path => 'u', ), );
 }
 
 sub payment {
@@ -461,9 +520,6 @@ sub payment {
 
         $access_token = $response_content->{access_token};
         $token_type   = $response_content->{token_type};
-
-        ::log( $access_token, );
-        ::log( $token_type, );
 
         my $headers = HTTP::Headers->new( Authorization => "$token_type $access_token", );
 
@@ -503,28 +559,18 @@ sub payment {
 
         );
 
-        ::log( \%cart, );
-
-        ::log( encode_json \%cart, );
-
         my $request = HTTP::Request->new(
             POST => "$uri/v1/payments/payment",
             $headers, encode_json \%cart,
         );
 
-        ::log( $request, );
-
         my $ua = LWP::UserAgent->new;
 
         my $response = $ua->request( $request, );
 
-        ::log( $response, );
-
         if ( $response->is_success ) {
 
             my $response_content = decode_json $response->content;
-
-            ::log( $response_content, );
 
             my ( $link_self, $link_approval_url, $link_execute, ) = ( @{ $response_content->{links} }, );
 
@@ -534,12 +580,10 @@ sub payment {
 
         }
         else {
-            ::log( $response->status_line(), );
         }
 
     }
     else {
-        ::log( $response->status_line(), );
     }
 
     return;
