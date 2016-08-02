@@ -1,5 +1,5 @@
 {
-   "class" : "Page::ring::setup::new_hashtags",
+   "class" : "Page::ring::setup::hashtag",
    "init" : [
       "valid_user"
    ],
