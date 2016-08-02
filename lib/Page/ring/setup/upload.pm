@@ -20,14 +20,14 @@ sub load {
     my $user     = $self->user();
     my $form     = $self->form();
     my $response = $self->response();
+    my $path     = $self->path();
+    my $hostname = $self->hostname();
 
     my $user_id = $user->id();
 
-    my ( $hostname, ) = ( $::app_config->{www_domain} =~ m{ ( [\w-]+ ) }xms, );
-
     my $uploads = $param->{request}->uploads();
 
-    my @app_path            = @{ $self->path() };
+    my @app_path            = @{$path};
     my $app_path_last_index = $#app_path;
     my $upload_type         = $app_path[$app_path_last_index];
 
@@ -87,7 +87,7 @@ sub load {
             access_key => $::app_config->{s3_access_key},
             secret_key => $::app_config->{s3_secret_key},
         );
-        my $key = join q{/}, $hostname, $user->aws_user_id(), 'ringpage', $ringpage_id, join q{.}, $upload_type, 'jpg';
+        my $key = join q{/}, ( $hostname =~ m{ ( [\w-]+ ) }xms, ), $user->aws_user_id(), 'ringpage', $ringpage_id, join q{.}, $upload_type, 'jpg';
         $s3->upload(
             file         => $file,
             key          => $key,
