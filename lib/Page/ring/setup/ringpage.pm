@@ -112,7 +112,7 @@ sub edit {
     for my $field ( @{ $template_structure->{fields} } ) {
 
         my $name       = $field->{name};
-        my $form_value = escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) );
+        my $form_value = $form_data->{$name};
 
         if ( defined $field->{internal} and $field->{internal} == TRUE ) {
 
@@ -120,6 +120,8 @@ sub edit {
 
         }
         elsif ( defined $form_value ) {
+
+            $form_value = escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) );
 
             if ( defined $field->{text_type} and $field->{text_type} eq 'url' ) {
 
