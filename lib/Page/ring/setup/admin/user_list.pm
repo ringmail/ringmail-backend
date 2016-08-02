@@ -4,13 +4,11 @@ use constant::boolean;
 use Email::Valid;
 use English '-no_match_vars';
 use HTML::Escape 'escape_html';
-use List::MoreUtils 'singleton';
 use Math::Random::Secure 'rand';
 use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
-use Quantum::Superpositions qw{ any all eigenstates };
 use Ref::Util 'is_arrayref';
 use Regexp::Common 'whitespace';
 use Ring::API;
@@ -26,12 +24,22 @@ sub load {
     my $user    = $self->user();
     my $content = $self->content();
 
+    my $form = $self->form();
+
+    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+
+    my $offset = ( $page * 3 ) - 3;
+
+    my $count = sqltable('ring_user')->count();
+
     my $users = sqltable('ring_user')->get(
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
+        order     => qq{u.id LIMIT $offset, 3},
     );
 
+    $content->{count} = $count;
     $content->{users} = $users;
 
     return $self->SUPER::load( $param, );
@@ -44,19 +52,38 @@ sub make_admin {
     my $user    = $self->user();
     my $user_id = $user->id();
 
+    my $form = $self->form();
+
+    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+
+    my $offset = ( $page * 3 ) - 3;
+
     my $users = sqltable('ring_user')->get(
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
+        order     => qq{u.id LIMIT $offset, 3},
     );
 
-    my @users         = map { $ARG->{id} + 0 } @{$users};
-    my @users_admin   = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
+    my @users_admin = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
     my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd4-user_id', );
 
-    my @users_admin_delete = singleton @users, @users_checked;
+    my %users_admin;
+    @users_admin{@users_admin} = undef;
 
-    my @users_admin_add = eigenstates( any( @users_checked, ) != all( @users_admin, ) );
+    my %users_checked;
+    @users_checked{@users_checked} = undef;
+
+    for my $user_id (@users_checked) {
+        delete $users_admin{$user_id};
+    }
+
+    for my $user_id (@users_admin) {
+        delete $users_checked{$user_id};
+    }
+
+    my @users_admin_delete = keys %users_admin;
+    my @users_admin_add    = keys %users_checked;
 
     for my $user_id (@users_admin_delete) {
 
@@ -75,7 +102,7 @@ sub make_admin {
 
     }
 
-    return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { page => $page, }, ), );
 }
 
 sub login {
