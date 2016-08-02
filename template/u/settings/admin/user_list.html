@@ -59,7 +59,7 @@
 							</tr>
 							[% ELSE %]
 							[% pending = 0 %]
-							[% USE X = Page( count, 3, page.form.page, ) %]
+							[% USE X = Page( count, 10, page.form.page, ) %]
 							[% FOREACH user IN users %]
 							<tr>
 								<td>
@@ -113,53 +113,36 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									First Page:
-									[% IF X.first_page.defined %]
-									[% page.link(
-									text => X.first_page,
-									query => {
-									page => X.first_page,
-									},
-									) %]
-									[% ELSE %]
-									[% X.first_page %]
-									[% END %]
-									|
-									Previous Page:
-									[% IF X.previous_page.defined %]
-									[% page.link(
-									text => X.previous_page,
-									query => {
-									page => X.previous_page,
-									},
-									) %]
-									[% ELSE %]
-									[% X.previous_page %]
-									[% END %]
-									|
-									Next Page:
-									[% IF X.next_page.defined %]
-									[% page.link(
-									text => X.next_page,
-									query => {
-									page => X.next_page,
-									},
-									) %]
-									[% ELSE %]
-									[% X.next_page %]
-									[% END %]
-									|
-									Last Page:
-									[% IF X.last_page.defined %]
-									[% page.link(
-									text => X.last_page,
-									query => {
-									page => X.last_page,
-									},
-									) %]
-									[% ELSE %]
-									[% X.last_page %]
-									[% END %]
+									<ul class="pager">
+										[% IF X.previous_page > 0 %]
+										<li class="previous">
+										[% page.link(
+										text => '&larr; Previous',
+										query => {
+										page => X.previous_page,
+										},
+										) %]
+										</li>
+										[% ELSE %]
+										<li class="previous disabled">
+										<span>&larr; Previous</span>
+										</li>
+										[% END %]
+										[% IF X.next_page > 0 %]
+										<li class="next">
+										[% page.link(
+										text => 'Next &rarr;',
+										query => {
+										page => X.next_page,
+										},
+										) %]
+										[% ELSE %]
+										<li class="next disabled">
+										<span>Next &rarr;</span>
+										</li>
+										[% END %]
+									</ul>
+
 								</td>
 							</tr>
 							[% END %]

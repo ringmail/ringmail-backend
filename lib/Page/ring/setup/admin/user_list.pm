@@ -28,7 +28,7 @@ sub load {
 
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-    my $offset = ( $page * 3 ) - 3;
+    my $offset = ( $page * 10 ) - 10;
 
     my $count = sqltable('ring_user')->count();
 
@@ -36,7 +36,7 @@ sub load {
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        order     => qq{u.id LIMIT $offset, 3},
+        order     => qq{u.id LIMIT $offset, 10},
     );
 
     $content->{count} = $count;
@@ -56,13 +56,13 @@ sub make_admin {
 
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-    my $offset = ( $page * 3 ) - 3;
+    my $offset = ( $page * 10 ) - 10;
 
     my $users = sqltable('ring_user')->get(
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        order     => qq{u.id LIMIT $offset, 3},
+        order     => qq{u.id LIMIT $offset, 10},
     );
 
     my @users_admin = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
