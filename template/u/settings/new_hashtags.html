@@ -95,7 +95,7 @@
 									<th>Hashtag</th>
 									<th>Price</th>
 									<th>Status</th>
-									<th>Destination</th>
+									<th>RingPage</th>
 									<th>Edit Details</th>
 									<th>Remove</th>
 								</tr>
@@ -119,6 +119,7 @@
 									[% END %]
 								</td>
 								<td>
+									[% IF hashtag.transaction_id.defined %]
 									[% IF hashtag.ringpage_id.defined %]
 									[% page.link(
 									text => hashtag.ringpage,
@@ -135,8 +136,17 @@
 									[% hashtag.target_url %]
 									[% END %]
 									[% ELSE %]
-									&nbsp;
+									[% page.link(
+									text => '<em>Specify RingPage for Hashtag.</em>',
+									path => '/u/hashtag',
+									query => {
+									hashtag_id => hashtag.id
+									},
+									) %]
 									[% END %]
+									[% END %]
+									[% ELSE %]
+									&nbsp;
 									[% END %]
 								</td>
 								<td>
@@ -144,6 +154,14 @@
 									[% page.link(
 									text => 'Edit Details',
 									path => '/u/hashtag',
+									query => {
+									hashtag_id => hashtag.id
+									},
+									) %]
+									|
+									[% page.link(
+									text => 'Share',
+									path => '/u/hashtag_share',
 									query => {
 									hashtag_id => hashtag.id
 									},
