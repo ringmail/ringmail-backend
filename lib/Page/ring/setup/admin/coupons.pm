@@ -30,12 +30,20 @@ sub load {
 
     }
 
+    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+
+    my $offset = ( $page * 10 ) - 10;
+
+    my $count = sqltable('coupon')->count();
+
     my $coupons = sqltable('coupon')->get(
         select => [ qw{ code transaction_id }, ],
         table  => [ 'coupon AS c', ],
         where  => $where_clause,
+        order  => qq{code LIMIT $offset, 10},
     );
 
+    $content->{count}   = $count;
     $content->{coupons} = $coupons;
 
     return $self->SUPER::load( $param, );

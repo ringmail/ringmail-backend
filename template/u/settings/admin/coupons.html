@@ -76,6 +76,7 @@
 							</tr>
 						</thead>
 						<tbody>
+						[% USE X = Page( count, 10, page.form.page, ) %]
 						[% FOREACH coupon IN coupons %]
 						<tr>
 							<td>[% coupon.code %]</td>
@@ -88,6 +89,41 @@
 							</td>
 						</tr>
 						[% END %]
+						<tr>
+							<td colspan="2">
+								<ul class="pager">
+									[% IF X.previous_page > 0 %]
+									<li class="previous">
+									[% page.link(
+									text => '&larr; Previous',
+									query => {
+									page => X.previous_page,
+									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
+									},
+									) %]
+									</li>
+									[% ELSE %]
+									<li class="previous disabled">
+									<span>&larr; Previous</span>
+									</li>
+									[% END %]
+									[% IF X.next_page > 0 %]
+									<li class="next">
+									[% page.link(
+									text => 'Next &rarr;',
+									query => {
+									page => X.next_page,
+									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
+									},
+									) %]
+									[% ELSE %]
+									<li class="next disabled">
+									<span>Next &rarr;</span>
+									</li>
+									[% END %]
+								</ul>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 				</div>
