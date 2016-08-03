@@ -21,10 +21,8 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $user    = $self->user();
     my $content = $self->content();
-
-    my $form = $self->form();
+    my $form    = $self->form();
 
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
@@ -50,6 +48,7 @@ sub make_admin {
 
     my $request = $self->request();
     my $user    = $self->user();
+
     my $user_id = $user->id();
 
     my $form = $self->form();
