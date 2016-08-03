@@ -37,7 +37,7 @@ sub load {
     my $count = sqltable('coupon')->count();
 
     my $coupons = sqltable('coupon')->get(
-        select => [ qw{ code transaction_id }, ],
+        select => [ qw{ code amount transaction_id }, ],
         table  => [ 'coupon AS c', ],
         where  => $where_clause,
         order  => qq{code LIMIT $offset, 10},

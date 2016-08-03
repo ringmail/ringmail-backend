@@ -72,6 +72,7 @@
 						<thead>
 							<tr>
 								<th>Code</th>
+								<th>Amount</th>
 								<th>Redeemed</th>
 							</tr>
 						</thead>
@@ -80,6 +81,7 @@
 						[% FOREACH coupon IN coupons %]
 						<tr>
 							<td>[% coupon.code %]</td>
+							<td>$[% coupon.amount %]</td>
 							<td>
 								[% IF coupon.transaction_id.defined %]
 								Yes
@@ -90,7 +92,7 @@
 						</tr>
 						[% END %]
 						<tr>
-							<td colspan="2">
+							<td colspan="3">
 								<ul class="pager">
 									[% IF X.previous_page > 0 %]
 									<li class="previous">
