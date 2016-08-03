@@ -24,17 +24,28 @@ sub load {
     my $content = $self->content();
     my $form    = $self->form();
 
+    my $search = $form->{search};
+
+    my $where_clause = {};
+
+    if ( defined $search ) {
+
+        $where_clause = { 'u.login' => [ like => qq{%$search%}, ], };
+
+    }
+
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
-    my $count = sqltable('ring_user')->count();
+    my $count = defined $search ? sqltable('ring_user')->count( login => [ like => qq{%$search%}, ], ) : sqltable('ring_user')->count();
 
     my $users = sqltable('ring_user')->get(
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        order     => qq{u.id LIMIT $offset, 10},
+        where     => $where_clause,
+        order     => defined $search ? q{u.id} : qq{u.id LIMIT $offset, 10},
     );
 
     $content->{count} = $count;
@@ -43,29 +54,41 @@ sub load {
     return $self->SUPER::load( $param, );
 }
 
-sub make_admin {
+sub admin {
     my ( $self, $form_data, $args, ) = @_;
 
+    my $form    = $self->form();
     my $request = $self->request();
     my $user    = $self->user();
 
     my $user_id = $user->id();
 
-    my $form = $self->form();
+    my $search = $form_data->{search};
+
+    my $where_clause = {};
+
+    if ( defined $search ) {
+
+        $where_clause = { 'u.login' => [ like => qq{%$search%}, ], };
+
+    }
 
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
+    my $count = defined $search ? sqltable('ring_user')->count( login => [ like => qq{%$search%}, ], ) : sqltable('ring_user')->count();
+
     my $users = sqltable('ring_user')->get(
         select    => [ qw{ u.id u.login ua.user_id }, ],
         table     => [ 'ring_user AS u', ],
         join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        order     => qq{u.id LIMIT $offset, 10},
+        where     => $where_clause,
+        order     => defined $search ? q{u.id} : qq{u.id LIMIT $offset, 10},
     );
 
     my @users_admin = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
-    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd4-user_id', );
+    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd5-user_id', );
 
     my %users_admin;
     @users_admin{@users_admin} = undef;
@@ -125,24 +148,21 @@ sub login {
     return;
 }
 
-sub add_user {
+sub add {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $form = $self->form();
+    my $form  = $self->form();
+    my $value = $self->value();
 
     my ( $email, ) = ( $form_data->{email}, );
 
-    $form->{email} = $email;
+    my $email_valid = Email::Valid->address(
+        -address  => $email,
+        -mxcheck  => TRUE,
+        -tldcheck => TRUE,
+    );
 
-    if (my $email_valid = Email::Valid->address(
-            -address  => $email,
-            -mxcheck  => TRUE,
-            -tldcheck => TRUE,
-        )
-        )
-    {
-
-        $form->{email} = $email_valid;
+    if ( defined $email_valid ) {
 
         my $password = random_regex '[A-Za-z0-9]{12}';
 
@@ -163,7 +183,8 @@ sub add_user {
 
                 my ( $type, $message, ) = ( @{$error}, );
 
-                $self->value()->{error} = $message;
+                $form->{email}  = $email_valid;
+                $value->{error} = $message;
 
                 return;
 
@@ -174,10 +195,28 @@ sub add_user {
     }
     else {
 
-        $self->value()->{error} = "Email '$form_data->{email}' is invalid.";
+        $form->{email}  = $email;
+        $value->{error} = "Email '$form_data->{email}' is invalid.";
 
         return;
 
+    }
+
+    return;
+}
+
+sub search {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $form = $self->form();
+
+    my ( $search, ) = ( $form_data->{search} =~ m{ /A /z }xms, );
+
+    $self->form()->{search} = $form_data->{search};
+
+    if ( defined $search ) {
+
+        $self->value()->{search} = $search;
     }
 
     return;
