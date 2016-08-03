@@ -16,10 +16,19 @@ sub load {
     my ( $self, $param, ) = get_param( @args, );
 
     my $content = $self->content();
+    my $form    = $self->form();
 
     my $where_clause = {};
 
-    ::log( $self, $param, );
+    if ( not( defined $form->{redeemed} and $form->{redeemed} == 1 ) ) {
+
+        $where_clause = {
+
+            transaction_id => undef,
+
+        };
+
+    }
 
     my $coupons = sqltable('coupon')->get(
         select => [ qw{ code transaction_id }, ],
@@ -34,8 +43,6 @@ sub load {
 
 sub add {
     my ( $self, $form_data, $args, ) = @_;
-
-    ::log( $self, $form_data, $args, );
 
     my $form  = $self->form();
     my $value = $self->value();
