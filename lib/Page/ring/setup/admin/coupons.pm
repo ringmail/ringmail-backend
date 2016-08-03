@@ -5,6 +5,7 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+use Regexp::Common 'number';
 use String::Random 'random_regex';
 
 extends 'Page::ring::user';
@@ -29,19 +30,37 @@ sub load {
 sub add {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $coupon = 'Note::Row::table'->('coupon');
+    my $form  = $self->form();
+    my $value = $self->value();
 
-    my $random_string;
+    my $currency = $RE{num}{decimal}{ -places => '0,2' }{ -sign => q{} };
 
-    do {
+    my ( $amount, ) = ( $form_data->{amount} =~ m{ \A ( $currency ) \z }xms, );
 
-        $random_string = random_regex '[A-Z]{4}[0-9]{4}';
+    if ( defined $amount and $amount > 0 ) {
 
-    } while ( $coupon->count( code => $random_string, ) > 0 );
+        my $coupon = 'Note::Row::table'->('coupon');
 
-    my $coupon_row = 'Note::Row::create'->( coupon => { code => $random_string, }, );
+        my $random_string;
 
-    return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+        do {
+
+            $random_string = random_regex '[A-Z]{4}[0-9]{4}';
+
+        } while ( $coupon->count( code => $random_string, ) > 0 );
+
+        my $coupon_row = 'Note::Row::create'->( coupon => { code => $random_string, amount => $amount, }, );
+
+        return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+    }
+    else {
+
+        $form->{amount} = $form_data->{amount};
+        $value->{error} = 'Amount is invalid.';
+
+    }
+
+    return;
 }
 
 1;

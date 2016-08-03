@@ -15,14 +15,44 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
-					<h2>&nbsp;</h2>
-					[% page.link(
-					command => 'add',
-					text => 'Add Coupon',
-					opts => {
-					class => 'btn btn-primary',
-					},
-					) %]
+					<h2>Add Coupon</h2>
+					<form method="post" action="[% page.url() %]">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="amount">Amount:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										<span class="add-on">$</span>
+										[% page.field(
+										command => 'add',
+										type => 'text',
+										name => 'amount',
+										value => page.form.amount,
+										opts => {
+										placeholder => '0.00',
+										id => 'amount',
+										style => 'width: 179px',
+										},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="amount" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+									<br />
+									[% page.button(
+									type => 'submit',
+									command => 'add',
+									text => 'Add Coupon',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</div>
+							</div>
+						</fieldset>
+					</form>
 				</div>
 				<div class="span12">
 					<h2>Coupons</h2>
