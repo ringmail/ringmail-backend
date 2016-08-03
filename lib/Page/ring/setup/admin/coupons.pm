@@ -17,9 +17,14 @@ sub load {
 
     my $content = $self->content();
 
+    my $where_clause = {};
+
+    ::log( $self, $param, );
+
     my $coupons = sqltable('coupon')->get(
         select => [ qw{ code transaction_id }, ],
         table  => [ 'coupon AS c', ],
+        where  => $where_clause,
     );
 
     $content->{coupons} = $coupons;
@@ -29,6 +34,8 @@ sub load {
 
 sub add {
     my ( $self, $form_data, $args, ) = @_;
+
+    ::log( $self, $form_data, $args, );
 
     my $form  = $self->form();
     my $value = $self->value();
@@ -51,7 +58,9 @@ sub add {
 
         my $coupon_row = 'Note::Row::create'->( coupon => { code => $random_string, amount => $amount, }, );
 
-        return $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+        my $redeemed = ( defined $form->{redeemed} and $form->{redeemed} == 1 ) ? $form->{redeemed} : undef;
+
+        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => defined $redeemed ? { redeemed => $redeemed, } : undef, ), );
     }
     else {
 

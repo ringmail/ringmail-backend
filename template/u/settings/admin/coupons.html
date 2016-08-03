@@ -16,7 +16,7 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Add Coupon</h2>
-					<form method="post" action="[% page.url() %]">
+					<form method="post" action="[% page.url( query => page.form.redeemed.defined ? { redeemed => page.form.redeemed, } : undef, ) %]">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="amount">Amount:</label>
@@ -56,6 +56,18 @@
 				</div>
 				<div class="span12">
 					<h2>Coupons</h2>
+					[% IF page.form.redeemed == 1 %]
+					[% page.link(
+					text => 'Show No Redeemed',
+					) %]
+					[% ELSE %]
+					[% page.link(
+					text => 'Show Redeemed',
+					query => {
+					redeemed => 1,
+					},
+					) %]
+					[% END %]
 					<table class="table table-bordered table-highlight">
 						<thead>
 							<tr>
