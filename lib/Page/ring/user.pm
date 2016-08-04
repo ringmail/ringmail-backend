@@ -1,7 +1,6 @@
 package Page::ring::user;
 
 use constant::boolean;
-use Crypt::CBC;
 use MIME::Base64 qw{ encode_base64 };
 use Moose;
 use Note::Locale qw{ us_states us_state_name };
@@ -10,8 +9,6 @@ use Note::SQL::Table 'sqltable';
 use Note::XML 'xml';
 use POSIX 'strftime';
 use Ring::User;
-use strict;
-use warnings;
 
 extends 'Note::Page';
 
@@ -41,28 +38,13 @@ sub load {
         ],
     );
 
-    my @hashtag_ids = map { $_->{hashtag_id}; } @{$cart};
-
-    my @paypal_data = ( $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, );
-
-    my $paypal_data_string = sprintf join( q{ }, ( '%X', ) x @paypal_data, ), @paypal_data;    # Newer Perl can use '%A' for floating-point hex.
-    my $config             = $main::note_config->config();
-    my $key                = $config->{paypal_key};
-    my $cipher             = 'Crypt::CBC'->new( -key => $key, );
-    my $ciphertext         = $cipher->encrypt( $paypal_data_string, );
-    my $ciphertext_encoded = encode_base64 $ciphertext;
-
     $self->check_admin();
 
     my $is_admin = $self->is_admin();
 
-    my $paypal_hosted_button_id = $config->{paypal_hosted_button_id};
-
-    $content->{cart}                    = $cart;
-    $content->{is_admin}                = $is_admin;
-    $content->{paypal_ciphertext}       = $ciphertext_encoded;
-    $content->{paypal_hosted_button_id} = $paypal_hosted_button_id;
-    $content->{total}                   = 99.99 * scalar @{$cart};
+    $content->{cart}     = $cart;
+    $content->{is_admin} = $is_admin;
+    $content->{total}    = 99.99 * scalar @{$cart};
 
     return $self->SUPER::load( $param, );
 }
