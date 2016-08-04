@@ -79,12 +79,13 @@ sub load {
 
         my $headers = HTTP::Headers->new();
 
-        my $username = 'AYDX6jW35XcRljAJ0WLgmSmq-JAs5h5drD5HmJp9pfl4tGOk3ScPrRYGWUnhB8iG2sSfKbMRzZ3drYti';
-        my $password = 'EKvMOY03V_J0EkzzWxzt9XEJHwTF6QiO4tAC_-R481fgj44lLxorGYACY3G66Q1D-G-Qw6mgaLDIFzC7';
+        my $config = $main::note_config->config();
+
+        my $username = $config->{paypal_username};
+        my $password = $config->{paypal_password};
+        my $uri      = $config->{paypal_hostname};
 
         $headers->authorization_basic( $username, $password, );
-
-        my $uri = 'https://api.sandbox.paypal.com';
 
         my $request = HTTP::Request->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
 
@@ -576,12 +577,13 @@ sub payment {
 
     my $headers = HTTP::Headers->new();
 
-    my $username = 'AYDX6jW35XcRljAJ0WLgmSmq-JAs5h5drD5HmJp9pfl4tGOk3ScPrRYGWUnhB8iG2sSfKbMRzZ3drYti';
-    my $password = 'EKvMOY03V_J0EkzzWxzt9XEJHwTF6QiO4tAC_-R481fgj44lLxorGYACY3G66Q1D-G-Qw6mgaLDIFzC7';
+    my $config = $main::note_config->config();
+
+    my $username = $config->{paypal_username};
+    my $password = $config->{paypal_password};
+    my $uri      = $config->{paypal_hostname};
 
     $headers->authorization_basic( $username, $password, );
-
-    my $uri = 'https://api.sandbox.paypal.com';
 
     my $request = HTTP::Request->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
 
