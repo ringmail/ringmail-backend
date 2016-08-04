@@ -79,6 +79,8 @@ sub load {
 
         my $headers = HTTP::Headers->new();
 
+        my $config = $main::note_config->config();
+
         my $username = $config->{paypal_username};
         my $password = $config->{paypal_password};
         my $uri      = $config->{paypal_hostname};
@@ -574,6 +576,8 @@ sub payment {
     my $user_id = $user->id();
 
     my $headers = HTTP::Headers->new();
+
+    my $config = $main::note_config->config();
 
     my $username = $config->{paypal_username};
     my $password = $config->{paypal_password};
