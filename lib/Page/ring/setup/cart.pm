@@ -328,7 +328,15 @@ sub search {
     my ( $tag, ) = ( lc( $form_data->{hashtag} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
     my ( $category_id, ) = ( $form_data->{category_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // q{} =~ m{ \A ( \d+ ) \z }xms );
-    my $target = $form_data->{target} // q{};
+    my ( $target, )      = ( $form_data->{target}      // q{}, );
+
+    if ( not defined $category_id ) {
+
+        my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
+
+        $category_id = $category->id();
+
+    }
 
     return if not defined $tag;
 
