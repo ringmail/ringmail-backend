@@ -438,12 +438,16 @@ sub apply_coupon_code {
 
     if ( defined $coupon_id ) {
 
-        my $cart = Note::Row::create(
-            ring_cart => {
-                coupon_id => $coupon_id,
-                user_id   => $user_id,
-            },
-        );
+        try {
+
+            my $cart = Note::Row::create(
+                ring_cart => {
+                    coupon_id => $coupon_id,
+                    user_id   => $user_id,
+                },
+            );
+
+        };
 
     }
 
