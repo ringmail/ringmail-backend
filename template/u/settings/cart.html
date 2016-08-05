@@ -190,7 +190,7 @@
 						</table>
 					</form>
 					<p class="cart-total-p">
-					Total: $[% total < 0 ? 0.00 : total %]
+					Total: $[% total < 0 ? '0.00' : total %]
 					</p>
 				</div>
 				[% IF cartX.size > 0 and cart.size > 0 %]
