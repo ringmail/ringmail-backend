@@ -406,6 +406,8 @@ sub payment {
 
             $order_row->update( { total => $total, }, );
 
+            $total = $order_row->data( 'total', );
+
             my %cart = (
 
                 intent        => 'sale',
