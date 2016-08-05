@@ -190,7 +190,7 @@
 						</table>
 					</form>
 					<p class="cart-total-p">
-					Total: $[% total %]
+					Total: $[% total < 0 ? 0 : total %]
 					</p>
 				</div>
 				[% IF cartX.size > 0 and cart.size > 0 %]
@@ -205,6 +205,9 @@
 					[% page.link(
 					command => 'payment',
 					text => 'Complete Order',
+					opts => {
+					class => 'btn btn-primary btn-large',
+					},
 					) %]
 					[% END %]
 				</div>
