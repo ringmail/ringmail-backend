@@ -309,6 +309,8 @@ sub load {
 
     }
 
+    $total = sprintf '%.2f', $total;
+
     my $content = $self->content();
 
     $content->{payment} = $self->show_payment_form();
@@ -398,7 +400,7 @@ sub remove_from_cart {
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd5-hashtag_id', ) ) {
 
         if ($hashtag_model->delete(
                 user_id => $user_id,
@@ -455,44 +457,129 @@ sub payment {
 
     my $user_id = $user->id();
 
-    my $config = $main::note_config->config();
+    my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
 
-    my $username = $config->{paypal_username};
-    my $password = $config->{paypal_password};
-    my $uri      = $config->{paypal_hostname};
+    my $order_id = $order_row->id();
 
-    my $headers = 'HTTP::Headers'->new();
+    if ( defined $order_id ) {
 
-    $headers->authorization_basic( $username, $password, );
+        my $hashtags = sqltable('ring_cart')->get(
+            select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
+            table     => 'ring_cart AS rc',
+            join_left => [
 
-    my $request = 'HTTP::Request'->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
+                [ 'ring_hashtag AS rh' => 'rh.id = rc.hashtag_id', ],
+                [ 'coupon AS c'        => 'c.id = rc.coupon_id', ],
+            ],
+            where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
+        );
 
-    my $ua = 'LWP::UserAgent'->new;
+        my $total = 0;
 
-    my $response = $ua->request( $request, );
+        for my $hashtag ( @{$hashtags} ) {
 
-    my $access_token;
-    my $token_type;
+            if ( defined $hashtag->{hashtag_id} ) {
 
-    if ( $response->is_success ) {
+                $hashtag->{amount} //= 99.99;
 
-        my $response_content = decode_json $response->content;
+                $total += $hashtag->{amount};
 
-        $access_token = $response_content->{access_token};
-        $token_type   = $response_content->{token_type};
+            }
 
-        my $headers = 'HTTP::Headers'->new( Authorization => "$token_type $access_token", );
+            if ( defined $hashtag->{coupon_id} ) {
 
-        $headers->content_type( 'application/json', );
+                $total -= $hashtag->{amount};
 
-        my $return_url = $self->redirect( $self->url( path => 'u', ), );
-        my $cancel_url = $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+            }
 
-        my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
+            my $cart_row = 'Note::Row'->new( ring_cart => $hashtag->{id}, );
 
-        my $order_id = $order_row->id();
+            $cart_row->update( { order_id => $order_id, }, );
 
-        if ( defined $order_id ) {
+        }
+
+        $total = sprintf '%.2f', $total;
+
+        $order_row->update( { total => $total, }, );
+
+        if ( $total > 0 ) {
+
+            my $config = $main::note_config->config();
+
+            my $username = $config->{paypal_username};
+            my $password = $config->{paypal_password};
+            my $uri      = $config->{paypal_hostname};
+
+            my $headers = 'HTTP::Headers'->new();
+
+            $headers->authorization_basic( $username, $password, );
+
+            my $request = 'HTTP::Request'->new( POST => "$uri/v1/oauth2/token", $headers, q{grant_type=client_credentials}, );
+
+            my $ua = 'LWP::UserAgent'->new;
+
+            my $response = $ua->request( $request, );
+
+            my $access_token;
+            my $token_type;
+
+            if ( $response->is_success ) {
+
+                my $response_content = decode_json $response->content;
+
+                $access_token = $response_content->{access_token};
+                $token_type   = $response_content->{token_type};
+
+                my $headers = 'HTTP::Headers'->new( Authorization => "$token_type $access_token", );
+
+                $headers->content_type( 'application/json', );
+
+                my $return_url = $self->redirect( $self->url( path => 'u', ), );
+                my $cancel_url = $self->redirect( $self->url( path => join q{/}, @{ $self->path() }, ), );
+
+                my %cart = (
+
+                    intent        => 'sale',
+                    redirect_urls => {
+                        return_url => $return_url,
+                        cancel_url => $cancel_url,
+                    },
+                    payer        => { payment_method => 'paypal', },
+                    transactions => [
+                        {   amount => {
+                                total    => $total,
+                                currency => 'USD',
+                            },
+                        },
+                    ],
+
+                );
+
+                my $request = 'HTTP::Request'->new(
+                    POST => "$uri/v1/payments/payment",
+                    $headers, encode_json \%cart,
+                );
+
+                my $ua = 'LWP::UserAgent'->new;
+
+                my $response = $ua->request( $request, );
+
+                if ( $response->is_success ) {
+
+                    my $response_content = decode_json $response->content;
+
+                    my ( $link_self, $link_approval_url, $link_execute, ) = ( @{ $response_content->{links} }, );
+
+                    my $redirect = $link_approval_url->{href};
+
+                    return $self->redirect( $redirect, );
+
+                }
+
+            }
+
+        }
+        else {
 
             my $hashtags = sqltable('ring_cart')->get(
                 select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
@@ -505,70 +592,106 @@ sub payment {
                 where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
             );
 
-            my $total = 0;
-
             for my $hashtag ( @{$hashtags} ) {
 
-                if ( defined $hashtag->{hashtag_id} ) {
+                my $amount = $hashtag->{amount};
 
-                    $hashtag->{amount} //= 99.99;
+                my $hashtag_id = $hashtag->{hashtag_id};
+                my $coupon_id  = $hashtag->{coupon_id};
 
-                    $total += $hashtag->{amount};
+                if ( defined $hashtag_id ) {
 
-                }
+                    $amount //= 99.99;
 
-                if ( defined $hashtag->{coupon_id} ) {
+                    my $account_destination = account_id( 'revenue_ringmail', );
+                    my $account_source      = has_account( $user_id, ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, );
+                    my $tx_type_id          = tx_type_id( 'purchase_hashtag', );
 
-                    $total -= $hashtag->{amount};
+                    my $transaction_id = transaction(
+                        acct_dst => $account_destination,
+                        acct_src => $account_source,
+                        amount   => $amount,
+                        tx_type  => $tx_type_id,
+                        user_id  => $user_id,
+                    );
 
-                }
-
-                my $cart_row = 'Note::Row'->new( ring_cart => $hashtag->{id}, );
-
-                $cart_row->update( { order_id => $order_id, }, );
-
-            }
-
-            $total = sprintf '%.2f', $total;
-
-            $order_row->update( { total => $total, }, );
-
-            my %cart = (
-
-                intent        => 'sale',
-                redirect_urls => {
-                    return_url => $return_url,
-                    cancel_url => $cancel_url,
-                },
-                payer        => { payment_method => 'paypal', },
-                transactions => [
-                    {   amount => {
-                            total    => $total,
-                            currency => 'USD',
+                    my $cart_row = 'Note::Row'->new(
+                        ring_cart => {
+                            hashtag_id => $hashtag_id,
+                            user_id    => $user_id,
                         },
-                    },
-                ],
+                    );
 
-            );
+                    my $hashtag_row = 'Note::Row'->new(
+                        ring_hashtag => {
+                            id      => $hashtag_id,
+                            user_id => $user_id,
+                        },
+                    );
 
-            my $request = 'HTTP::Request'->new(
-                POST => "$uri/v1/payments/payment",
-                $headers, encode_json \%cart,
-            );
+                    if ( defined $cart_row->id() and defined $hashtag_row->id() ) {
+                        $cart_row->update(
+                            {
 
-            my $ua = 'LWP::UserAgent'->new;
+                                transaction_id => $transaction_id,
 
-            my $response = $ua->request( $request, );
+                            },
+                        );
 
-            if ( $response->is_success ) {
+                        $hashtag_row->update(
+                            {
 
-                my $response_content = decode_json $response->content;
+                                paid => TRUE,
 
-                my ( $link_self, $link_approval_url, $link_execute, ) = ( @{ $response_content->{links} }, );
+                            },
+                        );
+                    }
 
-                my $redirect = $link_approval_url->{href};
+                }
 
-                return $self->redirect( $redirect, );
+                if ( defined $coupon_id ) {
+
+                    my $account_source      = account_id('coupon_source');
+                    my $account_destination = account_id('coupon_destination');
+                    my $tx_type_id          = tx_type_id('coupon');
+
+                    my $transaction_id = transaction(
+                        acct_dst => $account_destination,
+                        acct_src => $account_source,
+                        amount   => $amount,
+                        tx_type  => $tx_type_id,
+                        user_id  => $user_id,
+                    );
+
+                    my $cart_row = 'Note::Row'->new(
+                        ring_cart => {
+                            coupon_id => $coupon_id,
+                            user_id   => $user_id,
+                        },
+                    );
+
+                    my $coupon_row = 'Note::Row'->new( coupon => { id => $coupon_id, }, );
+
+                    if ( defined $cart_row->id() and defined $coupon_row->id() ) {
+                        $cart_row->update(
+                            {
+
+                                transaction_id => $transaction_id,
+
+                            },
+                        );
+
+                        $coupon_row->update(
+                            {
+
+                                transaction_id => $transaction_id,
+                                user_id        => $user_id,
+
+                            },
+                        );
+                    }
+
+                }
 
             }
 

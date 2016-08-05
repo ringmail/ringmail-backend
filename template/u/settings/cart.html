@@ -13,7 +13,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="tabbable">
-				<div class="span12">
+				<div class="span6">
 					<h2>Add Hashtag</h2>
 					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
@@ -82,6 +82,30 @@
 								[% END %]
 								[% END %]
 							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span6">
+					<h2>Coupon Code</h2>
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							[% page.field(
+							command => 'apply_coupon_code',
+							type => 'text',
+							name => 'coupon_code',
+							value => page.form.coupon_code,
+							opts => {
+							id => 'hashtag',
+							style => 'width: 179px',
+							},
+							) %]
+							[% page.button(
+							command => 'apply_coupon_code',
+							text => 'Apply',
+							opts => {
+							class => 'btn btn-primary',
+							},
+							) %]
 						</fieldset>
 					</form>
 				</div>
@@ -169,37 +193,20 @@
 					Total: $[% total %]
 					</p>
 				</div>
-				[% IF total > 0 %]
-				<div class="span12">
-					<h2>Coupon Code</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-						<fieldset>
-							[% page.field(
-							command => 'apply_coupon_code',
-							type => 'text',
-							name => 'coupon_code',
-							value => page.form.coupon_code,
-							opts => {
-							id => 'hashtag',
-							style => 'width: 179px',
-							},
-							) %]
-							[% page.button(
-							command => 'apply_coupon_code',
-							text => 'Apply',
-							opts => {
-							class => 'btn btn-primary',
-							},
-							) %]
-						</fieldset>
-					</form>
-				</div>
+				[% IF cartX.size > 0 and cart.size > 0 %]
 				<div class="span12">
 					<h2>Checkout</h2>
+					[% IF total > 0 %]
 					[% page.link(
 					command => 'payment',
 					text => '<img src="https://www.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif" boder="0" />',
 					) %]
+					[% ELSE %]
+					[% page.link(
+					command => 'payment',
+					text => 'Complete Order',
+					) %]
+					[% END %]
 				</div>
 				[% END %]
 			</div>
