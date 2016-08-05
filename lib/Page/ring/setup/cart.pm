@@ -212,8 +212,6 @@ sub load {
 
                         my $response = $ua->request( $request, );
 
-                        ::log( $response, );
-
                         if ( $response->is_success ) {
 
                             my $response_content = decode_json $response->content;
@@ -225,8 +223,6 @@ sub load {
                             my $amount = $transaction->{amount};
 
                             my $paypal_total = $amount->{total};
-
-                            ::log( qq{ $paypal_total eq $total }, );
 
                             if ( $paypal_total eq $total ) {
 
