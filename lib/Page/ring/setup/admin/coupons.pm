@@ -34,11 +34,11 @@ sub load {
 
     my $offset = ( $page * 10 ) - 10;
 
-    my $count = sqltable('coupon')->count();
+    my $count = sqltable('ring_coupon')->count();
 
-    my $coupons = sqltable('coupon')->get(
+    my $coupons = sqltable('ring_coupon')->get(
         select => [ qw{ code amount transaction_id }, ],
-        table  => [ 'coupon AS c', ],
+        table  => [ 'ring_coupon', ],
         where  => $where_clause,
         order  => qq{code LIMIT $offset, 10},
     );
@@ -61,7 +61,7 @@ sub add {
 
     if ( defined $amount and $amount > 0 ) {
 
-        my $coupon = 'Note::Row::table'->('coupon');
+        my $coupon = 'Note::Row::table'->('ring_coupon');
 
         my $random_string;
 
@@ -71,7 +71,7 @@ sub add {
 
         } while ( $coupon->count( code => $random_string, ) > 0 );
 
-        my $coupon_row = 'Note::Row::create'->( coupon => { code => $random_string, amount => $amount, }, );
+        my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
         my $redeemed = ( defined $form->{redeemed} and $form->{redeemed} == 1 ) ? $form->{redeemed} : undef;
 

@@ -72,12 +72,12 @@ sub load {
                     my $order_total = $order_row->data('total');
 
                     my $hashtags = sqltable('ring_cart')->get(
-                        select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
+                        select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag ring_coupon.code ring_coupon.amount }, ],
                         table     => 'ring_cart AS rc',
                         join_left => [
 
                             [ 'ring_hashtag AS rh' => 'rh.id = rc.hashtag_id', ],
-                            [ 'coupon AS c'        => 'c.id = rc.coupon_id', ],
+                            [ 'ring_coupon'        => 'ring_coupon.id = rc.coupon_id', ],
                         ],
                         where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
                     );
@@ -164,7 +164,7 @@ sub load {
                                 },
                             );
 
-                            my $coupon_row = 'Note::Row'->new( coupon => { id => $coupon_id, }, );
+                            my $coupon_row = 'Note::Row'->new( ring_coupon => { id => $coupon_id, }, );
 
                             if ( defined $cart_row->id() and defined $coupon_row->id() ) {
                                 $cart_row->update(
@@ -274,12 +274,12 @@ sub load {
     my $total = 0;
 
     my $hashtags = sqltable('ring_cart')->get(
-        select    => [ qw{ rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
+        select    => [ qw{ rc.hashtag_id rc.coupon_id rh.hashtag ring_coupon.code ring_coupon.amount }, ],
         table     => 'ring_cart AS rc',
         join_left => [
 
             [ 'ring_hashtag AS rh' => 'rh.id = rc.hashtag_id', ],
-            [ 'coupon AS c'        => 'c.id = rc.coupon_id', ],
+            [ 'ring_coupon'        => 'ring_coupon.id = rc.coupon_id', ],
         ],
         where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
     );
@@ -428,7 +428,7 @@ sub apply_coupon_code {
     my ( $coupon_code, ) = ( $form_data->{coupon_code} =~ m{ \A ( [[:alpha:]]{4} [[:digit:]]{4} ) \z }xms, );
 
     my $coupon_row = 'Note::Row'->new(
-        coupon => {
+        ring_coupon => {
             code           => $coupon_code,
             transaction_id => undef,
             user_id        => undef,
@@ -478,12 +478,12 @@ sub payment {
         if ( defined $order_id ) {
 
             my $hashtags = sqltable('ring_cart')->get(
-                select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
+                select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag ring_coupon.code ring_coupon.amount }, ],
                 table     => 'ring_cart AS rc',
                 join_left => [
 
                     [ 'ring_hashtag AS rh' => 'rh.id = rc.hashtag_id', ],
-                    [ 'coupon AS c'        => 'c.id = rc.coupon_id', ],
+                    [ 'ring_coupon'        => 'ring_coupon.id = rc.coupon_id', ],
                 ],
                 where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
             );
@@ -600,12 +600,12 @@ sub payment {
             else {
 
                 my $hashtags = sqltable('ring_cart')->get(
-                    select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag c.code c.amount }, ],
+                    select    => [ qw{ rc.id rc.hashtag_id rc.coupon_id rh.hashtag ring_coupon.code ring_coupon.amount }, ],
                     table     => 'ring_cart AS rc',
                     join_left => [
 
                         [ 'ring_hashtag AS rh' => 'rh.id = rc.hashtag_id', ],
-                        [ 'coupon AS c'        => 'c.id = rc.coupon_id', ],
+                        [ 'ring_coupon'        => 'ring_coupon.id = rc.coupon_id', ],
                     ],
                     where => [ { 'rc.user_id' => $user_id, } => and => { 'rc.transaction_id' => undef, }, ],
                 );
@@ -688,7 +688,7 @@ sub payment {
                             },
                         );
 
-                        my $coupon_row = 'Note::Row'->new( coupon => { id => $coupon_id, }, );
+                        my $coupon_row = 'Note::Row'->new( ring_coupon => { id => $coupon_id, }, );
 
                         if ( defined $cart_row->id() and defined $coupon_row->id() ) {
                             $cart_row->update(
