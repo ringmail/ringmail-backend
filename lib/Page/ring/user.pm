@@ -44,7 +44,6 @@ sub load {
 
     $content->{cart}     = $cart;
     $content->{is_admin} = $is_admin;
-    $content->{total}    = 99.99 * scalar @{$cart};
 
     return $self->SUPER::load( $param, );
 }
