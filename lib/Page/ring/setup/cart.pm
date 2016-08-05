@@ -1,6 +1,7 @@
 package Page::ring::setup::cart;
 
 use constant::boolean;
+use English '-no_match_vars';
 use JSON::XS qw{ encode_json decode_json };
 use LWP::UserAgent;
 use Moose;
@@ -9,6 +10,7 @@ use Note::Param;
 use Note::SQL::Table 'sqltable';
 use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
+use Try::Tiny;
 
 extends 'Page::ring::user';
 
@@ -55,9 +57,11 @@ sub load {
 
             my $dbh = $_session->database()->handle()->_dbh();
 
-            $dbh->{AutoCommit} = 0;    # enable transactions, if possible
-            $dbh->{RaiseError} = 1;
-            eval {
+            my $auto_commit = $dbh->{AutoCommit};
+
+            $dbh->{AutoCommit} = FALSE;    # enable transactions, if possible
+
+            try {
 
                 my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
 
@@ -187,6 +191,8 @@ sub load {
 
                     }
 
+                    $total = sprintf '%.2f', $total;
+
                     if ( $order_total eq $total ) {
 
                         my $transaction_id = transaction(
@@ -257,6 +263,16 @@ sub load {
 
                 return $self->redirect( $self->url( path => 'u', ), );
             }
+            catch {
+
+                my $error = $ARG;
+
+                ::log( $error, );
+
+                return undef;
+            };
+
+            $dbh->{AutoCommit} = $auto_commit;
 
         }
 
@@ -513,9 +529,9 @@ sub payment {
 
             }
 
-            $order_row->update( { total => $total, }, );
+            $total = sprintf '%.2f', $total;
 
-            $total = $order_row->data( 'total', );
+            $order_row->update( { total => $total, }, );
 
             my %cart = (
 
