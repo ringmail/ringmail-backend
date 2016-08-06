@@ -117,6 +117,11 @@ sub setup_conv
 	);
 	my $dest = $userto->data('login');
 	$dest =~ s/\@/%40/;
+	my $contact = $obj->get_contact(
+		'from_user_id' => $uid,
+		'to_user_id' => $to,
+	);
+	$contact = '' unless (defined $contact);
 	my $rc = new Note::Row(
 		'ring_conversation' => {
 			'from_user_id' => $uid,
@@ -164,7 +169,7 @@ sub setup_conv
 				my $drec = $rt->row('did_id', 'ring_did')->data('did_code', 'did_number');
 				$newfrom = '+'. $drec->{'did_code'}. $drec->{'did_number'};
 			}
-			@result = ('ok', $dest, $newfrom, $replyrc->data('conversation_uuid'));
+			@result = ('ok', $dest, $newfrom, $replyrc->data('conversation_uuid'), $contact);
 		}
 	}
 	else
@@ -220,7 +225,7 @@ sub setup_conv
 			'to_user_id' => $uid,
 			'to_user_target_id' => $replytarget_id,
 		);
-		@result = ('ok', $dest, $replytarget, $reply->{'uuid'});
+		@result = ('ok', $dest, $replytarget, $reply->{'uuid'}, $contact);
 	}
 	return \@result;
 }
@@ -275,6 +280,26 @@ sub get_conversation
 			'code' => $conv,
 		};
 	}
+}
+
+sub get_contact
+{
+	my ($obj, $param) = get_param(@_);
+	my $rq = sqltable('ring_contact')->get(
+		'array' => 1,
+		'result' => 1,
+		'select' => ['t.internal_id'],
+		'table' => 'ring_contact t',
+		'where' => [
+			{
+				't.user_id' => $param->{'to_user_id'},
+				't.matched_user_id' => $param->{'from_user_id'},
+			},
+			'and',
+			'device_id = (SELECT d.id FROM ringmail.ring_device d WHERE d.user_id=t.user_id ORDER BY d.id DESC LIMIT 1)',
+		],
+	);
+	return $rq;
 }
 
 1;

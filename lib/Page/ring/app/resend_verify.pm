@@ -10,6 +10,7 @@ use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
 use MIME::Base64 'encode_base64';
+use Number::Phone::Country;
 
 use Note::XML 'xml';
 use Note::Row;
@@ -66,32 +67,41 @@ sub load
 			}
 		}
 	}
-	elsif (defined $form->{'phone'} && $form->{'phone'} =~ /^\+?\d{10,11}$/)
+	elsif (defined($form->{'phone'}) && $form->{'phone'} =~ /^\+?\d{10,16}$/)
 	{
+		my $phone = $form->{'phone'};
+		#::log("Phone: $phone");
+		my ($iso_country_code, $did_code) = Number::Phone::Country::phone2country_and_idd($phone);
+		my $did_number = $phone;
+		my $ms = "\\+". $did_code;
+		my $dm = qr($ms);
+		$did_number =~ s/^$dm//;
+		#::log("Code: $did_code Number: $did_number");
 		$err = 'phone';
 		my $item = new Ring::Item();
 		my $phitem = $item->item(
 			'type' => 'did',
-			'did_number' => $form->{'phone'},
+			'did_code' => $did_code,
+			'did_number' => $did_number,
 			'no_create' => 1,
 		);
-		::log("Phone Item:", $item);
 		if (defined $phitem) # make sure DID exists in database at all
 		{
 			my $rc = new Note::Row(
 				'ring_user_did' => {
-					'did_id' => $phitem->{'id'},
+					'did_id' => $phitem->id(),
 				},
 			);
 			if ($rc->id())
 			{
+				::log("Found User DID: ". $rc->id());
 				if (! $rc->data('verified'))
 				{
 					my $out = Ring::API->cmd(
 						'path' => ['user', 'target', 'verify', 'did', 'generate'],
 						'data' => {
 							'user_id' => $rc->data('user_id'),
-							'did_number' => $form->{'phone'},
+							'phone' => $phone,
 							'send_sms' => 1,
 						},
 					);
@@ -116,6 +126,7 @@ sub load
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
+	#::log("Result", $res);
 	return encode_json($res);
 }
 
