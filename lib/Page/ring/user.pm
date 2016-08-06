@@ -38,8 +38,6 @@ sub load {
         ],
     );
 
-    $self->check_admin();
-
     my $is_admin = $self->is_admin();
 
     $content->{cart}     = $cart;
