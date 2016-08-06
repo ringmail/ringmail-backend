@@ -150,6 +150,7 @@ sub cmd_domain_add
 {
 	my ($obj, $data, $args) = @_;
 	my $dns = lc($data->{'dns'});
+	::log("Add Domain: $dns");
 	unless (
 		(length($dns) >= 3) && # min 3 char
 		($dns =~ /\./) && # has a . (dot)
@@ -189,6 +190,7 @@ sub cmd_domain_add
 	}
 	else
 	{
+		::log("Generate Verify Error:", $vrf);
 		$obj->value()->{'error'} = 'Something went wrong';
 		$obj->form()->{'new_domain'} = 1;
 	}

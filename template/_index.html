@@ -32,7 +32,7 @@
 			<h2 class="ringmail-home-hero-h2">HASHTAGS, VIDEO, PHONE & CHAT + EXCLUSIVE CONTENT & OFFERS FROM YOUR FAVORITE BRANDS</h2>
 			</hgroup>
 			<!-- Button trigger modal -->
-			<button type="button" class="secure-signup-button" data-toggle="modal" data-target="#myModal">Sign Up For Free</button>
+			<a class="secure-signup-button" href="https://itunes.apple.com/us/app/ringmail/id653397088">Download App</a>
 		</div>
 	</section>
 </div>
@@ -55,22 +55,22 @@
 </div>
 <div class="ringmail-home-highlight-wrapper">
 	<section class="ringmail-home-highlight-section">
-		<h2 class="home-highlight-header-h2">More than a chat app</h2>
+		<h2 class="home-highlight-header-h2">Communication for the internet age</h2>
 		<ul class="home-highlight-ul">
-			<li class="home-highlight-li">
-			<img class="home-highlight-img" src="/img/website/highlight-hashtags-icon.png" alt="hashtags" />
-			<h2 class="home-highlight-h2">hashtags</h2>
-			<p class="home-highlight-p">Hashtags in RingMail connect you directly to exclusive content</p>
-			</li>
-			<li class="home-highlight-li">
+			<!--<li class="home-highlight-li">
 			<img class="home-highlight-img" src="/img/website/highlight-loops-icon.png" alt="loops" />
 			<h2 class="home-highlight-h2">loops</h2>
 			<p class="home-highlight-p">Loops are lively group chats that can include text, video, images, and more</p>
-			</li>
+			</li>-->
 			<li class="home-highlight-li">
 			<img class="home-highlight-img" src="/img/website/highlight-email-icon.png" alt="email" />
 			<h2 class="home-highlight-h2">email</h2>
 			<p class="home-highlight-p">Call anyone with an email address, using their email address</p>
+			</li>
+			<li class="home-highlight-li">
+			<img class="home-highlight-img" src="/img/website/highlight-hashtags-icon.png" alt="hashtags" />
+			<h2 class="home-highlight-h2">hashtags</h2>
+			<p class="home-highlight-p">Hashtags in RingMail connect you directly to exclusive content</p>
 			</li>
 			<li class="home-highlight-li">
 			<img class="home-highlight-img" src="/img/website/highlight-domains-icon.png" alt="domains" />
@@ -88,7 +88,8 @@
 		<p class="home-secure-p">In addition to chatting with friends and contacts available on your phone, now you can chat with businesses using our hashtag directory. </p>
 		<p class="home-secure-p">You can use simple screens to build your own hashtag page. Engage your network, get followers and start chatting. </p>
 		<p class="home-secure-p">To reserve your hashtags today, drop in your information along with any questions you might have; we will try to get back to you as soon as possible.</p>
-		<button type="button" class="secure-signup-button" data-toggle="modal" data-target="#myModal">Sign Up For Free</button>
+		<a class="secure-signup-button" href="https://itunes.apple.com/us/app/ringmail/id653397088">Download App</a>
+		<button type="button" class="secure-signup-button" data-toggle="modal" data-target="#myModal">Request More Information</button>
 	</section>
 </div>
 <!--div class="ringmail-home-secure-wrapper">
@@ -142,19 +143,24 @@
 <script defer src="/js/website/jquery.flexslider.js"></script>
 <script type="text/javascript">
 $(window).load(function() {
-		$('.iphone-slider').flexslider({
-animation: "slide",
-directionNav: false,
-controlNav: false
+	$('.iphone-slider').flexslider({
+		animation: "slide",
+		directionNav: false,
+		controlNav: false
+	});
 });
-		});
-</script>
-<script type="text/javascript">
 $(window).load(function() {
-		$('.flexslider').flexslider({
-animation: "slide"
+	$('.flexslider').flexslider({
+		animation: "slide"
+	});
 });
-		});
+if (window.location.hash) {
+	var ht = window.location.hash;
+	ht = ht.substring(1);
+	var rd = '/hashtag/'+ ht;
+	window.location = rd;
+	//console.log(rd);
+}
 </script>
 [% END %]
 [% INCLUDE layout/root_template.html %]
