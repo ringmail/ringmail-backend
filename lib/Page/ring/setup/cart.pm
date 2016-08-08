@@ -406,7 +406,7 @@ sub load {
 
             my $auto_commit = $dbh->{AutoCommit};
 
-            $dbh->{AutoCommit} = FALSE;    # enable transactions, if possible
+            # $dbh->{AutoCommit} = FALSE;    # enable transactions, if possible
 
             try {
 
@@ -579,16 +579,16 @@ sub load {
 
                             if ( $paypal_total eq $total ) {
 
-                                $dbh->commit;
+                                # $dbh->commit;
 
-                                $dbh->{AutoCommit} = $auto_commit;
+                                # $dbh->{AutoCommit} = $auto_commit;
 
                                 return $self->redirect( $self->url( path => 'u', ), );
 
                             }
                             else {
 
-                                try { $dbh->rollback };
+                                # try { $dbh->rollback };
 
                             }
 
@@ -597,7 +597,7 @@ sub load {
                     }
                     else {
 
-                        try { $dbh->rollback };
+                        # try { $dbh->rollback };
 
                     }
 
@@ -609,7 +609,7 @@ sub load {
 
                 ::log( $error, );
 
-                try { $dbh->rollback };
+                # try { $dbh->rollback };
 
                 return undef;
             };
@@ -814,7 +814,7 @@ sub payment {
 
     my $auto_commit = $dbh->{AutoCommit};
 
-    $dbh->{AutoCommit} = FALSE;    # enable transactions, if possible
+    # $dbh->{AutoCommit} = FALSE;    # enable transactions, if possible
 
     try {
 
@@ -933,9 +933,9 @@ sub payment {
 
                         my $redirect = $link_approval_url->{href};
 
-                        $dbh->commit;
+                        # $dbh->commit;
 
-                        $dbh->{AutoCommit} = $auto_commit;
+                        # $dbh->{AutoCommit} = $auto_commit;
 
                         return $self->redirect( $redirect, );
 
@@ -1060,9 +1060,9 @@ sub payment {
 
                 }
 
-                $dbh->commit;
+                # $dbh->commit;
 
-                $dbh->{AutoCommit} = $auto_commit;
+                # $dbh->{AutoCommit} = $auto_commit;
 
                 return $self->redirect( $self->url( path => 'u', ), );
 
@@ -1077,7 +1077,7 @@ sub payment {
 
         ::log( $error, );
 
-        try { $dbh->rollback };
+        # try { $dbh->rollback };
 
         return undef;
     };
