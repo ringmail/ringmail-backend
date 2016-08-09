@@ -740,7 +740,7 @@ sub search {
     return;
 }
 
-sub remove_from_cart {
+sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
     my $user    = $self->user();

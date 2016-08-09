@@ -2,7 +2,7 @@
    "class" : "Page::ring::setup::new_hashtags",
    "command" : {
       "logout" : "cmd_logout",
-      "remove_from_cart" : "remove_from_cart",
+      "remove" : "remove",
       "search" : "search"
    },
    "init" : [
