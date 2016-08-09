@@ -44,4 +44,30 @@ sub load {
     return $self->SUPER::load( $param, );
 }
 
+sub remove {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
+    my $hashtag_model = 'Ring::Model::Hashtag'->new();
+
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
+
+        if ($hashtag_model->delete(
+                user_id => $user_id,
+                id      => $hashtag_id,
+            )
+            )
+        {
+            # display confirmation
+        }
+        else {
+            # failed
+        }
+    }
+
+    return;
+}
+
 1;
