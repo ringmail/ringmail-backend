@@ -437,7 +437,7 @@ textarea {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
 }
 #footer {
-	padding: 20px 0;
+	padding: 20px 10px;
 	color: #ffffff;
 	background: #0077c2;
 	border-top: none;;
@@ -745,6 +745,27 @@ h2 {
 		text-shadow: none;
 	}
 }
+@media (max-width: 500px) {
+.nav-toggle {
+	clear:left;
+	float: left;
+	padding: 6px 10px 9px;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.logout-ul {
+	clear:left;
+	float: left;
+	margin-left: 10px;
+}
+}
+
 /* hashtag share css */
 .hashtag-smshare-ul {
 	display: block;

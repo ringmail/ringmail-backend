@@ -1,1 +1,3 @@
 static/img/logo_gen/*.png
+*.swp
+*.swo

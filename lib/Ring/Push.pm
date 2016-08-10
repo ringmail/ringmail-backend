@@ -53,6 +53,7 @@ sub push_message
 					},
 				};
 				$obj->apns_push($params);
+				::log("Push Message Token: $apns App: $app");
 			}
 		}
 	}
@@ -61,10 +62,9 @@ sub push_message
 sub push_call
 {
 	my ($obj, $param) = get_param(@_);
-	my $to = $param->{'to'};
+	my $uid = $param->{'to_user_id'};
 	my $from = $param->{'from'};
 	my $route = new Ring::Route();
-	my $uid = $route->get_target_user_id('target' => $to);
 	if (defined $uid)
 	{
 		my $user = new Ring::User($uid);
@@ -87,6 +87,8 @@ sub push_call
 					'sound' => 'msg.caf',
 				};
 				$obj->apns_push($params);
+				::log("Push Call Token: $apns");
+				#::log("Body: $body");
 			}
 		}
 	}
@@ -97,7 +99,7 @@ sub push_call
 sub apns_push
 {
 	my ($obj, $param) = get_param(@_);
-	::log("PUSH:", $param);
+	#::log("PUSH:", $param);
 	if ($param->{'voip'})
 	{
 		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns_voip'});
@@ -119,7 +121,7 @@ sub apns_push
 	}
 	else
 	{
-		::log("PUSH CONFIG:", $::app_config->{'push_apns'}->{$param->{'app'}});
+		#::log("PUSH CONFIG:", $::app_config->{'push_apns'}->{$param->{'app'}});
 		my $apns = new Net::APNS::Persistent($::app_config->{'push_apns'}->{$param->{'app'}});
 		my $data = $param->{'data'};
 		$data ||= {};

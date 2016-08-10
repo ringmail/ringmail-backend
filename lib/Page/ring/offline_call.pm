@@ -25,38 +25,31 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log($form);
+	#::log($form);
 # TODO: enable access token
 #	my $token = $form->{'access_token'};
 #	if ($token eq $::app_config->{'token_offline_message'})
 #	{
+		my $phone = decode_base64($form->{'phone'});
+		$phone =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
+		my $to = decode_base64($form->{'to'});
+		$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 		my $from = decode_base64($form->{'from'});
 		$from =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
-		my $fromphone = new Note::Row(
-			'ring_phone' => {
-				'login' => $from,
-			},
-		);
-		if ($fromphone->id())
+		$from =~ s/\\/@/;
+		#::log("From: $from To: $to");
+		my $tophone = new Note::Row('ring_phone' => {'login' => $to});
+		my $fromphone = new Note::Row('ring_phone' => {'login' => $phone});
+		if ($tophone->id() && $fromphone->id())
 		{
-			my $fromlogin = $fromphone->row('user_id', 'ring_user')->data('login');
-			my $to = decode_base64($form->{'to'});
-			$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
-			$to =~ s/\\/@/;
-			::log("From: $from ($fromlogin) To: $to");
-			my $urec = new Note::Row(
-				'ring_user' => {
-					'login' => $to,
-				},
+			my $urec = $tophone->row('user_id', 'ring_user');
+			my $login = $urec->data('login');
+			::log("Push Call From: $from ($phone) -> To: $login ($to)");
+			my $push = new Ring::Push();
+			$push->push_call(
+				'from' => $from,
+				'to_user_id' => $urec->id(),
 			);
-			if ($urec->id())
-			{
-				my $push = new Ring::Push();
-				$push->push_call(
-					'from' => $fromlogin,
-					'to' => $to,
-				);
-			}
 		}
 #	}
 	my $res = '';

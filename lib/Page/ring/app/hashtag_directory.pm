@@ -53,7 +53,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log('hashtag directory', {%$form, 'password' => ''});
+	#::log('hashtag directory', {%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
@@ -140,7 +140,7 @@ sub load
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	#::log($res);
 	return encode_json($res);
 }
 

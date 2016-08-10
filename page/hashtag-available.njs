@@ -1,0 +1,3 @@
+{
+   "template" : "hashtag-available.html"
+}
