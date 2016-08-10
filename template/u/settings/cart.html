@@ -156,7 +156,7 @@
 									[% IF hashtag.hashtag_id.defined %]		
 									[% pending = pending + 1 %]
 									[% page.field(
-									command => 'remove_from_cart',
+									command => 'remove',
 									type => 'checkbox',
 									name => 'hashtag_id',
 									opts => {
@@ -177,7 +177,7 @@
 								</td>
 								<td>
 									[% page.button(
-									command => 'remove_from_cart',
+									command => 'remove',
 									text => 'Remove',
 									opts => {
 									class => 'btn btn-primary',
