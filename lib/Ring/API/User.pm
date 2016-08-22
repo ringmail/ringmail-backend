@@ -10,6 +10,7 @@ use POSIX 'strftime';
 use Date::Parse 'str2time';
 use String::Random;
 use Net::DNS;
+use Number::Phone::Country;
 
 use Note::Param;
 use Note::Row;
@@ -32,8 +33,8 @@ sub create
 	my $data = $param->{'data'};
 	#print STDERR 'Create: '. Dumper($data);
 	my $phone = $data->{'phone'};
-	$phone =~ s/\D//g;
-	$phone =~ s/^1//;
+	#$phone =~ s/\D//g; # remove +
+	#$phone =~ s/^1//;
 
 # Already checked...
 #	my $check = Ring::API->cmd(
@@ -90,7 +91,7 @@ sub create
 				'path' => ['user', 'target', 'verify', 'did', 'generate'],
 				'data' => {
 					'user_id' => $uid,
-					'did_number' => $phone,
+					'phone' => $phone,
 					#'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
 				},
 			);
@@ -556,9 +557,17 @@ sub target
 			if ($option eq 'generate')
 			{
 				my $item = new Ring::Item();
+				my $phone = $data->{'phone'};
+				my ($iso_country_code, $did_code) = Number::Phone::Country::phone2country_and_idd($phone);
+				my $did_number = $phone;
+				my $ms = "\\+". $did_code;
+				my $dm = qr($ms);
+				$did_number =~ s/^$dm//;
+				#::log("Code: $did_code Subst: $ms Number: $did_number");
 				my $drec = $item->item(
 					'type' => 'did',
-					'did_number' => $data->{'did_number'},
+					'did_code' => $did_code,
+					'did_number' => $did_number,
 				);
 				eval {
 					$SIG{__WARN__} = sub {};
@@ -599,7 +608,7 @@ sub target
 					my $msg = 'RingMail Code: '. $code;
 					my $tw = new Ring::Twilio();
 					my $reply = $tw->send_sms(
-						'to' => $data->{'did_number'},
+						'to' => $phone,
 						'from' => '+14243260287',
 						'body' => $msg,
 					);

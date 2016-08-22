@@ -33,7 +33,7 @@ sub load
 		$from =~ s/ /+/g; # Fix URL encoding issues (there are never spaces in RingMail addresses)
 		$to =~ s/ /+/g;
 		my $body = $form->{'body'};
-		::log("From: $from To: $to Body: $body");
+		::log("Push Message: $from -> $to");
 		my $push = new Ring::Push();
 		$push->push_message(
 			'from' => $from,

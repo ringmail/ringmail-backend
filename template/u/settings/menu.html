@@ -1,26 +1,48 @@
 <div id="header">
 	<div class="container">
-		<a href="/">
-			<h1 class="logo-h1">RingMail</h1>
-		</a>
-		<a href="javascript:;" class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-			<i class="icon-reorder"></i>
-		</a>
+		<h1 class="logo-h1">RingMail</h1>
 		<ul class="logout-ul pull-right">
+			<li>[% page.user.email %]</li>
 			<li><a href="/u/cart"><i class="fa fa-shopping-cart"></i> Cart ([% cart.size %])</a></li>
 			<li style="color:#08c;"> &nbsp; | &nbsp; </li>
 			<li>[% page.link(
-			text => 'Logout',
-			path => '/u',
-			command => 'logout',
+				text => 'Logout',
+				path => '/u',
+				command => 'logout',
 			) %]</li>
 		</ul>
-		<div class="nav-collapse">
-			<ul id="main-nav" class="nav pull-right">
+		<div class="nav-mine">
+			<ul id="main-nav" class="nav">
 				<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u">Hashtags</a></li>
 				<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
+				<li class="nav-icon[% IF menu_settings == 'domains' %] active[% END %]"><a href="/u/domains">Domains</a></li>
 				<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
+				[% IF is_admin %]
+				<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>
+				<li class="nav-icon[% IF menu_settings == 'admin/coupons' %] active[% END %]"><a href="/u/admin/coupons">Coupons</a></li>
+				[% END %]
 			</ul>
+		</div>
+		<div class="panel-heading" role="tab" id="mobile-nav">
+			<a class="nav-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="toggle-bar"></span>
+				<span class="toggle-bar"></span>
+				<span class="toggle-bar"></span>
+			</a>
+		</div>
+		<div id="collapseOne" class="panel-collapse collapse nav-mine-collapse" role="tabpanel" aria-labelledby="mobile-nav">
+			<div class="nav-mine-m">
+				<ul id="main-nav" class="nav">
+					<li class="nav-icon[% IF menu_settings == 'hashtags' %] active[% END %]"><a href="/u">Hashtags</a></li>
+					<li class="nav-icon[% IF menu_settings == 'ringpages' %] active[% END %]"><a href="/u/ringpages">RingPages</a></li>
+					<li class="nav-icon[% IF menu_settings == 'account' %] active[% END %]"><a href="/u/account">Account</a></li>
+					[% IF is_admin %]
+					<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>
+					<li class="nav-icon[% IF menu_settings == 'admin/coupons' %] active[% END %]"><a href="/u/admin/coupons">Coupons</a></li>
+					[% END %]
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>

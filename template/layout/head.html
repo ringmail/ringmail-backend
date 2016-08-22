@@ -13,24 +13,56 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 	<title>[% title %]</title>
-	<link href="/css/website/normalize.css" type="text/css" rel="stylesheet"> <!-- html5 boilerplate normalize -->
-	
-	<link href="/css/website/bootstrap.css" type="text/css" rel="stylesheet">
-	<link href="/css/website/main.css" type="text/css" rel="stylesheet">
-	<link href="/css/website/font-awesome.css" type="text/css" rel="stylesheet">
-	<link href="/css/website/structure.css" rel="stylesheet">
-	
-	[% IF page == "subpage-jumbo" %]
-	<link href="/css/website/jumbotron-narrow.css" rel="stylesheet">
+
+
+    [% IF page == "home" %]
+        <link href="/css/website/normalize.css" type="text/css" rel="stylesheet"> <!-- html5 boilerplate normalize -->
+        <link href="/css/website/bootstrap.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/main.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/font-awesome.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/structure.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="/js/website/wufoo.js"></script>
+        <script src="/js/website/bootstrap.js"></script>
+	[% ELSIF page == "subpage-jumbo" %]
+        <link href="/css/website/normalize.css" type="text/css" rel="stylesheet"> <!-- html5 boilerplate normalize -->
+        <link href="/css/website/bootstrap.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/main.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/font-awesome.css" type="text/css" rel="stylesheet">
+        <link href="/css/website/structure.css" rel="stylesheet">
+	    <link href="/css/website/jumbotron-narrow.css" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="/js/website/wufoo.js"></script>
+        <script src="/js/website/bootstrap.js"></script>
+    [% ELSE  %]
+        <link rel="shortcut icon" href="/img/website/favicon.ico" type="image/x-icon" />
+
+        <link href="/js/wm/bower_components/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+        <link href="/js/wm/bower_components/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+        <link href="/js/wm/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <link rel="stylesheet" href="/js/wm/bower_components/smartmenus/dist/css/sm-core-css.css" >
+        <link rel="stylesheet" href="/js/wm/bower_components/smartmenus/dist/addons/bootstrap/jquery.smartmenus.bootstrap.css">
+        <link rel="stylesheet" href="/js/wm/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css">
+        <link rel="stylesheet" href="/css/wm/css/dist/style.css">
+
+        <script src="/js/wm/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/js/wm/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="/js/wm/bower_components/html5shiv/dist/html5shiv.min.js"></script>
+            <script src="/js/wm/bower_components/respond/dest/respond.min.js"></script>
+        <![endif]-->
+        <script src="/js/wm/bower_components/smartmenus/dist/jquery.smartmenus.min.js"></script>
+        <script src="/js/wm/bower_components/smartmenus/dist/addons/bootstrap/jquery.smartmenus.bootstrap.js"></script>
+        <script src="/js/wm/bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+        <script src="/js/wm/bower_components/jquery.scrollTo/jquery.scrollTo.min.js"></script>
+        <script src="/js/wm/bower_components/jquery.localScroll/jquery.localScroll.min.js"></script>
 	[% END %]
-	<link rel="shortcut icon" href="/img/website/favicon.ico" type="image/x-icon" />
-	
-	<!-- Bootstrap >
-	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet"-->
-	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	  	<script src="/js/website/wufoo.js"></script>	
-	  	<script src="/js/website/bootstrap.js"></script>
-    
+
+
 
 		[% INCLUDE layout/track.html %]
 

@@ -46,6 +46,19 @@ has 'row' => (
 	},
 );
 
+has email => (
+    is      => 'rw',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub {
+        my ( $self, ) = @_;
+
+        my $user_row = $self->row();
+
+        return $user_row->data( 'login', );
+    },
+);
+
 our %usercheck = (
 	'first_name' => new Note::Check(
 		'type' => 'regex',
@@ -795,9 +808,38 @@ sub login
 sub aws_user_id {
     my ( @args, ) = @_;
 
-    my $random_string = random_regex '[A-Za-z0-9]{32}';
+    my ( $self, $param, ) = get_param( @args, );
 
-    return $random_string;
+    my $user_id       = $self->id();
+    my $user_row_data = $self->row()->data();
+
+    my $aws_user_id = $user_row_data->{aws_user_id};
+
+    if ( defined $aws_user_id and length $aws_user_id > 0 ) {
+
+        return $aws_user_id;
+    }
+
+    else {
+
+        my $ring_user = Note::Row::table('ring_user');
+
+        my $random_string;
+
+        do {
+
+            $random_string = random_regex '[A-Za-z0-9]{32}';
+
+        } while ( $ring_user->count( aws_user_id => $random_string, ) > 0 );
+
+        my $user_row = Note::Row->new( ring_user => $user_id, );
+        $user_row->update( { aws_user_id => $random_string, }, );
+
+        return $random_string;
+
+    }
+
+    return;
 }
 
 1;

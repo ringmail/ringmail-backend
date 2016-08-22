@@ -1,8 +1,9 @@
+[% IF page == "home" || page == "subpage-jumbo"  %]
 <section class="footer-section">
     <footer class="footer-content">
 		
 		<ul class="footer-ul">
-			<li class="footer-li">
+			<!--<li class="footer-li">
 				<a class="footer-li-button" href="/for-brands" title="For Brands">For Brands</a>
 			</li>
 			
@@ -12,8 +13,33 @@
 			
 			<li class="footer-li">
 				<a class="footer-li-a" href="/privacy-policy" title="Privacy Policy">Privacy Policy</a>
+			</li>-->
+			<li class="footer-li">
+				<a class="footer-li-a" href="https://dyl.com/pirates" title="Powered by Pirates">Powered by P!rates</a>
 			</li>
 		</ul>
 		
     </footer>
 </section>
+[% ELSE  %]
+<footer class="footer">
+	<div class="container">
+		<div class="col-md-6">
+			<ul class="footer-nav-left">
+				<li>
+					<a href="/" class="btn btn-black">FOR BRANDS</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-6">
+			<ul class="pull-right footer-nav-right">
+				<li>
+					<a href="/" class="btn">PRIVACY POLICY</a>
+					<a href="/" class="btn">TERMS OF USE</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<script src="/js/wm/js/dist/wm.min.js"></script>
+[% END %]

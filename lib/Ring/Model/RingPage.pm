@@ -6,28 +6,13 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
-use Ring::User;
-use strict;
 use Try::Tiny;
-use warnings;
-
-sub validate_ringpage {
-    my ( @args, ) = @_;
-    my ( $obj, $param ) = get_param( @args, );
-    my $ringpage = $param->{ringpage};
-    if ( $ringpage =~ qr{\A [\w\s]+ \z}xms ) {
-        return TRUE;
-    }
-    return FALSE;
-}
 
 sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $ringpage = $param->{ringpage};
-    if ( not $obj->validate_ringpage( ringpage => $ringpage, ) ) {
-        croak(qq|Invalid ringpage '$ringpage'|);
-    }
+
     return sqltable('ring_page')->count( ringpage => $ringpage, );
 }
 
@@ -36,9 +21,7 @@ sub create {
     my ( $obj, $param ) = get_param( @args, );
 
     my $ringpage = $param->{ringpage};
-    if ( not $obj->validate_ringpage( ringpage => $ringpage, ) ) {
-        croak(qq|Invalid ringpage '$ringpage'|);
-    }
+
     my $trec;
 
     try {
@@ -66,7 +49,7 @@ sub create {
     return $trec;
 }
 
-sub delete {
+sub remove {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
     my $rc = Note::Row->new(

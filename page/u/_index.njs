@@ -1,12 +1,12 @@
 {
-   "class" : "Page::ring::setup::new_hashtags",
+   "class" : "Page::ring::setup::hashtags",
    "command" : {
       "logout" : "cmd_logout",
-      "remove_from_cart" : "remove_from_cart",
+      "remove" : "remove",
       "search" : "search"
    },
    "init" : [
       "valid_user"
    ],
-   "template" : "u/settings/new_hashtags.html"
+   "template" : "u/settings/hashtags.html"
 }

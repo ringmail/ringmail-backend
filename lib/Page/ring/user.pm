@@ -1,19 +1,18 @@
 package Page::ring::user;
 
-use Crypt::CBC;
-use JSON::XS qw{ encode_json decode_json };
-use MIME::Base64;
+use constant::boolean;
+use MIME::Base64 qw{ encode_base64 };
 use Moose;
-use Note::Locale 'us_states', 'us_state_name';
+use Note::Locale qw{ us_states us_state_name };
 use Note::Param;
 use Note::SQL::Table 'sqltable';
 use Note::XML 'xml';
 use POSIX 'strftime';
 use Ring::User;
-use strict;
-use warnings;
 
 extends 'Note::Page';
+
+with 'Ring::User::Admin';
 
 has 'user' => (
     'is'  => 'rw',
@@ -39,19 +38,10 @@ sub load {
         ],
     );
 
-    my @hashtag_ids        = map { $_->{hashtag_id}; } @{$cart};
-    my $config             = $main::note_config->config();
-    my $key                = $config->{paypal_key};
-    my $cipher             = 'Crypt::CBC'->new( -key => $key, );
-    my $ciphertext         = $cipher->encrypt( encode_json [ $user->id(), 99.99 * scalar @{$cart}, @hashtag_ids, ], );
-    my $ciphertext_encoded = encode_base64 $ciphertext;
+    my $is_admin = $self->is_admin();
 
-    my $plaintext = $cipher->decrypt( decode_base64 $ciphertext_encoded, );
-
-    $content->{cart}                    = $cart;
-    $content->{paypal_ciphertext}       = $ciphertext_encoded;
-    $content->{paypal_hosted_button_id} = $config->{paypal_hosted_button_id};
-    $content->{total}                   = 99.99 * scalar @{$cart};
+    $content->{cart}     = $cart;
+    $content->{is_admin} = $is_admin;
 
     return $self->SUPER::load( $param, );
 }
@@ -319,11 +309,26 @@ sub valid_user {
 }
 
 sub cmd_logout {
-    my ($obj) = @_;
-    my $sd = $obj->session();
-    delete $sd->{'login_ringmail'};
-    $obj->session_write();
-    $obj->redirect( $obj->url( 'path' => '/' ) );
+    my ( $self, ) = @_;
+
+    my $sd = $self->session();
+
+    if ( $sd->{login_ringmail_original} ) {
+
+        $sd->{login_ringmail} = $sd->{login_ringmail_original};
+
+        delete $sd->{login_ringmail_original};
+        $self->session_write();
+        $self->redirect( $self->url( path => '/u', ), );
+
+    }
+    else {
+
+        delete $sd->{login_ringmail};
+        $self->session_write();
+        $self->redirect( $self->url( path => '/', ), );
+
+    }
 
     return;
 }

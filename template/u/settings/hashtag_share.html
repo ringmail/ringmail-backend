@@ -1,0 +1,138 @@
+[% menu_settings = 'hashtags' %]
+[% menu_subnav = 'hashtags' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Share Your Hashtag: #[% hashtag %]</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<h4> &nbsp;</h4>
+				<h2>Share on Social Media</h2>
+				<ul class="hashtag-smshare-ul">
+					<li>
+						<a class="btn-facebook" href="https://facebook.com/sharer.php?u=https://ringmail.com/hashtag/[% hashtag %]" title="Share on Facebook"><i class="fa fa-facebook-square"></i>Facebook</a>
+					</li>
+					<li>
+						<a class="btn-twitter" href="https://twitter.com/intent/tweet?text=#[% hashtag %]&url=https://ringmail.com/hashtag/[% hashtag %]"><i class="fa fa-twitter-square" title="Share on Twitter"></i>Twitter</a>
+					</li>
+					<li>
+						<a class="btn-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&title=#[% hashtag %]&url=https://ringmail.com/hashtag/[% hashtag %]" title="Share on Linkedin"><i class="fa fa-linkedin-square"></i>LinkedIn</a>
+					</li>
+					<li>
+						<a class="btn-googleplus" href="https://plus.google.com/share?url=[% hashtag %]" title="Share on Google+"><i class="fa fa-google-plus-square"></i>Google+</a>
+					</li>
+				</ul>
+			</div>
+			<div class="span12">
+				<h4> &nbsp;</h4>
+				<h2>Copy Link</h2>
+			<form>
+			  <div class="input-group">
+				  <label class="hashtag-share-label">Web Friendly Link</label>
+			    <input type="text" class="form-control copy-url" value="https://ringmail.com/hashtag/[% hashtag %]" placeholder="" id="copy-web">
+			    <span class="input-group-btn">
+			      <button class="btn btn-primary btn-medium" type="button" id="copy-web-button" title="Copy to Clipboard">
+			        Copy
+			      </button>
+			    </span>
+			  </div>
+			</form>
+			<form style="margin-bottom: 0;">
+			  <div class="input-group">
+				<label class="hashtag-share-label">RingMail App Link</label>
+			    <input type="text" class="form-control copy-url" value="ring://#[% hashtag %]" placeholder="" id="copy-ring">
+			    <span class="input-group-btn">
+			      <button class="btn btn-primary btn-medium" type="button" id="copy-ring-button" title="Copy to Clipboard">
+			        Copy
+			      </button>
+			    </span>
+			  </div>
+			</form>
+
+			</div>
+			<div class="span12">
+				<h4> &nbsp;</h4>
+				<h2>Download Ring Image</h2>
+			
+			<ul class="hashtag-ringimage-ul">
+				<li>	
+					<a href="../img/rm-logo.png" download="">
+						<img src="../img/rm-logo.png" alt="Click to download your ring image" />
+					</a>
+				</li>
+				<li>	
+					<a href="../img/rm-logo.png" download="">
+						<img src="../img/rm-logo.png" alt="Click to download your ring image" />
+					</a>
+				</li>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+
+
+  $('#copy-web-button').bind('click', function() {
+    var input = document.querySelector('#copy-web');
+    input.setSelectionRange(0, input.value.length + 1);
+	var success = document.execCommand('copy');
+  });
+  
+   $('#copy-ring-button').bind('click', function() {
+    var input = document.querySelector('#copy-ring');
+    input.setSelectionRange(0, input.value.length + 1);
+	var success = document.execCommand('copy');
+  });
+  
+  })
+
+</script>
+
+       <script>
+	
+	$(document).ready(function() {
+    $('.btn-facebook').click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), 'fbShareWindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        return false;
+    });
+});
+
+	$(document).ready(function() {
+    $('.btn-twitter').click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), 'fbShareWindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        return false;
+    });
+});
+
+	$(document).ready(function() {
+    $('.btn-linkedin').click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), 'fbShareWindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        return false;
+    });
+});
+
+	$(document).ready(function() {
+    $('.btn-googleplus').click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), 'fbShareWindow', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        return false;
+    });
+});
+	   
+	</script>
+
+[% END %]
+[% INCLUDE layout/internal.html %]

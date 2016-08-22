@@ -1,0 +1,188 @@
+[% menu_settings = 'admin/user_list' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>User List</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">		
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					<h2>Add User</h2>
+					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								[% page.field(
+								command => 'add',
+								type => 'text',
+								name => 'email',
+								value => page.form.email,
+								opts => {
+								id => 'email',
+								},
+								) %]
+								[% IF page.value.error %]
+								<div>
+									<span class="error" for="email" style="display: inline;">[% page.value.error %]</span>
+								</div>
+								[% END %]
+								[% page.button(
+								command => 'add',
+								contents => 'Add',
+								opts => {
+								class => 'btn btn-primary btn-medium',
+								},
+								) %]
+							</div>
+						</fieldset>
+					</form>
+					<h2>Search User</h2>
+					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								[% page.field(
+								command => 'search',
+								type => 'text',
+								name => 'search',
+								value => page.form.search,
+								opts => {
+								id => 'search',
+								},
+								) %]
+								[% page.button(
+								command => 'search',
+								contents => 'Search',
+								opts => {
+								class => 'btn btn-primary btn-medium',
+								},
+								) %]
+							</div>
+						</fieldset>
+					</form>
+					<h2>Users</h2>
+					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]">
+						<table class="table table-bordered table-highlight table-cart">
+							<thead>
+								<tr>
+									<th>Login</th>
+									<th>Admin</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% IF user_list.size == 0 %]
+							<tr>
+								<td colspan="2">No Users.</td>
+							</tr>
+							[% ELSE %]
+							[% pending = 0 %]
+							[% USE X = Page( count, page.form.search.defined ? count : 10, page.form.page, ) %]
+							[% FOREACH user IN users %]
+							<tr>
+								<td>
+									[% page.link(
+									command => 'login',
+									text => user.login,
+									args => [ user.id, ],
+									opts => {
+									onclick => "return confirm( 'Really login as $user.login?' );",
+									},
+									) %]
+								</td>
+								<td>
+									[% IF user.id == user.user_id %]
+									[% page.field(
+									command => 'admin',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									checked => undef,
+									value => user.id,
+									},
+									) %]
+									[% ELSE %]
+									[% page.field(
+									command => 'admin',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									value => user.id,
+									},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							[% END %]
+							[% IF page.form.search.defined %]
+							[% page.field(
+							command => 'admin',
+							type => 'hidden',
+							name => 'search',
+							value => page.form.search,
+							) %]
+							[% END %]
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'admin',
+									text => 'Make Admin',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<ul class="pager">
+										[% IF X.previous_page > 0 %]
+										<li class="previous">
+										[% page.link(
+										text => '&larr; Previous',
+										query => {
+										page => X.previous_page,
+										},
+										) %]
+										</li>
+										[% ELSE %]
+										<li class="previous disabled">
+										<span>&larr; Previous</span>
+										</li>
+										[% END %]
+										[% IF X.next_page > 0 %]
+										<li class="next">
+										[% page.link(
+										text => 'Next &rarr;',
+										query => {
+										page => X.next_page,
+										},
+										) %]
+										[% ELSE %]
+										<li class="next disabled">
+										<span>Next &rarr;</span>
+										</li>
+										[% END %]
+									</ul>
+								</td>
+							</tr>
+							[% END %]
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

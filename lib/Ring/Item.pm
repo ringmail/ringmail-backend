@@ -54,8 +54,11 @@ sub item
 					'did_number' => $did,
 				},
 			);
-			return undef unless ($res->id());
-			return $res;
+			if ($res->id())
+			{
+				return $res;
+			}
+			return undef;
 		}
 		return Note::Row::find_create(
 			'ring_did' => {

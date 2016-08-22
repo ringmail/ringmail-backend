@@ -18,13 +18,22 @@
 				<div class="tabbable">
 					<div class="row">
 						<div class="main-wrapper">
-							<h2>&nbsp;</h2>
+							<h2>[% page.button(
+								command => 'edit',
+								text => 'Update',
+								type => 'submit',
+								opts => {
+								class => 'btn btn-primary btn-hide',
+								id => 'do-1_1',
+								},
+								args => [ page.form.ringpage_id, ],
+								) %]</h2>
 							<div class="span6 pull-left">
 								<table class="table table-bordered logo">
 									<tbody>
 									<tr>
 										<td class="td-label"><label>Logo</label></td>
-										<td>
+										<td class="logo-inputs">
 											<ul>
 												<li>
 												[% page.field(
@@ -54,12 +63,15 @@
 												type => 'file',
 												name => 'logo',
 												opts => {
-												id => 'f_d1-logo',
 												'data-url' => '/u/upload/logo',
+												id => 'f_d1-logo',
 												},
 												) %]
 												</li>
 											</ul>
+											<div id="progress_logo">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
 										</td>
 									</tr>
 									</tbody>
@@ -84,8 +96,6 @@
 													</span></li>
 													<li style="background-color:[% theme.color_1 %];"></li>
 													<li style="background-color:[% theme.color_2 %];"></li>
-													<li style="background-color:[% theme.color_3 %];"></li>
-													<li style="background-color:[% theme.color_4 %];"></li>
 												</ul>
 												</li>
 												[% END %]
@@ -107,17 +117,41 @@
 												type => 'file',
 												name => 'image',
 												opts => {
-												id => 'f_d1-image',
 												'data-url' => '/u/upload/image',
+												id => 'f_d1-image',
 												},
 												) %]
 												</li>
 											</ul>
+											<div id="progress_image">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
 										</td>
 									</tr>
 									</tbody>
 								</table>
 								[% END %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Title</label></td>
+										<td>
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'title',
+												value => ringpage.title,
+												opts => {
+												placeholder => 'Title',
+												},
+												) %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
 								[% IF ringpage.video_url.defined %]
 								<table class="table table-bordered media">
 									<tbody>
@@ -223,7 +257,32 @@
 										<td class="td-inputs">
 											[% IF buttons.size < ringpage_template.buttons %]
 											<ul class="radio-wrapper">
-												<li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addButtonModal">Add Button</button></li>
+												<li>
+												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 40 > ringpage.image_height and ringpage.template == 'v2' %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												class=> 'btn btn-primary btn-lg',
+												onclick => "alert('Main image is too short to fit more buttons.'); return false;",
+												},	
+												) %]
+												[% ELSE %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												'data-target' => '#editButtonsModal',
+												'data-toggle' => 'modal',
+												class=> 'btn btn-primary btn-lg',
+												},	
+												) %]
+												[% END %]
+												</li>
+											</ul>
+											[% ELSE %]
+											<ul class="radio-wrapper">
+												<li class="blank-li">&nbsp;</li>
 											</ul>
 											[% END %]
 											[% FOREACH button IN buttons %]
@@ -233,6 +292,18 @@
 												</li>
 												<li>
 												[% button.uri %]
+												</li>
+												<li>
+												<a id="edit_buttons"
+													data-button_id="[% button.id %]"
+													data-button_link="[% button.uri %]"
+													data-button_position="[% button.position %]"
+													data-button_text="[% button.button %]"
+													data-target="#editButtonsModal"
+													data-toggle="modal"
+													/>
+													Edit
+												</a>
 												</li>
 												<li>
 												[% page.link(
@@ -375,11 +446,11 @@
 									[% page.button(
 									command => 'edit',
 									text => 'Update',
-									opts => {
 									type => 'submit',
+									opts => {
 									class => 'btn btn-primary',
 									id => 'do-1_1',
-									}
+									},
 									args => [ page.form.ringpage_id, ],
 									) %]
 									</p>
@@ -389,29 +460,35 @@
 						<div class="span6 pull-right">
 							<div id="preview"></div>
 						</div>
-						<script>
-bioMp(document.getElementById('preview'), {
-url: '/ringpage?ringpage_id=[% page.form.ringpage_id %]',
-view: 'front',
-image: '/img/iphone6_front_white.png',
-scale: '.8'
-});
-$('#addButtonModal').on('shown.bs.modal', function () {
-		$('#myInput').focus()
-		})
-						</script>
 					</div>
 				</div>
 			</div>
-			<div class="modal fade" id="addButtonModal" tabindex="-1" role="dialog" aria-labelledby="addButtonModal">
+			<div class="modal fade" id="editButtonsModal" tabindex="-1" role="dialog" aria-labelledby="editButtonsModal">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header add-button">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							[% page.button(
+							command => 'edit',
+							text => '<span aria-hidden="true">&times;</span>',
+							type => 'button',
+							opts => {
+							'aria-label' => 'Close',
+							class => 'close',
+							'data-dismiss' => 'modal',
+							id => 'edit_buttons_close',
+							},
+							) %]
 							<h4 class="modal-title">Add Button</h4>
 						</div>
 						<div class="modal-body">
-							<p></p>
+							[% page.field(
+							command => 'edit',
+							type => 'hidden',
+							name => 'button_id',
+							opts => {
+							id => 'button_id',
+							},
+							) %]
 							<ul class="modal-ul">
 								<li>
 								<span class="input-group-addon">
@@ -421,6 +498,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_text',
 									opts => {
+									id => 'button_text',
 									placeholder => 'Text',
 									},
 									) %]
@@ -435,6 +513,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_1',
 									placeholder => 'URL',
 									},
 									) %]
@@ -447,6 +526,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_2',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -459,6 +539,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_3',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -471,6 +552,7 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 									type => 'text',
 									name => 'button_link',
 									opts => {
+									id => 'button_link_4',
 									placeholder => 'RingMail Address',
 									},
 									) %]
@@ -479,14 +561,23 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 							</ul>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							[% page.button(
 							command => 'edit',
-							text => 'Add',
+							text => 'Close',
+							type => 'button',
 							opts => {
+							class => 'btn btn-default',
+							'data-dismiss' => 'modal',
+							id => 'edit_buttons_close',
+							},
+							) %]
+							[% page.button(
+							command => 'edit',
+							text => 'Save',
 							type => 'submit',
+							opts => {
 							class => 'btn btn-primary',
-							}
+							},
 							args => [ page.form.ringpage_id, ],
 							) %]
 						</div>
@@ -498,21 +589,72 @@ $('#addButtonModal').on('shown.bs.modal', function () {
 </div>
 <script src="/js/jquery.fileupload.js"></script>
 <script>
+bioMp(document.getElementById('preview'), {
+url: '/ringpage?ringpage_id=[% page.form.ringpage_id %]',
+view: 'front',
+image: '/img/iphone6_front_white.png',
+scale: '.8'
+});
+$('#editButtonsModal').on('shown.bs.modal', function () {
+		$('#myInput').focus()
+		});
+$('#editButtonsModal').on('hidden.bs.modal', function () {
+		$('#button_id').val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$('#button_text').val(null);
+		});
 $( function () {
 		$( '#f_d1-logo' ).fileupload( {
 formData: { ringpage_id: '[% page.form.ringpage_id %]' },
 dataType: 'json',
 done: function ( e, data ) {
 $( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_logo .bar').css(
+	'width',
+	progress + '%'
+	);
 }
 } );
 		$( '#f_d1-image' ).fileupload( {
-formData: { ringpage_id: '[% page.form.ringpage_id %]' },
+formData: {
+ringpage_id: '[% page.form.ringpage_id %]',
+buttons: '[% buttons.size %]'
+},
 dataType: 'json',
 done: function ( e, data ) {
+if ( data.result.error == 'size' ) {
+alert('Main image is too short to fit all the buttons.');
+return false;
+}
 $( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_image .bar').css(
+	'width',
+	progress + '%'
+	);
 }
 } );
+});
+$(document).on( 'click', '#edit_buttons',function(e) {
+		$('#button_id').val($(this).data('button_id'));
+		$('#button_link_' + $(this).data('button_position')).val($(this).data('button_link'));
+		$('#button_text').val($(this).data('button_text'));
+		});
+$(document).on( 'click', '#edit_buttons_close',function(e) {
+		$('#button_id').val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$('#button_text').val(null);
 		});
 </script>
 [% END %]

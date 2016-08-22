@@ -15,6 +15,7 @@ use Note::XML 'xml';
 use Note::Param;
 
 use Ring::Route;
+use Ring::Conversation;
 
 extends 'Note::Page';
 
@@ -34,12 +35,13 @@ sub load
 	my $fru = $route->get_phone_user(
 		'phone_login' => $from,
 	);
-	if (defined $fru)
-	{
-		$from = $fru->{'login'};
-		$from =~ s/\@/\\/;
-		$from = uri_escape($from); # TODO: expand?
-	}
+	#::log($fru);
+#	if (defined $fru)
+#	{
+#		$from = $fru->{'login'};
+#		$from =~ s/\@/\\/;
+#		$from = uri_escape($from); # TODO: expand?
+#	}
 	$to =~ s/^sip\://;
 	$to =~ s/\@.*//g;
 	$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
@@ -57,9 +59,32 @@ sub load
 		);
 		if (defined $dest)
 		{
-			$res = "type=phone;from=$from;to=$dest->{'phone'}";
+			my $trow = $route->get_target(
+				'type' => $type,
+				$type => $to,
+			);
+			my $conv = new Ring::Conversation();
+			my $cres = $conv->setup_conv(
+				'media' => 'call',
+				'from_user_id' => $fru->{'user_id'},
+				#'from_conversation_uuid' => $uuid,
+				'to_user_id' => $trow->data('user_id'),
+				'to_user_target_id' => $trow->id(),
+			);
+			my ($cok, $newto, $newfrom, $touuid, $tocontact) = @$cres;
+			#::log("Conv: ok:$cok to:$newto from:$newfrom to_uuid:$touuid to_contact:$tocontact");
+			if ($cok eq 'ok')
+			{
+				my $tologin = $trow->row('user_id', 'ring_user')->data('login');
+				::log("Lookup From: $fru->{'login'}|$newfrom -> To: $tologin|$to");
+				$newfrom =~ s/\@/\\/;
+				$newfrom = uri_escape($newfrom);
+				$res = "type=phone;from=$newfrom;to=$dest->{'phone'};uuid=$touuid;contact=$tocontact";
+			}
 		}
-		::log("From: $from", "To: $to", "Type: $type", "Dest: $res");
+		::log("Lookup Result: $res");
+		#::log("From: $from To: $to", "Type: $type", "Dest: $res");
+		#::log("From: $from To: $dest->{'phone'}");
 	}
 	elsif ($to =~ /^#([a-z0-9_]+)/i)
 	{

@@ -1,19 +1,15 @@
 package Page::ring::setup::ringpage;
 
-use strict;
-use warnings;
 use constant::boolean;
-
-use Moose;
+use English '-no_match_vars';
+use HTML::Escape 'escape_html';
 use JSON::XS qw{ encode_json decode_json };
 use List::MoreUtils qw{ each_arrayref first_value };
-use English '-no_match_vars';
-
-use Note::XML 'xml';
+use Moose;
 use Note::Param;
 use Note::SQL::Table 'sqltable';
-
-use Ring::User;
+use Regexp::Common 'URI';
+use Regexp::Common 'whitespace';
 use Ring::Model::RingPage;
 use Ring::Model::Template;
 
@@ -61,9 +57,9 @@ sub load {
     my $ringpage_template = $templates->{$template_name};
 
     my $buttons = sqltable( 'ring_button', )->get(
-        select => [ qw{ id button uri }, ],
+        select => [ qw{ id button uri position }, ],
         where  => { ringpage_id => $ringpage_row->id(), },
-        order  => 'id desc',
+        order  => 'id',
     );
 
     $content->{ringpage_template} = $ringpage_template;
@@ -118,18 +114,22 @@ sub edit {
         my $name       = $field->{name};
         my $form_value = $form_data->{$name};
 
-        if ( $field->{internal} == TRUE ) {
+        if ( defined $field->{internal} and $field->{internal} == TRUE ) {
 
             $field->{value} = $ringpage_fields{$name};
 
         }
         elsif ( defined $form_value ) {
 
-            if ( $field->{text_type} eq 'url' ) {
+            $form_value = escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) );
+
+            if ( defined $field->{text_type} and $field->{text_type} eq 'url' ) {
 
                 if ( not $form_value =~ m{ \A http(s)?:// }xmsi and length $form_value > 0 ) {
 
-                    $form_value = 'http://' . $form_value;
+                    $form_value = "http://$form_value";
+
+                    ( $form_value, ) = ( $form_value =~ m{ ( $RE{URI} ) }xms, );
 
                 }
 
@@ -157,18 +157,36 @@ sub edit {
     {
         # display confirmation
 
-        my $each_array = each_arrayref [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ], [ first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_link', ), ];
-        while ( my ( $button_id, $button_text, $button_link, ) = $each_array->() ) {
+        my $button_position;
 
-            if ( $button_id eq q{} ) {
+        my @button_links = $self->request()->parameters()->get_all( 'd2-button_link', );
 
-                next if $button_text eq q{} or $button_link eq q{};
+        for my $button_link (@button_links) {
+
+            if ( not $button_link =~ m{ \A http(s)?:// }xmsi and length $button_link > 0 ) {
+
+                $button_link = "http://$button_link";
+
+            }
+
+            ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI} ) }xms, );
+        }
+
+        my ( $button_link, ) = map { $button_position++; ( defined and length > 0 ) ? { position => $button_position, button_link => $_, } : (); } @button_links;
+
+        my $each_array = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        while ( my ( $button_id, $button_text, ) = $each_array->() ) {
+
+            if ( not defined $button_id or $button_id eq q{} ) {
+
+                next if not defined $button_text or $button_text eq q{} or not defined $button_link;
 
                 my $button_row = Note::Row::create(
                     ring_button => {
                         button      => $button_text,
+                        position    => $button_link->{position},
                         ringpage_id => $ringpage_id,
-                        uri         => $button_link,
+                        uri         => $button_link->{button_link},
                         user_id     => $user->id(),
                     },
                 );
@@ -179,7 +197,7 @@ sub edit {
 
                 my $button_row = Note::Row->new( ring_button => $button_id, );
 
-                if ( $button_text eq q{} or $button_link eq q{} ) {
+                if ( $button_text eq q{} or not defined $button_link ) {
 
                     $button_row->delete();
 
@@ -187,7 +205,12 @@ sub edit {
 
                 else {
 
-                    $button_row->update( { button => $button_text, uri => $button_link, }, );
+                    $button_row->update(
+                        {   button   => $button_text,
+                            position => $button_link->{position},
+                            uri      => $button_link->{button_link},
+                        },
+                    );
 
                 }
 
@@ -200,7 +223,7 @@ sub edit {
         # failed
     }
 
-    return;
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { ringpage_id => $ringpage_id, }, ), );
 }
 
 sub button_delete {

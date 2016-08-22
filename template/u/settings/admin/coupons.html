@@ -1,0 +1,137 @@
+[% menu_settings = 'admin/coupons' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Coupons</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">		
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					<h2>Add Coupon</h2>
+					<form method="post" action="[% page.url( query => page.form.redeemed.defined ? { redeemed => page.form.redeemed, } : undef, ) %]">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<label class="control-label" for="amount">Amount:</label>
+								<div class="controls">
+									<div class="input-prepend">
+										<span class="add-on">$</span>
+										[% page.field(
+										command => 'add',
+										type => 'text',
+										name => 'amount',
+										value => page.form.amount,
+										opts => {
+										placeholder => '0.00',
+										id => 'amount',
+										style => 'width: 179px',
+										},
+										) %]
+										[% IF page.value.error %]
+										<div>
+											<span class="error" for="amount" style="display: inline;">[% page.value.error %]</span>
+										</div>
+										[% END %]
+									</div>
+									<br />
+									[% page.button(
+									type => 'submit',
+									command => 'add',
+									text => 'Add Coupon',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span12">
+					<h2>Coupons</h2>
+					[% IF page.form.redeemed == 1 %]
+					[% page.link(
+					text => 'Show No Redeemed',
+					) %]
+					[% ELSE %]
+					[% page.link(
+					text => 'Show Redeemed',
+					query => {
+					redeemed => 1,
+					},
+					) %]
+					[% END %]
+					<table class="table table-bordered table-highlight">
+						<thead>
+							<tr>
+								<th>Code</th>
+								<th>Amount</th>
+								<th>Redeemed</th>
+							</tr>
+						</thead>
+						<tbody>
+						[% USE X = Page( count, 10, page.form.page, ) %]
+						[% FOREACH coupon IN coupons %]
+						<tr>
+							<td>[% coupon.code %]</td>
+							<td>$[% coupon.amount %]</td>
+							<td>
+								[% IF coupon.transaction_id.defined %]
+								Yes
+								[% ELSE %]
+								No
+								[% END %]
+							</td>
+						</tr>
+						[% END %]
+						<tr>
+							<td colspan="3">
+								<ul class="pager">
+									[% IF X.previous_page > 0 %]
+									<li class="previous">
+									[% page.link(
+									text => '&larr; Previous',
+									query => {
+									page => X.previous_page,
+									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
+									},
+									) %]
+									</li>
+									[% ELSE %]
+									<li class="previous disabled">
+									<span>&larr; Previous</span>
+									</li>
+									[% END %]
+									[% IF X.next_page > 0 %]
+									<li class="next">
+									[% page.link(
+									text => 'Next &rarr;',
+									query => {
+									page => X.next_page,
+									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
+									},
+									) %]
+									[% ELSE %]
+									<li class="next disabled">
+									<span>Next &rarr;</span>
+									</li>
+									[% END %]
+								</ul>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

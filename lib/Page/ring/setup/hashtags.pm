@@ -1,26 +1,16 @@
 package Page::ring::setup::hashtags;
 
+use English '-no_match_vars';
+use Moose;
+use Note::Param;
+use Note::SQL::Table 'sqltable';
+use Ring::Model::Category;
+use Ring::Model::RingPage;
 use strict;
 use warnings;
 
-use Moose;
-use JSON::XS 'encode_json';
-use Data::Dumper;
-use HTML::Entities 'encode_entities';
-use POSIX 'strftime';
-use English '-no_match_vars';
-
-use Note::XML 'xml';
-use Note::Param;
-use Note::Account qw(account_id transaction tx_type_id);
-use Note::Row;
-
-use Ring::User;
-use Ring::Model::Hashtag;
-use Ring::Model::Category;
-use Ring::Model::RingPage;
-
 extends 'Page::ring::user';
+extends 'Page::ring::setup::cart';
 
 sub load {
     my ( @args, ) = @_;
@@ -29,72 +19,51 @@ sub load {
 
     my $content        = $self->content();
     my $user           = $self->user();
-    my $account        = Note::Account->new( $user->id(), );
     my $category_model = Ring::Model::Category->new();
     my $categories     = $category_model->list();
-    my $hashtag_model  = Ring::Model::Hashtag->new();
-    my $hashtags       = $hashtag_model->get_user_hashtags( user_id => $user->id(), );
     my $ringpage_model = Ring::Model::RingPage->new();
     my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
-    $content->{balance}             = $account->balance();
-    $content->{category_list}       = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
-    $content->{category_opts}->{id} = 'category';
-    $content->{category_sel}        = 0;
-    $content->{hashtag_table}       = $hashtags;
-    $content->{ringpage_list}       = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
-    $content->{ringpage_opts}->{id} = 'ringpage';
+    my $hashtags = sqltable('ring_cart')->get(
+        select    => [ qw{ rh.hashtag rh.id rc.hashtag_id rc.transaction_id rh.target_url rh.ringpage_id rp.ringpage }, ],
+        table     => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
+        join      => 'rh.id = rc.hashtag_id',
+        join_left => [ [ 'ring_page AS rp' => 'rh.ringpage_id = rp.id', ], ],
+        where     => [
+            {   'rc.user_id' => $user->id(),
+                'rh.user_id' => $user->id(),
+            },
+        ],
+    );
+
+    $content->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
+    $content->{hashtags}      = $hashtags;
+    $content->{ringpage_list} = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
+    $content->{total}         = 99.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
 
-sub cmd_hashtag_add {
+sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user             = $self->user();
-    my ( $ringpage_id, ) = ( $form_data->{ringpage_id} =~ m{ \A ( \d+ ) \z }xms );
-    my $tag              = lc $form_data->{hashtag};
-    my $target           = $form_data->{target};
+    my $user    = $self->user();
+    my $user_id = $user->id();
 
-    if ( length $target > 0 ) {
+    my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-        $target =~ s{ \A \s* }{}xms;    # trim whitespace
-        $target =~ s{ \s* \z }{}xms;
-        if ( not $target =~ m{ \A http(s)?:// }xmsi ) {
-            $target = "http://$target";
-        }
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
 
-    }
-
-    my $hashtag_model = Ring::Model::Hashtag->new();
-
-    if ( $hashtag_model->validate_tag( tag => $tag, ) ) {
-        if ( $hashtag_model->check_exists( tag => $tag, ) ) {
-            ::log('Dup');
+        if ($hashtag_model->delete(
+                user_id => $user_id,
+                id      => $hashtag_id,
+            )
+            )
+        {
+            # display confirmation
         }
         else {
-
-            my $hashtag = $hashtag_model->create(
-                category_id => $form_data->{category_id},
-                ringpage_id => $ringpage_id,
-                tag         => $tag,
-                target_url  => $target,
-                user_id     => $user->id(),
-            );
-            if ( defined $hashtag ) {
-
-                my $hashtag_id = $hashtag->id();
-
-                ::log( "New Hashtag: #$tag", );
-
-                my $cart = Note::Row::create(
-                    ring_cart => {
-                        hashtag_id => $hashtag_id,
-                        user_id    => $user->id(),
-                    },
-                );
-
-            }
+            # failed
         }
     }
 
