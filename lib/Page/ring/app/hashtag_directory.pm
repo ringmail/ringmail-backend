@@ -86,7 +86,25 @@ sub load
 						'color' => 'denim',
 					};
 				}
-				$res->{'directory'} = \@cat;
+				#$res->{'directory'} = \@cat;
+				my @group = ([]);
+				my $max = 2;
+				foreach my $i (@cat)
+				{
+					if (scalar(@{$group[-1]}) == $max)
+					{
+						push @group, [];
+					}
+					push @{$group[-1]}, $i;
+				}
+				foreach my $i (0..$#group)
+				{
+					$group[$i] = {
+						'type' => 'hashtag_category_group',
+						'group' => $group[$i],
+					};
+				}
+				$res->{'directory'} = \@group;
 				$res->{'result'} = 'ok';
 				$obj->{'response'}->header('Cache-Control', 'max-age='. 3600);
 			}
@@ -140,7 +158,7 @@ sub load
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log($res);
+	::log($res);
 	return encode_json($res);
 }
 
