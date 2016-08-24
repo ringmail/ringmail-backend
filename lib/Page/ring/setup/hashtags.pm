@@ -60,6 +60,23 @@ sub remove {
             )
             )
         {
+
+            my $cart_row = 'Note::Row'->new(
+                ring_cart => {
+                    hashtag_id => $hashtag_id,
+                    user_id    => $user_id,
+                },
+            );
+
+            if ( defined $cart_row->id() ) {
+
+                $cart_row->delete();
+
+            }
+            else {
+
+            }
+
             # display confirmation
         }
         else {
