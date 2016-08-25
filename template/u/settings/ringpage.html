@@ -517,6 +517,12 @@
 									placeholder => 'URL',
 									},
 									) %]
+									[% page.field(
+									command => 'edit',
+									type => 'hidden',
+									name => 'button_type',
+									value => 'link',
+									) %]
 								</span>
 								</li>
 								<li><span class="input-group-addon">
@@ -531,6 +537,12 @@
 										id => 'button_link_2',
 										placeholder => 'RingMail Address',
 										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'call',
 										) %]
 									</div>
 								</span>
@@ -548,6 +560,12 @@
 										placeholder => 'RingMail Address',
 										},
 										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'video',
+										) %]
 									</div>
 								</span>
 								</li>
@@ -563,6 +581,12 @@
 										id => 'button_link_4',
 										placeholder => 'RingMail Address',
 										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'chat',
 										) %]
 									</div>
 								</span>

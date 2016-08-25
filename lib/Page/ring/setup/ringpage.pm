@@ -69,9 +69,9 @@ sub load {
 
         if ( $position > 1 ) {
 
-            my $email = 'arkadiy@arkadiy.com';
+            my ( @uri, ) = split qr{/}xms, $uri;
 
-            $button->{value} = $email;
+            $button->{value} = $uri[-1];
 
         }
         else {
@@ -176,76 +176,80 @@ sub edit {
     {
         # display confirmation
 
-        my %type = (
-            2 => 'call',
-            3 => 'video',
-            4 => 'chat',
-        );
+        my ( @button_links, );
 
-        my ( @button_links, ) = $self->request()->parameters()->get_all( 'd2-button_link', );
+        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( 'd2-button_link', ), ], [ $self->request()->parameters()->get_all( 'd2-button_type', ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( 'd2-button_link', ) ] }, ];
+        while ( my ( $button_link, $button_type, $button_position, ) = $button_links_iterator->() ) {
 
-        my ( $button_link, );
+            next if not defined $button_link;
+            next if not defined $button_type;
 
-        {
+            next if not defined $button_position;
 
-            my $button_position;
+            next if not length $button_link > 0;
+            next if not length $button_type > 0;
 
-            my ( @button_links, ) = map { $button_position++; ( defined and length > 0 ) ? { position => $button_position, button_link => $_, } : (); } @button_links;
+            next if not( $button_position > 0 );
 
-            for my $button_link (@button_links) {
+            push @button_links,
+                {
+                button_link     => $button_link,
+                button_type     => $button_type,
+                button_position => $button_position,
+                };
 
-                my ( $position, $value, ) = ( $button_link->{position}, $button_link->{button_link}, );
+        }
 
-                if ( $position > 1 ) {
+        for my $button_link (@button_links) {
 
-                    my $email = 'Email::Valid'->address(
-                        -address  => $value,
-                        -mxcheck  => TRUE,
-                        -tldcheck => TRUE,
-                    );
+            my ( $button_position, $value, $button_type, ) = ( $button_link->{button_position}, $button_link->{button_link}, $button_link->{button_type}, );
 
-                    if ( defined $email ) {
+            if ( $button_position > 1 ) {
 
-                        $button_link->{button_link} = "ring://$type{$position}/$email";
+                my $email = 'Email::Valid'->address(
+                    -address  => $value,
+                    -mxcheck  => TRUE,
+                    -tldcheck => TRUE,
+                );
 
-                        ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
+                if ( defined $email ) {
 
-                    }
-                    else {
+                    $button_link->{button_link} = "ring://$button_type/$email";
 
-                        undef $button_link->{button_link};
-
-                    }
+                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
 
                 }
                 else {
 
-                    if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi and length $button_link->{button_link} > 0 ) {
-
-                        $button_link->{button_link} = "http://$button_link->{button_link}";
-
-                    }
-
-                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} (?:\#\w+)? ) }xms, );
-
-                }
-
-                if ( not defined $button_link->{button_link} ) {
-
-                    $button_link = ();
+                    undef $button_link->{button_link};
 
                 }
 
             }
+            else {
 
-            ::log( \@button_links, );
+                if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi and length $button_link->{button_link} > 0 ) {
 
-            ( $button_link, ) = @button_links;
+                    $button_link->{button_link} = "http://$button_link->{button_link}";
+
+                }
+
+                ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} (?:\#\w+)? ) }xms, );
+
+            }
+
+            if ( not defined $button_link->{button_link} ) {
+
+                $button_link = ();
+
+            }
 
         }
 
-        my $each_array = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
-        while ( my ( $button_id, $button_text, ) = $each_array->() ) {
+        my ( $button_link, ) = ( @button_links, );
+
+        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        while ( my ( $button_id, $button_text, ) = $buttons_iterator->() ) {
 
             if ( not defined $button_id or $button_id eq q{} ) {
 
@@ -254,7 +258,7 @@ sub edit {
                 my $button_row = Note::Row::create(
                     ring_button => {
                         button      => $button_text,
-                        position    => $button_link->{position},
+                        position    => $button_link->{button_position},
                         ringpage_id => $ringpage_id,
                         uri         => $button_link->{button_link},
                         user_id     => $user->id(),
@@ -277,7 +281,7 @@ sub edit {
 
                     $button_row->update(
                         {   button   => $button_text,
-                            position => $button_link->{position},
+                            position => $button_link->{button_position},
                             uri      => $button_link->{button_link},
                         },
                     );
