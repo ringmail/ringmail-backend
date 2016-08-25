@@ -1,6 +1,7 @@
 package Page::ring::setup::ringpage;
 
 use constant::boolean;
+use Email::Valid;
 use English '-no_match_vars';
 use HTML::Escape 'escape_html';
 use JSON::XS qw{ encode_json decode_json };
@@ -61,6 +62,24 @@ sub load {
         where  => { ringpage_id => $ringpage_row->id(), },
         order  => 'id',
     );
+
+    for my $button ( @{$buttons} ) {
+
+        my ( $uri, $position, ) = ( $button->{uri}, $button->{position}, );
+
+        if ( $position > 1 ) {
+
+            my $email = 'arkadiy@arkadiy.com';
+
+            $button->{value} = $email;
+
+        }
+        else {
+
+            $button->{value} = $uri;
+
+        }
+    }
 
     $content->{ringpage_template} = $ringpage_template;
     $content->{ringpage}          = $ringpage_row_data;
@@ -157,22 +176,67 @@ sub edit {
     {
         # display confirmation
 
-        my $button_position;
+        my %type = (
+            2 => 'call',
+            3 => 'video',
+            4 => 'chat',
+        );
 
         my @button_links = $self->request()->parameters()->get_all( 'd2-button_link', );
 
-        for my $button_link (@button_links) {
+        my ( $button_link, );
 
-            if ( not $button_link =~ m{ \A http(s)?:// }xmsi and length $button_link > 0 ) {
+        {
 
-                $button_link = "http://$button_link";
+            my $button_position;
+
+            my ( @button_links, ) = map { $button_position++; ( defined and length > 0 ) ? { position => $button_position, button_link => $_, } : (); } @button_links;
+
+            for my $button_link (@button_links) {
+
+                my ( $position, $value, ) = ( $button_link->{position}, $button_link->{button_link}, );
+
+                # ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
+
+                if ( $position > 1 ) {
+
+                    my $email = 'Email::Valid'->address(
+                        -address  => $value,
+                        -mxcheck  => TRUE,
+                        -tldcheck => TRUE,
+                    );
+
+                    if ( defined $email ) {
+
+                        $button_link->{button_link} = "ring://$type{$position}/$email";
+
+                    }
+                    else {
+
+                        # undef $button_link->{button_link};
+
+                    }
+
+                }
+                else {
+
+                    if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi and length $button_link->{button_link} > 0 ) {
+
+                        $button_link->{button_link} = "http://$button_link->{button_link}";
+
+                    }
+
+                    # ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} ) }xms, );
+
+                }
 
             }
 
-            ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI} ) }xms, );
-        }
+            ::log( \@button_links, );
 
-        my ( $button_link, ) = map { $button_position++; ( defined and length > 0 ) ? { position => $button_position, button_link => $_, } : (); } @button_links;
+            ( $button_link, ) = @button_links;
+
+        }
 
         my $each_array = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
         while ( my ( $button_id, $button_text, ) = $each_array->() ) {
