@@ -182,7 +182,7 @@ sub edit {
             4 => 'chat',
         );
 
-        my @button_links = $self->request()->parameters()->get_all( 'd2-button_link', );
+        my ( @button_links, ) = $self->request()->parameters()->get_all( 'd2-button_link', );
 
         my ( $button_link, );
 
@@ -196,8 +196,6 @@ sub edit {
 
                 my ( $position, $value, ) = ( $button_link->{position}, $button_link->{button_link}, );
 
-                # ( $button_link, ) = ( $button_link =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
-
                 if ( $position > 1 ) {
 
                     my $email = 'Email::Valid'->address(
@@ -210,10 +208,12 @@ sub edit {
 
                         $button_link->{button_link} = "ring://$type{$position}/$email";
 
+                        ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
+
                     }
                     else {
 
-                        # undef $button_link->{button_link};
+                        undef $button_link->{button_link};
 
                     }
 
@@ -226,7 +226,13 @@ sub edit {
 
                     }
 
-                    # ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} ) }xms, );
+                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} (?:\#\w+)? ) }xms, );
+
+                }
+
+                if ( not defined $button_link->{button_link} ) {
+
+                    $button_link = ();
 
                 }
 
