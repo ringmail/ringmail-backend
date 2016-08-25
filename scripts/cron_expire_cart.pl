@@ -11,10 +11,7 @@ sqltable('ring_cart')->delete(
     delete => [ qw{ ring_hashtag ring_cart }, ],
     table  => 'ring_hashtag, ring_cart',
     join   => [ 'ring_cart.hashtag_id = ring_hashtag.id', 'ring_cart.user_id = ring_hashtag.user_id', ],
-    where  => {
-        'ring_cart.transaction_id' => undef,
-        'ring_cart.ts'             => [ '<', 'NOW() - INTERVAL 2 HOUR', ],
-    },
+    where  => q{( ring_cart.ts < ( NOW() - INTERVAL 2 HOUR ) AND ring_cart.transaction_id IS NULL )},
 );
 
 my $carts = sqltable('ring_cart')->get(
