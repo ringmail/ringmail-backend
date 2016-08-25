@@ -189,7 +189,7 @@ sub edit {
             next if not length $button_link > 0;
             next if not length $button_type > 0;
 
-            next if not( $button_position > 0 );
+            next if not $button_position > 0;
 
             push @button_links,
                 {
@@ -228,7 +228,7 @@ sub edit {
             }
             else {
 
-                if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi and length $button_link->{button_link} > 0 ) {
+                if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi ) {
 
                     $button_link->{button_link} = "http://$button_link->{button_link}";
 
@@ -251,9 +251,13 @@ sub edit {
         my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
         while ( my ( $button_id, $button_text, ) = $buttons_iterator->() ) {
 
-            if ( not defined $button_id or $button_id eq q{} ) {
+            if ( not defined $button_id or not length $button_id > 0 ) {
 
-                next if not defined $button_text or $button_text eq q{} or not defined $button_link;
+                next if not defined $button_text;
+
+                next if not length $button_text > 0;
+
+                next if not defined $button_link;
 
                 my $button_row = Note::Row::create(
                     ring_button => {
@@ -271,7 +275,7 @@ sub edit {
 
                 my $button_row = Note::Row->new( ring_button => $button_id, );
 
-                if ( $button_text eq q{} or not defined $button_link ) {
+                if ( not length $button_text > 0 or not defined $button_link ) {
 
                     $button_row->delete();
 
