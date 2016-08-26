@@ -9,7 +9,6 @@ use Note::Account qw{ account_id transaction tx_type_id has_account create_accou
 use Note::Check;
 use Note::Param;
 use Note::Payment;
-use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Regexp::Common 'whitespace';
 use Ring::Model::Hashtag;
