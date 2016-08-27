@@ -1,6 +1,7 @@
 {
    "class" : "Page::ring::setup::hashtags",
    "command" : {
+      "directory" : "directory",
       "logout" : "cmd_logout",
       "remove" : "remove",
       "search" : "search"

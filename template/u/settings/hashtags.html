@@ -119,8 +119,10 @@
 									[% END %]
 								</td>
 								<td>
+									[% directory = 0 %]
 									[% IF hashtag.transaction_id.defined %]
 									[% IF hashtag.ringpage_id.defined %]
+									[% directory = directory + 1 %]
 									[% page.link(
 									text => hashtag.ringpage,
 									path => '/u/ringpage',
@@ -130,6 +132,7 @@
 									) %]
 									[% ELSE %]
 									[% IF hashtag.target_url.defined %]
+									[% directory = directory + 1 %]
 									[% IF hashtag.target_url.length > 35 %]
 									[% hashtag.target_url.substr( 0, 35 ) %]...
 									[% ELSE %]
@@ -144,6 +147,16 @@
 									},
 									) %]
 									[% END %]
+									[% END %]
+									[% IF directory > 0 %]
+									| [% page.link(
+									text => '<em>Click here to add your hashtag to the directory.</em>',
+									command => 'directory',
+									args => [ hashtag.id, ],
+									opts => {
+									onclick => "return confirm( 'Ready to submit your hashtag to the directory?' )",
+									},
+									) %]
 									[% END %]
 									[% ELSE %]
 									&nbsp;

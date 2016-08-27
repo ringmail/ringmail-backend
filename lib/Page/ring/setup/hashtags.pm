@@ -52,7 +52,7 @@ sub remove {
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd4-hashtag_id', ) ) {
+    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd5-hashtag_id', ) ) {
 
         if ($hashtag_model->delete(
                 user_id => $user_id,
@@ -83,6 +83,18 @@ sub remove {
             # failed
         }
     }
+
+    return;
+}
+
+sub directory {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $user            = $self->user();
+    my ( $hashtag_id, ) = ( @{$args}, );
+    my $user_id         = $user->id();
+
+    my $directory_row = Note::Row::find_create( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
     return;
 }
