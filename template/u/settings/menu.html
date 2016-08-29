@@ -6,9 +6,9 @@
 			<li><a href="/u/cart"><i class="fa fa-shopping-cart"></i> Cart ([% cart.size %])</a></li>
 			<li style="color:#08c;"> &nbsp; | &nbsp; </li>
 			<li>[% page.link(
-				text => 'Logout',
-				path => '/u',
-				command => 'logout',
+			text => 'Logout',
+			path => '/u',
+			command => 'logout',
 			) %]</li>
 		</ul>
 		<div class="nav-mine">
@@ -20,6 +20,7 @@
 				[% IF is_admin %]
 				<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>
 				<li class="nav-icon[% IF menu_settings == 'admin/coupons' %] active[% END %]"><a href="/u/admin/coupons">Coupons</a></li>
+				<li class="nav-icon[% IF menu_settings == 'admin/directory' %] active[% END %]"><a href="/u/admin/directory">Directory</a></li>
 				[% END %]
 			</ul>
 		</div>
@@ -40,6 +41,7 @@
 					[% IF is_admin %]
 					<li class="nav-icon[% IF menu_settings == 'admin/user_list' %] active[% END %]"><a href="/u/admin/user_list">User List</a></li>
 					<li class="nav-icon[% IF menu_settings == 'admin/coupons' %] active[% END %]"><a href="/u/admin/coupons">Coupons</a></li>
+					<li class="nav-icon[% IF menu_settings == 'admin/directory' %] active[% END %]"><a href="/u/admin/directory">Directory</a></li>
 					[% END %]
 				</ul>
 			</div>
