@@ -124,6 +124,14 @@ sub approve {
 
         }
 
+        my $hashtag_row = 'Note::Row'->new( ring_hashtag => { id => $hashtag_id, }, );
+
+        if ( defined $hashtag_row->id() ) {
+
+            $hashtag_row->update( { directory => 0, }, );
+
+        }
+
     }
 
     for my $hashtag_id (@add) {
@@ -133,6 +141,14 @@ sub approve {
         if ( defined $row->id() ) {
 
             $row->update( { ts_directory => \'NOW()', }, );
+
+        }
+
+        my $hashtag_row = 'Note::Row'->new( ring_hashtag => { id => $hashtag_id, }, );
+
+        if ( defined $hashtag_row->id() ) {
+
+            $hashtag_row->update( { directory => 1, }, );
 
         }
 
