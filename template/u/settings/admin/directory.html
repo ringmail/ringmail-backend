@@ -44,6 +44,7 @@
 							<thead>
 								<tr>
 									<th>Hashtag</th>
+									<th>Category</th>
 									<th>Requested</th>
 									<th>Approved</th>
 								</tr>
@@ -53,6 +54,7 @@
 							[% FOREACH hashtag IN hashtags %]
 							<tr>
 								<td>[% hashtag.hashtag %]</td>
+								<td>[% hashtag.category %]</td>
 								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
 								<td>
 									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
@@ -94,6 +96,9 @@
 									&nbsp;
 								</td>
 								<td>
+									&nbsp;
+								</td>
+								<td>
 									[% page.button(
 									command => 'approve',
 									text => 'Approve',
@@ -105,7 +110,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="4">
 									<ul class="pager">
 										[% IF X.previous_page > 0 %]
 										<li class="previous">

@@ -37,6 +37,7 @@ sub load {
 
                 ring_cart.hashtag_id
                 ring_cart.transaction_id
+                ring_category.category
                 ring_hashtag.directory
                 ring_hashtag.hashtag
                 ring_hashtag.id
@@ -48,6 +49,8 @@ sub load {
                 },
             'ring_hashtag_directory.id AS directory_id',
         ],
+        table     => [ qw{ ring_hashtag ring_category }, ],
+        join      => [ 'ring_category.id = ring_hashtag.category_id', ],
         join_left => [
 
             [ ring_cart              => 'ring_cart.hashtag_id = ring_hashtag.id', ],
