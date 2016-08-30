@@ -36,19 +36,19 @@
 									[% page.field(
 									command => 'approve',
 									type => 'checkbox',
-									name => 'user_id',
+									name => 'hashtag_id',
 									opts => {
 									checked => undef,
-									value => user.id,
+									value => hashtag.id,
 									},
 									) %]
 									[% ELSE %]
 									[% page.field(
 									command => 'approve',
 									type => 'checkbox',
-									name => 'user_id',
+									name => 'hashtag_id',
 									opts => {
-									value => user.id,
+									value => hashtag.id,
 									},
 									) %]
 									[% END %]

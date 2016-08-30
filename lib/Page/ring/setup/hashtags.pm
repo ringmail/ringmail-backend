@@ -2,7 +2,7 @@ package Page::ring::setup::hashtags;
 
 use English '-no_match_vars';
 use Moose;
-use Note::Param;
+use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
 use Ring::Model::Category;
 use Ring::Model::RingPage;
@@ -19,9 +19,9 @@ sub load {
 
     my $content        = $self->content();
     my $user           = $self->user();
-    my $category_model = Ring::Model::Category->new();
+    my $category_model = 'Ring::Model::Category'->new();
     my $categories     = $category_model->list();
-    my $ringpage_model = Ring::Model::RingPage->new();
+    my $ringpage_model = 'Ring::Model::RingPage'->new();
     my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
     my $hashtags = sqltable('ring_hashtag')->get(
@@ -112,7 +112,7 @@ sub directory_add {
     my ( $hashtag_id, ) = ( @{$args}, );
     my $user_id         = $user->id();
 
-    my $directory_row = Note::Row::find_create( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
+    my $directory_row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
     return;
 }
