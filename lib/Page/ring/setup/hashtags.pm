@@ -25,13 +25,16 @@ sub load {
     my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
 
     my $hashtags = sqltable('ring_cart')->get(
-        select    => [ qw{ rh.hashtag rh.id rc.hashtag_id rc.transaction_id rh.target_url rh.ringpage_id rp.ringpage }, ],
-        table     => [ 'ring_cart AS rc', 'ring_hashtag AS rh', ],
-        join      => 'rh.id = rc.hashtag_id',
-        join_left => [ [ 'ring_page AS rp' => 'rh.ringpage_id = rp.id', ], ],
+        select    => [ qw{ ring_hashtag.hashtag ring_hashtag.id ring_cart.hashtag_id ring_cart.transaction_id ring_hashtag.target_url ring_hashtag.ringpage_id ring_page.ringpage }, ],
+        table     => [ qw{ ring_cart ring_hashtag }, ],
+        join      => 'ring_hashtag.id = ring_cart.hashtag_id',
+        join_left => [ [ ring_page => 'ring_hashtag.ringpage_id = ring_page.id', ], ],
         where     => [
-            {   'rc.user_id' => $user->id(),
-                'rh.user_id' => $user->id(),
+            {
+
+                'ring_cart.user_id'    => $user->id(),
+                'ring_hashtag.user_id' => $user->id(),
+
             },
         ],
     );
@@ -39,7 +42,6 @@ sub load {
     $content->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
     $content->{hashtags}      = $hashtags;
     $content->{ringpage_list} = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
-    $content->{total}         = 99.99 * scalar @{$hashtags};
 
     return $self->SUPER::load( $param, );
 }
