@@ -32,7 +32,7 @@
 								<td>[% hashtag.hashtag %]</td>
 								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
 								<td>
-									[% IF hashtag.ts_directory.defined %]
+									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
 									[% page.field(
 									command => 'approve',
 									type => 'checkbox',

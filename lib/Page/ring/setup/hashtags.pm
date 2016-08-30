@@ -30,6 +30,7 @@ sub load {
 
                 ring_cart.hashtag_id
                 ring_cart.transaction_id
+                ring_hashtag.directory
                 ring_hashtag.hashtag
                 ring_hashtag.id
                 ring_hashtag.ringpage_id

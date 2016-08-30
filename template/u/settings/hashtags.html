@@ -151,7 +151,7 @@
 									[% IF directory > 0 %]
 									|
 									[% IF hashtag.directory_id.defined %]
-									[% IF hashtag.ts_directory.defined %]
+									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
 									[% page.link(
 									text => '<em>Click here to remove your hashtag from the directory.</em>',
 									command => 'directory_remove',

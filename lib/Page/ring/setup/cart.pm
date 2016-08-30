@@ -156,11 +156,22 @@ sub cmd_fund {
         if ( defined $order_id ) {
 
             my $hashtags = sqltable('ring_cart')->get(
-                select => [ qw{ ring_cart.id ring_cart.hashtag_id ring_cart.coupon_id ring_hashtag.hashtag ring_coupon.code ring_coupon.amount }, ],
-                table  => ring_cart => join_left => [
+                select => [
+                    qw{
 
-                    [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
+                        ring_cart.coupon_id
+                        ring_cart.hashtag_id
+                        ring_cart.id
+                        ring_coupon.amount
+                        ring_coupon.code
+                        ring_hashtag.hashtag
+
+                        },
+                ],
+                join_left => [
+
                     [ ring_coupon  => 'ring_coupon.id = ring_cart.coupon_id', ],
+                    [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
                 ],
                 where => [ { 'ring_cart.user_id' => $user_id, } => and => { 'ring_cart.transaction_id' => undef, }, ],
             );
@@ -213,11 +224,22 @@ sub cmd_fund {
                     if ( $attempt->data('accepted') == 1 ) {
 
                         my $hashtags = sqltable('ring_cart')->get(
-                            select => [ qw{ ring_cart.id ring_cart.hashtag_id ring_cart.coupon_id ring_hashtag.hashtag ring_coupon.code ring_coupon.amount }, ],
-                            table  => ring_cart => join_left => [
+                            select => [
+                                qw{
 
-                                [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
+                                    ring_cart.coupon_id
+                                    ring_cart.hashtag_id
+                                    ring_cart.id
+                                    ring_coupon.amount
+                                    ring_coupon.code
+                                    ring_hashtag.hashtag
+
+                                    },
+                            ],
+                            join_left => [
+
                                 [ ring_coupon  => 'ring_coupon.id = ring_cart.coupon_id', ],
+                                [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
                             ],
                             where => [ { 'ring_cart.user_id' => $user_id, } => and => { 'ring_cart.transaction_id' => undef, }, ],
                         );
@@ -417,11 +439,22 @@ sub load {
                     my $order_total = $order_row->data('total');
 
                     my $hashtags = sqltable('ring_cart')->get(
-                        select => [ qw{ ring_cart.id ring_cart.hashtag_id ring_cart.coupon_id ring_hashtag.hashtag ring_coupon.code ring_coupon.amount }, ],
-                        table  => ring_cart => join_left => [
+                        select => [
+                            qw{
 
-                            [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
+                                ring_cart.coupon_id
+                                ring_cart.hashtag_id
+                                ring_cart.id
+                                ring_coupon.amount
+                                ring_coupon.code
+                                ring_hashtag.hashtag
+
+                                },
+                        ],
+                        join_left => [
+
                             [ ring_coupon  => 'ring_coupon.id = ring_cart.coupon_id', ],
+                            [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
                         ],
                         where => [ { 'ring_cart.user_id' => $user_id, } => and => { 'ring_cart.transaction_id' => undef, }, ],
                     );

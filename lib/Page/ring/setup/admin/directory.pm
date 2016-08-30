@@ -27,6 +27,7 @@ sub load {
 
                 ring_cart.hashtag_id
                 ring_cart.transaction_id
+                ring_hashtag.directory
                 ring_hashtag.hashtag
                 ring_hashtag.id
                 ring_hashtag.ringpage_id
@@ -79,8 +80,9 @@ sub approve {
         select => [
             qw{
 
-                ring_hashtag.id
+                ring_hashtag.directory
                 ring_hashtag.hashtag
+                ring_hashtag.id
                 ring_hashtag_directory.hashtag_id
 
                 },
@@ -94,7 +96,7 @@ sub approve {
         order => defined $search ? q{ring_hashtag.id} : qq{ring_hashtag.id LIMIT $offset, 10},
     );
 
-    my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} } @{$hashtags};
+    my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} and $ARG->{directory} == 1 } @{$hashtags};
     my @hashtags_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd2-hashtag_id', );
 
     my %hashtags_approved;
