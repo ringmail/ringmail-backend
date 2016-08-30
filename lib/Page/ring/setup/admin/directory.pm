@@ -15,11 +15,21 @@ sub load {
     my $content = $self->content();
     my $form    = $self->form();
 
+    my $search = $form->{search};
+
+    my $where_clause;
+
+    if ( defined $search ) {
+
+        $where_clause = { 'ring_hashtag.hashtag' => [ like => qq{%$search%}, ], };
+
+    }
+
     my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
-    my $count = sqltable('ring_hashtag')->count();
+    my $count = defined $search ? sqltable('ring_hashtag')->count( 'ring_hashtag.hashtag' => [ like => qq{%$search%}, ], ) : sqltable('ring_hashtag')->count();
 
     my $hashtags = sqltable('ring_hashtag')->get(
         select => [
@@ -45,7 +55,8 @@ sub load {
             [ ring_page              => 'ring_page.id = ring_hashtag.ringpage_id', ],
 
         ],
-        order => qq{ring_hashtag.id LIMIT $offset, 10},
+        where => $where_clause,
+        order => defined $search ? undef : qq{ring_hashtag.id LIMIT $offset, 10},
     );
 
     $content->{count}    = $count;
@@ -64,7 +75,7 @@ sub approve {
 
     my $search = $form_data->{search};
 
-    my $where_clause = {};
+    my $where_clause;
 
     if ( defined $search ) {
 
@@ -99,7 +110,7 @@ sub approve {
     );
 
     my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} and $ARG->{directory} == 1 } @{$hashtags};
-    my @hashtags_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd2-hashtag_id', );
+    my @hashtags_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd3-hashtag_id', );
 
     my %hashtags_approved;
     @hashtags_approved{@hashtags_approved} = undef;
@@ -171,6 +182,23 @@ sub approve {
     }
 
     return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { page => $page, }, ), );
+}
+
+sub search {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $form = $self->form();
+
+    my ( $search, ) = ( $form_data->{search} =~ m{ /A /z }xms, );
+
+    $self->form()->{search} = $form_data->{search};
+
+    if ( defined $search ) {
+
+        $self->value()->{search} = $search;
+    }
+
+    return;
 }
 
 1;

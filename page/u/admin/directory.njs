@@ -1,7 +1,8 @@
 {
    "class" : "Page::ring::setup::admin::directory",
    "command" : {
-      "approve" : "approve"
+      "approve" : "approve",
+      "search" : "search"
    },
    "init" : [
       "valid_user",

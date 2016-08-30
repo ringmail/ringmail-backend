@@ -15,6 +15,29 @@
 		<div class="row">
 			<div class="tabbable">
 				<div class="span12">
+					<h2>Search Hashtags</h2>
+					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								[% page.field(
+								command => 'search',
+								type => 'text',
+								name => 'search',
+								value => page.form.search,
+								opts => {
+								id => 'search',
+								},
+								) %]
+								[% page.button(
+								command => 'search',
+								contents => 'Search',
+								opts => {
+								class => 'btn btn-primary btn-medium',
+								},
+								) %]
+							</div>
+						</fieldset>
+					</form>
 					<h2>Hashtags</h2>
 					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]">
 						<table class="table table-bordered table-highlight">
@@ -26,7 +49,7 @@
 								</tr>
 							</thead>
 							<tbody>
-							[% USE X = Page( count, 10, page.form.page, ) %]
+							[% USE X = Page( count, page.form.search.defined ? count : 10, page.form.page, ) %]
 							[% FOREACH hashtag IN hashtags %]
 							<tr>
 								<td>[% hashtag.hashtag %]</td>
@@ -54,6 +77,14 @@
 									[% END %]
 								</td>
 							</tr>
+							[% END %]
+							[% IF page.form.search.defined %]
+							[% page.field(
+							command => 'admin',
+							type => 'hidden',
+							name => 'search',
+							value => page.form.search,
+							) %]
 							[% END %]
 							<tr>
 								<td>
