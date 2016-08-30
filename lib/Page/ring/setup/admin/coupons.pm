@@ -18,7 +18,7 @@ sub load {
     my $content = $self->content();
     my $form    = $self->form();
 
-    my $where_clause = {};
+    my $where_clause;
 
     if ( not( defined $form->{redeemed} and $form->{redeemed} == 1 ) ) {
 
@@ -37,10 +37,19 @@ sub load {
     my $count = sqltable('ring_coupon')->count();
 
     my $coupons = sqltable('ring_coupon')->get(
-        select => [ qw{ code amount transaction_id }, ],
-        table  => [ 'ring_coupon', ],
-        where  => $where_clause,
-        order  => qq{code LIMIT $offset, 10},
+        select => [
+            qw{
+
+                amount
+                code
+                id
+                sent
+                transaction_id
+
+                },
+        ],
+        where => $where_clause,
+        order => qq{code LIMIT $offset, 10},
     );
 
     $content->{count}   = $count;
@@ -81,6 +90,26 @@ sub add {
 
         $form->{amount} = $form_data->{amount};
         $value->{error} = 'Amount is invalid.';
+
+    }
+
+    return;
+}
+
+sub mark_sent {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $form = $self->form();
+
+    my ( $coupon_id, ) = ( @{$args}, );
+
+    ( $coupon_id, ) = ( $coupon_id =~ m{ \A ( \d+ ) \z }xms, );
+
+    if ( defined $coupon_id and $coupon_id > 0 ) {
+
+        my $coupon_row = 'Note::Row'->new( ring_coupon => $coupon_id, );
+
+        $coupon_row->update( { sent => 1, }, );
 
     }
 
