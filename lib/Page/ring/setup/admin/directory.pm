@@ -118,11 +118,11 @@ sub approve {
 
     for my $hashtag_id (@delete) {
 
-        my $row = 'Note::Row'->new( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, );
+        my $hashtag_directory_row = 'Note::Row'->new( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, );
 
-        if ( defined $row->id() ) {
+        if ( defined $hashtag_directory_row->id() ) {
 
-            $row->update( { ts_directory => undef, }, );
+            $hashtag_directory_row->update( { ts_directory => undef, }, );
 
         }
 
@@ -138,11 +138,11 @@ sub approve {
 
     for my $hashtag_id (@add) {
 
-        my $row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
+        my $hashtag_directory_row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
-        if ( defined $row->id() ) {
+        if ( defined $hashtag_directory_row->id() ) {
 
-            $row->update( { ts_directory => \'NOW()', }, );
+            $hashtag_directory_row->update( { ts_directory => \'NOW()', }, );
 
         }
 
