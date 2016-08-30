@@ -36,18 +36,15 @@ sub load {
                 },
             'ring_hashtag_directory.id AS directory_id',
         ],
-        table     => [ qw{ ring_hashtag }, ],
         join_left => [
 
-            [ ring_cart              => 'ring_hashtag.id = ring_cart.hashtag_id', ],
-            [ ring_page              => 'ring_hashtag.ringpage_id = ring_page.id', ],
+            [ ring_cart              => 'ring_cart.hashtag_id = ring_hashtag.id', ],
             [ ring_hashtag_directory => 'ring_hashtag_directory.hashtag_id = ring_hashtag.id', ],
+            [ ring_page              => 'ring_page.id = ring_hashtag.ringpage_id', ],
 
         ],
         order => qq{ring_hashtag.id LIMIT $offset, 10},
     );
-
-    ::log( $hashtags, );
 
     $content->{count}    = $count;
     $content->{hashtags} = $hashtags;

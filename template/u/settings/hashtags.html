@@ -149,14 +149,30 @@
 									[% END %]
 									[% END %]
 									[% IF directory > 0 %]
-									| [% page.link(
+									|
+									[% IF hashtag.directory_id.defined %]
+									[% IF hashtag.ts_directory.defined %]
+									[% page.link(
+									text => '<em>Click here to remove your hashtag from the directory.</em>',
+									command => 'directory_remove',
+									args => [ hashtag.id, ],
+									opts => {
+									onclick => "return confirm( 'Remove your directory listing?' )",
+									},
+									) %]
+									[% ELSE %]
+									<em>Directory Listing Requested.</em>
+									[% END %]
+									[% ELSE %]
+									[% page.link(
 									text => '<em>Click here to add your hashtag to the directory.</em>',
-									command => 'directory',
+									command => 'directory_add',
 									args => [ hashtag.id, ],
 									opts => {
 									onclick => "return confirm( 'Ready to submit your hashtag to the directory?' )",
 									},
 									) %]
+									[% END %]
 									[% END %]
 									[% ELSE %]
 									&nbsp;
