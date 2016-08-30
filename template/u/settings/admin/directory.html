@@ -19,24 +19,14 @@
 					<table class="table table-bordered table-highlight">
 						<thead>
 							<tr>
-								<th>Code</th>
-								<th>Amount</th>
-								<th>Redeemed</th>
+								<th>Hashtag</th>
 							</tr>
 						</thead>
 						<tbody>
 						[% USE X = Page( count, 10, page.form.page, ) %]
-						[% FOREACH coupon IN coupons %]
+						[% FOREACH hashtag IN hashtags %]
 						<tr>
-							<td>[% coupon.code %]</td>
-							<td>$[% coupon.amount %]</td>
-							<td>
-								[% IF coupon.transaction_id.defined %]
-								Yes
-								[% ELSE %]
-								No
-								[% END %]
-							</td>
+							<td>[% hashtag.hashtag %]</td>
 						</tr>
 						[% END %]
 						<tr>
@@ -48,7 +38,6 @@
 									text => '&larr; Previous',
 									query => {
 									page => X.previous_page,
-									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
 									},
 									) %]
 									</li>
@@ -63,7 +52,6 @@
 									text => 'Next &rarr;',
 									query => {
 									page => X.next_page,
-									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
 									},
 									) %]
 									[% ELSE %]
