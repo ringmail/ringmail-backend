@@ -59,6 +59,8 @@ sub approve {
 
     my $form    = $self->form();
     my $request = $self->request();
+    my $user    = $self->user();
+    my $user_id = $user->id();
 
     my $search = $form_data->{search};
 
@@ -122,7 +124,13 @@ sub approve {
 
         if ( defined $hashtag_directory_row->id() ) {
 
-            $hashtag_directory_row->update( { ts_directory => undef, }, );
+            $hashtag_directory_row->update(
+                {
+
+                    ts_directory => undef,
+                    user_id      => $user_id,
+                },
+            );
 
         }
 
@@ -142,7 +150,13 @@ sub approve {
 
         if ( defined $hashtag_directory_row->id() ) {
 
-            $hashtag_directory_row->update( { ts_directory => \'NOW()', }, );
+            $hashtag_directory_row->update(
+                {
+
+                    ts_directory => \'NOW()',
+                    user_id      => $user_id,
+                },
+            );
 
         }
 
