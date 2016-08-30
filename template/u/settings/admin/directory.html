@@ -16,54 +16,99 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Hashtags</h2>
-					<table class="table table-bordered table-highlight">
-						<thead>
+					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]">
+						<table class="table table-bordered table-highlight">
+							<thead>
+								<tr>
+									<th>Hashtag</th>
+									<th>Requested</th>
+									<th>Approved</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% USE X = Page( count, 10, page.form.page, ) %]
+							[% FOREACH hashtag IN hashtags %]
 							<tr>
-								<th>Hashtag</th>
+								<td>[% hashtag.hashtag %]</td>
+								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
+								<td>
+									[% IF hashtag.ts_directory.defined %]
+									[% page.field(
+									command => 'approve',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									checked => undef,
+									value => user.id,
+									},
+									) %]
+									[% ELSE %]
+									[% page.field(
+									command => 'approve',
+									type => 'checkbox',
+									name => 'user_id',
+									opts => {
+									value => user.id,
+									},
+									) %]
+									[% END %]
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-						[% USE X = Page( count, 10, page.form.page, ) %]
-						[% FOREACH hashtag IN hashtags %]
-						<tr>
-							<td>[% hashtag.hashtag %]</td>
-						</tr>
-						[% END %]
-						<tr>
-							<td colspan="3">
-								<ul class="pager">
-									[% IF X.previous_page > 0 %]
-									<li class="previous">
-									[% page.link(
-									text => '&larr; Previous',
-									query => {
-									page => X.previous_page,
+							[% END %]
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'approve',
+									text => 'Approve',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary',
 									},
 									) %]
-									</li>
-									[% ELSE %]
-									<li class="previous disabled">
-									<span>&larr; Previous</span>
-									</li>
-									[% END %]
-									[% IF X.next_page > 0 %]
-									<li class="next">
-									[% page.link(
-									text => 'Next &rarr;',
-									query => {
-									page => X.next_page,
-									},
-									) %]
-									[% ELSE %]
-									<li class="next disabled">
-									<span>Next &rarr;</span>
-									</li>
-									[% END %]
-								</ul>
-							</td>
-						</tr>
-						</tbody>
-					</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<ul class="pager">
+										[% IF X.previous_page > 0 %]
+										<li class="previous">
+										[% page.link(
+										text => '&larr; Previous',
+										query => {
+										page => X.previous_page,
+										},
+										) %]
+										</li>
+										[% ELSE %]
+										<li class="previous disabled">
+										<span>&larr; Previous</span>
+										</li>
+										[% END %]
+										[% IF X.next_page > 0 %]
+										<li class="next">
+										[% page.link(
+										text => 'Next &rarr;',
+										query => {
+										page => X.next_page,
+										},
+										) %]
+										[% ELSE %]
+										<li class="next disabled">
+										<span>Next &rarr;</span>
+										</li>
+										[% END %]
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
 				</div>
 			</div>
 		</div>
