@@ -49,7 +49,7 @@ sub load {
         ],
     );
 
-    $self->content->{hashtags} = $hashtags;
+    $self->content()->{hashtags} = $hashtags;
 
     return $self->SUPER::load( $param, );
 }
