@@ -65,18 +65,20 @@
 				</div>
 				<div class="span12">
 					<h2>Hashtags</h2>
-					[% query = {} %]
-					[% a = { page => page.form.page } %]
-					[% b = { search => page.form.search } %]
-					[% c = { category_id => page.form.category_id } %]
-					[% IF page.form.page.defined %]
-					[% query.import( a ) %]
+					[%
+					query = {}
+					query_page = { page => page.form.page }
+					query_search = { search => page.form.search }
+					query_category_id = { category_id => page.form.category_id }
+					%]
+					[% IF page.form.page.defined and page.form.page.length > 0 %]
+					[% query.import( query_page ) %]
 					[% END %]
-					[% IF page.form.search.defined %]
-					[% query.import( b ) %]
+					[% IF page.form.search.defined and page.form.search.length > 0 %]
+					[% query.import( query_search ) %]
 					[% END %]
-					[% IF page.form.category_id.defined %]
-					[% query.import( c ) %]
+					[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
+					[% query.import( query_category_id ) %]
 					[% END %]
 					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight">
