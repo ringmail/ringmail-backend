@@ -2,6 +2,7 @@
    "class" : "Page::ring::setup::admin::directory",
    "command" : {
       "approve" : "approve",
+      "filter" : "filter",
       "search" : "search"
    },
    "init" : [
