@@ -208,7 +208,27 @@ sub approve {
 
     }
 
-    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { page => $page, }, ), );
+    my $query = {};
+
+    if ( defined $page ) {
+
+        $query->{page} = $page;
+
+    }
+
+    if ( defined $search ) {
+
+        $query->{search} = $search;
+
+    }
+
+    if ( defined $category_id ) {
+
+        $query->{category_id} = $category_id;
+
+    }
+
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => $query, ), );
 }
 
 sub search {
