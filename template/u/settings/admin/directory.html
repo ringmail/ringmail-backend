@@ -67,9 +67,9 @@
 					<h2>Hashtags</h2>
 					[%
 					query = {}
-					query_page = { page => page.form.page }
-					query_search = { search => page.form.search }
-					query_category_id = { category_id => page.form.category_id }
+					query_page = { page => page.form.page, }
+					query_search = { search => page.form.search, }
+					query_category_id = { category_id => page.form.category_id, }
 					%]
 					[% IF page.form.page.defined and page.form.page.length > 0 %]
 					[% query.import( query_page ) %]
@@ -163,13 +163,20 @@
 									<ul class="pager">
 										[% IF X.previous_page > 0 %]
 										<li class="previous">
+										[%
+										query = { page => X.previous_page, }
+										query_search = { search => page.form.search, }
+										query_category_id = { category_id => page.form.category_id, }
+										%]
+										[% IF page.form.search.defined and page.form.search.length > 0 %]
+										[% query.import( query_search ) %]
+										[% END %]
+										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
+										[% query.import( query_category_id ) %]
+										[% END %]
 										[% page.link(
 										text => '&larr; Previous',
-										query => {
-										page => X.previous_page,
-										search => page.form.search,
-										category_id => page.form.category_id,
-										},
+										query => query,
 										) %]
 										</li>
 										[% ELSE %]
@@ -179,13 +186,20 @@
 										[% END %]
 										[% IF X.next_page > 0 %]
 										<li class="next">
+										[%
+										query = { page => X.next_page, }
+										query_search = { search => page.form.search, }
+										query_category_id = { category_id => page.form.category_id, }
+										%]
+										[% IF page.form.search.defined and page.form.search.length > 0 %]
+										[% query.import( query_search ) %]
+										[% END %]
+										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
+										[% query.import( query_category_id ) %]
+										[% END %]
 										[% page.link(
 										text => 'Next &rarr;',
-										query => {
-										page => X.next_page,
-										search => page.form.search,
-										category_id => page.form.category_id,
-										},
+										query => query,
 										) %]
 										[% ELSE %]
 										<li class="next disabled">
