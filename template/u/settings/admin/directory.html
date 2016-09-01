@@ -16,7 +16,7 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Search Hashtags</h2>
-					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, page.form.category_id.defined ? { category_id => page.form.category_id, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group">
 								[% page.field(
@@ -38,7 +38,7 @@
 					<div class="span12">
 					</div>
 					<h2>Filter Hashtags</h2>
-					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, page.form.category_id.defined ? { category_id => page.form.category_id, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group">
 								<label class="control-label" for="category_id">Category:</label>
@@ -65,7 +65,20 @@
 				</div>
 				<div class="span12">
 					<h2>Hashtags</h2>
-					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, page.form.category_id.defined ? { category_id => page.form.category_id, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					[% query = {} %]
+					[% a = { page => page.form.page } %]
+					[% b = { search => page.form.search } %]
+					[% c = { category_id => page.form.category_id } %]
+					[% IF page.form.page.defined %]
+					[% query.import( a ) %]
+					[% END %]
+					[% IF page.form.search.defined %]
+					[% query.import( b ) %]
+					[% END %]
+					[% IF page.form.category_id.defined %]
+					[% query.import( c ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight">
 							<thead>
 								<tr>
@@ -108,7 +121,7 @@
 							[% END %]
 							[% IF page.form.category_id.defined %]
 							[% page.field(
-							command => 'admin',
+							command => 'approve',
 							type => 'hidden',
 							name => 'category_id',
 							value => page.form.category_id,
@@ -116,7 +129,7 @@
 							[% END %]
 							[% IF page.form.search.defined %]
 							[% page.field(
-							command => 'admin',
+							command => 'approve',
 							type => 'hidden',
 							name => 'search',
 							value => page.form.search,

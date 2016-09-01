@@ -13,11 +13,9 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $form = $self->form();
-
     my $where_clause = {};
 
-    my ( $search, ) = ( ( $form->{search} // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $search, ) = ( ( $self->form()->{search} // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
 
     if ( defined $search ) {
 
@@ -25,7 +23,7 @@ sub load {
 
     }
 
-    my ( $category_id, ) = ( ( $form->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
     if ( defined $category_id ) {
 
@@ -33,7 +31,7 @@ sub load {
 
     }
 
-    my ( $page, ) = ( ( $form->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
@@ -73,19 +71,15 @@ sub load {
     my $category_model = 'Ring::Model::Category'->new();
     my $categories     = $category_model->list();
 
-    my $content = $self->content();
-
-    $content->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
-    $content->{count}         = $count;
-    $content->{hashtags}      = $hashtags;
+    $self->content()->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
+    $self->content()->{count}         = $count;
+    $self->content()->{hashtags}      = $hashtags;
 
     return $self->SUPER::load( $param, );
 }
 
 sub approve {
     my ( $self, $form_data, $args, ) = @_;
-
-    my $form = $self->form();
 
     my $where_clause = {};
 
@@ -105,7 +99,7 @@ sub approve {
 
     }
 
-    my ( $page, ) = ( ( $form->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
@@ -140,10 +134,8 @@ sub approve {
         order => qq{ring_hashtag.id LIMIT $offset, 10},
     );
 
-    my $request = $self->request();
-
     my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} and $ARG->{directory} == 1 } @{$hashtags};
-    my @hashtags_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd4-hashtag_id', );
+    my @hashtags_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( 'd4-hashtag_id', );
 
     my %hashtags_approved;
     @hashtags_approved{@hashtags_approved} = undef;
@@ -162,8 +154,7 @@ sub approve {
     my @delete = keys %hashtags_approved;
     my @add    = keys %hashtags_checked;
 
-    my $user    = $self->user();
-    my $user_id = $user->id();
+    my $user_id = $self->user()->id();
 
     for my $hashtag_id (@delete) {
 
@@ -225,17 +216,11 @@ sub search {
 
     my ( $search, ) = ( $form_data->{search} =~ m{ \A ( \w+ ) \z }xms, );
 
-    my $form = $self->form();
-
-    # $self->form()->{search} = $form_data->{search};
-    $form->{search} = $form_data->{search};
-
-    my $value = $self->value();
+    $self->form()->{search} = $form_data->{search};
 
     if ( defined $search ) {
 
-        # $self->value()->{search} = $search;
-        $value->{search} = $search;
+        $self->value()->{search} = $search;
     }
 
     return;
@@ -246,17 +231,11 @@ sub filter {
 
     my ( $category_id, ) = ( $form_data->{category_id} =~ m{ \A ( \d+ ) \z }xms, );
 
-    my $form = $self->form();
-
-    # $self->form()->{category_id} = $form_data->{category_id};
-    $form->{category_id} = $form_data->{category_id};
-
-    my $value = $self->value();
+    $self->form()->{category_id} = $form_data->{category_id};
 
     if ( defined $category_id ) {
 
-        # $self->value()->{category_id} = $category_id;
-        $value->{category_id} = $category_id;
+        $self->value()->{category_id} = $category_id;
     }
 
     return;
