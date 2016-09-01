@@ -17,13 +17,6 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $content        = $self->content();
-    my $user           = $self->user();
-    my $category_model = 'Ring::Model::Category'->new();
-    my $categories     = $category_model->list();
-    my $ringpage_model = 'Ring::Model::RingPage'->new();
-    my $ringpages      = $ringpage_model->list( user_id => $user->id(), );
-
     my $hashtags = sqltable('ring_hashtag')->get(
         select => [
             qw{
@@ -43,22 +36,20 @@ sub load {
         ],
         join_left => [
 
-            [ ring_cart              => qq{ ring_cart.hashtag_id = ring_hashtag.id and ring_cart.user_id = ${ \$user->id() } }, ],
+            [ ring_cart              => qq{ ring_cart.hashtag_id = ring_hashtag.id and ring_cart.user_id = ${ \$self->user()->id() } }, ],
             [ ring_hashtag_directory => 'ring_hashtag_directory.hashtag_id = ring_hashtag.id', ],
-            [ ring_page              => qq{ ring_page.id = ring_hashtag.ringpage_id and ring_page.user_id = ${ \$user->id() }}, ],
+            [ ring_page              => qq{ ring_page.id = ring_hashtag.ringpage_id and ring_page.user_id = ${ \$self->user()->id() }}, ],
         ],
         where => [
             {
 
-                'ring_hashtag.user_id' => $user->id(),
+                'ring_hashtag.user_id' => $self->user()->id(),
 
             },
         ],
     );
 
-    $content->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
-    $content->{hashtags}      = $hashtags;
-    $content->{ringpage_list} = [ map { [ $ARG->{ringpage} => $ARG->{id}, ]; } @{$ringpages}, ];
+    $self->content->{hashtags} = $hashtags;
 
     return $self->SUPER::load( $param, );
 }
