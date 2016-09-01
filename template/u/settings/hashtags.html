@@ -88,7 +88,14 @@
 				</div>
 				<div class="span12 cart-start">
 					<h2>My Hashtags</h2>
-					<form method="post" action="[% page.url() %]">
+					[%
+					query = {}
+					query_page = { page => page.form.page, }
+					%]
+					[% IF page.form.page.defined and page.form.page.length > 0 %]
+					[% query.import( query_page ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight table-cart">
 							<thead>
 								<tr>
@@ -107,6 +114,7 @@
 							</tr>
 							[% ELSE %]
 							[% pending = 0 %]
+							[% USE X = Page( count, 10, page.form.page, ) %]
 							[% FOREACH hashtag IN hashtags %]
 							<tr>
 								<td>#[% hashtag.hashtag %]</td>
@@ -230,6 +238,41 @@
 								</td>
 							</tr>
 							[% END %]
+							<tr>
+								<td colspan="6">
+									<ul class="pager">
+										[% IF X.previous_page > 0 %]
+										<li class="previous">
+										[%
+										query = { page => X.previous_page, }
+										%]
+										[% page.link(
+										text => '&larr; Previous',
+										query => query,
+										) %]
+										</li>
+										[% ELSE %]
+										<li class="previous disabled">
+										<span>&larr; Previous</span>
+										</li>
+										[% END %]
+										[% IF X.next_page > 0 %]
+										<li class="next">
+										[%
+										query = { page => X.next_page, }
+										%]
+										[% page.link(
+										text => 'Next &rarr;',
+										query => query,
+										) %]
+										[% ELSE %]
+										<li class="next disabled">
+										<span>Next &rarr;</span>
+										</li>
+										[% END %]
+									</ul>
+								</td>
+							</tr>
 							</tbody>
 						</table>
 					</form>
