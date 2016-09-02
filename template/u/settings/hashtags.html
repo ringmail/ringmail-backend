@@ -1,6 +1,31 @@
 [% menu_settings = 'hashtags' %]
 [% content = BLOCK %]
 [% INCLUDE u/settings/menu.html %]
+[% page.field(
+name = 'placeholder',
+type = 'hidden',
+command = 'directory_add',
+) %]
+[% page.field(
+name = 'placeholder',
+type = 'hidden',
+command = 'directory_remove',
+) %]
+[% page.field(
+name = 'placeholder',
+type = 'hidden',
+command = 'logout',
+) %]
+[% page.field(
+name = 'placeholder',
+type = 'hidden',
+command = 'remove',
+) %]
+[% page.field(
+name = 'placeholder',
+type = 'hidden',
+command = 'search',
+) %]
 <div id="masthead">
 	<div class="container">
 		<div class="masthead-pad">
@@ -50,34 +75,6 @@
 							<div class="span12">
 								[% IF page.value.hashtag.defined %]
 								[% IF page.value.hashtag == 0 %]
-								<h4>Great news! #[% page.form.hashtag %] is available</h4>
-								<pre class="hashtag-available"> #[% page.form.hashtag %] | $99.99 </pre>
-								[% page.field(
-								command => 'add_to_cart',
-								type => 'hidden',
-								name => 'hashtag',
-								value => page.form.hashtag,
-								) %]
-								[% page.button(
-								command => 'add_to_cart',
-								contents => 'Add To Cart',
-								opts => {
-								class => 'btn btn-primary btn-medium',
-								},
-								) %]
-								[% page.field(
-								command => 'buy_it_now',
-								type => 'hidden',
-								name => 'hashtag',
-								value => page.form.hashtag,
-								) %]
-								[% page.button(
-								command => 'buy_it_now',
-								contents => 'Buy It Now',
-								opts => {
-								class => 'btn btn-primary btn-medium',
-								},
-								) %]
 								[% ELSE %]
 								<h4>Sorry, #[% page.form.hashtag %] is unavailable</h4>
 								[% END %]
@@ -95,7 +92,7 @@
 					[% IF page.form.page.defined and page.form.page.length > 0 %]
 					[% query.import( query_page ) %]
 					[% END %]
-					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight table-cart">
 							<thead>
 								<tr>

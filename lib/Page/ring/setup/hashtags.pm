@@ -17,6 +17,16 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+
+    my $where_clause = {
+
+        'ring_hashtag.user_id' => $self->user()->id(),
+
+    };
+
+    my $offset = ( $page * 10 ) - 10;
+
     my $hashtags = sqltable('ring_hashtag')->get(
         select => [
             qw{
@@ -40,15 +50,13 @@ sub load {
             [ ring_hashtag_directory => 'ring_hashtag_directory.hashtag_id = ring_hashtag.id', ],
             [ ring_page              => qq{ ring_page.id = ring_hashtag.ringpage_id and ring_page.user_id = ${ \$self->user()->id() }}, ],
         ],
-        where => [
-            {
-
-                'ring_hashtag.user_id' => $self->user()->id(),
-
-            },
-        ],
+        where => $where_clause,
+        order => qq{ring_hashtag.id LIMIT $offset, 10},
     );
 
+    my $count = sqltable('ring_hashtag')->count( $where_clause, );
+
+    $self->content()->{count}    = $count;
     $self->content()->{hashtags} = $hashtags;
 
     return $self->SUPER::load( $param, );

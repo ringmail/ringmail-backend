@@ -13,25 +13,16 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $where_clause = {};
-
-    my ( $search, ) = ( ( $self->form()->{search} // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
-
-    if ( defined $search ) {
-
-        $where_clause->{hashtag} = [ like => qq{%$search%}, ];
-
-    }
-
+    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
     my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
-    if ( defined $category_id ) {
+    my $where_clause = {
 
-        $where_clause->{'ring_hashtag.category_id'} = $category_id;
+        defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
+        defined $category_id ? ( 'ring_hashtag.category_id' => $category_id ) : (),
 
-    }
-
-    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    };
 
     my $offset = ( $page * 10 ) - 10;
 
@@ -81,25 +72,16 @@ sub load {
 sub approve {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $where_clause = {};
+    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
-    my ( $search, ) = ( ( $form_data->{search} // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my $where_clause = {
 
-    if ( defined $search ) {
+        defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
+        defined $category_id ? ( 'ring_hashtag.category_id' => $category_id ) : (),
 
-        $where_clause->{hashtag} = [ like => qq{%$search%}, ];
-
-    }
-
-    my ( $category_id, ) = ( ( $form_data->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
-
-    if ( defined $category_id ) {
-
-        $where_clause->{'ring_hashtag.category_id'} = $category_id;
-
-    }
-
-    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    };
 
     my $offset = ( $page * 10 ) - 10;
 
@@ -208,25 +190,13 @@ sub approve {
 
     }
 
-    my $query = {};
+    my $query = {
 
-    if ( defined $page ) {
+        defined $page        ? ( page        => $page, )        : (),
+        defined $search      ? ( search      => $search, )      : (),
+        defined $category_id ? ( category_id => $category_id, ) : (),
 
-        $query->{page} = $page;
-
-    }
-
-    if ( defined $search ) {
-
-        $query->{search} = $search;
-
-    }
-
-    if ( defined $category_id ) {
-
-        $query->{category_id} = $category_id;
-
-    }
+    };
 
     return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => $query, ), );
 }
