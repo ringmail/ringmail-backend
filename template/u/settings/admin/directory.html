@@ -94,7 +94,7 @@
 							[% USE X = Page( count, 10, page.form.page, ) %]
 							[% FOREACH hashtag IN hashtags %]
 							<tr>
-								<td>[% hashtag.hashtag %]</td>
+								<td>#[% hashtag.hashtag %]</td>
 								<td>[% hashtag.category %]</td>
 								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
 								<td>
