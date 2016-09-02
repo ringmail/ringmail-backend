@@ -4,6 +4,7 @@ use English '-no_match_vars';
 use Moose 'extends';
 use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
+use Regexp::Common 'whitespace';
 use Ring::Model::Category;
 
 extends 'Page::ring::user';
@@ -204,13 +205,37 @@ sub approve {
 sub search {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $search, ) = ( $form_data->{search} =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $search, ) = ( lc( $form_data->{search} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
 
-    $self->form()->{search} = $form_data->{search};
+    if ( not defined $search ) {
 
-    if ( defined $search ) {
+        $self->form()->{search} = $form_data->{search};
+        $self->value()->{error} = 'Invalid input.';
 
-        $self->value()->{search} = $search;
+        return;
+
+    }
+
+    $search =~ s{ [_\#\,\-]+ }{ }gxms;
+    $search =~ s{$RE{ws}{crop}}{}gxms;
+    $search =~ s{ \s+ }{_}gxms;
+
+    ( $search, ) = ( $search =~ m{ \A ( \w{1,139} ) \z }xms, );
+
+    if ( not defined $search ) {
+
+        $self->form()->{search} = $form_data->{search};
+        $self->value()->{error} = 'Invalid input.';
+
+        return;
+
+    }
+    else {
+
+        $self->form()->{search} = $search;
+
+        return;
+
     }
 
     return;
