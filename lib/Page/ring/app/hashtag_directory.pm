@@ -78,6 +78,7 @@ sub load
 				my @cat = ();
 				foreach my $c (@$dq)
 				{
+					next if ($c->{'category'} =~ /\(none\)/i);
 					push @cat, {
 						'type' => 'hashtag_category',
 						'name' => $c->{'category'},
