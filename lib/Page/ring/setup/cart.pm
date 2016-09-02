@@ -692,12 +692,13 @@ sub load {
 sub search {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user     = $self->user();
-    my $user_id  = $user->id();
-    my ( $tag, ) = ( lc( $form_data->{hashtag} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
+    my $user    = $self->user();
+    my $user_id = $user->id();
+
+    my ( $tag, )         = ( lc( $form_data->{hashtag} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
     my ( $category_id, ) = ( $form_data->{category_id} // q{} =~ m{ \A ( \d+ ) \z }xms, );
     my ( $ringpage_id, ) = ( $form_data->{ringpage_id} // q{} =~ m{ \A ( \d+ ) \z }xms );
-    my ( $target, )      = ( $form_data->{target}      // q{}, );
+    my ( $target, )      = ( $form_data->{target} // q{}, );
 
     if ( not defined $category_id ) {
 
@@ -707,20 +708,34 @@ sub search {
 
     }
 
-    return if not defined $tag;
+    if ( not defined $tag ) {
+
+        $self->form()->{hashtag} = $form_data->{hashtag};
+        $self->value()->{error}  = 'Invalid input.';
+
+        return;
+
+    }
 
     $tag =~ s{ [_\#\,\-]+ }{ }gxms;
     $tag =~ s{$RE{ws}{crop}}{}gxms;
     $tag =~ s{ \s+ }{_}gxms;
 
-    return if not length $tag > 0;
+    ( $tag, ) = ( $tag =~ m{ \A ( \w{1,139} ) \z }xms, );
 
-    if ( length $tag > 140 ) {
+    if ( not defined $tag ) {
+
+        $self->form()->{hashtag} = $form_data->{hashtag};
+        $self->value()->{error}  = 'Invalid input.';
 
         return;
-    }
 
-    $self->form()->{hashtag} = $tag;
+    }
+    else {
+
+        $self->form()->{hashtag} = $tag;
+
+    }
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
