@@ -73,15 +73,12 @@ sub remove {
         };
     } keys %{ $self->form() };
 
-    my $user    = $self->user();
-    my $user_id = $user->id();
-
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
     for my $hashtag_id ( $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", ) ) {
 
         if ($hashtag_model->delete(
-                user_id => $user_id,
+                user_id => $self->user()->id(),
                 id      => $hashtag_id,
             )
             )
@@ -90,7 +87,7 @@ sub remove {
             my $cart_row = 'Note::Row'->new(
                 ring_cart => {
                     hashtag_id => $hashtag_id,
-                    user_id    => $user_id,
+                    user_id    => $self->user()->id(),
                 },
             );
 
