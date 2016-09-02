@@ -6,8 +6,6 @@ use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
 use Ring::Model::Category;
 use Ring::Model::RingPage;
-use strict;
-use warnings;
 
 extends 'Page::ring::user';
 extends 'Page::ring::setup::cart';
@@ -65,12 +63,22 @@ sub load {
 sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
+    my ( $cmdnum, ) = map {
+        do {
+
+            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
+
+            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
+
+        };
+    } keys %{ $self->form() };
+
     my $user    = $self->user();
     my $user_id = $user->id();
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd5-hashtag_id', ) ) {
+    for my $hashtag_id ( $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", ) ) {
 
         if ($hashtag_model->delete(
                 user_id => $user_id,
