@@ -1,0 +1,7 @@
+<mj-section vertical-align="center" padding="0px" padding-top="20px" padding-bottom="20px" padding-left="30px" padding-right="30px" padding-bottom="25px" background-color="#99E5EC">
+    <mj-column vertical-align="middle" padding="0px" >
+        <mj-text align="center" font-size="18" line-height="27px" padding="0px" color="#000000" font-family="Helvetica Neue" font-weight="200">
+            <a href="#" style="color:#919191;font-weight: bold;">unsubscribe</a>
+        </mj-text>
+    </mj-column>
+</mj-section>

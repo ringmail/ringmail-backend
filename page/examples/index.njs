@@ -1,0 +1,3 @@
+{
+   "template" : "examples/index.html"
+}

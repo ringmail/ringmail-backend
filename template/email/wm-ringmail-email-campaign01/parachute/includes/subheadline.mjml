@@ -1,0 +1,13 @@
+<mj-section vertical-align="center" padding="0px" padding-top="25px" padding-bottom="33px" padding-left="30px" padding-right="30px" padding-bottom="30px" background-color="#99E5EC">
+    <mj-column vertical-align="middle" padding="0px" >
+        <mj-text align="center" font-size="22px" line-height="28px" padding="0px" color="#000000" font-family="Helvetica Neue" font-weight="200">
+            <span style="color:#000000"><span style="font-weight: bold;color:#E85C43;">Download the app</span>, call up friends with email,</span>
+        </mj-text>
+        <mj-text align="center" font-size="22px" line-height="28px" padding="0px" color="#000000" font-family="Helvetica Neue" font-weight="200">
+            <span style="color:#000000">tell friends about RingMail, and <span style="font-weight: bold;">earn HashCash</span></span>
+        </mj-text>
+        <mj-text align="center" font-size="22px" line-height="28px" padding="0px" color="#000000" font-family="Helvetica Neue" font-weight="200">
+            <span style="color:#000000">to <span style="font-weight: bold;">get your own free #Hashtag!</span></span>
+        </mj-text>
+    </mj-column>
+</mj-section>

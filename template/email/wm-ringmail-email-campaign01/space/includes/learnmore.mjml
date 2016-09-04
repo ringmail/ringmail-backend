@@ -1,0 +1,7 @@
+<mj-section vertical-align="center" padding="0px" padding-top="10px" padding-bottom="20px" padding-left="30px" padding-right="30px" padding-bottom="25px" background-color="#191919">
+    <mj-column vertical-align="middle" padding="0px" >
+        <mj-text align="center" font-size="18" line-height="27px" padding="0px" color="#ffffff" font-family="Helvetica Neue" font-weight="200">
+            <span>Learn more at <a href="#" style="color:#0077C2;">RING.ML</a></span>
+        </mj-text>
+    </mj-column>
+</mj-section>

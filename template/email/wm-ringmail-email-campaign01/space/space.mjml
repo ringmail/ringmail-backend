@@ -1,0 +1,29 @@
+<mjml>
+    <mj-body>
+        <mj-container>
+            <!-- Header -->
+            <mj-include path="./includes/header.mjml" /> <!-- or 'header.mjml' -->
+
+            <!-- Banner -->
+            <mj-include path="./includes/title.mjml" />
+
+            <!-- Article -->
+            <mj-include path="./includes/hero.mjml" />
+
+            <!-- Editor Header -->
+            <mj-include path="./includes/headline.mjml" />
+
+            <!-- Editor Image -->
+            <mj-include path="./includes/subheadline.mjml" />
+
+            <!-- Article -->
+            <mj-include path="./includes/button.mjml" />
+
+            <!-- Social -->
+            <mj-include path="./includes/learnmore.mjml" />
+
+            <mj-include path="./includes/footer.mjml" />
+            
+        </mj-container>
+    </mj-body>
+</mjml>

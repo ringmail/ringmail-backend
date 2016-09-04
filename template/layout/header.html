@@ -42,6 +42,41 @@
             </div--><!-- /.navbar-collapse -->
     </header>
 </section>
+[% ELSIF  page == "example_index" %]
+<div class="clearfix navbar-wrapper [% page_template_class %]">
+    <nav class="navbar navbar-default navbar-fixed-top [% page_template_class %]" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body" aria-expanded="false" aria-controls="navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src="/img/website/ringmail-logo.png"></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class=""><a href="/">EXPLORE</a></li>
+                    <li class=""><a href="/">HOW IT WORKS</a></li>
+                    <li class=""><a href="/">SECURITY</a></li>
+                    <li class=""><a href="/">INVITE YOUR FRIENDS</a></li>
+                    <li class=""><a href="/">DOWNLOAD</a></li>
+                    <li class=""><a href="/" class="btn btn-default">GET THE APP</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+</div>
+
+<nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+    <ul class="nav navmenu-nav">
+        <li class=""><a href="/">EXPLORE</a></li>
+        <li class=""><a href="/">HOW IT WORKS</a></li>
+        <li class=""><a href="/">SECURITY</a></li>
+        <li class=""><a href="/">INVITE YOUR FRIENDS</a></li>
+        <li class=""><a href="/">DOWNLOAD</a></li>
+    </ul>
+</nav>
 [% ELSE  %]
 <div class="clearfix navbar-wrapper [% page_template_class %]">
     <nav class="navbar navbar-default navbar-fixed-top [% page_template_class %]" id="main-navbar">

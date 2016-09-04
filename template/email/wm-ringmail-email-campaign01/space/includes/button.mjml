@@ -1,0 +1,10 @@
+<mj-section vertical-align="center" padding="0px" padding-top="33px" padding-bottom="10px" background-color="#191919">
+    <mj-column padding="0px">
+        <mj-button font-family="Helvetica" font-weight="bold" font-size="24" background-color="#f45e43" color="white">
+            GET THE APP
+        </mj-button>
+        <mj-text align="center" font-size="18" line-height="27px" padding="0px" color="#2BBBD2" font-family="Helvetica Neue" >
+            Log in and call #RingMailPerks!
+        </mj-text>
+    </mj-column>
+</mj-section>

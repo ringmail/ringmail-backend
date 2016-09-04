@@ -1,0 +1,12 @@
+<mj-section vertical-align="center" padding="0px" padding-right="11px" padding-top="15px"  background-color="#99E5EC">
+    <mj-column padding="0px">
+        <mj-image padding="0px" padding-bottom="25px" width="96px" align="center" vertical-align="middle"  src="/img/email/wm-ringmail-email-campaign01/parachute/logo.png" href="staging.ringmail.com/" alt="Ringmail"></mj-image>
+    </mj-column>
+    <mj-column padding="0px">
+    </mj-column>
+    <mj-column padding="0px">
+    </mj-column>
+    <mj-column padding="0px" >
+        <mj-image padding="0px" padding-bottom="25px" width="136px" align="center" vertical-align="middle"  src="/img/email/wm-ringmail-email-campaign01/parachute/header-button.png" href="staging.ringmail.com/" alt="Ringmail"></mj-image>
+    </mj-column>
+</mj-section>
