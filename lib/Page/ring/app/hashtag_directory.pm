@@ -72,7 +72,7 @@ sub load
 						'c.category',
 					],
 					'table' => 'ring_category c',
-					'where' => 'exists (select * from ring_hashtag h where h.category_id=c.id)',
+					'where' => 'exists (select * from ring_hashtag h where h.category_id=c.id and h.directory=1)',
 					'order' => 'category asc',
 				);
 				my @cat = ();
@@ -131,6 +131,7 @@ sub load
 						],
 						'where' => {
 							'category_id' => $cid,
+							'directory' => 1,
 						},
 						'order' => 'hashtag',
 					);
