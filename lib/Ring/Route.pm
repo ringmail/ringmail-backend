@@ -84,27 +84,63 @@ sub get_route
 	my $item = new Ring::Item();
 	my $trow = $obj->get_target($param);
 	#::log("Target:", $trow);
+	my $res = undef;
 	if (defined($trow) && $trow->{'id'})
 	{
-		my $tuid = $trow->data('user_id');
-		my $tphone = new Note::Row('ring_phone' => {'user_id' => $tuid});
-		if ($tphone->id())
+# detailed routing (V1)
+		my $troute = new Note::Row('ring_target_route' => {
+			'target_id' => $trow->id(),
+			'seq' => 0,
+		});
+		#::log("Target Route:", $troute);
+		if ($troute->id())
 		{
-			return {
-				'phone' => $tphone->data('login'),
-			};
+			my $rtrow = $troute->row('route_id', 'ring_route');
+			my $rtdata = $rtrow->data();
+			if ($rtdata->{'route_type'} eq 'app')
+			{
+				my $tuid = $trow->data('user_id');
+				my $tphone = new Note::Row('ring_phone' => {'user_id' => $tuid});
+				if ($tphone->id())
+				{
+					$res = {
+						'type' => 'phone',
+						'route' => $tphone->data('login'),
+					};
+				}
+			}
+			elsif ($rtdata->{'route_type'} eq 'did')
+			{
+				my $didrec = $rtrow->row('did_id', 'ring_did');
+				my $did = '+'. $didrec->data('did_code'). $didrec->data('did_number');
+				$res = {
+					'type' => 'did',
+					'route' => $did,
+				};
+			}
+			elsif ($rtdata->{'route_type'} eq 'sip')
+			{
+				my $siprec = $rtrow->row('sip_id', 'ring_sip');
+				my $sip = $siprec->data('sip_url');
+				$res = {
+					'type' => 'sip',
+					'route' => $sip,
+				};
+			}
 		}
-# TODO: detailed routing
-#		my $troute = new Note::Row('ring_target_route' => {
-#			'target_id' => $trow->id(),
-#			'seq' => 0,
-#		});
-#		return undef unless ($troute->id());
-#		my $rtrow = $troute->row('route_id', 'ring_route');
-#		my $res = $rtrow->data();
-#		$res->{'route'} = $rtrow;
-#		$res->{'target_id'} = $trow->id();
-#		return $res;
+		else
+		{
+			my $tuid = $trow->data('user_id');
+			my $tphone = new Note::Row('ring_phone' => {'user_id' => $tuid});
+			if ($tphone->id())
+			{
+				$res = {
+					'route' => 'phone',
+					'phone' => $tphone->data('login'),
+				};
+			}
+		}
+		return $res;
 	}
 	return undef;
 }

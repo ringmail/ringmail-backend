@@ -94,12 +94,6 @@ sub load
 						$route{'phone'} = 1;
 						$route{'route'} = 'RingMail App';
 					}
-					elsif ($rt eq 'phone')
-					{
-						$route{'phone'} = 1;
-						$route{'route'} = 'Phone 1';
-						$sel = $target->{'phone_id'};
-					}
 					elsif ($rt eq 'sip')
 					{
 						$route{'sip'} = 1;
@@ -113,7 +107,6 @@ sub load
 					'type' => 'select',
 					'select' => [
 						['RingMail App', $user->id()],
-						['Phone 1', $phs->[0]->{'id'}],
 					],
 					'selected' => $sel,
 				);
@@ -241,23 +234,6 @@ sub cmd_update
 		{
 			$route = 'app';
 			$epadd = {'ok' => 1};
-		}
-		else
-		{
-			my $phrec = new Note::Row(
-				'ring_phone' => {
-					'id' => $endp,
-					'user_id' => $uid,
-				},
-			);
-			unless ($phrec->id()) # invalid phone
-			{
-				return;
-			}
-			$epadd = {
-				'ok' => 1,
-				'endpoint_id' => $phrec->id(),
-			};
 		}
 	}
 	elsif ($route eq 'sip')
