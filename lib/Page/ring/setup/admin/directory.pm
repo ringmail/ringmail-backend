@@ -55,7 +55,7 @@ sub load {
 
         ],
         where => $where_clause,
-        order => qq{ring_hashtag.id LIMIT $offset, 10},
+        order => qq{ring_hashtag.hashtag ASC LIMIT $offset, 10},
     );
 
     my $count = sqltable('ring_hashtag')->count( $where_clause, );
