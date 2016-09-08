@@ -787,15 +787,22 @@ sub search {
 sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user    = $self->user();
-    my $user_id = $user->id();
+    my ( $cmdnum, ) = map {
+        do {
+
+            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
+
+            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
+
+        };
+    } keys %{ $self->form() };
 
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    for my $hashtag_id ( $self->request()->parameters()->get_all( 'd5-hashtag_id', ) ) {
+    for my $hashtag_id ( $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", ) ) {
 
         if ($hashtag_model->delete(
-                user_id => $user_id,
+                user_id => $self->user()->id(),
                 id      => $hashtag_id,
             )
             )
@@ -804,7 +811,7 @@ sub remove {
             my $cart_row = 'Note::Row'->new(
                 ring_cart => {
                     hashtag_id => $hashtag_id,
-                    user_id    => $user_id,
+                    user_id    => $self->user()->id(),
                 },
             );
 
@@ -824,7 +831,15 @@ sub remove {
         }
     }
 
-    return;
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+
+    my $query = {
+
+        defined $page ? ( page => $page, ) : (),
+
+    };
+
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => $query, ), );
 }
 
 sub apply_coupon_code {
