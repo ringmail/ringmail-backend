@@ -116,6 +116,12 @@
 									value => hashtag.id,
 									},
 									) %]
+									[% page.field(
+									command => 'approve',
+									type => 'hidden',
+									name => 'hashtag_id-approved',
+									value => hashtag.id,
+									) %]
 									[% ELSE %]
 									[% page.field(
 									command => 'approve',
