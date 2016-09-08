@@ -117,8 +117,18 @@ sub approve {
         order => qq{ring_hashtag.id LIMIT $offset, 10},
     );
 
+    my ( $cmdnum, ) = map {
+        do {
+
+            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
+
+            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
+
+        };
+    } keys %{ $self->form() };
+
     my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} and $ARG->{directory} == 1 } @{$hashtags};
-    my @hashtags_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( 'd4-hashtag_id', );
+    my @hashtags_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", );
 
     my %hashtags_approved;
     @hashtags_approved{@hashtags_approved} = undef;
