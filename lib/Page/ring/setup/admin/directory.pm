@@ -73,10 +73,6 @@ sub load {
 sub approve {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
-    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
-    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
-
     my $where_clause = {
 
         defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
@@ -200,6 +196,10 @@ sub approve {
         }
 
     }
+
+    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $query = {
 
