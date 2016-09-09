@@ -57,38 +57,8 @@ sub load {
 sub admin {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $form    = $self->form();
-    my $request = $self->request();
-    my $user    = $self->user();
-
-    my $user_id = $user->id();
-
-    my $search = $form_data->{search};
-
-    my $where_clause = {};
-
-    if ( defined $search ) {
-
-        $where_clause = { 'u.login' => [ like => qq{%$search%}, ], };
-
-    }
-
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
-
-    my $offset = ( $page * 10 ) - 10;
-
-    my $count = defined $search ? sqltable('ring_user')->count( login => [ like => qq{%$search%}, ], ) : sqltable('ring_user')->count();
-
-    my $users = sqltable('ring_user')->get(
-        select    => [ qw{ u.id u.login ua.user_id }, ],
-        table     => [ 'ring_user AS u', ],
-        join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        where     => $where_clause,
-        order     => defined $search ? q{u.id} : qq{u.id LIMIT $offset, 10},
-    );
-
-    my @users_admin = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
-    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd5-user_id', );
+    my @users_admin   = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id-admin", );
+    my @users_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id", );
 
     my %users_admin;
     @users_admin{@users_admin} = undef;
@@ -123,6 +93,8 @@ sub admin {
         my $user_admin_row = 'Note::Row::create'->( ring_user_admin => { user_id => $user_id, }, );
 
     }
+
+    my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
     return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { page => $page, }, ), );
 }

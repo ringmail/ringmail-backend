@@ -60,56 +60,6 @@ sub load {
     return $self->SUPER::load( $param, );
 }
 
-sub remove {
-    my ( $self, $form_data, $args, ) = @_;
-
-    my ( $cmdnum, ) = map {
-        do {
-
-            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
-
-            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
-
-        };
-    } keys %{ $self->form() };
-
-    my $hashtag_model = 'Ring::Model::Hashtag'->new();
-
-    for my $hashtag_id ( $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", ) ) {
-
-        if ($hashtag_model->delete(
-                user_id => $self->user()->id(),
-                id      => $hashtag_id,
-            )
-            )
-        {
-
-            my $cart_row = 'Note::Row'->new(
-                ring_cart => {
-                    hashtag_id => $hashtag_id,
-                    user_id    => $self->user()->id(),
-                },
-            );
-
-            if ( defined $cart_row->id() ) {
-
-                $cart_row->delete();
-
-            }
-            else {
-
-            }
-
-            # display confirmation
-        }
-        else {
-            # failed
-        }
-    }
-
-    return;
-}
-
 sub directory_add {
     my ( $self, $form_data, $args, ) = @_;
 
