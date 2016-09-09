@@ -787,19 +787,9 @@ sub search {
 sub remove {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $cmdnum, ) = map {
-        do {
-
-            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
-
-            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
-
-        };
-    } keys %{ $self->form() };
-
     my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
-    for my $hashtag_id ( $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", ) ) {
+    for my $hashtag_id ( $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-hashtag_id", ) ) {
 
         if ($hashtag_model->delete(
                 user_id => $self->user()->id(),

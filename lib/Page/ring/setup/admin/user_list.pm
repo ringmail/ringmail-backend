@@ -57,18 +57,8 @@ sub load {
 sub admin {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $cmdnum, ) = map {
-        do {
-
-            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
-
-            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
-
-        };
-    } keys %{ $self->form() };
-
-    my @users_admin   = map { $ARG + 0 } $self->request()->parameters()->get_all( "d$cmdnum-user_id-admin", );
-    my @users_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( "d$cmdnum-user_id", );
+    my @users_admin   = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id-admin", );
+    my @users_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id", );
 
     my %users_admin;
     @users_admin{@users_admin} = undef;

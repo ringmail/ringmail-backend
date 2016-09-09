@@ -178,7 +178,7 @@ sub edit {
 
         my ( @button_links, );
 
-        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( 'd2-button_link', ), ], [ $self->request()->parameters()->get_all( 'd2-button_type', ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( 'd2-button_link', ) ] }, ];
+        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_link", ), ], [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_type", ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_link", ) ] }, ];
         while ( my ( $button_link, $button_type, $button_position, ) = $button_links_iterator->() ) {
 
             next if not defined $button_link;
@@ -248,7 +248,7 @@ sub edit {
 
         my ( $button_link, ) = ( @button_links, );
 
-        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_id", ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_text", ), ];
         while ( my ( $button_id, $button_text, ) = $buttons_iterator->() ) {
 
             if ( not defined $button_id or not length $button_id > 0 ) {

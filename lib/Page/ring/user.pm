@@ -1,6 +1,7 @@
 package Page::ring::user;
 
 use constant::boolean;
+use English '-no_match_vars';
 use MIME::Base64 qw{ encode_base64 };
 use Moose;
 use Note::Locale qw{ us_states us_state_name };
@@ -17,6 +18,27 @@ with 'Ring::User::Admin';
 has 'user' => (
     'is'  => 'rw',
     'isa' => 'Ring::User',
+);
+
+has cmdnum => (
+    is      => 'rw',
+    isa     => 'Maybe[Int]',
+    default => sub {
+        my ( $self, ) = @_;
+
+        my ( $cmdnum, ) = map {
+            do {
+
+                my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
+
+                ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
+
+            };
+        } keys %{ $self->form() };
+
+        return $cmdnum;
+    },
+    lazy => TRUE,
 );
 
 sub load {

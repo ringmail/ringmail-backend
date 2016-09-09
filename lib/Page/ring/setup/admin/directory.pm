@@ -73,18 +73,8 @@ sub load {
 sub approve {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $cmdnum, ) = map {
-        do {
-
-            my ( $cmdnum, ) = ( $ARG =~ m{ do-\d+_( \d+ ) }xms, );
-
-            ( defined $cmdnum and $self->form()->{$ARG} eq q{} ) ? ( $cmdnum, ) : ();
-
-        };
-    } keys %{ $self->form() };
-
-    my @hashtags_approved = map { $ARG + 0 } $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id-approved", );
-    my @hashtags_checked  = map { $ARG + 0 } $self->request()->parameters()->get_all( "d$cmdnum-hashtag_id", );
+    my @hashtags_approved = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-hashtag_id-approved", );
+    my @hashtags_checked  = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-hashtag_id", );
 
     my %hashtags_approved;
     @hashtags_approved{@hashtags_approved} = undef;
