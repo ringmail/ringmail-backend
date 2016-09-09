@@ -1,3 +1,0 @@
-{
-   "template" : "signup-done.html"
-}
