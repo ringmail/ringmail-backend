@@ -156,6 +156,12 @@ sub create
 			'verified' => 0,
 			#'verified' => 1, # For testing
 		});
+		Note::Row::insert('ring_hashtag' => {
+			'hashtag' => $param->{'hashtag'},
+			'user_id' => $urec->id(),
+			'active' => 1,
+			'paid' => 1,
+		});
 	};
 	if ($@)
 	{
