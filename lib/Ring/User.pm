@@ -161,6 +161,7 @@ sub create
 			'user_id' => $urec->id(),
 			'active' => 1,
 			'paid' => 1,
+			'free' => 1,
 		});
 	};
 	if ($@)
