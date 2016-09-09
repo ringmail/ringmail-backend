@@ -75,7 +75,7 @@ sub add {
         );
         if ( defined $ringpage ) {
 
-            my $each_array = each_arrayref [ 'Call', ], [ 'ring://' . $user->row()->data( 'login', ), ];
+            my $each_array = each_arrayref [ 'Call', ], [ 'ring://call/' . $user->row()->data( 'login', ), ];
             while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
                 next if $button_text eq q{} or $button_link eq q{};
