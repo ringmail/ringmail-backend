@@ -65,6 +65,22 @@
 							) %]
 						</div>
 					</div>
+					<div>
+						<span class="form-label">Free Hashtag*</span><br/>
+						<div class="input-prepend [% IF page.value.error.hashtag %]control-group error[% END %]">
+							<span class="add-on"><i class="icon-bell"></i></span>
+							[% page.field(
+							'command' => 'register',
+							'type' => 'text',
+							'name' => 'hashtag',
+							'value' => page.value.hashtag,
+							'opts' => {
+							'style' => 'width: 150px; padding-top: 4px; padding-bottom: 4px;',
+							'placeholder' => 'Free Hashtag',
+							},
+							) %]
+						</div>
+					</div>
 					<div style="margin-top: 8px;">
 						<span class="form-label">Password*</span><br/>
 						<div class="input-prepend [% IF page.value.error.password %]control-group error[% END %]">
