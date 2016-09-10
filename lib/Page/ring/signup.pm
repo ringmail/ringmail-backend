@@ -122,6 +122,7 @@ sub register {
                 ( ( defined $rec->{'route_phone'} ) ? ( 'phone' => $rec->{'route_phone'} ) : () ),
                 'password'  => $data->{'password'},
                 'password2' => $data->{'password'},
+                hashtag     => $data->{hashtag},
             },
         );
         if ( $mkuser->{'ok'} ) {
