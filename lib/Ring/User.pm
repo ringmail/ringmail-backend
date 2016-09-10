@@ -156,12 +156,16 @@ sub create
 			'verified' => 0,
 			#'verified' => 1, # For testing
 		});
+
+        my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
+
 		Note::Row::insert('ring_hashtag' => {
 			'hashtag' => $param->{'hashtag'},
 			'user_id' => $urec->id(),
 			'active' => 1,
 			'paid' => 1,
 			'free' => 1,
+			'category_id' => $category->id(),
 		});
 	};
 	if ($@)

@@ -2,11 +2,11 @@ package Page::ring::signup;
 
 use Data::Validate::Domain 'is_domain';
 use Email::Valid;
-use HTML::Entities 'encode_entities';
-use JSON::XS 'encode_json';
 use Moose;
 use Note::Param;
+use Regexp::Common 'whitespace';
 use Ring::API;
+use Ring::Model::Hashtag 'check_exists';
 use Ring::User;
 
 extends 'Note::Page';
@@ -39,6 +39,57 @@ sub register {
         $val->{'error'}->{'password'} = 1;
         push @errs, 'Password must be at least 4 characters long';
     }
+
+    {
+
+        my ( $hashtag, ) = ( lc( $data->{hashtag} ) =~ m{ ( [\s\w\#\,\-]+ ) }xms, );
+
+        if ( not defined $hashtag ) {
+
+            $rec->{hashtag} = $data->{hashtag};
+
+            $val->{error}->{hashtag}++;
+            push @errs, 'No valid hashtag supplied.';
+
+            last;
+        }
+
+        $hashtag =~ s{ [_\#\,\-]+ }{ }gxms;
+        $hashtag =~ s{$RE{ws}{crop}}{}gxms;
+        $hashtag =~ s{ \s+ }{_}gxms;
+
+        ( $hashtag, ) = ( $hashtag =~ m{ \A ( \w{1,139} ) \z }xms, );
+
+        if ( not defined $hashtag ) {
+
+            $rec->{hashtag} = $data->{hashtag};
+
+            $val->{error}->{hashtag}++;
+            push @errs, 'No valid hashtag supplied.';
+
+            last;
+        }
+        else {
+
+            $rec->{hashtag} = $hashtag;
+        }
+
+        ::log( $hashtag, );
+
+        my $hashtag_model = 'Ring::Model::Hashtag'->new();
+
+        my $hashtag_exists = $hashtag_model->check_exists( tag => $hashtag, );
+
+        if ($hashtag_exists) {
+
+            $val->{error}->{hashtag}++;
+            push @errs, 'Hashtag already taken.';
+
+            last;
+        }
+
+    }
+
     if ( $type eq 'email' ) {
         $rec->{'type_email'} = 1;
         $data->{'target_email'} =~ s/^\s+//gxms;
