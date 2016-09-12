@@ -74,8 +74,6 @@ sub register {
             $rec->{hashtag} = $hashtag;
         }
 
-        ::log( $hashtag, );
-
         my $hashtag_model = 'Ring::Model::Hashtag'->new();
 
         my $hashtag_exists = $hashtag_model->check_exists( tag => $hashtag, );
