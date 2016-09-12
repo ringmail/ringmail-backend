@@ -15,28 +15,19 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $content = $self->content();
-    my $form    = $self->form();
+    my $where_clause = {
 
-    my $where_clause;
+        not( defined $self->form()->{redeemed} and $self->form()->{redeemed} == 1 ) ? ( transaction_id => undef, ) : (),
 
-    if ( not( defined $form->{redeemed} and $form->{redeemed} == 1 ) ) {
+    };
 
-        $where_clause = {
+    $self->content()->{count} = sqltable('ring_coupon')->count( $where_clause, );
 
-            transaction_id => undef,
-
-        };
-
-    }
-
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+    my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
     my $offset = ( $page * 10 ) - 10;
 
-    my $count = sqltable('ring_coupon')->count();
-
-    my $coupons = sqltable('ring_coupon')->get(
+    $self->content()->{coupons} = sqltable('ring_coupon')->get(
         select => [
             qw{
 
@@ -51,9 +42,6 @@ sub load {
         where => $where_clause,
         order => qq{code LIMIT $offset, 10},
     );
-
-    $content->{count}   = $count;
-    $content->{coupons} = $coupons;
 
     return $self->SUPER::load( $param, );
 }
