@@ -96,6 +96,8 @@ sub edit {
     my $user             = $self->user();
     my $user_id          = $user->id();
 
+    my $scheme = $self->app()->config()->{scheme} // 'ring';
+
     my $ringpage_row = Note::Row->new(
         ring_page => {
             id      => $ringpage_id,
@@ -214,9 +216,9 @@ sub edit {
 
                 if ( defined $email ) {
 
-                    $button_link->{button_link} = "ring://$button_type/$email";
+                    $button_link->{button_link} = "$scheme://$button_type/$email";
 
-                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
+                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => $scheme} ) }xms, );
 
                 }
                 else {

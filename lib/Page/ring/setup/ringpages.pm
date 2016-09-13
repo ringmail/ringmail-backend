@@ -43,6 +43,8 @@ sub load {
 sub add {
     my ( $self, $form_data, $args, ) = @_;
 
+    my $scheme = $self->app()->config()->{scheme} // 'ring';
+
     my ( $ringpage_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{ringpage_name} ) ) =~ m{ \A ( [[:alpha:][:digit:][:punct:][:space:]]+ ) \z }xms, );
     my ( $template_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{template_name} ) ) =~ m{ \A ( \w+ ) \z }xms, );
     my ( $hashtag_id, )    = ( escape_html( $RE{ws}{crop}->subs( $form_data->{hashtag_id} // q{} ) ) =~ m{ \A ( \d+ ) \z }xms, );
@@ -75,7 +77,7 @@ sub add {
         );
         if ( defined $ringpage ) {
 
-            my $each_array = each_arrayref [ 'Call', ], [ 'ring://call/' . $user->row()->data( 'login', ), ];
+            my $each_array = each_arrayref [ 'Call', ], [ "$scheme//call/" . $user->row()->data( 'login', ), ];
             while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
                 next if $button_text eq q{} or $button_link eq q{};
