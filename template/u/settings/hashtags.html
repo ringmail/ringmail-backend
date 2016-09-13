@@ -86,7 +86,7 @@
 							</tr>
 							[% ELSE %]
 							[% pending = 0 %]
-							[% USE X = Page( count, 10, page.form.page, ) %]
+							[% USE X = Page( count, page.app.config.page_size.defined ? page.app.config.page_size : 10, page.form.page, ) %]
 							[% FOREACH hashtag IN hashtags %]
 							<tr>
 								<td>#[% hashtag.hashtag %]</td>

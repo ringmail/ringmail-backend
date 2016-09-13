@@ -4,17 +4,19 @@ use English '-no_match_vars';
 use Moose 'extends';
 use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Regexp::Common 'whitespace';
 use Ring::Model::Category;
 
 extends 'Page::ring::user';
+
+Readonly my $PAGE_SIZE => 10;
 
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
     my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
     my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
@@ -25,9 +27,13 @@ sub load {
 
     };
 
-    my $offset = ( $page * 10 ) - 10;
+    $self->content()->{count} = sqltable('ring_hashtag')->count( $where_clause, );
 
-    my $hashtags = sqltable('ring_hashtag')->get(
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+
+    my $page_size = $main::app_config->{page_size} // $PAGE_SIZE;
+
+    $self->content()->{hashtags} = sqltable('ring_hashtag')->get(
         select => [
             qw{
 
@@ -55,17 +61,13 @@ sub load {
 
         ],
         where => $where_clause,
-        order => qq{ring_hashtag.hashtag ASC LIMIT $offset, 10},
+        order => qq{ring_hashtag.hashtag LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    my $count = sqltable('ring_hashtag')->count( $where_clause, );
 
     my $category_model = 'Ring::Model::Category'->new();
     my $categories     = $category_model->list();
 
     $self->content()->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
-    $self->content()->{count}         = $count;
-    $self->content()->{hashtags}      = $hashtags;
 
     return $self->SUPER::load( $param, );
 }

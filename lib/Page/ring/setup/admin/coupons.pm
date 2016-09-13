@@ -5,10 +5,13 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Regexp::Common 'number';
 use String::Random 'random_regex';
 
 extends 'Page::ring::user';
+
+Readonly my $PAGE_SIZE => 10;
 
 sub load {
     my ( @args, ) = @_;
@@ -25,7 +28,7 @@ sub load {
 
     my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-    my $offset = ( $page * 10 ) - 10;
+    my $page_size = $main::app_config->{page_size} // $PAGE_SIZE;
 
     $self->content()->{coupons} = sqltable('ring_coupon')->get(
         select => [
@@ -40,7 +43,7 @@ sub load {
                 },
         ],
         where => $where_clause,
-        order => qq{code LIMIT $offset, 10},
+        order => qq{id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
 
     return $self->SUPER::load( $param, );

@@ -4,18 +4,19 @@ use English '-no_match_vars';
 use Moose;
 use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Ring::Model::Category;
 use Ring::Model::RingPage;
 
 extends 'Page::ring::user';
 extends 'Page::ring::setup::cart';
 
+Readonly my $PAGE_SIZE => 10;
+
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
-
-    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $where_clause = {
 
@@ -23,9 +24,13 @@ sub load {
 
     };
 
-    my $offset = ( $page * 10 ) - 10;
+    $self->content()->{count} = sqltable('ring_hashtag')->count( $where_clause, );
 
-    my $hashtags = sqltable('ring_hashtag')->get(
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+
+    my $page_size = $main::app_config->{page_size} // $PAGE_SIZE;
+
+    $self->content()->{hashtags} = sqltable('ring_hashtag')->get(
         select => [
             qw{
 
@@ -49,13 +54,8 @@ sub load {
             [ ring_page              => qq{ ring_page.id = ring_hashtag.ringpage_id and ring_page.user_id = ${ \$self->user()->id() }}, ],
         ],
         where => $where_clause,
-        order => qq{ring_hashtag.id LIMIT $offset, 10},
+        order => qq{ring_hashtag.hashtag LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    my $count = sqltable('ring_hashtag')->count( $where_clause, );
-
-    $self->content()->{count}    = $count;
-    $self->content()->{hashtags} = $hashtags;
 
     return $self->SUPER::load( $param, );
 }
