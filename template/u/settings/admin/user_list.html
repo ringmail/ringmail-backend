@@ -161,13 +161,9 @@
 										[%
 										query = { page => X.previous_page, }
 										query_search = { search => page.form.search, }
-										query_category_id = { category_id => page.form.category_id, }
 										%]
 										[% IF page.form.search.defined and page.form.search.length > 0 %]
 										[% query.import( query_search ) %]
-										[% END %]
-										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
-										[% query.import( query_category_id ) %]
 										[% END %]
 										[% page.link(
 										text => '&larr; Previous',
@@ -184,13 +180,9 @@
 										[%
 										query = { page => X.next_page, }
 										query_search = { search => page.form.search, }
-										query_category_id = { category_id => page.form.category_id, }
 										%]
 										[% IF page.form.search.defined and page.form.search.length > 0 %]
 										[% query.import( query_search ) %]
-										[% END %]
-										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
-										[% query.import( query_category_id ) %]
 										[% END %]
 										[% page.link(
 										text => 'Next &rarr;',
