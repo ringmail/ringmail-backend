@@ -31,7 +31,7 @@ sub load {
 
     my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
 
-    my $page_size = $main::app_config->{page_size} // $PAGE_SIZE;
+    my $page_size = $self->app()->config()->{page_size} // $PAGE_SIZE;
 
     $self->content()->{hashtags} = sqltable('ring_hashtag')->get(
         select => [
