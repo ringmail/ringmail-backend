@@ -15,6 +15,10 @@ sub setup_conv
 	my ($obj, $param) = get_param(@_);
 	my $uid = $param->{'from_user_id'};
 	my $fromuuid = lc($param->{'from_conversation_uuid'});
+	my $fromid = $obj->get_identity(
+		'type' => 'user',
+		'user_id' => $uid,
+	);
 	my $to = $param->{'to_user_id'};
 	my $target = $param->{'to_user_target_id'};
 	my @result = ('error', 'conversation');
@@ -144,6 +148,12 @@ sub setup_conv
 		@result = ('ok', $dest, $replytarget, $reply->{'uuid'}, $contact);
 	}
 	return \@result;
+}
+
+sub get_identity
+{
+	my ($obj, $param) = get_param(@_);
+	
 }
 
 sub get_conversation

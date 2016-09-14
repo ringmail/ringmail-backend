@@ -20,7 +20,6 @@ use Note::Param;
 use Ring::User;
 use Ring::Route;
 use Ring::Item;
-use Ring::Conversation;
 
 extends 'Note::Page';
 
@@ -30,7 +29,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log('conversation request', $form);
+	::log('conversation request', $form);
 	my $uuid = $form->{'conv'};
 	my $from = $form->{'from'};
 	$from =~ s/\%40/\@/;
@@ -44,64 +43,39 @@ sub load
 	{
 		my $uid = $user->id();
 		my $to = $form->{'to'};
-		$to =~ s/\%40/\@/;
+		$to =~ s/%([0-9A-Fa-f]{2})/chr(hex($1))/eg;
 		my $dest = lc($to);
 		my $rt = new Ring::Route();
 		my $type = $rt->get_target_type(
 			'target' => $dest,
 		);
-		if (defined($type) && ($type eq 'email' || $type eq 'did'))
+		::log("From: $from Dest: $dest Type: $type");
+		if (defined($type))
 		{
 			my $to_user = undef;
 			my $target = undef;
-			if ($type eq 'email')
+			$target = $rt->get_target(
+				'type' => $type,
+				$type => $dest,
+			);
+			if (defined($target) && defined($target->id()))
 			{
-				$target = $rt->get_target(
-					'type' => 'email',
-					'email' => $dest,
-				);
-				if (defined $target)
-				{
-					$to_user = $target->data('user_id');
-					$target = $target->id();
-				}
-				else
-				{
-					# error
-					$res = ['error', 'notfound'];
-				}
-			}
-			elsif ($type eq 'did')
-			{
-				$target = $rt->get_target(
-					'type' => 'did',
-					'did' => $dest,
-				);
-				if (defined $target)
-				{
-					$to_user = $target->data('user_id');
-					$target = $target->id();
-				}
-				else
-				{
-					# error
-					$res = ['error', 'notfound'];
-				}
-			}
-			if (defined($to_user))
-			{
-				my $conv = new Ring::Conversation();
-				$res = $conv->setup_conv(
+				$target->data('user_id', 'target_type', 'hashtag_id', 'domain_id');
+				$res = $rt->setup_conversation(
 					'from_user_id' => $uid,
 					'from_conversation_uuid' => $uuid,
-					'to_user_id' => $to_user,
-					'to_user_target_id' => $target,
+					'to_user_target' => $target,
 				);
+			}
+			else
+			{
+				# error
+				$res = ['error', 'notfound'];
 			}
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log("Res:", $res);
+	::log("conversation request response", $res);
 	return encode_json($res);
 }
 
