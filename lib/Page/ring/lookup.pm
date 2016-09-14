@@ -30,6 +30,7 @@ sub load
 	my $route = new Ring::Route();
 	my $from = decode_base64($form->{'from'});
 	my $to = decode_base64($form->{'to'});
+	#::log($from, $to);
 	$from =~ s/^sip\://;
 	$from =~ s/\@.*//g;
 	my $fru = $route->get_phone_user(
@@ -55,16 +56,19 @@ sub load
 		my $type = $route->get_target_type(
 			'target' => $to,
 		);
+		#::log("Type: ". $type);
 		my $dest = $route->get_route(
 			'type' => $type,
 			$type => $to,
 		);
+		#::log("Dest ", $dest);
 		if (defined $dest)
 		{
 			my $trow = $route->get_target(
 				'type' => $type,
 				$type => $to,
 			);
+			#::log("Target ", $trow);
 			if ($type eq 'email' || $type eq 'did')
 			{
 				# TODO: Conversation codes for different entities
@@ -84,9 +88,9 @@ sub load
 					::log("Lookup From: $fru->{'login'}|$newfrom -> To: $tologin|$to");
 					$newfrom =~ s/\@/\\/;
 					$newfrom = uri_escape($newfrom);
-					if ($dest->{'type'} eq 'phone')
+					if ($dest->{'route'} eq 'phone')
 					{
-						$res = "type=phone;from=$newfrom;to=$dest->{'route'};uuid=$touuid;contact=$tocontact";
+						$res = "type=phone;from=$newfrom;to=$dest->{'phone'};uuid=$touuid;contact=$tocontact";
 					}
 				}
 			}
