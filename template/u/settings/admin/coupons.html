@@ -17,12 +17,12 @@
 				<div class="span12">
 					<h2>Add Coupon</h2>
 					[% query = {} %]
-					[% query_redeemed = { redeemed => page.form.redeemed, } %]
-					[% query_sent = { sent => page.form.sent, } %]
 					[% IF page.form.redeemed == 1 %]
+					[% query_redeemed = { redeemed => page.form.redeemed, } %]
 					[% query.import( query_redeemed ) %]
 					[% END %]
 					[% IF page.form.sent == 1 %]
+					[% query_sent = { sent => page.form.sent, } %]
 					[% query.import( query_sent ) %]
 					[% END %]
 					<form method="post" action="[% page.url( query => query, ) %]">
@@ -67,8 +67,8 @@
 					<h2>Coupons</h2>
 					<div>
 						[% query = {} %]
-						[% query_redeemed = { redeemed => page.form.redeemed, } %]
 						[% IF page.form.redeemed == 1 %]
+						[% query_redeemed = { redeemed => page.form.redeemed, } %]
 						[% query.import( query_redeemed ) %]
 						[% END %]
 						[% IF page.form.sent == 1 %]
@@ -87,8 +87,8 @@
 					</div>
 					<div>
 						[% query = {} %]
-						[% query_sent = { sent => page.form.sent, } %]
 						[% IF page.form.sent == 1 %]
+						[% query_sent = { sent => page.form.sent, } %]
 						[% query.import( query_sent ) %]
 						[% END %]
 						[% IF page.form.redeemed == 1 %]
@@ -147,12 +147,12 @@
 							<td colspan="4">
 								<ul class="pager">
 									[% query = {} %]
-									[% query_redeemed = { redeemed => page.form.redeemed, } %]
-									[% query_sent = { sent => page.form.sent, } %]
 									[% IF page.form.redeemed == 1 %]
+									[% query_redeemed = { redeemed => page.form.redeemed, } %]
 									[% query.import( query_redeemed ) %]
 									[% END %]
 									[% IF page.form.sent == 1 %]
+									[% query_sent = { sent => page.form.sent, } %]
 									[% query.import( query_sent ) %]
 									[% END %]
 									[% IF X.previous_page > 0 %]
