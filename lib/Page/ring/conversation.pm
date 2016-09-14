@@ -49,7 +49,6 @@ sub load
 		my $type = $rt->get_target_type(
 			'target' => $dest,
 		);
-		::log("From: $from Dest: $dest Type: $type");
 		if (defined($type))
 		{
 			my $to_user = undef;
@@ -75,7 +74,7 @@ sub load
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log("conversation request response", $res);
+	::log("conversation response", $res);
 	return encode_json($res);
 }
 
