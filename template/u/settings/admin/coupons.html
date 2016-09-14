@@ -73,7 +73,6 @@
 							<tr>
 								<th>Code</th>
 								<th>Amount</th>
-								<th>Sent</th>
 								<th>Redeemed</th>
 							</tr>
 						</thead>
@@ -84,20 +83,6 @@
 							<td>[% coupon.code %]</td>
 							<td>$[% coupon.amount %]</td>
 							<td>
-								[% IF coupon.sent == 1 %]
-								Yes
-								[% ELSE %]
-								[% page.link(
-								text => '<em>Click here to mark coupon as sent.</em>',
-								command => 'mark_sent',
-								args => [ coupon.id, ],
-								opts => {
-								onclick => "return confirm( 'Ready to mark this coupon as sent?' )",
-								},
-								) %]
-								[% END %]
-							</td>
-							<td>
 								[% IF coupon.transaction_id.defined %]
 								Yes
 								[% ELSE %]
@@ -107,7 +92,7 @@
 						</tr>
 						[% END %]
 						<tr>
-							<td colspan="4">
+							<td colspan="3">
 								<ul class="pager">
 									[% IF X.previous_page > 0 %]
 									<li class="previous">

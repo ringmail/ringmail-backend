@@ -43,7 +43,7 @@
 							</div>
 						</fieldset>
 					</form>
-					<h2>Search Users</h2>
+					<h2>Search User</h2>
 					<form method="post" action="[% page.url( query => page.form.page.defined ? { page => page.form.page, } : undef, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group">
@@ -76,6 +76,12 @@
 								</tr>
 							</thead>
 							<tbody>
+							[% IF user_list.size == 0 %]
+							<tr>
+								<td colspan="2">No Users.</td>
+							</tr>
+							[% ELSE %]
+							[% pending = 0 %]
 							[% USE X = Page( count, page.form.search.defined ? count : 10, page.form.page, ) %]
 							[% FOREACH user IN users %]
 							<tr>
@@ -169,6 +175,7 @@
 									</ul>
 								</td>
 							</tr>
+							[% END %]
 							</tbody>
 						</table>
 					</form>
