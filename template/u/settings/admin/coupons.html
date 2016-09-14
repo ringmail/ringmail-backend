@@ -16,7 +16,14 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Add Coupon</h2>
-					<form method="post" action="[% page.url( query => page.form.redeemed.defined ? { redeemed => page.form.redeemed, } : undef, ) %]">
+					[%
+					query = {}
+					query_redeemed = { redeemed => page.form.redeemed, }
+					%]
+					[% IF page.form.redeemed.defined and page.form.redeemed.length > 0 %]
+					[% query.import( query_redeemed ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query, ) %]">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="amount">Amount:</label>
