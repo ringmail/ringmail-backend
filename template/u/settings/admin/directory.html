@@ -16,7 +16,16 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Search Hashtags</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					[% query = {} %]
+					[% IF page.form.search.length > 0 %]
+					[% query_search = { search => page.form.search, } %]
+					[% query.import( query_search ) %]
+					[% END %]
+					[% IF page.form.category_id > 0 %]
+					[% query_category_id = { category_id => page.form.category_id, } %]
+					[% query.import( query_category_id ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<div class="input-prepend">
@@ -46,7 +55,7 @@
 					<div class="span12">
 					</div>
 					<h2>Filter Hashtags</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<form method="post" action="[% page.url( query => query ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group">
 								<label class="control-label" for="category_id">Category:</label>
@@ -73,20 +82,9 @@
 				</div>
 				<div class="span12">
 					<h2>Hashtags</h2>
-					[%
-					query = {}
-					query_page = { page => page.form.page, }
-					query_search = { search => page.form.search, }
-					query_category_id = { category_id => page.form.category_id, }
-					%]
-					[% IF page.form.page.defined and page.form.page.length > 0 %]
+					[% IF page.form.page > 1 %]
+					[% query_page = { page => page.form.page, } %]
 					[% query.import( query_page ) %]
-					[% END %]
-					[% IF page.form.search.defined and page.form.search.length > 0 %]
-					[% query.import( query_search ) %]
-					[% END %]
-					[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
-					[% query.import( query_category_id ) %]
 					[% END %]
 					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight">
@@ -135,20 +133,20 @@
 								</td>
 							</tr>
 							[% END %]
-							[% IF page.form.category_id.defined %]
-							[% page.field(
-							command => 'approve',
-							type => 'hidden',
-							name => 'category_id',
-							value => page.form.category_id,
-							) %]
-							[% END %]
-							[% IF page.form.search.defined %]
+							[% IF page.form.search.length > 0 %]
 							[% page.field(
 							command => 'approve',
 							type => 'hidden',
 							name => 'search',
 							value => page.form.search,
+							) %]
+							[% END %]
+							[% IF page.form.category_id > 0 %]
+							[% page.field(
+							command => 'approve',
+							type => 'hidden',
+							name => 'category_id',
+							value => page.form.category_id,
 							) %]
 							[% END %]
 							<tr>
@@ -177,17 +175,8 @@
 									<ul class="pager">
 										[% IF X.previous_page > 0 %]
 										<li class="previous">
-										[%
-										query = { page => X.previous_page, }
-										query_search = { search => page.form.search, }
-										query_category_id = { category_id => page.form.category_id, }
-										%]
-										[% IF page.form.search.defined and page.form.search.length > 0 %]
-										[% query.import( query_search ) %]
-										[% END %]
-										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
-										[% query.import( query_category_id ) %]
-										[% END %]
+										[% query_page = { page => X.previous_page, } %]
+										[% query.import( query_page ) %]
 										[% page.link(
 										text => '&larr; Previous',
 										query => query,
@@ -200,17 +189,8 @@
 										[% END %]
 										[% IF X.next_page > 0 %]
 										<li class="next">
-										[%
-										query = { page => X.next_page, }
-										query_search = { search => page.form.search, }
-										query_category_id = { category_id => page.form.category_id, }
-										%]
-										[% IF page.form.search.defined and page.form.search.length > 0 %]
-										[% query.import( query_search ) %]
-										[% END %]
-										[% IF page.form.category_id.defined and page.form.category_id.length > 0 %]
-										[% query.import( query_category_id ) %]
-										[% END %]
+										[% query_page = { page => X.next_page, } %]
+										[% query.import( query_page ) %]
 										[% page.link(
 										text => 'Next &rarr;',
 										query => query,
