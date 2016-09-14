@@ -4,17 +4,19 @@ use English '-no_match_vars';
 use Moose 'extends';
 use Note::Param 'get_param';
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Regexp::Common 'whitespace';
 use Ring::Model::Category;
 
 extends 'Page::ring::user';
+
+Readonly my $PAGE_SIZE => 10;
 
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
     my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
     my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
@@ -25,9 +27,13 @@ sub load {
 
     };
 
-    my $offset = ( $page * 10 ) - 10;
+    $self->content()->{count} = sqltable('ring_hashtag')->count( $where_clause, );
 
-    my $hashtags = sqltable('ring_hashtag')->get(
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+
+    my $page_size = $self->app()->config()->{page_size} // $PAGE_SIZE;
+
+    $self->content()->{hashtags} = sqltable('ring_hashtag')->get(
         select => [
             qw{
 
@@ -55,17 +61,13 @@ sub load {
 
         ],
         where => $where_clause,
-        order => qq{ring_hashtag.hashtag ASC LIMIT $offset, 10},
+        order => qq{ring_hashtag.hashtag LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    my $count = sqltable('ring_hashtag')->count( $where_clause, );
 
     my $category_model = 'Ring::Model::Category'->new();
     my $categories     = $category_model->list();
 
     $self->content()->{category_list} = [ map { [ $ARG->{category} => $ARG->{id}, ]; } @{$categories}, ];
-    $self->content()->{count}         = $count;
-    $self->content()->{hashtags}      = $hashtags;
 
     return $self->SUPER::load( $param, );
 }
@@ -73,52 +75,8 @@ sub load {
 sub approve {
     my ( $self, $form_data, $args, ) = @_;
 
-    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
-    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
-    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
-
-    my $where_clause = {
-
-        defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
-        defined $category_id ? ( 'ring_hashtag.category_id' => $category_id ) : (),
-
-    };
-
-    my $offset = ( $page * 10 ) - 10;
-
-    my $hashtags = sqltable('ring_hashtag')->get(
-        select => [
-            qw{
-
-                ring_cart.hashtag_id
-                ring_cart.transaction_id
-                ring_category.category
-                ring_hashtag.directory
-                ring_hashtag.hashtag
-                ring_hashtag.id
-                ring_hashtag.ringpage_id
-                ring_hashtag.target_url
-                ring_hashtag_directory.ts_directory
-                ring_page.ringpage
-
-                },
-            'ring_hashtag_directory.id AS directory_id',
-        ],
-        table     => [ qw{ ring_hashtag ring_category }, ],
-        join      => [ 'ring_category.id = ring_hashtag.category_id', ],
-        join_left => [
-
-            [ ring_cart              => 'ring_cart.hashtag_id = ring_hashtag.id', ],
-            [ ring_hashtag_directory => 'ring_hashtag_directory.hashtag_id = ring_hashtag.id', ],
-            [ ring_page              => 'ring_page.id = ring_hashtag.ringpage_id', ],
-
-        ],
-        where => $where_clause,
-        order => qq{ring_hashtag.id LIMIT $offset, 10},
-    );
-
-    my @hashtags_approved = map { $ARG->{id} + 0 } grep { defined $ARG->{hashtag_id} and $ARG->{id} == $ARG->{hashtag_id} and $ARG->{directory} == 1 } @{$hashtags};
-    my @hashtags_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( 'd4-hashtag_id', );
+    my @hashtags_approved = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-hashtag_id-approved", );
+    my @hashtags_checked  = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-hashtag_id", );
 
     my %hashtags_approved;
     @hashtags_approved{@hashtags_approved} = undef;
@@ -190,6 +148,10 @@ sub approve {
         }
 
     }
+
+    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $query = {
 

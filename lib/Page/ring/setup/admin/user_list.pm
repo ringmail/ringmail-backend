@@ -9,6 +9,7 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Ref::Util 'is_arrayref';
 use Regexp::Common 'whitespace';
 use Ring::API;
@@ -16,40 +17,34 @@ use String::Random 'random_regex';
 
 extends 'Page::ring::user';
 
+Readonly my $PAGE_SIZE => 10;
+
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $content = $self->content();
-    my $form    = $self->form();
+    my ( $search, ) = ( $self->form()->{search}, );
 
-    my $search = $form->{search};
+    my $where_clause = {
 
-    my $where_clause = {};
+        defined $search ? ( 'ring_user.login' => [ like => qq{%$search%}, ], ) : (),
 
-    if ( defined $search ) {
+    };
 
-        $where_clause = { 'u.login' => [ like => qq{%$search%}, ], };
+    $self->content()->{count} = sqltable('ring_user')->count( $where_clause, );
 
-    }
+    my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+    my $page_size = $self->app()->config()->{page_size} // $PAGE_SIZE;
 
-    my $offset = ( $page * 10 ) - 10;
-
-    my $count = defined $search ? sqltable('ring_user')->count( login => [ like => qq{%$search%}, ], ) : sqltable('ring_user')->count();
-
-    my $users = sqltable('ring_user')->get(
-        select    => [ qw{ u.id u.login ua.user_id }, ],
-        table     => [ 'ring_user AS u', ],
-        join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
+    $self->content()->{users} = sqltable('ring_user')->get(
+        select    => [ qw{ ring_user.id ring_user.login ring_user_admin.user_id }, ],
+        table     => [ 'ring_user', ],
+        join_left => [ [ ring_user_admin => 'ring_user.id = ring_user_admin.user_id', ], ],
         where     => $where_clause,
-        order     => defined $search ? q{u.id} : qq{u.id LIMIT $offset, 10},
+        order     => qq{ring_user.login LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    $content->{count} = $count;
-    $content->{users} = $users;
 
     return $self->SUPER::load( $param, );
 }
@@ -57,38 +52,8 @@ sub load {
 sub admin {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $form    = $self->form();
-    my $request = $self->request();
-    my $user    = $self->user();
-
-    my $user_id = $user->id();
-
-    my $search = $form_data->{search};
-
-    my $where_clause = {};
-
-    if ( defined $search ) {
-
-        $where_clause = { 'u.login' => [ like => qq{%$search%}, ], };
-
-    }
-
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
-
-    my $offset = ( $page * 10 ) - 10;
-
-    my $count = defined $search ? sqltable('ring_user')->count( login => [ like => qq{%$search%}, ], ) : sqltable('ring_user')->count();
-
-    my $users = sqltable('ring_user')->get(
-        select    => [ qw{ u.id u.login ua.user_id }, ],
-        table     => [ 'ring_user AS u', ],
-        join_left => [ [ 'ring_user_admin AS ua' => 'u.id = ua.user_id', ], ],
-        where     => $where_clause,
-        order     => defined $search ? q{u.id} : qq{u.id LIMIT $offset, 10},
-    );
-
-    my @users_admin = map { $ARG->{id} + 0 } grep { defined $ARG->{user_id} and $ARG->{id} == $ARG->{user_id} } @{$users};
-    my @users_checked = map { $ARG + 0 } $request->parameters()->get_all( 'd5-user_id', );
+    my @users_admin   = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id-admin", );
+    my @users_checked = map { $ARG + 0 } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-user_id", );
 
     my %users_admin;
     @users_admin{@users_admin} = undef;
@@ -124,7 +89,18 @@ sub admin {
 
     }
 
-    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { page => $page, }, ), );
+    my ( $page, )   = ( ( $self->form()->{page}   // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, ) = ( ( $self->form()->{search} // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+
+    my $query = {
+
+        defined $page   ? ( page   => $page, )   : (),
+        defined $search ? ( search => $search, ) : (),
+
+    };
+
+    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => $query, ), );
+
 }
 
 sub login {

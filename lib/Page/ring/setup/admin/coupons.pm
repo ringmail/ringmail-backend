@@ -5,38 +5,33 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Regexp::Common 'number';
 use String::Random 'random_regex';
 
 extends 'Page::ring::user';
+
+Readonly my $PAGE_SIZE => 10;
 
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $content = $self->content();
-    my $form    = $self->form();
+    my $where_clause = {
 
-    my $where_clause;
+        not( defined $self->form()->{redeemed} and $self->form()->{redeemed} == 1 ) ? ( transaction_id => undef, ) : (),
+        not( defined $self->form()->{sent}     and $self->form()->{sent} == 1 )     ? ( sent           => 0, )     : (),
 
-    if ( not( defined $form->{redeemed} and $form->{redeemed} == 1 ) ) {
+    };
 
-        $where_clause = {
+    $self->content()->{count} = sqltable('ring_coupon')->count( $where_clause, );
 
-            transaction_id => undef,
+    my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-        };
+    my $page_size = $self->app()->config()->{page_size} // $PAGE_SIZE;
 
-    }
-
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
-
-    my $offset = ( $page * 10 ) - 10;
-
-    my $count = sqltable('ring_coupon')->count();
-
-    my $coupons = sqltable('ring_coupon')->get(
+    $self->content()->{coupons} = sqltable('ring_coupon')->get(
         select => [
             qw{
 
@@ -49,11 +44,8 @@ sub load {
                 },
         ],
         where => $where_clause,
-        order => qq{code LIMIT $offset, 10},
+        order => qq{id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    $content->{count}   = $count;
-    $content->{coupons} = $coupons;
 
     return $self->SUPER::load( $param, );
 }
@@ -82,9 +74,7 @@ sub add {
 
         my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
-        my $redeemed = ( defined $form->{redeemed} and $form->{redeemed} == 1 ) ? $form->{redeemed} : undef;
-
-        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => defined $redeemed ? { redeemed => $redeemed, } : undef, ), );
+        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), ), );
     }
     else {
 

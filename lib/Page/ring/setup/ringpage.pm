@@ -96,6 +96,8 @@ sub edit {
     my $user             = $self->user();
     my $user_id          = $user->id();
 
+    my $scheme = $self->app()->config()->{scheme} // 'ring';
+
     my $ringpage_row = Note::Row->new(
         ring_page => {
             id      => $ringpage_id,
@@ -178,7 +180,7 @@ sub edit {
 
         my ( @button_links, );
 
-        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( 'd2-button_link', ), ], [ $self->request()->parameters()->get_all( 'd2-button_type', ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( 'd2-button_link', ) ] }, ];
+        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_link", ), ], [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_type", ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_link", ) ] }, ];
         while ( my ( $button_link, $button_type, $button_position, ) = $button_links_iterator->() ) {
 
             next if not defined $button_link;
@@ -214,9 +216,9 @@ sub edit {
 
                 if ( defined $email ) {
 
-                    $button_link->{button_link} = "ring://$button_type/$email";
+                    $button_link->{button_link} = "$scheme://$button_type/$email";
 
-                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
+                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => $scheme} ) }xms, );
 
                 }
                 else {
@@ -248,7 +250,7 @@ sub edit {
 
         my ( $button_link, ) = ( @button_links, );
 
-        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
+        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_id", ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( "d${ \$self->cmdnum() }-button_text", ), ];
         while ( my ( $button_id, $button_text, ) = $buttons_iterator->() ) {
 
             if ( not defined $button_id or not length $button_id > 0 ) {
