@@ -19,9 +19,13 @@
 					[%
 					query = {}
 					query_redeemed = { redeemed => page.form.redeemed, }
+					query_sent = { sent => page.form.sent, }
 					%]
 					[% IF page.form.redeemed.defined and page.form.redeemed.length > 0 %]
 					[% query.import( query_redeemed ) %]
+					[% END %]
+					[% IF page.form.sent.defined and page.form.sent.length > 0 %]
+					[% query.import( query_sent ) %]
 					[% END %]
 					<form method="post" action="[% page.url( query => query, ) %]">
 						<fieldset>
@@ -63,18 +67,34 @@
 				</div>
 				<div class="span12">
 					<h2>Coupons</h2>
-					[% IF page.form.redeemed == 1 %]
-					[% page.link(
-					text => 'Show No Redeemed',
-					) %]
-					[% ELSE %]
-					[% page.link(
-					text => 'Show Redeemed',
-					query => {
-					redeemed => 1,
-					},
-					) %]
-					[% END %]
+					<div>
+						[% IF page.form.sent == 1 %]
+						[% page.link(
+						text => 'Show No Sent',
+						) %]
+						[% ELSE %]
+						[% page.link(
+						text => 'Show Sent',
+						query => {
+						sent => 1,
+						},
+						) %]
+						[% END %]
+					</div>
+					<div>
+						[% IF page.form.redeemed == 1 %]
+						[% page.link(
+						text => 'Show No Redeemed',
+						) %]
+						[% ELSE %]
+						[% page.link(
+						text => 'Show Redeemed',
+						query => {
+						redeemed => 1,
+						},
+						) %]
+						[% END %]
+					</div>
 					<table class="table table-bordered table-highlight">
 						<thead>
 							<tr>
