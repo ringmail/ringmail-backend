@@ -21,6 +21,7 @@ sub load {
     my $where_clause = {
 
         not( defined $self->form()->{redeemed} and $self->form()->{redeemed} == 1 ) ? ( transaction_id => undef, ) : (),
+        not( defined $self->form()->{sent}     and $self->form()->{sent} == 1 )     ? ( sent           => 0, )     : (),
 
     };
 
@@ -73,9 +74,7 @@ sub add {
 
         my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
-        my $redeemed = ( defined $form->{redeemed} and $form->{redeemed} == 1 ) ? $form->{redeemed} : undef;
-
-        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => defined $redeemed ? { redeemed => $redeemed, } : undef, ), );
+        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), ), );
     }
     else {
 
