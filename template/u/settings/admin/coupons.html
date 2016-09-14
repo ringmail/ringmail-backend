@@ -16,7 +16,16 @@
 			<div class="tabbable">
 				<div class="span12">
 					<h2>Add Coupon</h2>
-					<form method="post" action="[% page.url( query => page.form.redeemed.defined ? { redeemed => page.form.redeemed, } : undef, ) %]">
+					[% query = {} %]
+					[% query_redeemed = { redeemed => page.form.redeemed, } %]
+					[% query_sent = { sent => page.form.sent, } %]
+					[% IF page.form.redeemed == 1 %]
+					[% query.import( query_redeemed ) %]
+					[% END %]
+					[% IF page.form.sent == 1 %]
+					[% query.import( query_sent ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query, ) %]">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
 								<label class="control-label" for="amount">Amount:</label>
@@ -56,18 +65,46 @@
 				</div>
 				<div class="span12">
 					<h2>Coupons</h2>
-					[% IF page.form.redeemed == 1 %]
-					[% page.link(
-					text => 'Show No Redeemed',
-					) %]
-					[% ELSE %]
-					[% page.link(
-					text => 'Show Redeemed',
-					query => {
-					redeemed => 1,
-					},
-					) %]
-					[% END %]
+					<div>
+						[% query = {} %]
+						[% query_redeemed = { redeemed => page.form.redeemed, } %]
+						[% IF page.form.redeemed == 1 %]
+						[% query.import( query_redeemed ) %]
+						[% END %]
+						[% IF page.form.sent == 1 %]
+						[% page.link(
+						text => 'Show No Sent',
+						query => query,
+						) %]
+						[% ELSE %]
+						[% query_sent = { sent => 1, } %]
+						[% query.import( query_sent ) %]
+						[% page.link(
+						text => 'Show Sent',
+						query => query,
+						) %]
+						[% END %]
+					</div>
+					<div>
+						[% query = {} %]
+						[% query_sent = { sent => page.form.sent, } %]
+						[% IF page.form.sent == 1 %]
+						[% query.import( query_sent ) %]
+						[% END %]
+						[% IF page.form.redeemed == 1 %]
+						[% page.link(
+						text => 'Show No Redeemed',
+						query => query,
+						) %]
+						[% ELSE %]
+						[% query_redeemed = { redeemed => 1, } %]
+						[% query.import( query_redeemed ) %]
+						[% page.link(
+						text => 'Show Redeemed',
+						query => query,
+						) %]
+						[% END %]
+					</div>
 					<table class="table table-bordered table-highlight">
 						<thead>
 							<tr>
@@ -109,14 +146,22 @@
 						<tr>
 							<td colspan="4">
 								<ul class="pager">
+									[% query = {} %]
+									[% query_redeemed = { redeemed => page.form.redeemed, } %]
+									[% query_sent = { sent => page.form.sent, } %]
+									[% IF page.form.redeemed == 1 %]
+									[% query.import( query_redeemed ) %]
+									[% END %]
+									[% IF page.form.sent == 1 %]
+									[% query.import( query_sent ) %]
+									[% END %]
 									[% IF X.previous_page > 0 %]
+									[% query_page = { page => X.previous_page, } %]
+									[% query.import( query_page ) %]
 									<li class="previous">
 									[% page.link(
 									text => '&larr; Previous',
-									query => {
-									page => X.previous_page,
-									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
-									},
+									query => query,
 									) %]
 									</li>
 									[% ELSE %]
@@ -125,13 +170,12 @@
 									</li>
 									[% END %]
 									[% IF X.next_page > 0 %]
+									[% query_page = { page => X.next_page, } %]
+									[% query.import( query_page ) %]
 									<li class="next">
 									[% page.link(
 									text => 'Next &rarr;',
-									query => {
-									page => X.next_page,
-									redeemed => page.form.redeemed.defined ? page.form.redeemed : 0,
-									},
+									query => query,
 									) %]
 									[% ELSE %]
 									<li class="next disabled">
