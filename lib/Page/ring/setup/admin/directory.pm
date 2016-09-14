@@ -171,8 +171,17 @@ sub search {
 
     if ( not defined $search ) {
 
-        $self->form()->{search} = $form_data->{search};
-        $self->value()->{error} = 'Invalid input.';
+        if ( defined $form_data->{search} and length $form_data->{search} > 0 ) {
+
+            $self->form()->{search} = $form_data->{search};
+            $self->value()->{error} = 'Invalid input.';
+
+        }
+        else {
+
+            delete $self->form()->{search};
+
+        }
 
         return;
 
