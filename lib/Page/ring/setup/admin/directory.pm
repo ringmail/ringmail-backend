@@ -22,7 +22,7 @@ sub load {
 
     my $where_clause = {
 
-        defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
+        defined $search ? ( 'ring_hashtag.hashtag' => [ like => qq{%$search%}, ], ) : (),
         defined $category_id ? ( 'ring_hashtag.category_id' => $category_id ) : (),
 
     };
