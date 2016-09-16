@@ -70,6 +70,7 @@ sub load
 					'select' => [
 						'c.id',
 						'c.category',
+						'(select count(h.id) from ring_hashtag h where h.category_id=c.id and h.directory=1) as tag_count',
 					],
 					'table' => 'ring_category c',
 					'where' => 'exists (select * from ring_hashtag h where h.category_id=c.id and h.directory=1)',
@@ -81,10 +82,11 @@ sub load
 					next if ($c->{'category'} =~ /\(none\)/i);
 					push @cat, {
 						'type' => 'hashtag_category',
-						'name' => $c->{'category'},
+						'name' => uc($c->{'category'}),
 						'id' => $c->{'id'},
-						'pattern' => 'squared_metal',
-						'color' => 'denim',
+						'count' => $c->{'tag_count'},
+						'image_url' => $obj->url('path' => '/img/hashtag_categories/lightbulb_2x.png'),
+						'color' => '#6ac663',
 					};
 				}
 				#$res->{'directory'} = \@cat;
@@ -117,7 +119,7 @@ sub load
 					my @cat = (
 						{
 							'type' => 'hashtag_category_header',
-							'name' => $catrc->data('category'),
+							'name' => uc($catrc->data('category')),
 							'id' => $cid,
 							'pattern' => 'squared_metal',
 							'color' => 'denim',
