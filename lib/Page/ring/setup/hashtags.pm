@@ -68,7 +68,7 @@ sub directory_add {
     my ( $hashtag_id, ) = ( @{$args}, );
     my $user_id         = $user->id();
 
-    my $directory_row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
+    my $directory_row = 'Note::Row::find_insert'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
     return;
 }

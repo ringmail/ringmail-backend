@@ -72,7 +72,7 @@ sub add {
 
         } while ( $coupon->count( code => $random_string, ) > 0 );
 
-        my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
+        my $coupon_row = 'Note::Row::insert'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
         return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), ), );
     }

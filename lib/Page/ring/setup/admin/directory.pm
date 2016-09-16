@@ -125,7 +125,7 @@ sub approve {
 
     for my $hashtag_id (@add) {
 
-        my $hashtag_directory_row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
+        my $hashtag_directory_row = 'Note::Row::find_insert'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
         if ( defined $hashtag_directory_row->id() ) {
 

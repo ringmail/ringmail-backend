@@ -25,7 +25,7 @@ sub create {
     my $trec;
 
     try {
-        $trec = Note::Row::create(
+        $trec = 'Note::Row::insert'->(
             ring_page => {
 
                 fields   => $param->{fields},

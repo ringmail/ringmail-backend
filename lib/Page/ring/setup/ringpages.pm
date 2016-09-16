@@ -82,7 +82,7 @@ sub add {
 
                 next if $button_text eq q{} or $button_link eq q{};
 
-                my $row = Note::Row::create(
+                my $row = 'Note::Row::insert'->(
                     ring_button => {
                         button      => $button_text,
                         ringpage_id => $ringpage->id(),

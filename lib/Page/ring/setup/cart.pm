@@ -149,7 +149,7 @@ sub cmd_fund {
 
         my $act = ( has_account( $user_id, ) ) ? Note::Account->new( $user_id, ) : create_account( $user_id, );
 
-        my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
+        my $order_row = 'Note::Row::find_insert'->( ring_order => { user_id => $user_id, transaction_id => undef, }, );
 
         my $order_id = $order_row->id();
 
@@ -430,7 +430,7 @@ sub load {
 
             try {
 
-                my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
+                my $order_row = 'Note::Row::find_insert'->( ring_order => { user_id => $user_id, transaction_id => undef, }, );
 
                 my $order_id = $order_row->id();
 
@@ -702,7 +702,7 @@ sub search {
 
     if ( not defined $category_id ) {
 
-        my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
+        my $category = 'Note::Row::find_insert'->( ring_category => { category => '(None)', }, );
 
         $category_id = $category->id();
 
@@ -768,7 +768,7 @@ sub search {
 
                 my $hashtag_id = $hashtag->id();
 
-                my $cart = Note::Row::create(
+                my $cart = 'Note::Row::insert'->(
                     ring_cart => {
                         hashtag_id => $hashtag_id,
                         user_id    => $user_id,
@@ -854,7 +854,7 @@ sub apply_coupon_code {
 
         try {
 
-            my $cart = Note::Row::create(
+            my $cart = 'Note::Row::insert'->(
                 ring_cart => {
                     coupon_id => $coupon_id,
                     user_id   => $user_id,
@@ -884,7 +884,7 @@ sub payment {
 
     try {
 
-        my $order_row = Note::Row::find_create( ring_order => { user_id => $user_id, transaction_id => undef, }, );
+        my $order_row = 'Note::Row::find_insert'->( ring_order => { user_id => $user_id, transaction_id => undef, }, );
 
         my $order_id = $order_row->id();
 

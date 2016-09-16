@@ -261,7 +261,7 @@ sub edit {
 
                 next if not defined $button_link;
 
-                my $button_row = Note::Row::create(
+                my $button_row = 'Note::Row::insert'->(
                     ring_button => {
                         button      => $button_text,
                         position    => $button_link->{button_position},
