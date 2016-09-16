@@ -17,14 +17,6 @@
 				<div class="span12">
 					<h2>Search Hashtags</h2>
 					[% query = {} %]
-					[% IF page.form.search.length > 0 %]
-					[% query_search = { search => page.form.search, } %]
-					[% query.import( query_search ) %]
-					[% END %]
-					[% IF page.form.category_id > 0 %]
-					[% query_category_id = { category_id => page.form.category_id, } %]
-					[% query.import( query_category_id ) %]
-					[% END %]
 					<form method="post" action="[% page.url( query => query ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<fieldset>
 							<div class="control-group[% IF page.value.error %] error[% END %]">
@@ -34,7 +26,7 @@
 									command => 'search',
 									type => 'text',
 									name => 'search',
-									value => page.form.search,
+									value => page.session.search,
 									) %]
 									[% page.button(
 									command => 'search',
@@ -66,7 +58,7 @@
 									type => 'select',
 									name => 'category_id',
 									select => category_list,
-									selected => page.form.category_id,
+									selected => page.session.category_id,
 									) %]
 								</div>
 								[% page.button(
@@ -132,22 +124,6 @@
 									[% END %]
 								</td>
 							</tr>
-							[% END %]
-							[% IF page.form.search.length > 0 %]
-							[% page.field(
-							command => 'approve',
-							type => 'hidden',
-							name => 'search',
-							value => page.form.search,
-							) %]
-							[% END %]
-							[% IF page.form.category_id > 0 %]
-							[% page.field(
-							command => 'approve',
-							type => 'hidden',
-							name => 'category_id',
-							value => page.form.category_id,
-							) %]
 							[% END %]
 							<tr>
 								<td>
