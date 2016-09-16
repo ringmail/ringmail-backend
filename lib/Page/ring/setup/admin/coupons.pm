@@ -35,16 +35,16 @@ sub load {
         select => [
             qw{
 
-                amount
-                code
-                id
-                sent
-                transaction_id
+                ring_coupon.amount
+                ring_coupon.code
+                ring_coupon.id
+                ring_coupon.sent
+                ring_coupon.transaction_id
 
                 },
         ],
         where => $where_clause,
-        order => qq{id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
+        order => qq{ring_coupon.id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
 
     return $self->SUPER::load( $param, );
