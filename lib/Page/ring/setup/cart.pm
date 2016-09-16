@@ -871,10 +871,7 @@ sub apply_coupon_code {
 sub payment {
     my ( $self, $form_data, $args, ) = @_;
 
-    my $user     = $self->user();
     my $_session = $self->_session();
-
-    my $user_id = $user->id();
 
     my $dbh = $_session->database()->handle()->_dbh();
 
@@ -884,7 +881,7 @@ sub payment {
 
     try {
 
-        my $order_row = 'Note::Row::find_insert'->( ring_order => { user_id => $user_id, transaction_id => undef, }, );
+        my $order_row = 'Note::Row::find_insert'->( ring_order => { user_id => $self->user()->id(), transaction_id => undef, }, );
 
         my $order_id = $order_row->id();
 
@@ -897,7 +894,7 @@ sub payment {
                     [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
                     [ ring_coupon  => 'ring_coupon.id = ring_cart.coupon_id', ],
                 ],
-                where => [ { 'ring_cart.user_id' => $user_id, } => and => { 'ring_cart.transaction_id' => undef, }, ],
+                where => [ { 'ring_cart.user_id' => $self->user()->id(), } => and => { 'ring_cart.transaction_id' => undef, }, ],
             );
 
             my $total = 0;
@@ -1018,7 +1015,7 @@ sub payment {
                         [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ],
                         [ ring_coupon  => 'ring_coupon.id = ring_cart.coupon_id', ],
                     ],
-                    where => [ { 'ring_cart.user_id' => $user_id, } => and => { 'ring_cart.transaction_id' => undef, }, ],
+                    where => [ { 'ring_cart.user_id' => $self->user()->id(), } => and => { 'ring_cart.transaction_id' => undef, }, ],
                 );
 
                 for my $hashtag ( @{$hashtags} ) {
@@ -1033,7 +1030,7 @@ sub payment {
                         $amount //= 99.99;
 
                         my $account_destination = account_id( 'revenue_ringmail', );
-                        my $account_source      = has_account( $user_id, ) ? 'Note::Account'->new( $user_id, ) : create_account( $user_id, );
+                        my $account_source      = has_account( $self->user()->id(), ) ? 'Note::Account'->new( $self->user()->id(), ) : create_account( $self->user()->id(), );
                         my $tx_type_id          = tx_type_id( 'purchase_hashtag', );
 
                         my $transaction_id = transaction(
@@ -1041,20 +1038,20 @@ sub payment {
                             acct_src => $account_source,
                             amount   => $amount,
                             tx_type  => $tx_type_id,
-                            user_id  => $user_id,
+                            user_id  => $self->user()->id(),
                         );
 
                         my $cart_row = 'Note::Row'->new(
                             ring_cart => {
                                 hashtag_id => $hashtag_id,
-                                user_id    => $user_id,
+                                user_id    => $self->user()->id(),
                             },
                         );
 
                         my $hashtag_row = 'Note::Row'->new(
                             ring_hashtag => {
                                 id      => $hashtag_id,
-                                user_id => $user_id,
+                                user_id => $self->user()->id(),
                             },
                         );
 
@@ -1089,13 +1086,13 @@ sub payment {
                             acct_src => $account_source,
                             amount   => $amount,
                             tx_type  => $tx_type_id,
-                            user_id  => $user_id,
+                            user_id  => $self->user()->id(),
                         );
 
                         my $cart_row = 'Note::Row'->new(
                             ring_cart => {
                                 coupon_id => $coupon_id,
-                                user_id   => $user_id,
+                                user_id   => $self->user()->id(),
                             },
                         );
 
@@ -1114,7 +1111,7 @@ sub payment {
                                 {
 
                                     transaction_id => $transaction_id,
-                                    user_id        => $user_id,
+                                    user_id        => $self->user()->id(),
 
                                 },
                             );
