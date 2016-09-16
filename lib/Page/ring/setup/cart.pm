@@ -276,7 +276,7 @@ sub load {
 
                 # try { $dbh->rollback };
 
-                return undef;
+                return undef;    ## no critic (Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef)
             };
 
         }
@@ -775,7 +775,7 @@ sub payment {
 
         # try { $dbh->rollback };
 
-        return undef;
+        return undef;    ## no critic (Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef)
     };
 
     return;
