@@ -8,6 +8,8 @@ use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Try::Tiny;
 
+our $VERSION = 1;
+
 sub check_exists {
     my ( @args, ) = @_;
     my ( $obj, $param ) = get_param( @args, );
@@ -39,7 +41,7 @@ sub create {
     catch {
         my $err = $_;
         if ( $err =~ /Duplicate/xms ) {
-            return undef;
+            return undef;    ## no critic ( Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef )
         }
         else {
             croak $err;
@@ -64,7 +66,7 @@ sub remove {
             $rc->delete();
         }
         catch {
-            return undef;
+            return undef;    ## no critic ( Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef )
         };
 
         return TRUE;

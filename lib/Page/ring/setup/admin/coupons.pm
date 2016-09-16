@@ -9,6 +9,8 @@ use Readonly;
 use Regexp::Common 'number';
 use String::Random 'random_regex';
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
 
 Readonly my $PAGE_SIZE => 10;
@@ -70,7 +72,7 @@ sub add {
 
             $random_string = random_regex '[A-Z]{4}[0-9]{4}';
 
-        } while ( $coupon->count( code => $random_string, ) > 0 );
+        } while ( $coupon->count( code => $random_string, ) > 0 );    ## no critic ( Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls )
 
         my $coupon_row = 'Note::Row::insert'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
