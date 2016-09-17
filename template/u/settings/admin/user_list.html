@@ -67,16 +67,14 @@
 						</fieldset>
 					</form>
 					<h2>Users</h2>
-					[%
-					query = {}
-					query_page = { page => page.form.page, }
-					query_search = { search => page.form.search, }
-					%]
-					[% IF page.form.page.defined and page.form.page.length > 0 %]
-					[% query.import( query_page ) %]
-					[% END %]
-					[% IF page.form.search.defined and page.form.search.length > 0 %]
+					[% query = {} %]
+					[% IF page.form.search.length > 0 %]
+					[% query_search = { search => page.form.search, } %]
 					[% query.import( query_search ) %]
+					[% END %]
+					[% IF page.form.page > 1 %]
+					[% query_page = { page => page.form.page, } %]
+					[% query.import( query_page ) %]
 					[% END %]
 					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
 						<table class="table table-bordered table-highlight table-cart">
@@ -158,13 +156,8 @@
 									<ul class="pager">
 										[% IF X.previous_page > 0 %]
 										<li class="previous">
-										[%
-										query = { page => X.previous_page, }
-										query_search = { search => page.form.search, }
-										%]
-										[% IF page.form.search.defined and page.form.search.length > 0 %]
-										[% query.import( query_search ) %]
-										[% END %]
+										[% query_page = { page => X.previous_page, } %]
+										[% query.import( query_page ) %]
 										[% page.link(
 										text => '&larr; Previous',
 										query => query,
@@ -177,13 +170,8 @@
 										[% END %]
 										[% IF X.next_page > 0 %]
 										<li class="next">
-										[%
-										query = { page => X.next_page, }
-										query_search = { search => page.form.search, }
-										%]
-										[% IF page.form.search.defined and page.form.search.length > 0 %]
-										[% query.import( query_search ) %]
-										[% END %]
+										[% query_page = { page => X.next_page, } %]
+										[% query.import( query_page ) %]
 										[% page.link(
 										text => 'Next &rarr;',
 										query => query,
