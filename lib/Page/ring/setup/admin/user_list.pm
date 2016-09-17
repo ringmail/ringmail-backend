@@ -85,7 +85,7 @@ sub admin {
 
     for my $user_id (@users_admin_add) {
 
-        my $user_admin_row = 'Note::Row::create'->( ring_user_admin => { user_id => $user_id, }, );
+        my $user_admin_row = 'Note::Row::insert'->( ring_user_admin => { user_id => $user_id, }, );
 
     }
 

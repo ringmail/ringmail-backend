@@ -10,14 +10,16 @@ use Note::SQL::Table 'sqltable';
 use Regexp::Common 'URI';
 use Try::Tiny;
 
+our $VERSION = 1;
+
 sub validate_tag {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $tag = $param->{tag};
+    my $tag = lc $param->{tag};
 
-    if ( $tag =~ m{ \A [a-z0-9_]+ \z }xms ) {
+    if ( $tag =~ m{ \A \w+ \z }xms ) {
 
         return TRUE;
     }
@@ -78,7 +80,7 @@ sub create {
 
     try {
 
-        $hashtag_row = Note::Row::create(
+        $hashtag_row = 'Note::Row::insert'->(
             ring_hashtag => {
                 category_id => $param->{category_id},
                 hashtag     => $tag,
@@ -94,7 +96,7 @@ sub create {
 
         if ( $err =~ m{ Duplicate }xms ) {
 
-            return undef;
+            return undef;    ## no critic ( Perl::Critic::Policy::Subroutines::ProhibitExplicitReturnUndef )
         }
         else {
 
@@ -106,7 +108,7 @@ sub create {
     return $hashtag_row;
 }
 
-sub delete {
+sub delete {                 ## no critic ( Perl::Critic::Policy::Subroutines::ProhibitBuiltinHomonyms )
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );

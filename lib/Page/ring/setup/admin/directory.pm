@@ -17,12 +17,12 @@ sub load {
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
-    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $search, )      = ( ( $self->session()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
+    my ( $category_id, ) = ( ( $self->session()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $where_clause = {
 
-        defined $search ? ( hashtag => [ like => qq{%$search%}, ], ) : (),
+        defined $search ? ( 'ring_hashtag.hashtag' => [ like => qq{%$search%}, ], ) : (),
         defined $category_id ? ( 'ring_hashtag.category_id' => $category_id ) : (),
 
     };
@@ -125,7 +125,7 @@ sub approve {
 
     for my $hashtag_id (@add) {
 
-        my $hashtag_directory_row = 'Note::Row::find_create'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
+        my $hashtag_directory_row = 'Note::Row::find_insert'->( ring_hashtag_directory => { hashtag_id => $hashtag_id, }, { ts_created => \'NOW()', }, );
 
         if ( defined $hashtag_directory_row->id() ) {
 
@@ -149,15 +149,11 @@ sub approve {
 
     }
 
-    my ( $page, )        = ( ( $self->form()->{page}        // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
-    my ( $search, )      = ( ( $self->form()->{search}      // q{} ) =~ m{ \A ( \w+ ) \z }xms, );
-    my ( $category_id, ) = ( ( $self->form()->{category_id} // q{} ) =~ m{ \A ( \d+ ) \z }xms, );
+    my ( $page, ) = ( ( $self->form()->{page} // 1 ) =~ m{ \A ( \d+ ) \z }xms, );
 
     my $query = {
 
-        defined $page        ? ( page        => $page, )        : (),
-        defined $search      ? ( search      => $search, )      : (),
-        defined $category_id ? ( category_id => $category_id, ) : (),
+        defined $page ? ( page => $page, ) : (),
 
     };
 
@@ -173,13 +169,18 @@ sub search {
 
         if ( defined $form_data->{search} and length $form_data->{search} > 0 ) {
 
-            $self->form()->{search} = $form_data->{search};
+            $self->session()->{search} = $form_data->{search};
+
+            $self->session_write();
+
             $self->value()->{error} = 'Invalid input.';
 
         }
         else {
 
-            delete $self->form()->{search};
+            delete $self->session()->{search};
+
+            $self->session_write();
 
         }
 
@@ -195,7 +196,10 @@ sub search {
 
     if ( not defined $search ) {
 
-        $self->form()->{search} = $form_data->{search};
+        $self->session()->{search} = $form_data->{search};
+
+        $self->session_write();
+
         $self->value()->{error} = 'Invalid input.';
 
         return;
@@ -203,7 +207,9 @@ sub search {
     }
     else {
 
-        $self->form()->{search} = $search;
+        $self->session()->{search} = $search;
+
+        $self->session_write();
 
         return;
 
@@ -217,7 +223,9 @@ sub filter {
 
     my ( $category_id, ) = ( $form_data->{category_id} =~ m{ \A ( \d+ ) \z }xms, );
 
-    $self->form()->{category_id} = $form_data->{category_id};
+    $self->session()->{category_id} = $form_data->{category_id};
+
+    $self->session_write();
 
     if ( defined $category_id ) {
 

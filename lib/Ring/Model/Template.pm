@@ -1,14 +1,12 @@
 package Ring::Model::Template;
 
-use strict;
-use warnings;
-
-use open ':encoding(UTF-8)';
-
-use Moose;
 use Carp 'croak';
 use English '-no_match_vars';
 use JSON::XS qw{ decode_json };
+use Moose;
+use open ':encoding(UTF-8)';
+
+our $VERSION = 1;
 
 has caller => ( is => 'ro', isa => 'Any', );
 

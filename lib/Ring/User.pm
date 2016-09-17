@@ -157,7 +157,7 @@ sub create
 			#'verified' => 1, # For testing
 		});
 
-        my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
+        my $category = 'Note::Row::find_insert'->( ring_category => { category => '(None)', }, );
 
 		Note::Row::insert('ring_hashtag' => {
 			'hashtag' => $param->{'hashtag'},

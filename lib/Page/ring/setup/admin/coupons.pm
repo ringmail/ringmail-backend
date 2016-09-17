@@ -9,6 +9,8 @@ use Readonly;
 use Regexp::Common 'number';
 use String::Random 'random_regex';
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
 
 Readonly my $PAGE_SIZE => 10;
@@ -35,16 +37,16 @@ sub load {
         select => [
             qw{
 
-                amount
-                code
-                id
-                sent
-                transaction_id
+                ring_coupon.amount
+                ring_coupon.code
+                ring_coupon.id
+                ring_coupon.sent
+                ring_coupon.transaction_id
 
                 },
         ],
         where => $where_clause,
-        order => qq{id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
+        order => qq{ring_coupon.id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
 
     return $self->SUPER::load( $param, );
@@ -70,9 +72,9 @@ sub add {
 
             $random_string = random_regex '[A-Z]{4}[0-9]{4}';
 
-        } while ( $coupon->count( code => $random_string, ) > 0 );
+        } while ( $coupon->count( code => $random_string, ) > 0 );    ## no critic ( Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls )
 
-        my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
+        my $coupon_row = 'Note::Row::insert'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
         return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), ), );
     }
