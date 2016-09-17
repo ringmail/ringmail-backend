@@ -70,6 +70,7 @@ sub load
 					'select' => [
 						'c.id',
 						'c.category',
+						'c.color_hex',
 						'(select count(h.id) from ring_hashtag h where h.category_id=c.id and h.directory=1) as tag_count',
 					],
 					'table' => 'ring_category c',
@@ -80,13 +81,14 @@ sub load
 				foreach my $c (@$dq)
 				{
 					next if ($c->{'category'} =~ /\(none\)/i);
+					my $catimg = lc($c->{'category'}). '.jpg';
 					push @cat, {
 						'type' => 'hashtag_category',
 						'name' => uc($c->{'category'}),
 						'id' => $c->{'id'},
 						'count' => $c->{'tag_count'},
-						'image_url' => $obj->url('path' => '/img/hashtag_categories/lightbulb_2x.png'),
-						'color' => '#6ac663',
+						'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+						'color' => '#'. ($c->{'color_hex'} || '000000'),
 					};
 				}
 				#$res->{'directory'} = \@cat;
