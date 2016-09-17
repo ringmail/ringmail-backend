@@ -153,8 +153,10 @@ sub check
 				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone', 'duplicate' => 'phone'}; # duplicate phone
 			}
 		}
-		if (sqltable('ring_hashtag')->count('hashtag' => $data->{'hashtag'}))
-		{
+		if (
+			length($data->{'hashtag'}) &&
+			sqltable('ring_hashtag')->count('hashtag' => $data->{'hashtag'})
+		) {
 			return {'ok' => 0, 'error_code' => 6, 'error' => 'Duplicate hashtag', 'duplicate' => 'hashtag'}; # duplicate hashtag
 		}
 		return {'ok' => 1};

@@ -157,16 +157,19 @@ sub create
 			#'verified' => 1, # For testing
 		});
 
-        my $category = 'Note::Row::find_insert'->( ring_category => { category => '(None)', }, );
-
-		Note::Row::insert('ring_hashtag' => {
-			'hashtag' => $param->{'hashtag'},
-			'user_id' => $urec->id(),
-			'active' => 1,
-			'paid' => 1,
-			'free' => 1,
-			'category_id' => $category->id(),
-		});
+		# create free hashtag
+		if (length($param->{'hashtag'}))
+		{
+			my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
+			Note::Row::insert('ring_hashtag' => {
+				'hashtag' => $param->{'hashtag'},
+				'user_id' => $urec->id(),
+				'active' => 1,
+				'paid' => 1,
+				'free' => 1,
+				'category_id' => $category->id(),
+			});
+		}
 	};
 	if ($@)
 	{

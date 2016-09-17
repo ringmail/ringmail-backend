@@ -41,7 +41,7 @@ sub load
 	if (
 		Email::Valid->address($form->{'email'}) &&
 		$form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/ &&
-		$ht =~ /^[a-z0-9_]{1,160}$/
+		$ht =~ /^[a-z0-9_]{0,160}$/
 	) {
 		my $ck = Ring::API->cmd(
 			'path' => ['user', 'check', 'user'],
