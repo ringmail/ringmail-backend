@@ -33,6 +33,7 @@ sub load
 	my $uuid = $form->{'conv'};
 	my $from = $form->{'from'};
 	$from =~ s/\%40/\@/;
+	my $replyto = $form->{'reply'};
 	my $user = new Note::Row(
 		'ring_user' => {
 			'login' => $from,
@@ -59,12 +60,49 @@ sub load
 			);
 			if (defined($target) && defined($target->id()))
 			{
-				$target->data('user_id', 'target_type', 'hashtag_id', 'domain_id');
-				$res = $rt->setup_conversation(
-					'from_user_id' => $uid,
-					'from_conversation_uuid' => $uuid,
-					'to_user_target' => $target,
-				);
+				my $replyok = 1;
+				if (defined($replyto) && length($replyto))
+				{
+					my $replytype = $rt->get_target_type(
+						'target' => $replyto,
+					);
+					my $replytarget = undef;
+					if ($replytype eq 'domain' || $replytype eq 'hashtag')
+					{
+						$replytarget = $rt->get_target(
+							'type' => $replytype,
+							$replytype => $replyto,
+						);
+					}
+					if (defined($replytarget) && defined($replytarget->id()))
+					{
+						unless ($replytarget->data('user_id') == $uid) # match reply-to to owner
+						{
+							$res = ['error', 'replyto'];
+							$replyok = 0;
+						}
+					}
+					else
+					{
+						$res = ['error', 'replyto'];
+						$replyok = 0;
+					}
+				}
+				else
+				{
+					$replyto = undef;
+				}
+				if ($replyok)
+				{
+					$target->data('user_id', 'target_type', 'hashtag_id', 'domain_id');
+					$res = $rt->setup_conversation(
+						'from_user_id' => $uid,
+						'from_conversation_uuid' => $uuid,
+						'to_user_target' => $target,
+						'to_original' => $dest,
+						'reply_to' => $replyto,
+					);
+				}
 			}
 			else
 			{

@@ -236,6 +236,8 @@ sub setup_conversation
 	my $target_type = $target->data('target_type');
 	my $to_user_id = $target->data('user_id');
 	my $to_item_id;
+	my $origto = $param->{'to_original'};
+	my $replyto = $param->{'reply_to'};
 	if ($target_type eq 'hashtag')
 	{
 		$to_item_id = $target->data('hashtag_id');
@@ -243,6 +245,10 @@ sub setup_conversation
 	elsif ($target_type eq 'domain')
 	{
 		$to_item_id = $target->data('domain_id');
+	}
+	else
+	{
+		$origto = '';
 	}
 	my $to_identity_id = $obj->get_identity(
 		'type' => ($target_type eq 'did' || $target_type eq 'email') ? 'user' : $target_type,
@@ -301,35 +307,39 @@ sub setup_conversation
 		);
 		if ($replyrc->id())
 		{
-			my $rt = $replyrc->row('to_user_target_id', 'ring_target');
-			my $replytype = $rt->data('target_type');
 			my $newfrom;
-			if ($replytype eq 'email')
+			if (defined $replyto)
 			{
-				$newfrom = $rt->row('email_id', 'ring_email')->data('email');
-				unless (defined($param->{'media'}) && $param->{'media'} eq 'call')
+				$newfrom = $replyto;
+			}
+			else
+			{
+				my $rt = $replyrc->row('to_user_target_id', 'ring_target');
+				my $replytype = $rt->data('target_type');
+				if ($replytype eq 'email')
 				{
-					$newfrom =~ s/\@/%40/;
+					$newfrom = $rt->row('email_id', 'ring_email')->data('email');
+				}
+				elsif ($replytype eq 'did')
+				{
+					my $drec = $rt->row('did_id', 'ring_did')->data('did_code', 'did_number');
+					$newfrom = '+'. $drec->{'did_code'}. $drec->{'did_number'};
+				}
+				elsif ($replytype eq 'domain')
+				{
+					$newfrom = $rt->row('domain_id', 'ring_domain')->data('domain');
+				}
+				elsif ($replytype eq 'hashtag')
+				{
+					$newfrom = '#'. $rt->row('hashtag_id', 'ring_hashtag')->data('hashtag');
 				}
 			}
-			elsif ($replytype eq 'did')
+			unless (defined($param->{'media'}) && $param->{'media'} eq 'call')
 			{
-				my $drec = $rt->row('did_id', 'ring_did')->data('did_code', 'did_number');
-				$newfrom = '+'. $drec->{'did_code'}. $drec->{'did_number'};
+				$newfrom =~ s/\@/%40/;
+				$newfrom =~ s/\#/%23/;
 			}
-			elsif ($replytype eq 'domain')
-			{
-				$newfrom = $rt->row('domain_id', 'ring_domain')->data('domain');
-			}
-			elsif ($replytype eq 'hashtag')
-			{
-				$newfrom = '#'. $rt->row('hashtag_id', 'ring_hashtag')->data('hashtag');
-				unless (defined($param->{'media'}) && $param->{'media'} eq 'call')
-				{
-					$newfrom =~ s/\#/%23/;
-				}
-			}
-			@result = ('ok', $dest, $newfrom, $replyrc->data('conversation_uuid'), $contact);
+			@result = ('ok', $dest, $newfrom, $replyrc->data('conversation_uuid'), $contact, $origto);
 		}
 	}
 	else
@@ -387,7 +397,11 @@ sub setup_conversation
 			'to_identity_id' => $from_identity_id,
 			'to_user_target_id' => $replytarget_id,
 		);
-		@result = ('ok', $dest, $replytarget, $reply->{'uuid'}, $contact);
+		if (defined $replyto)
+		{
+			$replytarget = $replyto;
+		}
+		@result = ('ok', $dest, $replytarget, $reply->{'uuid'}, $contact, $origto);
 	}
 	return \@result;
 }
