@@ -16,6 +16,7 @@ use MIME::Lite;
 #use Net::RabbitMQ;
 use JSON::XS 'encode_json';
 use Digest::MD5 'md5_base64';
+use Data::GUID;
 
 use Note::Param;
 use Note::Row;
