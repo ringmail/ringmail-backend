@@ -84,6 +84,7 @@
 								<tr>
 									<th>Hashtag</th>
 									<th>Category</th>
+									<th>RingPage</th>
 									<th>Requested</th>
 									<th>Approved</th>
 								</tr>
@@ -94,6 +95,27 @@
 							<tr>
 								<td>#[% hashtag.hashtag %]</td>
 								<td>[% hashtag.category %]</td>
+								<td>
+									[% IF hashtag.ringpage_id.defined %]
+									[% page.link(
+									text => hashtag.ringpage,
+									path => '/u/ringpage',
+									query => {
+									ringpage_id => hashtag.ringpage_id,
+									},
+									) %]
+									[% ELSE %]
+									[% IF hashtag.target_url.defined %]
+									[% IF hashtag.target_url.length > 35 %]
+									[% hashtag.target_url.substr( 0, 35 ) %]...
+									[% ELSE %]
+									[% hashtag.target_url %]
+									[% END %]
+									[% ELSE %]
+									&nbsp;
+									[% END %]
+									[% END %]
+								</td>
 								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
 								<td>
 									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
@@ -136,6 +158,9 @@
 									&nbsp;
 								</td>
 								<td>
+									&nbsp;
+								</td>
+								<td>
 									[% page.button(
 									command => 'approve',
 									text => 'Approve',
@@ -147,7 +172,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="4">
+								<td colspan="5">
 									<ul class="pager">
 										[% IF X.previous_page > 0 %]
 										<li class="previous">
