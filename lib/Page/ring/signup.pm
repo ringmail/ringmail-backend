@@ -172,6 +172,7 @@ sub register {
                 'password'  => $data->{'password'},
                 'password2' => $data->{'password'},
                 hashtag     => $data->{hashtag},
+                send_sms    => 1,
             },
         );
         if ( $mkuser->{'ok'} ) {
