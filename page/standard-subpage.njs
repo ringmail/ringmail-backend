@@ -1,3 +1,0 @@
-{
-   "template" : "standard-subpage.html"
-}

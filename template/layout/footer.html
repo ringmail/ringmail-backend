@@ -1,4 +1,4 @@
-[% IF page == "home" || page == "subpage-jumbo"  %]
+[% IF page == "home" || page == "subpage-jumbo" || page != "ringmail_2016_1"  %]
 <section class="footer-section">
     <footer class="footer-content">
 		
@@ -21,25 +21,42 @@
 		
     </footer>
 </section>
-[% ELSE  %]
+[% ELSIF  page == "ringmail_2016_1" %]
 <footer class="footer">
 	<div class="container">
 		<div class="col-md-6">
 			<ul class="footer-nav-left">
 				<li>
-					<a href="/" class="btn btn-black">FOR BRANDS</a>
+					<!--<a href="/" class="btn btn-black">FOR BRANDS</a>-->
 				</li>
 			</ul>
 		</div>
 		<div class="col-md-6">
 			<ul class="pull-right footer-nav-right">
 				<li>
-					<a href="/" class="btn">PRIVACY POLICY</a>
-					<a href="/" class="btn">TERMS OF USE</a>
+					<a href="/" class="btn"><!-- PRIVACY POLICY --></a>
+					<a href="/" class="btn"><!-- TERMS OF USE --></a>
 				</li>
 			</ul>
 		</div>
 	</div>
 </footer>
+
+	[%# Top banner with sign in buttons  %]
+	<div class="clearfix ringmail-navbar-banner ringmail-navbar-banner-footer">
+		<nav class="navbar" id="main-navbar-top-banner">
+			<div class="container">
+				<div class="navbar-collapse">
+					<div class="col-md-12">
+						<ul class="nav navbar-nav navbar-right">
+							<li class=""><a href="/signup">SIGNUP</a></li>
+							<li class=""><a href="/login">LOGIN</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+	[%# END: Top banner with sign in buttons  %]
 <script src="/js/wm/js/dist/wm.min.js"></script>
 [% END %]

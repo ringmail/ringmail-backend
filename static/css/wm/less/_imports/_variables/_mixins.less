@@ -144,3 +144,40 @@
   -ms-transform-origin:     @x @y;
   -o-transform-origin:      @x @y;
 }
+
+/**
+  RINGMAIL MXINS
+*/
+.hero-form()
+{
+  .form-group
+  {
+    input[type="text"].form-control
+    {
+      height: 54px;
+      font-size: 22.34px;
+      .helvetica-neue;
+      color: @red;
+      &.hash-tag-input
+      {
+
+      }
+    }
+  }
+  button[type="submit"]
+  {
+    padding: 12px 20px;
+    font-size: 20px;
+    .montserrat;
+    font-weight: bold;
+    border-color: @red;
+    background-color: @red;
+    color: @white;
+    text-shadow: none;
+    &:hover
+    {
+      background-color: darken(@red,10%);
+      border-color: darken(@red,10%);
+    }
+  }
+}

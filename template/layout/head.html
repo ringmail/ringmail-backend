@@ -25,7 +25,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="/js/website/wufoo.js"></script>
         <script src="/js/website/bootstrap.js"></script>
-	[% ELSIF page == "subpage-jumbo" %]
+	[% ELSIF page == "subpage-jumbo" || page != "ringmail_2016_1" %]
         <link href="/css/website/normalize.css" type="text/css" rel="stylesheet"> <!-- html5 boilerplate normalize -->
         <link href="/css/website/bootstrap.css" type="text/css" rel="stylesheet">
         <link href="/css/website/main.css" type="text/css" rel="stylesheet">
@@ -33,19 +33,15 @@
         <link href="/css/website/structure.css" rel="stylesheet">
 	    <link href="/css/website/jumbotron-narrow.css" rel="stylesheet">
         <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <!--<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">-->
+
+        <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="/js/website/wufoo.js"></script>
         <script src="/js/website/bootstrap.js"></script>
-    [% ELSE  %]
+    [% ELSIF page == "ringmail_2016_1" %]
         <link rel="shortcut icon" href="/img/website/favicon.ico" type="image/x-icon" />
 
-        <link href="/js/wm/bower_components/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-        <link href="/js/wm/bower_components/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet">
-        <link href="/js/wm/bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-        <link rel="stylesheet" href="/js/wm/bower_components/smartmenus/dist/css/sm-core-css.css" >
-        <link rel="stylesheet" href="/js/wm/bower_components/smartmenus/dist/addons/bootstrap/jquery.smartmenus.bootstrap.css">
-        <link rel="stylesheet" href="/js/wm/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css">
         <link rel="stylesheet" href="/css/wm/css/dist/style.css">
 
         <script src="/js/wm/bower_components/jquery/dist/jquery.min.js"></script>
