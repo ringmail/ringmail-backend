@@ -10786,7 +10786,11 @@ footer.footer .footer-nav-right li a:hover {
     font-size: 15px;
   }
 }
-/* line 76, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 72, static/css/wm/less/_imports/_pages/_explore.less */
+#hero .hero-cta-col .hero-button a.btn:hover {
+  background-color: #135e91;
+}
+/* line 81, static/css/wm/less/_imports/_pages/_explore.less */
 #hero .hero-cta-col .external-link a {
   color: #EE5349;
   font-size: 18px;
@@ -10794,19 +10798,19 @@ footer.footer .footer-nav-right li a:hover {
   font-family: 'Poppins', sans-serif;
   font-weight: normal;
 }
-/* line 86, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 91, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region {
   padding-top: 60px;
 }
-/* line 89, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 94, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col {
   margin-bottom: 35px;
 }
-/* line 92, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 97, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image {
   position: relative;
 }
-/* line 97, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 102, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image:hover .overlay {
   visibility: visible;
   filter: alpha(opacity=91);
@@ -10814,11 +10818,11 @@ footer.footer .footer-nav-right li a:hover {
   -moz-opacity: 0.91;
   opacity: 0.91;
 }
-/* line 103, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 108, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image img {
   width: 100%;
 }
-/* line 108, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 113, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image .overlay {
   top: 0;
   left: 0;
@@ -10834,7 +10838,7 @@ footer.footer .footer-nav-right li a:hover {
   transition: all 0.25s ease-in;
   text-decoration: none;
 }
-/* line 120, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 125, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image .overlay .thumbnail-title {
   font-size: 18px;
   font-family: 'Proxima Nova Bold', sans-serif;
@@ -10844,14 +10848,14 @@ footer.footer .footer-nav-right li a:hover {
   text-align: center;
   margin-bottom: 56px;
 }
-/* line 129, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 134, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image .overlay .thumbnail-icon {
   font-size: 60px;
   color: #FFFFFF;
   text-align: center;
   margin-bottom: 44px;
 }
-/* line 136, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 141, static/css/wm/less/_imports/_pages/_explore.less */
 #tile-region .ringpage-image-col .ringpage-image .overlay .thumbnail-statement {
   font-size: 18px;
   font-weight: bold;
@@ -10860,14 +10864,14 @@ footer.footer .footer-nav-right li a:hover {
   color: #FFFFFF;
   text-align: center;
 }
-/* line 151, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 156, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row {
   background-repeat: repeat;
   background-image: url('/img/pages/standard-subpage/backgrounds/small-crackle-bright.jpg');
   padding-top: 64px;
   padding-bottom: 64px;
 }
-/* line 158, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 163, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .headline h2 {
   font-family: 'Geometria', sans-serif;
   font-weight: lighter;
@@ -10875,12 +10879,12 @@ footer.footer .footer-nav-right li a:hover {
   text-align: center;
   margin-bottom: 24px;
 }
-/* line 167, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 172, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .subheadline {
   text-align: center;
   margin-bottom: 27px;
 }
-/* line 171, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 176, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .subheadline p {
   text-align: center;
   font-family: 'Proxima Nova Normal', sans-serif;
@@ -10889,27 +10893,31 @@ footer.footer .footer-nav-right li a:hover {
   font-size: 18px;
 }
 @media screen and (min-width: 992px) {
-  /* line 177, static/css/wm/less/_imports/_pages/_explore.less */
+  /* line 182, static/css/wm/less/_imports/_pages/_explore.less */
   #bottom-cta .bottom-cta-row .subheadline p {
     padding-left: 20%;
     padding-right: 20%;
   }
 }
-/* line 184, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 189, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .cat-btn {
   text-align: center;
   margin-bottom: 30px;
 }
-/* line 188, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 193, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .cat-btn .btn {
   padding: 10px 18px;
 }
-/* line 192, static/css/wm/less/_imports/_pages/_explore.less */
+/* line 197, static/css/wm/less/_imports/_pages/_explore.less */
 #bottom-cta .bottom-cta-row .cat-btn .btn-black {
   font-family: 'Montserrat', sans-serif;
   font-size: 20px;
   background-color: #333333;
   color: #FFFFFF;
+}
+/* line 203, static/css/wm/less/_imports/_pages/_explore.less */
+#bottom-cta .bottom-cta-row .cat-btn .btn-black:hover {
+  background-color: #1a1a1a;
 }
 /* line 6, static/css/wm/less/_imports/_pages/_index.less */
 #index-page .btn.lg-button {
@@ -11395,6 +11403,30 @@ footer.footer .footer-nav-right li a:hover {
   font-size: 24px;
   line-height: 1.4em;
 }
+/* line 86, static/css/wm/less/_imports/_pages/_for_brands.less */
+.claim-hashtag-form-section .cta-text-wrapper .hero-button {
+  margin-bottom: 35px;
+}
+/* line 89, static/css/wm/less/_imports/_pages/_for_brands.less */
+.claim-hashtag-form-section .cta-text-wrapper .hero-button a.btn {
+  background-color: #EE5349;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  padding: 16px 35px;
+}
+@media screen and (max-width: 768px) {
+  /* line 98, static/css/wm/less/_imports/_pages/_for_brands.less */
+  .claim-hashtag-form-section .cta-text-wrapper .hero-button a.btn {
+    font-size: 15px;
+  }
+}
+/* line 101, static/css/wm/less/_imports/_pages/_for_brands.less */
+.claim-hashtag-form-section .cta-text-wrapper .hero-button a.btn:hover {
+  background-color: #ea271a;
+}
 /* line 155, static/css/wm/less/_imports/_variables/_mixins.less */
 .claim-hashtag-form-section .hashtag-form form .form-group input[type="text"].form-control {
   height: 54px;
@@ -11428,31 +11460,31 @@ footer.footer .footer-nav-right li a:hover {
   be-cta-section
 ==========================================================================
   */
-/* line 110, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 133, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section {
   padding-top: 70px;
   padding-bottom: 28px;
 }
-/* line 116, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 139, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section .col-row .be-cta-section-col {
   padding-bottom: 45px;
 }
-/* line 119, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 142, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section .col-row .be-cta-section-col .img {
   margin-bottom: 30px;
 }
-/* line 122, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 145, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section .col-row .be-cta-section-col .img img {
   width: 117px;
   max-width: 100%;
 }
 @media screen and (min-width: 992px) {
-  /* line 130, static/css/wm/less/_imports/_pages/_for_brands.less */
+  /* line 153, static/css/wm/less/_imports/_pages/_for_brands.less */
   .be-cta-section .col-row .be-cta-section-col .text {
     padding-left: 5px;
   }
 }
-/* line 135, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 158, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section .col-row .be-cta-section-col .text .headline h2 {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
@@ -11461,7 +11493,7 @@ footer.footer .footer-nav-right li a:hover {
   text-transform: uppercase;
   margin-bottom: 15px;
 }
-/* line 148, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 171, static/css/wm/less/_imports/_pages/_for_brands.less */
 .be-cta-section .col-row .be-cta-section-col .subheadline h3 {
   margin: 0;
   font-size: 21.44px;
@@ -11479,13 +11511,13 @@ footer.footer .footer-nav-right li a:hover {
   how it works
 ==========================================================================
   */
-/* line 174, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 197, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section {
   border-top: solid #dbdbdb 1px;
   padding-top: 64px;
   padding-bottom: 24px;
 }
-/* line 179, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 202, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section h2.headline {
   margin: 0;
   font-family: 'Geometria', sans-serif;
@@ -11494,25 +11526,25 @@ footer.footer .footer-nav-right li a:hover {
   color: #197bbe;
   margin-bottom: 35px;
 }
-/* line 190, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 213, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col {
   margin-bottom: 50px;
 }
-/* line 193, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 216, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col .img {
   text-align: center;
   margin-bottom: 40px;
 }
-/* line 197, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 220, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col .img img {
   width: 260px;
   max-width: 100%;
 }
-/* line 203, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 226, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col .headline {
   text-align: center;
 }
-/* line 206, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 229, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col .headline h3 {
   margin: 0;
   font-size: 26px;
@@ -11521,7 +11553,7 @@ footer.footer .footer-nav-right li a:hover {
   color: #333333;
   font-family: 'Montserrat', sans-serif;
 }
-/* line 214, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 237, static/css/wm/less/_imports/_pages/_for_brands.less */
 .how-it-works-section .col-row .how-it-works-col .headline h3 .thin {
   font-family: 'Geometria', sans-serif;
   font-weight: lighter;
@@ -11536,14 +11568,14 @@ footer.footer .footer-nav-right li a:hover {
   bottom-form
 ==========================================================================
   */
-/* line 236, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 259, static/css/wm/less/_imports/_pages/_for_brands.less */
 .bottom-form {
   background-color: #666666;
   padding-top: 64px;
   padding-bottom: 104px;
   background-image: url('/img/pages/backgrounds/small-crackle-bright.jpg');
 }
-/* line 244, static/css/wm/less/_imports/_pages/_for_brands.less */
+/* line 267, static/css/wm/less/_imports/_pages/_for_brands.less */
 .bottom-form .headline h2 {
   font-family: 'Geometria', sans-serif;
   font-weight: lighter;
@@ -11551,6 +11583,26 @@ footer.footer .footer-nav-right li a:hover {
   color: #EE5349;
   line-height: 52.8pt;
   margin-bottom: 40px;
+}
+/* line 281, static/css/wm/less/_imports/_pages/_for_brands.less */
+.bottom-form .button a.btn {
+  background-color: #EE5349;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  padding: 16px 35px;
+}
+@media screen and (max-width: 768px) {
+  /* line 290, static/css/wm/less/_imports/_pages/_for_brands.less */
+  .bottom-form .button a.btn {
+    font-size: 15px;
+  }
+}
+/* line 293, static/css/wm/less/_imports/_pages/_for_brands.less */
+.bottom-form .button a.btn:hover {
+  background-color: #ea271a;
 }
 /* line 155, static/css/wm/less/_imports/_variables/_mixins.less */
 .bottom-form .hashtag-form form .form-group input[type="text"].form-control {

@@ -1,3 +1,3 @@
 {
-   "template" : "examples/for-brands.html"
+   "template" : "pages/for-brands.html"
 }

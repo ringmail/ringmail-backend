@@ -1,3 +1,3 @@
 {
-   "template" : "examples/explore.html"
+   "template" : "pages/explore.html"
 }

@@ -1,3 +1,3 @@
 {
-   "template" : "examples/index.html"
+   "template" : "pages/index.html"
 }
