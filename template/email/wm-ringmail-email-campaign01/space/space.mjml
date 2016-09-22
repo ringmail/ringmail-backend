@@ -23,7 +23,7 @@
             <mj-include path="./includes/learnmore.mjml" />
 
             <mj-include path="./includes/footer.mjml" />
-            
+
         </mj-container>
     </mj-body>
 </mjml>

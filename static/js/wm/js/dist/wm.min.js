@@ -2,6 +2,7 @@ function navScrollAnim()
 {
     var scroll = jQuery(window)
         .scrollTop();
+    // change navbar bg color on scroll
     if(scroll > 10)
     {
         if(jQuery('#main-navbar').hasClass('type-standard-subpage'))
@@ -13,7 +14,17 @@ function navScrollAnim()
             jQuery('#main-navbar')
                 .addClass('nav-loaded');
 
-        }else
+        }
+        else if(jQuery('#main-navbar').hasClass('transparent-menu'))
+        {
+            jQuery('#main-navbar')
+                .removeClass('trans-bg');
+            jQuery('#main-navbar')
+                .addClass('white-bg');
+            jQuery('#main-navbar')
+                .addClass('nav-loaded');
+        }
+        else
         {
             jQuery('#main-navbar')
                 .removeClass('grey-bg');
@@ -31,7 +42,15 @@ function navScrollAnim()
                 .removeClass('white-bg');
             jQuery('#main-navbar')
                 .addClass('trans-bg');
-        }else
+        }
+        else if(jQuery('#main-navbar').hasClass('transparent-menu'))
+        {
+            jQuery('#main-navbar')
+                .removeClass('white-bg');
+            jQuery('#main-navbar')
+                .addClass('trans-bg');
+        }
+        else
         {
             jQuery('#main-navbar')
                 .removeClass('white-bg');
@@ -43,6 +62,12 @@ function navScrollAnim()
 
 jQuery(document).ready(function( $ ) {
 
+    $('#tile-region .ringpage-image .tile-image-link')
+        .click(function(){
+            $('#tile-modal .modal-body img#modal-thumb')
+                .attr('src',$(this).data('lgimg'));
+        });
+
     $('.localscroll').localScroll({
         offset: {
             left: 0, top: -$('#main-navbar.navbar-fixed-top')
@@ -50,9 +75,15 @@ jQuery(document).ready(function( $ ) {
         }
     });
 
-    if(!jQuery('.navbar-wrapper').hasClass('type-standard-subpage'))
+    if(!jQuery('.navbar-wrapper').hasClass('type-standard-subpage') &&
+        !jQuery('.navbar-wrapper').hasClass('type-standard-homepage'))
         $('.navbar-wrapper')
             .css('min-height',jQuery('#main-navbar').innerHeight());
+
+    if(jQuery('.navbar-wrapper').hasClass('type-standard-homepage'))
+        $('.navbar-wrapper')
+            .css('min-height',jQuery('#main-navbar .navbar-top-banner').innerHeight());
+
     navScrollAnim();
     jQuery(window)
         .scroll(function(e){

@@ -1,10 +1,7 @@
-<mj-section vertical-align="center" padding="0px" padding-top="0" padding-bottom="25px" padding-left="30px" padding-right="30px" padding-bottom="25px" background-color="#99E5EC">
+<mj-section vertical-align="center" padding="0px" padding-top="0" padding-bottom="25px" padding-left="40px" padding-right="40px" padding-bottom="25px" background-color="#99E5EC">
     <mj-column vertical-align="middle" padding="0px" >
-        <mj-text align="center" font-size="55" line-height="66px" padding="0px" color="#ffffff" font-family="Helvetica Neue" font-weight="200">
-            <span style="font-weight: bold;color:#ED5349" >OWN </span><span style="color:#0077C2">A #HASHTAG</span>
-        </mj-text>
-        <mj-text align="center" font-size="55" line-height="66px" padding="0px" color="#ffffff" font-family="Helvetica Neue" font-weight="200">
-            <span style="font-weight: bold;color:#ED5349" >CALL </span><span style="color:#0077C2">ANY EMAIL</span>
-        </mj-text>
+
+        <mj-image padding="0px" align="center" src="/img/email/wm-ringmail-email-campaign01/parachute/text.png" alt="Ringmail"></mj-image>
+
     </mj-column>
 </mj-section>

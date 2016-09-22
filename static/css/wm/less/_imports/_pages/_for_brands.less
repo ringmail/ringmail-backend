@@ -1,0 +1,298 @@
+/**
+==========================================================================
+  claim-hashtag-form-section
+==========================================================================
+  */
+
+.claim-hashtag-form-section
+{
+  background-color: @gray-bg;
+  padding-bottom: 60px;
+  .cta-img
+  {
+    .cta-img-wrapper
+    {
+      padding-top: 50px;
+      @media screen and (min-width: @desktop-min)
+      {
+        padding-left: 90px;
+      }
+      @media screen and (max-width: @desktop-min)
+      {
+        text-align: center;
+      }
+      img
+      {
+        @media screen and (min-width: @desktop-min)
+        {
+          width: 100%;
+          height: auto;
+        }
+        @media screen and (max-width: @desktop-min)
+        {
+          text-align: center;
+          width: 200px;
+          height: auto;
+        }
+      }
+    }
+  }
+  .cta-text-wrapper
+  {
+    @media screen and (min-width: @desktop-min)
+    {
+      padding-top: 130px;
+    }
+    @media screen and (max-width: @desktop-min)
+    {
+      padding-top: 30px;
+    }
+    .headline
+    {
+      padding-bottom: 35px;
+      h1
+      {
+        margin: 0;
+        .geometria-lt;
+        font-weight: lighter;
+        color: @red;
+        @media screen and (min-width: @desktop-min)
+        {
+          font-size: 62px;
+          line-height: 1em;
+        }
+        @media screen and (max-width: @desktop-min)
+        {
+          font-size: 44px;
+          line-height: 1.2em;
+        }
+      }
+    }
+    .subheadline
+    {
+      padding-bottom: 40px;
+      h4
+      {
+        margin: 0;
+        color: @text;
+        font-weight: normal;
+        // .proxima-nova-bold;
+        .noto;
+        font-size: 24px;
+        line-height: 1.4em;
+      }
+    }
+  }
+
+
+  .hashtag-form
+  {
+    form
+    {
+      .hero-form();
+    }
+  }
+}
+
+/**
+==========================================================================
+  END: claim-hashtag-form-section
+==========================================================================
+  */
+
+
+/**
+==========================================================================
+  be-cta-section
+==========================================================================
+  */
+
+.be-cta-section
+{
+  padding-top: 70px;
+  padding-bottom: 28px;
+  .col-row
+  {
+    .be-cta-section-col
+    {
+      padding-bottom: 45px;
+      .img
+      {
+        margin-bottom: 30px;
+        img
+        {
+          width: 117px;
+          max-width: 100%;
+        }
+      }
+      .text
+      {
+        @media screen and (min-width: @desktop-min) {
+          padding-left: 5px;
+        }
+        .headline
+        {
+          h2
+          {
+            margin: 0;
+            .montserrat;
+            font-weight: bold;
+            font-size: 32.02px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+          }
+        }
+      }
+      .subheadline
+      {
+        h3
+        {
+          margin: 0;
+          font-size: 21.44px;
+          line-height: 1.4em;
+          .noto;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
+/**
+==========================================================================
+  END: be-cta-section
+==========================================================================
+  */
+
+
+/**
+==========================================================================
+  how it works
+==========================================================================
+  */
+
+.how-it-works-section
+{
+  border-top: solid @gray-2 1px;
+  padding-top:64px;
+  padding-bottom: 24px;
+  h2.headline
+  {
+    margin: 0;
+    .geometria-lt;
+    font-weight:lighter;
+    font-size: 44px;
+    color: @blue-2;
+    margin-bottom: 35px;
+  }
+  .col-row
+  {
+    .how-it-works-col
+    {
+      margin-bottom: 50px;
+      .img
+      {
+        text-align: center;
+        margin-bottom: 40px;
+        img
+        {
+          width: 260px;
+          max-width: 100%;
+        }
+      }
+      .headline
+      {
+        text-align: center;
+        h3
+        {
+          margin: 0;
+          font-size: 26px;
+          font-weight: bold;
+          line-height: 1.4em;
+          color: @black-2;
+          .montserrat;
+          .thin
+          {
+            .geometria-lt;
+            font-weight:lighter;
+          }
+        }
+      }
+    }
+  }
+}
+/**
+==========================================================================
+  END: how it works
+==========================================================================
+  */
+
+
+/**
+==========================================================================
+  bottom-form
+==========================================================================
+  */
+.bottom-form
+{
+  background-color: @gray;
+  padding-top: 64px;
+  padding-bottom: 104px;
+  background-image: url('/img/pages/backgrounds/small-crackle-bright.jpg');
+  .headline
+  {
+    h2
+    {
+      .geometria-lt;
+      font-weight: lighter;
+      font-size: 44px;
+      color:@red;
+      line-height: 52.8pt;
+      margin-bottom: 40px;
+    }
+  }
+  .hashtag-form
+  {
+    form
+    {
+      .hero-form();
+
+      .form-group
+      {
+        input[type="text"].form-control
+        {
+
+          //height: 54px;
+          //font-size: 22.34px;
+          //.helvetica-neue;
+          //color: @red;
+          &.hash-tag-input
+          {
+
+          }
+        }
+      }
+      button[type="submit"]
+      {
+        //padding: 12px 20px;
+        //font-size: 20px;
+        //.montserrat;
+        //font-weight: bold;
+        //border-color: @red;
+        //background-color: @red;
+        //color: @white;
+        //text-shadow: none;
+        &:hover
+        {
+          //background-color: darken(@red,10%);
+          //border-color: darken(@red,10%);
+        }
+      }
+    }
+  }
+}
+/**
+==========================================================================
+  END: bottom-form
+==========================================================================
+  */
