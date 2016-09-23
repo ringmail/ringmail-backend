@@ -1,326 +1,694 @@
-package Page::ring::setup::ringpage;
-
-use constant::boolean;
-use Email::Valid;
-use English '-no_match_vars';
-use HTML::Escape 'escape_html';
-use JSON::XS qw{ encode_json decode_json };
-use List::MoreUtils qw{ each_arrayref first_value };
-use Moose;
-use Note::Param;
-use Note::SQL::Table 'sqltable';
-use Regexp::Common 'URI';
-use Regexp::Common 'whitespace';
-use Ring::Model::RingPage;
-use Ring::Model::Template;
-
-extends 'Page::ring::user';
-
-sub load {
-    my ( @args, ) = @_;
-
-    my ( $self, $param, ) = get_param( @args, );
-
-    my $content     = $self->content();
-    my $form        = $self->form();
-    my $user        = $self->user();
-    my $user_id     = $user->id();
-    my $ringpage_id = $form->{ringpage_id};
-    if ( not $ringpage_id =~ m{ \A \d+ \z }xms ) {
-        return $self->redirect('/u/ringpages');
-    }
-    my $ringpage_row = Note::Row->new(
-        ring_page => {
-            id      => $ringpage_id,
-            user_id => $user_id,
-        },
-    );
-
-    if ( not $ringpage_row->id() ) {
-        return $self->redirect('/u/ringpages');
-    }
-
-    my $ringpage_row_data = $ringpage_row->data();
-    my $ringpage_fields   = decode_json $ringpage_row_data->{fields};
-
-    for my $field ( @{$ringpage_fields} ) {
-
-        my $name    = $field->{name};
-        my $value   = $field->{value};
-        my $default = $field->{default};
-
-        $ringpage_row_data->{$name} = $value // $default;
-    }
-
-    my $template_model    = Ring::Model::Template->new( caller => $self, );
-    my $templates         = $template_model->list();
-    my $template_name     = $ringpage_row_data->{template};
-    my $ringpage_template = $templates->{$template_name};
-
-    my $buttons = sqltable( 'ring_button', )->get(
-        select => [ qw{ id button uri position }, ],
-        where  => { ringpage_id => $ringpage_row->id(), },
-        order  => 'id',
-    );
-
-    for my $button ( @{$buttons} ) {
-
-        my ( $uri, $position, ) = ( $button->{uri}, $button->{position}, );
-
-        if ( $position > 1 ) {
-
-            my ( @uri, ) = split qr{/}xms, $uri;
-
-            $button->{value} = $uri[-1];
-
-        }
-        else {
-
-            $button->{value} = $uri;
-
-        }
-    }
-
-    $content->{ringpage_template} = $ringpage_template;
-    $content->{ringpage}          = $ringpage_row_data;
-    $content->{buttons}           = $buttons;
-    $content->{edit}              = $form->{edit} ? 1 : 0;
-
-    return $self->SUPER::load( $param, );
+[% menu_settings = 'ringpages' %]
+[% menu_subnav = 'ringpages' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>RingPage: [% ringpage.ringpage %]</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<form id="form" method="post" action="[% page.url( query => { ringpage_id => page.form.ringpage_id, }, ) %]" style="margin: 0px; padding: 0px;">
+		<fieldset>
+			<div class="container">
+				<div class="tabbable">
+					<div class="row">
+						<div class="main-wrapper">
+							<h2>[% page.button(
+								command => 'edit',
+								text => 'Update',
+								type => 'submit',
+								opts => {
+								class => 'btn btn-primary btn-hide',
+								id => 'do-1_1',
+								},
+								args => [ page.form.ringpage_id, ],
+								) %]</h2>
+							<div class="span6 pull-left">
+								<table class="table table-bordered logo">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Logo</label></td>
+										<td class="logo-inputs">
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'logo_style',
+												value => 'circle',
+												checked => ringpage.logo_style == 'circle' ? 1 : 0,
+												opts => {
+												class => 'logo-upload-input',
+												},
+												) %]
+												<img class="shape-ph-img" src="/img/round-ph.png" height="50px" width="50px" />
+												[% page.field(
+												command => 'edit',
+												type => 'radio',
+												name => 'logo_style',
+												value => 'square',
+												checked => ringpage.logo_style == 'square' ? 1 : 0,
+												opts => {
+												class => 'logo-upload-input',
+												},
+												) %]
+												<img class="shape-ph-img" src="/img/square-ph.png" height="50px" width="50px" />
+												[% page.field(
+												command => 'edit',
+												type => 'file',
+												name => 'logo',
+												opts => {
+												'data-url' => '/u/upload/logo',
+												id => 'f_d1-logo',
+												},
+												) %]
+												</li>
+											</ul>
+											<div id="progress_logo">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table table-bordered theme">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Theme</label></td>
+										<td>
+											<ul class="theme-ul">
+												[% FOREACH theme IN ringpage_template.structure.themes %]
+												<li>
+												<ul>
+													<li><span class="input-group-addon">
+														[% page.field(
+														command => 'edit',
+														type => 'radio',
+														name => 'theme_name',
+														value => theme.name,
+														checked => theme.name == ringpage.theme_name ? 1 : 0,
+														) %]
+													</span></li>
+													<li style="background-color:[% theme.color_1 %];"></li>
+													<li style="background-color:[% theme.color_2 %];"></li>
+												</ul>
+												</li>
+												[% END %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								[% IF ringpage.image.defined %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Main Image</label></td>
+										<td>
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'file',
+												name => 'image',
+												opts => {
+												'data-url' => '/u/upload/image',
+												id => 'f_d1-image',
+												},
+												) %]
+												</li>
+											</ul>
+											<div id="progress_image">
+												<div class="bar" style="width: 0%;"></div>
+											</div>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								[% END %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Title</label></td>
+										<td>
+											<ul>
+												<li>
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'title',
+												value => ringpage.title,
+												opts => {
+												placeholder => 'Title',
+												},
+												) %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								[% IF ringpage.video_url.defined %]
+								<table class="table table-bordered media">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Video</label></td>
+										<td>
+											<ul>
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'video_url',
+												value => ringpage.video_url,
+												opts => {
+												placeholder => 'Video Embed URL',
+												},
+												) %]
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								[% END %]
+								<table class="table table-bordered text-content">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Content</label></td>
+										<td class="td-inputs">
+											<ul class="inputs-ul">
+												<li>
+												<label>Headline</label>
+												<br />
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'headline',
+												value => ringpage.headline,
+												opts => {
+												placeholder => 'Headline',
+												},
+												) %]
+												</li>
+												<li>
+												<label>Subhead</label>
+												<br />
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'subhead',
+												value => ringpage.subhead,
+												opts => {
+												placeholder => 'Subhead',
+												},
+												) %]
+												</li>
+												<li>
+												<label>Body Headline</label>
+												<br />
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'body_headline',
+												value => ringpage.body_headline,
+												opts => {
+												placeholder => 'Body Headline',
+												},
+												) %]
+												</li>
+												<li>
+												<label>Body</label>
+												<br />
+												[% page.field(
+												command => 'edit',
+												type => 'textarea',
+												name => 'body',
+												value => ringpage.body,
+												opts => {
+												placeholder => 'Body',
+												},
+												) %]
+												</li>
+												<li>
+												<label>Footer</label>
+												<br />
+												[% page.field(
+												command => 'edit',
+												type => 'textarea',
+												name => 'footer',
+												value => ringpage.footer,
+												opts => {
+												placeholder => 'Footer',
+												},
+												) %]
+												</li>
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table table-bordered buttons">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Buttons</label></td>
+										<td class="td-inputs">
+											[% IF buttons.size < ringpage_template.buttons %]
+											<ul class="radio-wrapper">
+												<li>
+												[% IF ringpage.image_height > 0 and ( buttons.size + 1 ) * 90 + 40 > ringpage.image_height and ringpage.template == 'v2' %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												class=> 'btn btn-primary btn-lg',
+												onclick => "alert('Main image is too short to fit more buttons.'); return false;",
+												},	
+												) %]
+												[% ELSE %]
+												[% page.button(
+												command => 'add_button',
+												text => 'Add Button',
+												opts => {
+												'data-target' => '#editButtonsModal',
+												'data-toggle' => 'modal',
+												class=> 'btn btn-primary btn-lg',
+												},	
+												) %]
+												[% END %]
+												</li>
+											</ul>
+											[% ELSE %]
+											<ul class="radio-wrapper">
+												<li class="blank-li">&nbsp;</li>
+											</ul>
+											[% END %]
+											[% FOREACH button IN buttons %]
+											<ul class="button-data-ul">
+												<li>
+												[% button.button %]
+												</li>
+												<li>
+												[% button.uri %]
+												</li>
+												<li>
+												<a id="edit_buttons"
+													data-button_id="[% button.id %]"
+													data-button_link="[% button.value %]"
+													data-button_position="[% button.position %]"
+													data-button_text="[% button.button %]"
+													data-target="#editButtonsModal"
+													data-toggle="modal"
+													/>
+													Edit
+												</a>
+												</li>
+												<li>
+												[% page.link(
+												text => '<i class="fa fa-minus"></i>',
+												command => 'button_delete',
+												args => [ ringpage.id, button.id, ],
+												opts => {
+												onclick => "return confirm( 'Really Delete Button: $button.button?' );",
+												class=>'delbtn-a',
+												},
+												) %]
+												</li>
+											</ul>
+											[% END %]
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table table-bordered background">
+									<tbody>
+									<tr>
+										<td class="td-label"><label>Links</label></td>
+										<td class="td-options">
+											<ul class="radio-wrapper">
+												<li style="height:42px;">
+												<label class="" for="facebook">Homepage</label></li>
+												<li style="height:42px;">
+												<label class="" for="facebook">Facebook</label></li>
+												<li style="height:42px;">
+												<label class="" for="twitter">Twitter</label></li>
+												<li style="height:42px;">
+												<label class="" for="instagram">Instagram</label></li>
+												<li style="height:42px;">
+												<label class="" for="linkedin">LinkedIn</label></li>
+												<li style="height:42px;">
+												<label class="" for="googleplus">Google+</label></li>
+												<li style="height:42px;">
+												<label class="" for="pinterest">Pinterest</label></li>
+												<li style="height:42px;">
+												<label class="" for="youtube">YouTube</label></li>
+											</ul>
+										</td>
+										<td class="td-inputs">
+											<ul class="buttons-ul">
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'homepage_url',
+												value => ringpage.homepage_url,
+												opts => {
+												placeholder => 'Homepage URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'facebook_url',
+												value => ringpage.facebook_url,
+												opts => {
+												placeholder => 'Facebook URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'twitter_url',
+												value => ringpage.twitter_url,
+												opts => {
+												placeholder => 'Twitter URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'instagram_url',
+												value => ringpage.instagram_url,
+												opts => {
+												placeholder => 'Instagram URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'linkedin_url',
+												value => ringpage.linkedin_url,
+												opts => {
+												placeholder => 'LinkedIn URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'googleplus_url',
+												value => ringpage.googleplus_url,
+												opts => {
+												placeholder => 'Google+ URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'pinterest_url',
+												value => ringpage.pinterest_url,
+												opts => {
+												placeholder => 'Pinterest URL',
+												},
+												) %]
+												</li>
+												<li style="height:42px;">
+												[% page.field(
+												command => 'edit',
+												type => 'text',
+												name => 'youtube_url',
+												value => ringpage.youtube_url,
+												opts => {
+												placeholder => 'YouTube URL',
+												},
+												) %]
+												</li>
+											</ul>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+								<div>
+									<p style="text-align: right;">
+									[% page.button(
+									command => 'edit',
+									text => 'Update',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary',
+									id => 'do-1_1',
+									},
+									args => [ page.form.ringpage_id, ],
+									) %]
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="span6 pull-right">
+							<div id="preview"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="editButtonsModal" tabindex="-1" role="dialog" aria-labelledby="editButtonsModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header add-button">
+							[% page.button(
+							command => 'edit',
+							text => '<span aria-hidden="true">&times;</span>',
+							type => 'button',
+							opts => {
+							'aria-label' => 'Close',
+							class => 'close',
+							'data-dismiss' => 'modal',
+							id => 'edit_buttons_close',
+							},
+							) %]
+							<h4 class="modal-title">Add Button</h4>
+						</div>
+						<div class="modal-body">
+							[% page.field(
+							command => 'edit',
+							type => 'hidden',
+							name => 'button_id',
+							opts => {
+							id => 'button_id',
+							},
+							) %]
+							<ul class="modal-ul">
+								<li>
+								<span class="input-group-addon">
+									<label>Button Text</label>
+									[% page.field(
+									command => 'edit',
+									type => 'text',
+									name => 'button_text',
+									opts => {
+									id => 'button_text',
+									placeholder => 'Text',
+									},
+									) %]
+								</span></li>
+							</ul>
+							<hr>
+							<ul class="modal-options-ul">
+								<li><span class="input-group-addon">
+									<label>Link</label>
+									[% page.field(
+									command => 'edit',
+									type => 'text',
+									name => 'button_link',
+									opts => {
+									id => 'button_link_1',
+									placeholder => 'URL',
+									},
+									) %]
+									[% page.field(
+									command => 'edit',
+									type => 'hidden',
+									name => 'button_type',
+									value => 'link',
+									) %]
+								</span>
+								</li>
+								<li><span class="input-group-addon">
+									<label>Call</label>
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_2',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'call',
+										) %]
+									</div>
+								</span>
+								</li>
+								<li><span class="input-group-addon">
+									<label>Video</label>
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_3',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'video',
+										) %]
+									</div>
+								</span>
+								</li>
+								<li><span class="input-group-addon">
+									<label>Chat</label>
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_4',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'chat',
+										) %]
+									</div>
+								</span>
+								</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							[% page.button(
+							command => 'edit',
+							text => 'Close',
+							type => 'button',
+							opts => {
+							class => 'btn btn-default',
+							'data-dismiss' => 'modal',
+							id => 'edit_buttons_close',
+							},
+							) %]
+							[% page.button(
+							command => 'edit',
+							text => 'Save',
+							type => 'submit',
+							opts => {
+							class => 'btn btn-primary',
+							},
+							args => [ page.form.ringpage_id, ],
+							) %]
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+<script src="/js/jquery.fileupload.js"></script>
+<script>
+bioMp(document.getElementById('preview'), {
+url: '/ringpage?ringpage_id=[% page.form.ringpage_id %]',
+view: 'front',
+image: '/img/iphone6_front_white.png',
+scale: '.8'
+});
+$('#editButtonsModal').on('shown.bs.modal', function () {
+		$('#myInput').focus()
+		});
+$('#editButtonsModal').on('hidden.bs.modal', function () {
+		$('#button_id').val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$('#button_text').val(null);
+		});
+$( function () {
+		$( '#f_d1-logo' ).fileupload( {
+formData: { ringpage_id: '[% page.form.ringpage_id %]' },
+dataType: 'json',
+done: function ( e, data ) {
+$( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_logo .bar').css(
+	'width',
+	progress + '%'
+	);
 }
-
-sub edit {
-    my ( $self, $form_data, $args, ) = @_;
-
-    my ( $ringpage_id, ) = @{$args};
-    my $user             = $self->user();
-    my $user_id          = $user->id();
-
-    my $ringpage_row = Note::Row->new(
-        ring_page => {
-            id      => $ringpage_id,
-            user_id => $user_id,
-        },
-    );
-
-    my $ringpage_row_data  = $ringpage_row->data();
-    my $template_model     = Ring::Model::Template->new( caller => $self, );
-    my $templates          = $template_model->list();
-    my $template_name      = $ringpage_row_data->{template};
-    my $template_structure = $templates->{$template_name}->{structure};
-
-    my $theme_name = $form_data->{theme_name};
-
-    for my $theme ( @{ $template_structure->{themes} } ) {
-
-        if ( $theme->{name} eq $theme_name ) {
-
-            for my $name ( keys %{$theme} ) {
-
-                $form_data->{$name} = $theme->{$name};
-
-            }
-
-        }
-
-    }
-
-    my $ringpage_fields = decode_json $ringpage_row->data( 'fields', );
-    my %ringpage_fields = map { $ARG->{name} => $ARG->{value} } @{$ringpage_fields};
-
-    for my $field ( @{ $template_structure->{fields} } ) {
-
-        my $name       = $field->{name};
-        my $form_value = $form_data->{$name};
-
-        if ( defined $field->{internal} and $field->{internal} == TRUE ) {
-
-            $field->{value} = $ringpage_fields{$name};
-
-        }
-        elsif ( defined $form_value ) {
-
-            $form_value = escape_html( $RE{ws}{crop}->subs( $form_data->{$name} ) );
-
-            if ( defined $field->{text_type} and $field->{text_type} eq 'url' ) {
-
-                if ( not $form_value =~ m{ \A http(s)?:// }xmsi and length $form_value > 0 ) {
-
-                    $form_value = "http://$form_value";
-
-                    ( $form_value, ) = ( $form_value =~ m{ ( $RE{URI} ) }xms, );
-
-                }
-
-            }
-
-            $field->{value} = $form_value;
-
-        }
-        else {
-
-            $field->{value} = $ringpage_fields{$name};
-
-        }
-
-    }
-
-    my $ringpage_model = Ring::Model::RingPage->new();
-
-    if ($ringpage_model->update(
-            fields  => encode_json $template_structure->{fields},
-            id      => $ringpage_id,
-            user_id => $user_id,
-        )
-        )
-    {
-        # display confirmation
-
-        my ( @button_links, );
-
-        my $button_links_iterator = each_arrayref [ $self->request()->parameters()->get_all( 'd2-button_link', ), ], [ $self->request()->parameters()->get_all( 'd2-button_type', ), ], [ 1 .. @{ [ $self->request()->parameters()->get_all( 'd2-button_link', ) ] }, ];
-        while ( my ( $button_link, $button_type, $button_position, ) = $button_links_iterator->() ) {
-
-            next if not defined $button_link;
-            next if not defined $button_type;
-
-            next if not defined $button_position;
-
-            next if not length $button_link > 0;
-            next if not length $button_type > 0;
-
-            next if not( $button_position > 0 );
-
-            push @button_links,
-                {
-                button_link     => $button_link,
-                button_type     => $button_type,
-                button_position => $button_position,
-                };
-
-        }
-
-        for my $button_link (@button_links) {
-
-            my ( $button_position, $value, $button_type, ) = ( $button_link->{button_position}, $button_link->{button_link}, $button_link->{button_type}, );
-
-            if ( $button_position > 1 ) {
-
-                my $email = 'Email::Valid'->address(
-                    -address  => $value,
-                    -mxcheck  => TRUE,
-                    -tldcheck => TRUE,
-                );
-
-                if ( defined $email ) {
-
-                    $button_link->{button_link} = "ring://$button_type/$email";
-
-                    ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP}{-scheme => 'ring'} ) }xms, );
-
-                }
-                else {
-
-                    undef $button_link->{button_link};
-
-                }
-
-            }
-            else {
-
-                if ( not $button_link->{button_link} =~ m{ \A http(s)?:// }xmsi and length $button_link->{button_link} > 0 ) {
-
-                    $button_link->{button_link} = "http://$button_link->{button_link}";
-
-                }
-
-                ( $button_link->{button_link}, ) = ( $button_link->{button_link} =~ m{ ( $RE{URI}{HTTP} (?:\#\w+)? ) }xms, );
-
-            }
-
-            if ( not defined $button_link->{button_link} ) {
-
-                $button_link = ();
-
-            }
-
-        }
-
-        my ( $button_link, ) = ( @button_links, );
-
-        my $buttons_iterator = each_arrayref [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_id', ), ], [ escape_html first_value { length > 0; } $self->request()->parameters()->get_all( 'd2-button_text', ), ];
-        while ( my ( $button_id, $button_text, ) = $buttons_iterator->() ) {
-
-            if ( not defined $button_id or $button_id eq q{} ) {
-
-                next if not defined $button_text or $button_text eq q{} or not defined $button_link;
-
-                my $button_row = Note::Row::create(
-                    ring_button => {
-                        button      => $button_text,
-                        position    => $button_link->{button_position},
-                        ringpage_id => $ringpage_id,
-                        uri         => $button_link->{button_link},
-                        user_id     => $user->id(),
-                    },
-                );
-
-            }
-
-            else {
-
-                my $button_row = Note::Row->new( ring_button => $button_id, );
-
-                if ( $button_text eq q{} or not defined $button_link ) {
-
-                    $button_row->delete();
-
-                }
-
-                else {
-
-                    $button_row->update(
-                        {   button   => $button_text,
-                            position => $button_link->{button_position},
-                            uri      => $button_link->{button_link},
-                        },
-                    );
-
-                }
-
-            }
-
-        }
-
-    }
-    else {
-        # failed
-    }
-
-    return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => { ringpage_id => $ringpage_id, }, ), );
+} );
+		$( '#f_d1-image' ).fileupload( {
+formData: {
+ringpage_id: '[% page.form.ringpage_id %]',
+buttons: '[% buttons.size %]'
+},
+dataType: 'json',
+done: function ( e, data ) {
+if ( data.result.error == 'size' ) {
+alert('Main image is too short to fit all the buttons.');
+return false;
 }
-
-sub button_delete {
-    my ( $self, $form_data, $args, ) = @_;
-
-    my $user    = $self->user();
-    my $user_id = $user->id();
-
-    my ( $ringpage_id, $button_id, ) = @{$args};
-
-    my $button_row = Note::Row->new( ring_button => { id => $button_id, user_id => $user_id, }, );
-
-    if ( $button_row->delete() ) {
-
-        # display confirmation
-    }
-    else {
-        # failed
-    }
-
-    $self->form()->{ringpage_id} = $ringpage_id;
-
-    return;
+$( '#do-1_1' ).click();
+},
+progressall: function ( e, data ) {
+var progress = parseInt( data.loaded / data.total * 100, 10 );
+$('#progress_image .bar').css(
+	'width',
+	progress + '%'
+	);
 }
-
-1;
+} );
+});
+$(document).on( 'click', '#edit_buttons',function(e) {
+		$('#button_id').val($(this).data('button_id'));
+		$('#button_link_' + $(this).data('button_position')).val($(this).data('button_link'));
+		$('#button_text').val($(this).data('button_text'));
+		});
+$(document).on( 'click', '#edit_buttons_close',function(e) {
+		$('#button_id').val(null);
+		$('#button_link_1').val(null);
+		$('#button_link_2').val(null);
+		$('#button_link_3').val(null);
+		$('#button_link_4').val(null);
+		$('#button_text').val(null);
+		});
+</script>
+[% END %]
+[% INCLUDE layout/internal.html %]
