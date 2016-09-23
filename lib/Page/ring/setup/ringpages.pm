@@ -11,6 +11,8 @@ use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::Model::Template;
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
 
 sub load {
@@ -85,6 +87,7 @@ sub add {
                 my $row = 'Note::Row::insert'->(
                     ring_button => {
                         button      => $button_text,
+                        position    => 2,
                         ringpage_id => $ringpage->id(),
                         uri         => $button_link,
                         user_id     => $user->id(),
