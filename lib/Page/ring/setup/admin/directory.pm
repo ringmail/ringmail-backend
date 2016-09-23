@@ -8,6 +8,8 @@ use Readonly;
 use Regexp::Common 'whitespace';
 use Ring::Model::Category;
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
 
 Readonly my $PAGE_SIZE => 10;
@@ -47,12 +49,13 @@ sub load {
                 ring_hashtag.target_url
                 ring_hashtag_directory.ts_directory
                 ring_page.ringpage
+                ring_user.login
 
                 },
             'ring_hashtag_directory.id AS directory_id',
         ],
-        table     => [ qw{ ring_hashtag ring_category }, ],
-        join      => [ 'ring_category.id = ring_hashtag.category_id', ],
+        table     => [ qw{ ring_hashtag ring_category ring_user }, ],
+        join      => [ 'ring_category.id = ring_hashtag.category_id', 'ring_user.id = ring_hashtag.user_id', ],
         join_left => [
 
             [ ring_cart              => 'ring_cart.hashtag_id = ring_hashtag.id', ],
