@@ -11,6 +11,7 @@ use Ring::Model::Category;
 our $VERSION = 1;
 
 extends 'Page::ring::user';
+extends 'Page::ring::setup::admin::user_list';
 
 Readonly my $PAGE_SIZE => 10;
 
@@ -47,6 +48,7 @@ sub load {
                 ring_hashtag.id
                 ring_hashtag.ringpage_id
                 ring_hashtag.target_url
+                ring_hashtag.user_id
                 ring_hashtag_directory.ts_directory
                 ring_page.ringpage
                 ring_user.login

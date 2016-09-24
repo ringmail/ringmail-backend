@@ -3,6 +3,7 @@
    "command" : {
       "approve" : "approve",
       "filter" : "filter",
+      "login" : "login",
       "search" : "search"
    },
    "init" : [

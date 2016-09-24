@@ -96,7 +96,18 @@
 							<tr>
 								<td>#[% hashtag.hashtag %]</td>
 								<td>[% hashtag.category %]</td>
-								<td>[% hashtag.login %]</td>
+								<td>
+									[% page.link(
+									command => 'login',
+									text => hashtag.login
+									args => [
+									hashtag.user_id,
+									],
+									opts => {
+									onclick => "return confirm( 'Really login as $hashtag.login?' );",
+									},
+									) %]
+								</td>
 								<td>
 									[% IF hashtag.ringpage_id.defined %]
 									[% page.link(
