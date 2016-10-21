@@ -84,8 +84,8 @@ sub load {
         }
 
         my $s3 = 'Note::AWS::S3'->new(
-            access_key => $::app_config->{s3_access_key},
-            secret_key => $::app_config->{s3_secret_key},
+            access_key => $self->app()->config()->{s3_access_key},
+            secret_key => $self->app()->config()->{s3_secret_key},
         );
         my $key = join q{/}, ( $hostname =~ m{ ( [\w-]+ ) }xms, ), $user->aws_user_id(), 'ringpage', $ringpage_id, join q{.}, $upload_type, 'jpg';
         $s3->upload(

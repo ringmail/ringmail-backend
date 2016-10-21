@@ -1,0 +1,3 @@
+{
+   "template" : "pages/explore.html"
+}

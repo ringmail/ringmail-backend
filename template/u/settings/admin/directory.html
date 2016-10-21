@@ -1,0 +1,216 @@
+[% menu_settings = 'admin/directory' %]
+[% content = BLOCK %]
+[% INCLUDE u/settings/menu.html %]
+<div id="masthead">
+	<div class="container">
+		<div class="masthead-pad">
+			<div class="masthead-text">
+				<h2>Hashtag Directory</h2>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">		
+		<div class="row">
+			<div class="tabbable">
+				<div class="span12">
+					<h2>Search Hashtags</h2>
+					[% query = {} %]
+					<form method="post" action="[% page.url( query => query ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group[% IF page.value.error %] error[% END %]">
+								<div class="input-prepend">
+									<span class="add-on">#</span>
+									[% page.field(
+									command => 'search',
+									type => 'text',
+									name => 'search',
+									value => page.session.search,
+									) %]
+									[% page.button(
+									command => 'search',
+									contents => 'Search',
+									opts => {
+									class => 'btn btn-primary btn-medium',
+									},
+									) %]
+									[% IF page.value.error %]
+									<div>
+										<span class="error" for="email" style="display: inline;">[% page.value.error %]</span>
+									</div>
+									[% END %]
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<div class="span12">
+					</div>
+					<h2>Filter Hashtags</h2>
+					<form method="post" action="[% page.url( query => query ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="category_id">Category:</label>
+								<div class="controls">
+									[% category_list.unshift( [ '(Show All)', undef, ], ) %]
+									[% page.field(
+									command => 'filter',
+									type => 'select',
+									name => 'category_id',
+									select => category_list,
+									selected => page.session.category_id,
+									) %]
+								</div>
+								[% page.button(
+								command => 'filter',
+								contents => 'Filter',
+								opts => {
+								class => 'btn btn-primary btn-medium',
+								},
+								) %]
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span12">
+					<h2>Hashtags</h2>
+					[% IF page.form.page > 1 %]
+					[% query_page = { page => page.form.page, } %]
+					[% query.import( query_page ) %]
+					[% END %]
+					<form method="post" action="[% page.url( query => query, ) %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+						<table class="table table-bordered table-highlight">
+							<thead>
+								<tr>
+									<th>Hashtag</th>
+									<th>Category</th>
+									<th>RingPage</th>
+									<th>Requested</th>
+									<th>Approved</th>
+								</tr>
+							</thead>
+							<tbody>
+							[% USE X = Page( count, page.app.config.page_size.defined ? page.app.config.page_size : 10, page.form.page, ) %]
+							[% FOREACH hashtag IN hashtags %]
+							<tr>
+								<td>#[% hashtag.hashtag %]</td>
+								<td>[% hashtag.category %]</td>
+								<td>
+									[% IF hashtag.ringpage_id.defined %]
+									[% page.link(
+									text => hashtag.ringpage,
+									path => '/u/ringpage',
+									query => {
+									ringpage_id => hashtag.ringpage_id,
+									},
+									) %]
+									[% ELSE %]
+									[% IF hashtag.target_url.defined %]
+									[% IF hashtag.target_url.length > 35 %]
+									[% hashtag.target_url.substr( 0, 35 ) %]...
+									[% ELSE %]
+									[% hashtag.target_url %]
+									[% END %]
+									[% ELSE %]
+									&nbsp;
+									[% END %]
+									[% END %]
+								</td>
+								<td>[% IF hashtag.directory_id.defined %]Yes[% ELSE %]No[% END %]</td>
+								<td>
+									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
+									[% page.field(
+									command => 'approve',
+									type => 'checkbox',
+									name => 'hashtag_id',
+									opts => {
+									checked => undef,
+									value => hashtag.id,
+									},
+									) %]
+									[% page.field(
+									command => 'approve',
+									type => 'hidden',
+									name => 'hashtag_id-approved',
+									value => hashtag.id,
+									) %]
+									[% ELSE %]
+									[% page.field(
+									command => 'approve',
+									type => 'checkbox',
+									name => 'hashtag_id',
+									opts => {
+									value => hashtag.id,
+									},
+									) %]
+									[% END %]
+								</td>
+							</tr>
+							[% END %]
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									[% page.button(
+									command => 'approve',
+									text => 'Approve',
+									type => 'submit',
+									opts => {
+									class => 'btn btn-primary',
+									},
+									) %]
+								</td>
+							</tr>
+							<tr>
+								<td colspan="5">
+									<ul class="pager">
+										[% IF X.previous_page > 0 %]
+										<li class="previous">
+										[% query_page = { page => X.previous_page, } %]
+										[% query.import( query_page ) %]
+										[% page.link(
+										text => '&larr; Previous',
+										query => query,
+										) %]
+										</li>
+										[% ELSE %]
+										<li class="previous disabled">
+										<span>&larr; Previous</span>
+										</li>
+										[% END %]
+										[% IF X.next_page > 0 %]
+										<li class="next">
+										[% query_page = { page => X.next_page, } %]
+										[% query.import( query_page ) %]
+										[% page.link(
+										text => 'Next &rarr;',
+										query => query,
+										) %]
+										[% ELSE %]
+										<li class="next disabled">
+										<span>Next &rarr;</span>
+										</li>
+										[% END %]
+									</ul>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+[% END %]
+[% INCLUDE layout/internal.html %]

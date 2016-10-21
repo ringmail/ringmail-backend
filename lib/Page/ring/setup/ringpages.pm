@@ -11,6 +11,8 @@ use Ring::Model::Hashtag;
 use Ring::Model::RingPage;
 use Ring::Model::Template;
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
 
 sub load {
@@ -42,6 +44,8 @@ sub load {
 
 sub add {
     my ( $self, $form_data, $args, ) = @_;
+
+    my $scheme = $self->app()->config()->{scheme} // 'ring';
 
     my ( $ringpage_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{ringpage_name} ) ) =~ m{ \A ( [[:alpha:][:digit:][:punct:][:space:]]+ ) \z }xms, );
     my ( $template_name, ) = ( escape_html( $RE{ws}{crop}->subs( $form_data->{template_name} ) ) =~ m{ \A ( \w+ ) \z }xms, );
@@ -75,14 +79,15 @@ sub add {
         );
         if ( defined $ringpage ) {
 
-            my $each_array = each_arrayref [ 'Call', ], [ 'ring://' . $user->row()->data( 'login', ), ];
+            my $each_array = each_arrayref [ 'Call', ], [ "$scheme://call/" . $user->row()->data( 'login', ), ];
             while ( my ( $button_text, $button_link, ) = $each_array->() ) {
 
                 next if $button_text eq q{} or $button_link eq q{};
 
-                my $row = Note::Row::create(
+                my $row = 'Note::Row::insert'->(
                     ring_button => {
                         button      => $button_text,
+                        position    => 2,
                         ringpage_id => $ringpage->id(),
                         uri         => $button_link,
                         user_id     => $user->id(),

@@ -1,4 +1,5 @@
-[% IF page == "home" || page == "subpage-jumbo"  %]
+[% IF page == "home" || page == "subpage-jumbo" || page != "ringmail_2016_1"  %]
+
 <section class="header-section navbar navbar-default">
     <!-- Brand and toggle get grouped for better mobile display -->
     <header class="header-wrapper">
@@ -42,9 +43,28 @@
             </div--><!-- /.navbar-collapse -->
     </header>
 </section>
-[% ELSE  %]
+[% ELSIF  page == "ringmail_2016_1" %]
+
 <div class="clearfix navbar-wrapper [% page_template_class %]">
-    <nav class="navbar navbar-default navbar-fixed-top [% page_template_class %]" id="main-navbar">
+    <nav class="navbar navbar-default navbar-default-change-bg navbar-fixed-top [% page_template_class %]" id="main-navbar">
+
+        [%# Top banner with sign in buttons
+        <div class="clearfix navbar-top-banner">
+            <nav class="navbar" id="main-navbar-top-banner">
+                <div class="container">
+                    <div class="navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class=""><a href="/signup">SIGNUP</a></li>
+                            <li class=""><a href="/login">LOGIN</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        END: Top banner with sign in buttons  %]
+
+
+        [%# Main Desktop Nav Bar  %]
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#myNavmenu" data-canvas="body" aria-expanded="false" aria-controls="navbar">
@@ -52,29 +72,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a href="https://itunes.apple.com/us/app/ringmail/id653397088?mt=8" class="btn btn-default pull-right download-btn"><i class="fa fa-cloud-download" aria-hidden="true"></i></a>
                 <a class="navbar-brand" href="/"><img src="/img/website/ringmail-logo.png"></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class=""><a href="/">EXPLORE</a></li>
-                    <li class=""><a href="/">HOW IT WORKS</a></li>
-                    <li class=""><a href="/">SECURITY</a></li>
-                    <li class=""><a href="/">INVITE YOUR FRIENDS</a></li>
-                    <li class=""><a href="/">DOWNLOAD</a></li>
+                    <li class=""><a href="/brands">FOR BRANDS</a></li>
+                    <li class=""><a href="/explore">EXPLORE</a></li>
+                    <li class=""><a href="https://itunes.apple.com/us/app/ringmail/id653397088?mt=8" class="btn btn-default"><i class="fa fa-cloud-download" aria-hidden="true"></i> GET THE APP</a></li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
+            [%# END: Main Desktop Nav Bar  %]
+
         </div>
     </nav>
 </div>
 
+[%# Offcanvas menu for more info see:
+    see: https://github.com/jasny/bootstrap
+    see: https://github.com/vadikom/smartmenus
+%]
 <nav id="myNavmenu" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
     <ul class="nav navmenu-nav">
-        <li class=""><a href="/">EXPLORE</a></li>
-        <li class=""><a href="/">HOW IT WORKS</a></li>
-        <li class=""><a href="/">SECURITY</a></li>
-        <li class=""><a href="/">INVITE YOUR FRIENDS</a></li>
-        <li class=""><a href="/">DOWNLOAD</a></li>
+        <li class=""><a href="/brands">FOR BRANDS</a></li>
+        <li class=""><a href="/explore">EXPLORE</a></li>
+        <li class=""><a href="https://itunes.apple.com/us/app/ringmail/id653397088?mt=8"><i class="fa fa-cloud-download" aria-hidden="true"></i> GET THE APP</a></li>
     </ul>
 </nav>
+[%# END: Offcanvas menu %]
 
 [% END %]

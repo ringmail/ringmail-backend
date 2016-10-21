@@ -1,6 +1,3 @@
 {
-   "command" : {
-      "webgw" : "cmd_webgw"
-   },
-   "template" : "_index.html"
+   "template" : "pages/index.html"
 }

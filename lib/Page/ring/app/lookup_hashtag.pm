@@ -64,7 +64,8 @@ sub load
 			else
 			{
 				# default
-				$url = 'http://'. $::app_config->{'www_domain'}. '/hashtag_available';
+				#$url = 'http://'. $::app_config->{'www_domain'}. '/hashtag_available';
+				$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
 			}
 			$res = {
 				'result' => 'ok',

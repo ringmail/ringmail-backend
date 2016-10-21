@@ -1,0 +1,8 @@
+<!-- Banner -->
+<mj-section padding="0px" padding-top="25px" padding-bottom="20px" background-color="#191919">
+    <mj-column width="100%" padding="0px">
+        <mj-text align="center" padding="0px" font-size="22" color="#ffffff" font-family="Helvetica Neue" font-weight="bold">
+            A TOTALLY NEW WAY TO COMMUNICATE
+        </mj-text>
+    </mj-column>
+</mj-section>

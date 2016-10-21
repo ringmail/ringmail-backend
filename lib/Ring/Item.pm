@@ -81,12 +81,22 @@ sub item
 	elsif ($type eq 'domain')
 	{
 		my $dom = lc($param->{'domain'});
+		if ($param->{'no_create'})
+		{
+			my $res = new Note::Row(
+				'ring_domain' => {
+					'domain' => $dom,
+				},
+			);
+			return undef unless ($res->id());
+			return $res;
+		}
 		return Note::Row::find_create(
 			'ring_domain' => {
 				'domain' => $dom,
 			},
 			{
-				'domain_reverse' => scalar reverse($dom),
+				'domain_reverse' => scalar(reverse($dom)),
 			}
 		);
 	}

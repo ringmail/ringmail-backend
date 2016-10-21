@@ -76,6 +76,14 @@ sub load
 				'contacts' => 0,
 				'rg_contacts' => [],
 				'ts_latest' => '',
+				'default_hashtags' => [
+					'#Business',
+					'#RingMail',
+					'#RingPage',
+					'#Coffee',
+					'#LAFoodies',
+					'#RagingMammoth',
+				],
 			};
 			my $cobj = new Ring::User::Contacts(
 				'user_id' => $user->id(),

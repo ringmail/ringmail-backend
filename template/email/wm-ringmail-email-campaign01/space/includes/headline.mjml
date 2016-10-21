@@ -1,0 +1,7 @@
+<mj-section vertical-align="center" padding="0px" padding-top="25px" padding-bottom="25px" padding-left="40px" padding-right="40px" padding-bottom="25px" background-color="#191919">
+    <mj-column vertical-align="middle" padding="0px" >
+
+        <mj-image padding="0px" align="center" src="/img/email/wm-ringmail-email-campaign01/space/text.png" alt="Ringmail"></mj-image>
+
+    </mj-column>
+</mj-section>

@@ -1,0 +1,8 @@
+<!-- Banner -->
+<mj-section padding="0px" padding-top="25px" padding-bottom="0" background-color="#99E5EC">
+    <mj-column width="100%" padding="0px">
+        <mj-text align="center" padding="0px" font-size="22" color="#0077C2" font-family="Helvetica Neue" font-weight="bold">
+            TAKE THE LEAP WITH THE RINGMAIL APP!
+        </mj-text>
+    </mj-column>
+</mj-section>

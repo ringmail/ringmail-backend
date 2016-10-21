@@ -92,7 +92,7 @@ sub create
 				'data' => {
 					'user_id' => $uid,
 					'phone' => $phone,
-					#'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
+					'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
 				},
 			);
 			unless ($out->{'ok'})
@@ -152,6 +152,12 @@ sub check
 			{
 				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone', 'duplicate' => 'phone'}; # duplicate phone
 			}
+		}
+		if (
+			length($data->{'hashtag'}) &&
+			sqltable('ring_hashtag')->count('hashtag' => $data->{'hashtag'})
+		) {
+			return {'ok' => 0, 'error_code' => 6, 'error' => 'Duplicate hashtag', 'duplicate' => 'hashtag'}; # duplicate hashtag
 		}
 		return {'ok' => 1};
 	}

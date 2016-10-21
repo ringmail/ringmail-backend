@@ -296,7 +296,7 @@
 												<li>
 												<a id="edit_buttons"
 													data-button_id="[% button.id %]"
-													data-button_link="[% button.uri %]"
+													data-button_link="[% button.value %]"
 													data-button_position="[% button.position %]"
 													data-button_text="[% button.button %]"
 													data-target="#editButtonsModal"
@@ -517,45 +517,78 @@
 									placeholder => 'URL',
 									},
 									) %]
+									[% page.field(
+									command => 'edit',
+									type => 'hidden',
+									name => 'button_type',
+									value => 'link',
+									) %]
 								</span>
 								</li>
 								<li><span class="input-group-addon">
 									<label>Call</label>
-									[% page.field(
-									command => 'edit',
-									type => 'text',
-									name => 'button_link',
-									opts => {
-									id => 'button_link_2',
-									placeholder => 'RingMail Address',
-									},
-									) %]
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_2',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'call',
+										) %]
+									</div>
 								</span>
 								</li>
 								<li><span class="input-group-addon">
 									<label>Video</label>
-									[% page.field(
-									command => 'edit',
-									type => 'text',
-									name => 'button_link',
-									opts => {
-									id => 'button_link_3',
-									placeholder => 'RingMail Address',
-									},
-									) %]
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_3',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'video',
+										) %]
+									</div>
 								</span>
 								</li>
 								<li><span class="input-group-addon">
 									<label>Chat</label>
-									[% page.field(
-									command => 'edit',
-									type => 'text',
-									name => 'button_link',
-									opts => {
-									id => 'button_link_4',
-									placeholder => 'RingMail Address',
-									},
-									) %]
+									<div class="input-prepend">
+										<span class="add-on">ring://</span>
+										[% page.field(
+										command => 'edit',
+										type => 'text',
+										name => 'button_link',
+										opts => {
+										id => 'button_link_4',
+										placeholder => 'RingMail Address',
+										},
+										) %]
+										[% page.field(
+										command => 'edit',
+										type => 'hidden',
+										name => 'button_type',
+										value => 'chat',
+										) %]
+									</div>
 								</span>
 								</li>
 							</ul>

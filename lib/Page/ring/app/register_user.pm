@@ -30,16 +30,25 @@ sub load
 	::log("Create User", {%$form, 'password' => ''});
 	$form->{'email'} =~ s/^\s+//g;
 	$form->{'email'} =~ s/\s+$//g;
+	my $ht = $form->{'hashtag'};
+	$ht =~ s/^\s+//g;
+	$ht =~ s/^\#//;
+	$ht =~ s/\s+$//g;
+	$ht = lc($ht);
 	my $res;
 	my $err = '';
 	my %error_detail = ();
-	if (Email::Valid->address($form->{'email'}) && $form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/)
-	{
+	if (
+		Email::Valid->address($form->{'email'}) &&
+		$form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/ &&
+		$ht =~ /^[a-z0-9_]{0,160}$/
+	) {
 		my $ck = Ring::API->cmd(
 			'path' => ['user', 'check', 'user'],
 			'data' => {
 				'email' => $form->{'email'},
 				'phone' => $form->{'phone'},
+				'hashtag' => $ht,
 			},
 		);
 		unless ($ck->{'ok'})
@@ -56,6 +65,7 @@ sub load
 			'data' => {
 				'email' => $form->{'email'},
 				'phone' => $form->{'phone'},
+				'hashtag' => $ht,
 				'password' => $form->{'password'},
 				'first_name' => $form->{'first_name'},
 				'last_name' => $form->{'last_name'},
@@ -70,7 +80,8 @@ sub load
 		else
 		{
 			$err = 'internal';
-			::_log("Create User Error", $mkuser->{'errors'}->[2]->{'error'});
+			#::_log("Create User Error", $mkuser->{'errors'}->[2]->{'error'});
+			::_log("Create User Error", $mkuser);
 		}
 	}
 	if ($err)

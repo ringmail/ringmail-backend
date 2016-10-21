@@ -8,11 +8,20 @@ use strict;
 use warnings;
 
 sqltable('ring_cart')->delete(
-    delete => [ 'rh', 'rc', ],
-    table  => 'ring_hashtag AS rh, ring_cart AS rc',
-    join   => [ 'rc.hashtag_id = rh.id', 'rc.user_id = rh.user_id', ],
-    where  => {
-        'rc.transaction_id' => undef,
-        'rc.ts'             => [ '<', 'NOW() - INTERVAL 2 HOUR', ],
-    },
+    delete => [ qw{ ring_hashtag ring_cart }, ],
+    table  => 'ring_hashtag, ring_cart',
+    join   => [ 'ring_cart.hashtag_id = ring_hashtag.id', 'ring_cart.user_id = ring_hashtag.user_id', ],
+    where  => q{( ring_cart.ts < ( NOW() - INTERVAL 2 HOUR ) AND ring_cart.transaction_id IS NULL )},
 );
+
+my $carts = sqltable('ring_cart')->get(
+    select => 'ring_cart.id',
+    table  => ring_cart => join_left => [ [ ring_hashtag => 'ring_hashtag.id = ring_cart.hashtag_id', ], ],
+    where => { 'ring_hashtag.id' => undef, },
+);
+
+for my $cart ( @{$carts} ) {
+
+    sqltable('ring_cart')->delete( delete => ring_cart => where => { 'ring_cart.id' => $cart->{id}, }, );
+
+}

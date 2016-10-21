@@ -5,46 +5,49 @@ use Moose;
 use Note::Param;
 use Note::Row;
 use Note::SQL::Table 'sqltable';
+use Readonly;
 use Regexp::Common 'number';
 use String::Random 'random_regex';
 
+our $VERSION = 1;
+
 extends 'Page::ring::user';
+
+Readonly my $PAGE_SIZE => 10;
 
 sub load {
     my ( @args, ) = @_;
 
     my ( $self, $param, ) = get_param( @args, );
 
-    my $content = $self->content();
-    my $form    = $self->form();
+    my $where_clause = {
 
-    my $where_clause = {};
+        not( defined $self->form()->{redeemed} and $self->form()->{redeemed} == 1 ) ? ( transaction_id => undef, ) : (),
+        not( defined $self->form()->{sent}     and $self->form()->{sent} == 1 )     ? ( sent           => 0, )     : (),
 
-    if ( not( defined $form->{redeemed} and $form->{redeemed} == 1 ) ) {
+    };
 
-        $where_clause = {
+    $self->content()->{count} = sqltable('ring_coupon')->count( $where_clause, );
 
-            transaction_id => undef,
+    my ( $page, ) = ( $self->form()->{page} // 1 =~ m{ \A \d+ \z }xms, );
 
-        };
+    my $page_size = $self->app()->config()->{page_size} // $PAGE_SIZE;
 
-    }
+    $self->content()->{coupons} = sqltable('ring_coupon')->get(
+        select => [
+            qw{
 
-    my ( $page, ) = ( $form->{page} // 1 =~ m{ \A \d+ \z }xms, );
+                ring_coupon.amount
+                ring_coupon.code
+                ring_coupon.id
+                ring_coupon.sent
+                ring_coupon.transaction_id
 
-    my $offset = ( $page * 10 ) - 10;
-
-    my $count = sqltable('ring_coupon')->count();
-
-    my $coupons = sqltable('ring_coupon')->get(
-        select => [ qw{ code amount transaction_id }, ],
-        table  => [ 'ring_coupon', ],
-        where  => $where_clause,
-        order  => qq{code LIMIT $offset, 10},
+                },
+        ],
+        where => $where_clause,
+        order => qq{ring_coupon.id DESC LIMIT ${ \ do { ( $page - 1 ) * $page_size } }, $page_size},
     );
-
-    $content->{count}   = $count;
-    $content->{coupons} = $coupons;
 
     return $self->SUPER::load( $param, );
 }
@@ -69,18 +72,36 @@ sub add {
 
             $random_string = random_regex '[A-Z]{4}[0-9]{4}';
 
-        } while ( $coupon->count( code => $random_string, ) > 0 );
+        } while ( $coupon->count( code => $random_string, ) > 0 );    ## no critic ( Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls )
 
-        my $coupon_row = 'Note::Row::create'->( ring_coupon => { code => $random_string, amount => $amount, }, );
+        my $coupon_row = 'Note::Row::insert'->( ring_coupon => { code => $random_string, amount => $amount, }, );
 
-        my $redeemed = ( defined $form->{redeemed} and $form->{redeemed} == 1 ) ? $form->{redeemed} : undef;
-
-        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), query => defined $redeemed ? { redeemed => $redeemed, } : undef, ), );
+        return $self->redirect( $self->url( path => join( q{/}, @{ $self->path() }, ), ), );
     }
     else {
 
         $form->{amount} = $form_data->{amount};
         $value->{error} = 'Amount is invalid.';
+
+    }
+
+    return;
+}
+
+sub mark_sent {
+    my ( $self, $form_data, $args, ) = @_;
+
+    my $form = $self->form();
+
+    my ( $coupon_id, ) = ( @{$args}, );
+
+    ( $coupon_id, ) = ( $coupon_id =~ m{ \A ( \d+ ) \z }xms, );
+
+    if ( defined $coupon_id and $coupon_id > 0 ) {
+
+        my $coupon_row = 'Note::Row'->new( ring_coupon => $coupon_id, );
+
+        $coupon_row->update( { sent => 1, }, );
 
     }
 
