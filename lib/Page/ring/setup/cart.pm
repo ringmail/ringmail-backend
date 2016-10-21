@@ -232,31 +232,36 @@ sub load {
 
                         if ( $response->is_success ) {
 
-                            my $response_content = decode_json $response->content;
+                            my $response_content = decode_json $response->content();
 
-                            my $transactions = $response_content->{transactions};
+                            my $state = $response_content->{state};
 
-                            my ( $transaction, ) = ( @{$transactions}, );
+                            if ( $state eq 'approved' ) {
 
-                            my $amount = $transaction->{amount};
+                                my $transactions = $response_content->{transactions};
 
-                            my $paypal_total = $amount->{total};
+                                my ( $transaction, ) = ( @{$transactions}, );
 
-                            if ( $paypal_total eq $total ) {
+                                my $amount = $transaction->{amount};
 
-                                # $dbh->commit;
+                                my $paypal_total = $amount->{total};
 
-                                # $dbh->{AutoCommit} = $auto_commit;
+                                if ( $paypal_total eq $total ) {
 
-                                return $self->redirect( $self->url( path => 'u', ), );
+                                    # $dbh->commit;
+
+                                    # $dbh->{AutoCommit} = $auto_commit;
+
+                                    return $self->redirect( $self->url( path => 'u', ), );
+
+                                }
+                                else {
+
+                                    # try { $dbh->rollback };
+
+                                }
 
                             }
-                            else {
-
-                                # try { $dbh->rollback };
-
-                            }
-
                         }
 
                     }

@@ -92,7 +92,7 @@ sub create
 				'data' => {
 					'user_id' => $uid,
 					'phone' => $phone,
-					#'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
+					'send_sms' => (($data->{'send_sms'}) ? 1 : 0),
 				},
 			);
 			unless ($out->{'ok'})
