@@ -10667,15 +10667,7 @@ footer.footer .footer-nav-right li a:hover {
   color: #333333;
   margin-bottom: 33px;
 }
-/* line 73, static/css/wm/less/_imports/_pages/_standard_subpage.less */
-.standard-subpage .standard-subpage-content p img {
-  margin: 0 20px 10px 0;
-}
-/* line 79, static/css/wm/less/_imports/_pages/_standard_subpage.less */
-.standard-subpage .standard-subpage-content .main-content {
-  padding-bottom: 20px;
-}
-/* line 85, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 80, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .thumbnail {
   border: none;
   -webkit-border-radius: 0;
@@ -10687,27 +10679,27 @@ footer.footer .footer-nav-right li a:hover {
   padding: 0;
   margin-bottom: 60px;
 }
-/* line 91, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 86, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .thumbnail a > img,
 .standard-subpage .standard-subpage-content .sidebar .thumbnail > img {
   margin: 0;
 }
-/* line 95, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 90, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .thumbnail img {
   max-width: 100%;
 }
-/* line 99, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 94, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .thumbnail .caption {
   color: #666666;
   padding: 0;
   padding-top: 20px;
 }
-/* line 104, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 99, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .thumbnail .caption p {
   color: #666666;
   margin-bottom: 0;
 }
-/* line 113, static/css/wm/less/_imports/_pages/_standard_subpage.less */
+/* line 108, static/css/wm/less/_imports/_pages/_standard_subpage.less */
 .standard-subpage .standard-subpage-content .sidebar .content p {
   color: #666666;
   font-family: 'Noto Sans', sans-serif;
@@ -11640,217 +11632,8 @@ footer.footer .footer-nav-right li a:hover {
   END: bottom-form
 ==========================================================================
   */
-/* line 3, static/css/wm/less/_imports/_pages/_blog.less */
-.blog h3,
-.blog h4,
-.blog h5,
-.blog h6 {
-  font-weight: bold;
-}
 /* line 7, static/css/wm/less/_imports/_pages/_blog.less */
-.blog #hero {
-  background-image: none;
-  background-color: #f1f1f1;
-}
-/* line 11, static/css/wm/less/_imports/_pages/_blog.less */
-.blog #hero .headline {
-  padding-bottom: 35px;
-}
-/* line 14, static/css/wm/less/_imports/_pages/_blog.less */
-.blog #hero .headline h1 {
-  margin: 0;
-  font-family: 'Geometria', sans-serif;
-  font-weight: lighter;
-  color: #EE5349;
-}
-@media screen and (min-width: 992px) {
-  /* line 20, static/css/wm/less/_imports/_pages/_blog.less */
-  .blog #hero .headline h1 {
-    font-size: 62px;
-    line-height: 1em;
-  }
-}
-@media screen and (max-width: 992px) {
-  /* line 25, static/css/wm/less/_imports/_pages/_blog.less */
-  .blog #hero .headline h1 {
-    font-size: 44px;
-    line-height: 1.2em;
-  }
-}
-@media screen and (max-width: 992px) {
-  /* line 37, static/css/wm/less/_imports/_pages/_blog.less */
-  .blog .standard-subpage-content .main-content {
-    margin-bottom: 40px;
-  }
-}
-/* line 41, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .main-content ul.post-listing {
   list-style: none;
   margin: 0;
-  padding: 0;
-}
-/* line 46, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content ul.post-listing li.blog-post {
-  margin-bottom: 80px;
-}
-/* line 52, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-date {
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  color: #999999;
-  margin-bottom: 25px;
-}
-/* line 62, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-title h2 {
-  margin: 0;
-  font-size: 44px;
-  font-family: 'Geometria', sans-serif;
-  font-weight: lighter;
-  line-height: 52.8px;
-  margin-bottom: 22px;
-  color: #EE5349;
-}
-/* line 73, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-main {
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 18px;
-  line-height: 28.8px;
-  color: #333333;
-  margin-bottom: 34px;
-}
-/* line 87, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-@media screen and (max-width: 992px) {
-  /* line 92, static/css/wm/less/_imports/_pages/_blog.less */
-  .blog .standard-subpage-content .main-content .post-tags ul.tags {
-    float: none!important;
-  }
-}
-/* line 96, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags li.tag {
-  display: inline;
-  padding-left: 12px;
-}
-/* line 100, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags li.tag span {
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 14px;
-}
-/* line 104, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags li.tag span a {
-  text-transform: uppercase;
-  color: #999999;
-  font-weight: bold;
-}
-/* line 109, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags li.tag span a:hover {
-  text-decoration: none;
-  color: #333333;
-}
-/* line 115, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .post-tags ul.tags li.tag span .fa-tag {
-  color: #999999;
-  margin-left: 0;
-}
-/* line 127, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .site-pagination a.btn.btn-default {
-  -webkit-border-radius: 18px;
-  -moz-border-radius: 18px;
-  border-radius: 18px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  font-size: 14px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  @gray- 3;
-  border-color: #dddddd;
-}
-/* line 134, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .main-content .site-pagination a.btn.btn-default:hover {
-  color: #3e8acc;
-  background-color: transparent;
-}
-/* line 156, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default {
-  border-color: transparent;
-  border: 0;
-  box-shadow: none;
-}
-/* line 161, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading {
-  background-color: transparent;
-  border-color: transparent;
-  border: 0;
-  padding: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  padding-bottom: 15px;
-}
-/* line 169, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a {
-  line-height: 28.8px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: 'Noto Sans', sans-serif;
-  text-transform: uppercase;
-  color: #999999;
-}
-/* line 181, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .open-close .fa-plus-square-o {
-  display: inline-block;
-}
-/* line 185, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .open-close .fa-minus-square-o {
-  display: none;
-}
-/* line 190, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .arrow {
-  display: none;
-}
-/* line 197, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a .open-close .fa-plus-square-o {
-  display: none;
-}
-/* line 205, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a .arrow {
-  display: inline-block;
-}
-/* line 221, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body {
-  padding: 0;
-  background-color: transparent;
-  border-color: transparent;
-  border: 0;
-}
-/* line 227, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-/* line 232, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item {
-  margin-bottom: 15px;
-}
-/* line 235, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item a {
-  color: #666666;
-  line-height: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: 'Noto Sans', sans-serif;
-}
-/* line 242, static/css/wm/less/_imports/_pages/_blog.less */
-.blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item a:hover {
-  text-decoration: none;
-  color: #333333;
 }
