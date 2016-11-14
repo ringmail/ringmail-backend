@@ -29,6 +29,8 @@ use Note::Template;
 use Note::Account;
 use Ring::Item;
 
+with 'Throwable';
+
 no warnings qw(uninitialized);
 
 has 'id' => (
@@ -87,6 +89,36 @@ our %usercheck = (
 		},
 	),
 );
+
+# static method
+# params:
+#  email
+#  phone
+sub check_duplicate
+{
+	my (undef, $param) = get_param(undef, @_);
+	my $em = $data->{'email'};
+	my $phone = $data->{'phone'};
+	if (sqltable('ring_user')->count('login' => $em))
+	{
+		Ring::User->throw({'message' => 'Duplicate email'});
+	}
+	my $c = sqltable('ring_did')->get(
+		'array' => 1,
+		'result' => 1,
+		'table' => 'ring_did d, ring_user_did ud',
+		'select' => 'count(ud.id)',
+		'join' => 'd.id=ud.did_id',
+		'where' => {
+			'did_code' => 1,
+			'did_number' => $phone,
+		},
+	);
+	if ($c)
+	{
+		Ring::User->throw({'message' => 'Duplicate phone'});
+	}
+}
 
 # static method
 sub create
@@ -156,20 +188,6 @@ sub create
 			'verified' => 0,
 			#'verified' => 1, # For testing
 		});
-
-		# create free hashtag
-		if (length($param->{'hashtag'}))
-		{
-			my $category = Note::Row::find_create( ring_category => { category => '(None)', }, );
-			Note::Row::insert('ring_hashtag' => {
-				'hashtag' => $param->{'hashtag'},
-				'user_id' => $urec->id(),
-				'active' => 1,
-				'paid' => 1,
-				'free' => 1,
-				'category_id' => $category->id(),
-			});
-		}
 	};
 	if ($@)
 	{

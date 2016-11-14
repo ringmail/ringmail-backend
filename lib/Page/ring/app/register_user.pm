@@ -5,6 +5,7 @@ use warnings;
 use vars qw();
 
 use Moose;
+use Try::Tiny;
 use JSON::XS 'encode_json';
 use Data::Dumper;
 use URI::Escape;
@@ -16,6 +17,7 @@ use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Note::Param;
 
+use Ring::Register;
 use Ring::User;
 use Ring::API;
 
@@ -28,27 +30,39 @@ sub load
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
 	::log("Create User", {%$form, 'password' => ''});
-	$form->{'email'} =~ s/^\s+//g;
-	$form->{'email'} =~ s/\s+$//g;
-	my $ht = $form->{'hashtag'};
-	$ht =~ s/^\s+//g;
-	$ht =~ s/^\#//;
-	$ht =~ s/\s+$//g;
-	$ht = lc($ht);
-	my $res;
-	my $err = '';
+	my $reg = new Ring::Register();
+	my $ok = 0;
+	my $error;
+	# validate input and check for duplicates
+	try {
+		$reg->validate_input($form);
+		$reg->check_duplicate($form);
+		$ok = 1;
+	} catch {
+		$error = $_;
+	};
+	if ($ok)
+	{
+		# create the user
+		$reg->create_user($form);
+	}
+	else
+	{
+		$res = {
+			'result' => 'error',
+			'error' => $error->{'message'},
+		};
+	}
 	my %error_detail = ();
 	if (
 		Email::Valid->address($form->{'email'}) &&
-		$form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/ &&
-		$ht =~ /^[a-z0-9_]{0,160}$/
+		$form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/
 	) {
 		my $ck = Ring::API->cmd(
 			'path' => ['user', 'check', 'user'],
 			'data' => {
 				'email' => $form->{'email'},
 				'phone' => $form->{'phone'},
-				'hashtag' => $ht,
 			},
 		);
 		unless ($ck->{'ok'})
@@ -65,7 +79,6 @@ sub load
 			'data' => {
 				'email' => $form->{'email'},
 				'phone' => $form->{'phone'},
-				'hashtag' => $ht,
 				'password' => $form->{'password'},
 				'first_name' => $form->{'first_name'},
 				'last_name' => $form->{'last_name'},

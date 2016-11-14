@@ -121,46 +121,46 @@ sub check
 	my $path = $param->{'path'};
 	my $data = $param->{'data'};
 	my $mode = shift @$path;
-	if ($mode eq 'user')
-	{
-		my $em = $data->{'email'};
-		my $phone = $data->{'phone'};
-		if (sqltable('ring_user')->count('login' => $em))
-		{
-			return {'ok' => 0, 'error_code' => 1, 'error' => 'Duplicate email', 'duplicate' => 'email'}; # duplicate email
-		}
-		if (defined($phone) && length($phone))
-		{
-			$phone =~ s/\D//g;
-			$phone =~ s/^1//;
-			unless (length($phone) == 10) # TODO: update for intl
-			{
-				return {'ok' => 0, 'error_code' => 4, 'error' => 'Invalid phone'}; # invalid phone
-			}
-			my $c = sqltable('ring_did')->get(
-				'array' => 1,
-				'result' => 1,
-				'table' => 'ring_did d, ring_user_did ud',
-				'select' => 'count(ud.id)',
-				'join' => 'd.id=ud.did_id',
-				'where' => {
-					'did_code' => 1,
-					'did_number' => $phone,
-				},
-			);
-			if ($c)
-			{
-				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone', 'duplicate' => 'phone'}; # duplicate phone
-			}
-		}
-		if (
-			length($data->{'hashtag'}) &&
-			sqltable('ring_hashtag')->count('hashtag' => $data->{'hashtag'})
-		) {
-			return {'ok' => 0, 'error_code' => 6, 'error' => 'Duplicate hashtag', 'duplicate' => 'hashtag'}; # duplicate hashtag
-		}
-		return {'ok' => 1};
-	}
+#	if ($mode eq 'user')
+#	{
+#		my $em = $data->{'email'};
+#		my $phone = $data->{'phone'};
+#		if (sqltable('ring_user')->count('login' => $em))
+#		{
+#			return {'ok' => 0, 'error_code' => 1, 'error' => 'Duplicate email', 'duplicate' => 'email'}; # duplicate email
+#		}
+#		if (defined($phone) && length($phone))
+#		{
+#			$phone =~ s/\D//g;
+#			$phone =~ s/^1//;
+#			unless (length($phone) == 10) # TODO: update for intl
+#			{
+#				return {'ok' => 0, 'error_code' => 4, 'error' => 'Invalid phone'}; # invalid phone
+#			}
+#			my $c = sqltable('ring_did')->get(
+#				'array' => 1,
+#				'result' => 1,
+#				'table' => 'ring_did d, ring_user_did ud',
+#				'select' => 'count(ud.id)',
+#				'join' => 'd.id=ud.did_id',
+#				'where' => {
+#					'did_code' => 1,
+#					'did_number' => $phone,
+#				},
+#			);
+#			if ($c)
+#			{
+#				return {'ok' => 0, 'error_code' => 5, 'error' => 'Duplicate phone', 'duplicate' => 'phone'}; # duplicate phone
+#			}
+#		}
+#		if (
+#			length($data->{'hashtag'}) &&
+#			sqltable('ring_hashtag')->count('hashtag' => $data->{'hashtag'})
+#		) {
+#			return {'ok' => 0, 'error_code' => 6, 'error' => 'Duplicate hashtag', 'duplicate' => 'hashtag'}; # duplicate hashtag
+#		}
+#		return {'ok' => 1};
+#	}
 	elsif ($mode eq 'domain')
 	{
 		my $c = sqltable('ring_domain')->get(
