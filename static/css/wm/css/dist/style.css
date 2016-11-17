@@ -9864,6 +9864,10 @@ img {
 .black-2-color {
   color: #333333;
 }
+/* line 154, static/css/wm/less/_imports/_general/_general.less */
+.scroll_show {
+  visibility: hidden;
+}
 @keyframes wbg {
   /* line 2, static/css/wm/less/_imports/_regions/_header.less */
   0% {
@@ -11640,6 +11644,23 @@ footer.footer .footer-nav-right li a:hover {
   END: bottom-form
 ==========================================================================
   */
+/* line 1, static/css/wm/less/_imports/_pages/_blog.less */
+.blog {
+  /**
+  ============================================================================
+
+  -- Blog v2
+
+  ============================================================================
+  */
+  /**
+  ============================================================================
+
+  -- Blog Post v2
+
+  ============================================================================
+  */
+}
 /* line 3, static/css/wm/less/_imports/_pages/_blog.less */
 .blog h3,
 .blog h4,
@@ -11765,23 +11786,25 @@ footer.footer .footer-nav-right li a:hover {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+  padding-left: 20px;
+  padding-right: 20px;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   @gray- 3;
   border-color: #dddddd;
 }
-/* line 134, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 136, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .main-content .site-pagination a.btn.btn-default:hover {
   color: #3e8acc;
   background-color: transparent;
 }
-/* line 156, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 158, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default {
   border-color: transparent;
   border: 0;
   box-shadow: none;
 }
-/* line 161, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 163, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading {
   background-color: transparent;
   border-color: transparent;
@@ -11795,7 +11818,7 @@ footer.footer .footer-nav-right li a:hover {
   background-clip: padding-box;
   padding-bottom: 15px;
 }
-/* line 169, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 171, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a {
   line-height: 28.8px;
   font-size: 14px;
@@ -11804,44 +11827,44 @@ footer.footer .footer-nav-right li a:hover {
   text-transform: uppercase;
   color: #999999;
 }
-/* line 181, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 183, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .open-close .fa-plus-square-o {
   display: inline-block;
 }
-/* line 185, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 187, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .open-close .fa-minus-square-o {
   display: none;
 }
-/* line 190, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 192, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a.collapsed .arrow {
   display: none;
 }
-/* line 197, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 199, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a .open-close .fa-plus-square-o {
   display: none;
 }
-/* line 205, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 207, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-heading a .arrow {
   display: inline-block;
 }
-/* line 221, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 223, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body {
   padding: 0;
   background-color: transparent;
   border-color: transparent;
   border: 0;
 }
-/* line 227, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 229, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-/* line 232, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 234, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item {
   margin-bottom: 15px;
 }
-/* line 235, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 237, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item a {
   color: #666666;
   line-height: 20px;
@@ -11849,8 +11872,246 @@ footer.footer .footer-nav-right li a:hover {
   font-weight: bold;
   font-family: 'Noto Sans', sans-serif;
 }
-/* line 242, static/css/wm/less/_imports/_pages/_blog.less */
+/* line 244, static/css/wm/less/_imports/_pages/_blog.less */
 .blog .standard-subpage-content .sidebar .content .archive-listing .panel-group .panel.panel-default .panel-collapse .panel-body ul.archive-listing-items li.archive-listing-item a:hover {
   text-decoration: none;
   color: #333333;
+}
+/* line 271, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing #hero {
+  background-color: #28bdd4;
+  padding-top: 105px;
+  padding-bottom: 52px;
+}
+/* line 276, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing #hero .icon {
+  margin-bottom: 0;
+}
+/* line 279, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing #hero .icon img {
+  width: 83px;
+  height: auto;
+}
+/* line 285, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing #hero .headline {
+  display: none;
+}
+/* line 290, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content {
+  background-color: #f1f1f1;
+  padding-top: 60px;
+  padding-bottom: 98px;
+}
+/* line 301, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post {
+  margin-bottom: 34px;
+}
+/* line 305, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content {
+  position: relative;
+  background-color: #FFFFFF;
+  padding-bottom: 20px;
+}
+@media screen and (min-width: 992px) {
+}
+/* line 316, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-thumbnail img {
+  width: 100%;
+  height: auto;
+}
+/* line 322, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content {
+  padding-left: 21px;
+  padding-right: 21px;
+  padding-bottom: 16px;
+}
+/* line 327, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .post-thumbnail {
+  margin-left: -21px;
+  margin-right: -21px;
+}
+/* line 334, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .post-title h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 26px;
+  color: #333333;
+  margin-top: 21px;
+  margin-bottom: 20px;
+  line-height: 36px;
+}
+@media screen and (max-width: 992px) {
+  /* line 343, static/css/wm/less/_imports/_pages/_blog.less */
+  .blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .post-title h2 {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+/* line 349, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .readmore {
+  margin-bottom: 40px;
+  font-size: 18px;
+  font-family: 'Proxima Nova Normal', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  color: #EE5349;
+  font-weight: 100;
+}
+/* line 356, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .readmore a {
+  font-size: 18px;
+  font-family: 'Proxima Nova Normal', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  color: #EE5349;
+}
+/* line 363, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .post-tags {
+  margin-top: 0px;
+  position: absolute;
+  bottom: 16px;
+}
+/* line 370, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .post-text-content .post-tags ul.tags li.tag {
+  padding-left: 0;
+  padding-right: 7px;
+}
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  /* line 380, static/css/wm/less/_imports/_pages/_blog.less */
+  .blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .link_container {
+    min-height: 530px;
+  }
+}
+@media screen and (min-width: 1199px) {
+  /* line 384, static/css/wm/less/_imports/_pages/_blog.less */
+  .blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content .link_container {
+    min-height: 510px;
+  }
+}
+/* line 389, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper {
+  text-decoration: none;
+  display: block;
+}
+/* line 393, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper:hover {
+  text-decoration: none;
+}
+/* line 398, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper:hover .post-thumbnail img {
+  text-decoration: none;
+}
+/* line 409, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper:hover .post-title h2 {
+  text-decoration: none;
+  color: #0077c2;
+}
+/* line 415, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper:hover .readmore {
+  text-decoration: none;
+}
+/* line 424, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper .post-thumbnail img {
+  text-decoration: none;
+}
+/* line 434, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper .post-title h2 {
+  text-decoration: none;
+}
+/* line 439, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .post-listing li.blog-post .post-content a.post_link_wrapper .readmore {
+  text-decoration: none;
+}
+/* line 450, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-r2.blog-listing .standard-subpage-content .main-content .site-pagination {
+  margin-top: 6px;
+}
+/* line 467, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 #hero {
+  background-color: #28bdd4;
+  padding-top: 109px;
+  padding-bottom: 87px;
+}
+/* line 472, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 #hero .icon {
+  margin-bottom: 0;
+}
+/* line 475, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 #hero .icon img {
+  width: 83px;
+  height: auto;
+}
+/* line 481, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 #hero .headline {
+  padding: 0;
+  margin-top: 37px;
+}
+/* line 485, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 #hero .headline h1 {
+  font-size: 44px;
+  font-family: 'Geometria', sans-serif;
+  font-weight: lighter;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}
+/* line 496, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content {
+  padding-bottom: 70px;
+}
+/* line 499, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content {
+  padding-bottom: 0;
+}
+/* line 502, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .main-content-container {
+  background-color: #FFFFFF;
+}
+/* line 506, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main-image {
+  margin-top: -109px;
+  margin-bottom: 50px;
+}
+/* line 510, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main-image img {
+  width: 100%;
+  height: auto;
+}
+/* line 516, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main {
+  font-size: 16px;
+  line-height: 26.8px;
+  color: #333333;
+  margin-bottom: 78px;
+}
+/* line 522, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main h3,
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main h4,
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main h5,
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main h6 {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: bold;
+}
+/* line 527, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .post-main p {
+  font-size: 16px;
+  line-height: 26.8px;
+}
+/* line 535, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .blog-post-data .post-date {
+  margin-bottom: 0;
+}
+@media screen and (min-width: 992px) {
+  /* line 541, static/css/wm/less/_imports/_pages/_blog.less */
+  .blog.blog-post-r2 .standard-subpage-content .main-content .blog-post-data .post-tags {
+    text-align: right;
+  }
+}
+@media screen and (max-width: 992px) {
+  /* line 549, static/css/wm/less/_imports/_pages/_blog.less */
+  .blog.blog-post-r2 .standard-subpage-content .main-content .blog-post-data .post-tags ul.tags li.tag {
+    padding-left: 0;
+    padding-right: 12px;
+  }
+}
+/* line 558, static/css/wm/less/_imports/_pages/_blog.less */
+.blog.blog-post-r2 .standard-subpage-content .main-content .site-pagination {
+  margin-top: 96px;
 }

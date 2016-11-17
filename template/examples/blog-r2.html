@@ -1,6 +1,7 @@
 [% page = "ringmail_2016_1" %]
 [% title = "Blog" %]
 [% page_template_class = 'type-standard-subpage-sidebar type-standard-subpage' %]
+[% page_template_nav_type = 'just-white-bg white-bg' %]
 [% meta_data = BLOCK %]
 <meta property="og:url"           content="http://www.your-domain.com/your-page.html" />
 <meta property="og:type"          content="website" />
@@ -9,7 +10,7 @@
 <meta property="og:image"         content="http://www.your-domain.com/path/image.jpg" />
 [% END %]
 [% content = BLOCK %]
-<div class="container-fluid standard-subpage standard-subpage-sidebar blog">
+<div class="container-fluid standard-subpage standard-subpage-sidebar blog blog-r2 blog-listing">
     <div class="row" id="hero">
         <div class="container">
             <div class="col-md-12">
@@ -26,98 +27,233 @@
         <div class="container">
             <div class="col-md-12 main-content">
                 <ul class=" post-listing clearfix">
-                    <li class="blog-post col-md-4">
-                        <div class="clearfix post-date">
-                            OCTOBER 11, 2016
-                        </div>
-                        <div class="clearfix post-title">
-                            <h2>Lorem ipsum dolor sit amet</h2>
-                        </div>
-                        <div class="row share-tags">
-                            <div class="col-md-6 post-share">
-                                <span class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></span>
-                                <a href="https://twitter.com/intent/tweet?button_hashtag=" class="twitter-hashtag-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                            </div>
-                            <div class="col-md-6 post-tags">
-                                <ul class="tags pull-right">
-                                    <li class="tag">
-                                        <span><a href="#">TAG1</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG2</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG3</a></span>
-                                    </li>
-                                    <li class="tag-icon tag">
-                                        <span><i class="fa fa-tag" aria-hidden="true"></i></span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="blog-post col-md-4">
-                        <div class="clearfix post-date">
-                            OCTOBER 10, 2016
-                        </div>
-                        <div class="clearfix post-title">
-                            <h2>Lorem ipsum dolor sit amet</h2>
-                        </div>
-                        <div class="row share-tags">
-                            <div class="col-md-6 post-share">
-                                <span class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></span>
-                                <a href="https://twitter.com/intent/tweet?button_hashtag=" class="twitter-hashtag-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                            </div>
-                            <div class="col-md-6 post-tags">
-                                <ul class="tags pull-right">
-                                    <li class="tag">
-                                        <span><a href="#">TAG1</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG2</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG3</a></span>
-                                    </li>
-                                    <li class="tag-icon tag">
-                                        <span><i class="fa fa-tag" aria-hidden="true"></i></span>
-                                    </li>
-                                </ul>
+
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail blue-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </li>
-                    <li class="blog-post col-md-4">
-                        <div class="clearfix post-date">
-                            OCTOBER 10, 2016
-                        </div>
-                        <div class="clearfix post-title">
-                            <h2>Lorem ipsum dolor sit amet</h2>
-                        </div>
-                        <div class="row share-tags">
-                            <div class="col-md-6 post-share">
-                                <span class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></span>
-                                <a href="https://twitter.com/intent/tweet?button_hashtag=" class="twitter-hashtag-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                            </div>
-                            <div class="col-md-6 post-tags">
-                                <ul class="tags pull-right">
-                                    <li class="tag">
-                                        <span><a href="#">TAG1</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG2</a></span>
-                                    </li>
-                                    <li class="tag">
-                                        <span><a href="#">TAG3</a></span>
-                                    </li>
-                                    <li class="tag-icon tag">
-                                        <span><i class="fa fa-tag" aria-hidden="true"></i></span>
-                                    </li>
-                                </ul>
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail red-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur.</h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </li>
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail aqua-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla orci non.</h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <div class="clearfix"></div>
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail green-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail gold-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur.</h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="blog-post col-md-4 scroll_show">
+                        <div class="clearfix post-content">
+                            <div class="post-text-content">
+                                <div class="link_container cleafix">
+                                    <a href="/examples/blog-post-2" class="post_link_wrapper clearfix">
+                                        <div class="clearfix post-thumbnail purple-bg">
+                                            <img src="/img/pages/blog-post/blog-listing-r2.png" alt="post thumbnail">
+                                        </div>
+                                        <div class="clearfix post-title">
+                                            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla fringilla orci non.</h2>
+                                        </div>
+                                        <div class="clearfix readmore">
+                                            Read More <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="clearfix share-tags">
+                                    <div class="post-tags">
+                                        <ul class="tags">
+                                            <li class="tag-icon tag">
+                                                <span><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG1</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG2</a></span>
+                                            </li>
+                                            <li class="tag">
+                                                <span><a href="#">TAG3</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <div class="clearfix"></div>
                 </ul>
-                <div class="clearfix site-pagination row">
+                <div class="clearfix site-pagination">
                     <div class="col-md-6 col-sm-6 col-xs-6">
                         <a href="#" type="button" class="btn btn-default pull-left"><span class="arrow left">←</span> Older</a>
                     </div>
