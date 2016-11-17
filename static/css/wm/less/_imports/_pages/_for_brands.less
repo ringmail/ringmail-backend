@@ -82,6 +82,29 @@
         line-height: 1.4em;
       }
     }
+
+    .hero-button
+    {
+      margin-bottom: 35px;
+      a.btn
+      {
+        background-color: @red;
+        font-size: 20px;
+        .montserrat;
+        font-weight: bold;
+        text-transform: uppercase;
+        color:@white;
+        padding: 16px 35px;
+        @media screen  and (max-width: @screen-sm-min){
+          font-size: 15px;
+        }
+        &:hover
+        {
+          background-color: darken(@red,10%);
+
+        }
+      }
+    }
   }
 
 
@@ -251,6 +274,30 @@
       margin-bottom: 40px;
     }
   }
+
+
+  .button
+  {
+    a.btn
+    {
+      background-color: @red;
+      font-size: 20px;
+      .montserrat;
+      font-weight: bold;
+      text-transform: uppercase;
+      color:@white;
+      padding: 16px 35px;
+      @media screen  and (max-width: @screen-sm-min){
+        font-size: 15px;
+      }
+      &:hover
+      {
+        background-color: darken(@red,10%);
+
+      }
+    }
+  }
+
   .hashtag-form
   {
     form
