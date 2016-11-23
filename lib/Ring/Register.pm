@@ -18,17 +18,17 @@ use Date::Parse 'str2time';
 use Math::Random::Secure 'rand';
 use String::Random 'random_regex';
 
-use Note::SQL::Table 'sqltable';
+use Note::SQL::Table 'sqltable', 'transaction';
 use Note::Param;
 use Note::Row;
 use Note::Check;
 use Note::XML 'xml';
 use Note::Template;
 use Note::Account;
-use Ring::Item;
-use Ring::Valid 'validate_phone', 'validate_email';
 
-with 'Throwable';
+use Ring::Item;
+use Ring::Valid 'validate_phone', 'validate_email', 'split_phone';
+use Ring::Exceptions 'throw_duplicate';
 
 no warnings qw(uninitialized);
 
@@ -45,11 +45,11 @@ sub validate_input
 	my ($obj, $param) = get_param(@_);
 	unless (validate_email($param->{'email'}))
 	{
-		Ring::Register->throw({'message' => 'Invalid email'});
+		InvalidUserInput->throw('message' => 'Invalid email');
 	}
 	unless (validate_phone($param->{'phone'}))
 	{
-		Ring::Register->throw({'message' => 'Invalid phone'});
+		InvalidUserInput->throw('message' => 'Invalid phone');
 	}
 	my $check_name = new Note::Check(
 		'type' => 'regex',
@@ -57,15 +57,15 @@ sub validate_input
 	);
 	unless ($check_name->valid(\$param->{'first_name'}))
 	{
-		Ring::Register->throw({'message' => 'Invalid first name'});
+		InvalidUserInput->throw('message' => 'Invalid first name');
 	}
 	unless ($check_name->valid(\$param->{'last_name'}))
 	{
-		Ring::Register->throw({'message' => 'Invalid last name'});
+		InvalidUserInput->throw('message' => 'Invalid last name');
 	}
 	unless (length($param->{'password'}) >= 4)
 	{
-		Ring::Register->throw({'message' => 'Password too short'});
+		InvalidUserInput->throw('message' => 'Password too short');
 	}
 	return 1;
 }
@@ -80,8 +80,9 @@ sub check_duplicate
 	my $phone = $param->{'phone'};
 	if (sqltable('ring_user')->count('login' => $em))
 	{
-		Ring::Register->throw({'message' => 'Duplicate email'});
+		DuplicateData->throw('message' => 'Duplicate email');
 	}
+	my ($did_code, $did_number) = split_phone($phone);
 	my $c = sqltable('ring_did')->get(
 		'array' => 1,
 		'result' => 1,
@@ -89,13 +90,13 @@ sub check_duplicate
 		'select' => 'count(ud.id)',
 		'join' => 'd.id=ud.did_id',
 		'where' => {
-			'did_code' => 1,
-			'did_number' => $phone,
+			'did_code' => $did_code,
+			'did_number' => $did_number,
 		},
 	);
 	if ($c)
 	{
-		Ring::Register->throw({'message' => 'Duplicate phone'});
+		DuplicateData->throw('message' => 'Duplicate phone');
 	}
 	return 1;
 }
@@ -116,65 +117,65 @@ sub create_user
 	$salt = $gen->salt_hex();
 	my $hash = $gen->hash_hex();
 	my $urec = undef;
+	my $user = undef;
 	my $sr = new String::Random();
 	my $chatpass = $sr->randregex('[a-z0-9]{12}');
-	try {
-		$urec = Note::Row::create('ring_user' => {
-			'active' => 1,
-			'login' => lc($rec->{'email'}),
-			'password_fs' => '', # deprecated
-			'password_hash' => $hash,
-			'password_salt' => $salt,
-			'password_chat' => $chatpass,
-			'person' => 0, # update next
-			'verified' => 0,
-			#'verified' => 1, # For testing
-		});
-	} catch {
-		my $err = $_;
-		::_log("Error: $err");
-		return 0;
-	}
-	my $chdb = $main::note_config->storage()->{'ejd_1'};
-	my $escuser = uri_escape(lc($rec->{'email'}), q{"#\%/:<>?\@^`\[\]});
-	eval {
-		$chdb->table('users')->set(
-			'insert' => {
-				'username' => $escuser,
-				'password' => $chatpass,
-				'created_at' => strftime("%F %T", localtime()),
-			},
+	transaction(sub {
+		# create user login 
+		throw_duplicate(sub {
+			$urec = Note::Row::create('ring_user' => {
+				'active' => 1,
+				'login' => lc($param->{'email'}),
+				'password_fs' => '', # deprecated
+				'password_hash' => $hash,
+				'password_salt' => $salt,
+				'password_chat' => $chatpass,
+				'person' => 0, # update next
+				'verified' => 0,
+			})
+		}, 'Duplicate login');
+
+		# create proxy login
+		my $chdb = $main::note_config->storage()->{'ejd_1'};
+		my $escuser = uri_escape(lc($param->{'email'}), q{"#\%/:<>?\@^`\[\]});
+		throw_duplicate(sub {
+			$chdb->table('users')->set(
+				'insert' => {
+					'username' => $escuser,
+					'password' => $chatpass,
+					'created_at' => strftime("%F %T", localtime()),
+				},
+			);
+		}, 'Duplicate proxy username');
+
+		# setup user
+		my $item = new Ring::Item();
+		my $erec = $item->item(
+			'type' => 'email',
+			'email' => $param->{'email'},
 		);
-	};
-	if ($@)
-	{
-		::_log("Error: $@");
-		push @$errors, ['create', 'An error occurred creating account. (Chat)'];
-		return 0;
-	}
-	#::_log("Urec:", $urec);
-	my $item = new Ring::Item();
-	my $erec = $item->item(
-		'type' => 'email',
-		'email' => $rec->{'email'},
-	);
-	Note::Row::create('ring_user_email' => {
-		'email_id' => $erec->id(),
-		'user_id' => $urec->id(),
-		'primary_email' => 1,
+		Note::Row::create('ring_user_email' => {
+			'email_id' => $erec->id(),
+			'user_id' => $urec->id(),
+			'primary_email' => 1,
+		});
+		$user = new Ring::User($urec->id());
+		my $tid = $user->get_target_id(
+			'email_id' => $erec->id(),
+		);
+
+		# setup phone
+		my $phs = $user->get_phones();
+		unless (scalar @$phs)
+		{
+			$user->add_phone();
+		}
 	});
-	my $user = new Ring::User($urec->id());
-	my $tid = $user->get_target_id(
-		'email_id' => $erec->id(),
-	);
-	$user->verify_email_send(
-		'email' => $rec->{'email'},
-	);
-    # setup phone
-	my $phs = $user->get_phones();
-	unless (scalar @$phs)
+	unless ($param->{'skip_verify'})
 	{
-		$user->add_phone();
+		$user->verify_email_send(
+			'email' => $param->{'email'},
+		);
 	}
 	return $urec->id();
 }

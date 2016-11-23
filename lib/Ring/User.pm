@@ -29,8 +29,6 @@ use Note::Template;
 use Note::Account;
 use Ring::Item;
 
-with 'Throwable';
-
 no warnings qw(uninitialized);
 
 has 'id' => (
