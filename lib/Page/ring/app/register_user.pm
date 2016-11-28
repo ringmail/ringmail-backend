@@ -19,7 +19,6 @@ use Note::Param;
 
 use Ring::Register;
 use Ring::User;
-use Ring::API;
 
 extends 'Note::Page';
 
@@ -30,79 +29,50 @@ sub load
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
 	::log("Create User", {%$form, 'password' => ''});
+	my $input = {
+		'email' => $form->{'email'},
+		'phone' => $form->{'phone'},
+		'first_name' => $form->{'first_name'},
+		'last_name' => $form->{'last_name'},
+		'password' => $form->{'password'},
+		'contacts' => $form->{'contacts'},
+	};
 	my $reg = new Ring::Register();
 	my $ok = 0;
 	my $error;
 	# validate input and check for duplicates
 	try {
-		$reg->validate_input($form);
-		$reg->check_duplicate($form);
-		$ok = 1;
+		$reg->validate_input($input);
+		$reg->check_duplicate($input);
+		$reg->create_user($input);
 	} catch {
-		$error = $_;
+		if (blessed($_))
+		{
+			$error = $_->message();
+		}
+		else
+		{
+			::errorlog('Internal Error: '. $_);
+			$error = 'Internal Error';
+		}
+	} finally {
+		unless (@_)
+		{
+			$ok = 1;
+		}
 	};
+	my $res;
 	if ($ok)
 	{
-		# create the user
-		$reg->create_user($form);
+		$res = {
+			'result' => 'ok',
+		};
 	}
 	else
 	{
 		$res = {
 			'result' => 'error',
-			'error' => $error->{'message'},
-		};
-	}
-	my %error_detail = ();
-	if (
-		Email::Valid->address($form->{'email'}) &&
-		$form->{'phone'} =~ /^\+?\d{6,7}[2-9]\d{3}$/
-	) {
-		my $ck = Ring::API->cmd(
-			'path' => ['user', 'check', 'user'],
-			'data' => {
-				'email' => $form->{'email'},
-				'phone' => $form->{'phone'},
-			},
-		);
-		unless ($ck->{'ok'})
-		{
-			#::log($ck);
-			$err = 'duplicate';
-			$error_detail{'duplicate'} = $ck->{'duplicate'};
-		}
-	}
-	unless ($err)
-	{
-		my $mkuser = Ring::API->cmd(
-			'path' => ['user', 'create'],
-			'data' => {
-				'email' => $form->{'email'},
-				'phone' => $form->{'phone'},
-				'password' => $form->{'password'},
-				'first_name' => $form->{'first_name'},
-				'last_name' => $form->{'last_name'},
-			},
-		);
-		if ($mkuser->{'ok'})
-		{
-			$res = {
-				'result' => 'ok',
-			};
-		}
-		else
-		{
-			$err = 'internal';
-			#::_log("Create User Error", $mkuser->{'errors'}->[2]->{'error'});
-			::_log("Create User Error", $mkuser);
-		}
-	}
-	if ($err)
-	{
-		$res = {
-			'result' => 'error',
-			'error' => $err,
-			%error_detail,
+			'error' => $error,
 		};
 	}
 	$obj->{'response'}->content_type('application/json');

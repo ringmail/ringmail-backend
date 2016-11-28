@@ -1,7 +1,7 @@
 #!/usr/bin/perl -I/home/note/lib -I/home/note/app/ringmail/lib
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 8;
 use Test::Exception;
 use Carp::Always;
 use Data::Dumper;
@@ -10,7 +10,7 @@ use String::Random 'random_regex';
 use Scalar::Util 'blessed';
 use Try::Tiny;
 
-use Note::Base;
+use Note::Base 'ringmail';
 use Note::Test;
 use Ring::Register;
 
@@ -58,14 +58,15 @@ throw_message_ok(sub {
 	);
 }, 'InvalidUserInput', 'Password too short', 'validate password length');
 
-my $faker = new Data::Faker;
+my $faker = new Data::Faker();
 my $newuser = {
 	'first_name' => $faker->first_name(),
 	'last_name' => $faker->last_name(),
 	'email' => $faker->email(),
 	'phone' => '+1'. random_regex('\d{10}'),
 	'password' => random_regex('\w{12}'),
-	'skip_verify' => 1,
+	'skip_verify_email' => 1,
+	'skip_verify_phone' => 1,
 };
 print 'Test Data: '. Dumper($newuser);
 
@@ -75,12 +76,20 @@ if ($ENV{'ENABLE_DB_WRITE'} eq '1')
 		$o->check_duplicate($newuser);
 	} 'check duplicate';
 	my $uid = $o->create_user($newuser);
-	print "User: $uid\n";
+	#print "Test User ID: $uid\n";
+	throw_message_ok(sub {
+		$o->check_duplicate($newuser);
+	}, 'DuplicateData', 'Duplicate email', 'duplicate email');
+	$newuser->{'email'} = $faker->email();
+	#print 'Test Data 2: '. Dumper($newuser);
+	throw_message_ok(sub {
+		$o->check_duplicate($newuser);
+	}, 'DuplicateData', 'Duplicate phone', 'duplicate phone');
 }
 else
 {
 	print "Database Writing Disabled\n";
-	foreach my $i (1..1)
+	foreach my $i (1..3)
 	{
 		pass("database writing required $i");
 	}

@@ -121,6 +121,7 @@ sub create_user
 	my $user = undef;
 	my $sr = new String::Random();
 	my $chatpass = $sr->randregex('[a-z0-9]{12}');
+	my $smscode = $sr->randregex('[0-9]{4}');
 	transaction(sub {
 		# create user login 
 		throw_duplicate(sub {
@@ -132,7 +133,7 @@ sub create_user
 				'password_salt' => $salt,
 				'password_chat' => $chatpass,
 				'person' => 0, # update next
-				'verified' => 0,
+				'verified' => ($param->{'verified'}) ? 1 : 0,
 			})
 		}, 'Duplicate login');
 
@@ -165,186 +166,91 @@ sub create_user
 			'email_id' => $erec->id(),
 		);
 
-		# setup phone
+		# setup did
+		if (defined($param->{'phone'}))
+		{
+			my ($did_code, $did_number) = split_phone($param->{'phone'});
+			my $drec = $item->item(
+				'type' => 'did',
+				'did_number' => $did_number,
+				'did_code' => $did_code,
+			);
+			throw_duplicate(sub {
+				Note::Row::create('ring_user_did' => {
+					'did_id' => $drec->id(),
+					'ts_added' => strftime("%F %T", localtime()),
+					'user_id' => $urec->id(),
+					'verified' => ($param->{'verified'}) ? 1 : 0,
+				});
+			}, 'Duplicate user phone');
+			unless ($param->{'skip_verify_phone'})
+			{
+				sqltable('ring_verify_did')->delete(
+					'where' => {
+						'did_id' => $drec->id(),
+						'user_id' => $urec->id(),
+					},
+				);
+				Note::Row::create('ring_verify_did' => {
+					'did_id' => $drec->id(),
+					'ts_added' => strftime("%F %T", localtime()),
+					'user_id' => $urec->id(),
+					'verified' => 0,
+					'verify_code' => $smscode,
+					'tries' => 0,
+				});
+			}
+		}
+		
+		# setup person
+		if (defined $param->{'first_name'} && defined $param->{'last_name'})
+		{
+			my $rc = Note::Row::create('ring_person', {
+				'first_name' => $param->{'first_name'},
+				'last_name' => $param->{'last_name'},
+			});
+			$urec->update({
+				'person' => $rc->id(),
+			});
+		}
+
+		# setup phone proxy login
 		my $phs = $user->get_phones();
 		unless (scalar @$phs)
 		{
 			$user->add_phone();
 		}
+
+		# setup contacts
+		if (defined $param->{'contacts'}) # create contact list
+		{
+			my $maxts = 0;
+			foreach my $ct (@{$param->{'contacts'}})
+			{
+				$user->add_contact(
+					'contact' => $ct,
+				);
+				if ($ct->{'ts_updated'} > $maxts)
+				{
+					$maxts = $ct->{'ts_updated'};
+				}
+			}
+			Note::Row::create('ring_contact_summary' => {
+				'user_id' => $urec->id(),
+				'ts_updated' => ($maxts) ? strftime("%F %T", gmtime($maxts)) : undef,
+				'item_count' => scalar(@{$param->{'contacts'}}),
+			});
+		}
+
+		# begin verifications
+		unless ($param->{'skip_verify_email'})
+		{
+			$user->verify_email_send(
+				'email' => $param->{'email'},
+			);
+		}
 	});
-	unless ($param->{'skip_verify'})
-	{
-		$user->verify_email_send(
-			'email' => $param->{'email'},
-		);
-	}
 	return $urec->id();
-}
-
-sub reset_email_send
-{
-	my ($obj, $param) = get_param(@_);
-	my $uid = $obj->id();
-	my $item = new Ring::Item();
-	my $erec = $item->item(
-		'type' => 'email',
-		'email' => $param->{'email'},
-	);
-	my $sr = new String::Random();
-	my $code = $sr->randregex('[a-zA-Z0-9]{500}');
-	$code = md5_hex($code);
-	my $rc = Note::Row::find_create(
-		'ring_user_pwreset' => {
-			'user_id' => $uid,
-		},
-	);
-	$rc->update({
-		'reset_hash' => $code,
-		'ts' => strftime("%F %T", localtime()),
-	});
-	my $from = 'RingMail <ringmail@ringmail.com>';
-	my $wdom = $main::app_config->{'www_domain'};
-	my $link = 'https://'. $wdom. '/reset?code='. $code;
-	my $tmpl = new Note::Template(
-		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
-	);
-	my $txt = $tmpl->apply('email/reset_pass.txt', {
-		'link' => $link,
-		'email' => $param->{'email'},
-	});
-	my $html = $tmpl->apply('email/reset_pass.html', {
-		'link' => $link,
-		'email' => $param->{'email'},
-	});
-	my $msg = new MIME::Lite(
-		'To' => $param->{'email'},
-		'From' => $from,
-		'Subject' => 'RingMail Password Reset',
-		'Type' => 'multipart/alternative',
-		'Data' => $txt,
-	);
-	my $msgtxt = new MIME::Lite(
-		'Type' => 'text/plain; charset="iso-8859-1"',
-		'Data' => $txt,
-	);
-	my $msghtml = new MIME::Lite(
-		'Type' => 'text/html; charset="iso-8859-1"',
-		'Data' => $html,
-	);
-	$msg->attach($msgtxt);
-	$msg->attach($msghtml);
-	eval {
-		$msg->send(
-			'smtp' => 'localhost',
-			'Timeout' => 10,
-		);
-	};
-	if ($@)
-	{
-		::_errorlog('Email Error:', $@);
-	}
-	return 1;
-}
-
-sub verify_email_send
-{
-	my ($obj, $param) = get_param(@_);
-	my $uid = $obj->id();
-	my $item = new Ring::Item();
-	my $erec = $item->item(
-		'type' => 'email',
-		'email' => $param->{'email'},
-	);
-	my $sr = new String::Random();
-	my $code = $sr->randregex('[a-zA-Z0-9]{32}');
-	my $rc = Note::Row::find_create(
-		'ring_verify_email' => {
-			'email_id' => $erec->id(),
-		},
-		{
-			'ts_added' => strftime("%F %T", localtime()),
-			'user_id' => $uid,
-			'verify_code' => '',
-		},
-	);
-	$rc->update({
-		'verified' => 0,
-		'verify_code' => $code,
-	});
-	my $wdom = $main::app_config->{'www_domain'};
-	my $from = 'RingMail <ringmail@ringmail.com>';
-	my $link = 'https://'. $wdom. '/verify?code='. $code;
-	my $tmpl = new Note::Template(
-		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
-	);
-	my $txt = $tmpl->apply('email/verify.txt', {
-		'www_domain' => $wdom,
-		'link' => $link,
-	});
-	my $html = $tmpl->apply('email/verify.html', {
-		'www_domain' => $wdom,
-		'link' => $link,
-	});
-	my $msg = new MIME::Lite(
-		'To' => $param->{'email'},
-		'From' => $from,
-		'Subject' => 'Confirm Email Address',
-		'Type' => 'multipart/alternative',
-		'Data' => $txt,
-	);
-	my $msgtxt = new MIME::Lite(
-		'Type' => 'text/plain; charset="iso-8859-1"',
-		'Data' => $txt,
-	);
-	my $msghtml = new MIME::Lite(
-		'Type' => 'text/html; charset="iso-8859-1"',
-		'Data' => $html,
-	);
-	$msg->attach($msgtxt);
-	$msg->attach($msghtml);
-	eval {
-		$msg->send(
-			'smtp' => 'localhost',
-			'Timeout' => 10,
-		);
-	};
-	if ($@)
-	{
-		::_errorlog('Email Error:', $@);
-	}
-	return 1;
-}
-
-sub verify_email
-{
-	my ($obj, $param) = get_param(@_);
-	my $rec = $param->{'record'};
-	if ($rec->data('verified'))
-	{
-		return 0;
-	}
-	$rec->update({
-		'ts_verified' => strftime("%F %T", localtime()),
-		'verified' => 1,
-	});
-	my $erec = new Note::Row(
-		'ring_user_email' => {
-			'email_id' => $rec->data('email_id'),
-			'user_id' => $rec->data('user_id'),
-		},
-		{
-			'select' => [qw/primary_email/],
-		},
-	);
-	if ($erec->data('primary_email'))
-	{
-		my $urec = new Note::Row(
-			'ring_user' => $obj->id(),
-		);
-		$urec->update({
-			'verified' => 1,
-		});
-	}
 }
 
 1;

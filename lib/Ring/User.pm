@@ -47,16 +47,13 @@ has 'row' => (
 );
 
 has email => (
-    is      => 'rw',
-    isa     => 'Str',
-    lazy    => 1,
-    default => sub {
-        my ( $self, ) = @_;
-
-        my $user_row = $self->row();
-
-        return $user_row->data( 'login', );
-    },
+	'is' => 'rw',
+	'isa' => 'Str',
+	'lazy' => 1,
+	'default' => sub {
+		my $obj = shift;
+		return  $obj->row()->data('login');
+	},
 );
 
 sub BUILDARGS
@@ -71,6 +68,109 @@ sub BUILDARGS
 		return {@_};
 	}
 }
+
+sub verify_email_send
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->id();
+	my $item = new Ring::Item();
+	my $erec = $item->item(
+		'type' => 'email',
+		'email' => $param->{'email'},
+	);
+	my $sr = new String::Random();
+	my $code = $sr->randregex('[a-zA-Z0-9]{32}');
+	my $rc = Note::Row::find_create(
+		'ring_verify_email' => {
+			'email_id' => $erec->id(),
+		},
+		{
+			'ts_added' => strftime("%F %T", localtime()),
+			'user_id' => $uid,
+			'verify_code' => '',
+		},
+	);
+	$rc->update({
+		'verified' => 0,
+		'verify_code' => $code,
+	});
+	my $wdom = $main::app_config->{'www_domain'};
+	my $from = 'RingMail <ringmail@ringmail.com>';
+	my $link = 'https://'. $wdom. '/verify?code='. $code;
+	my $tmpl = new Note::Template(
+		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
+	);
+	my $txt = $tmpl->apply('email/verify.txt', {
+		'www_domain' => $wdom,
+		'link' => $link,
+	});
+	my $html = $tmpl->apply('email/verify.html', {
+		'www_domain' => $wdom,
+		'link' => $link,
+	});
+	my $msg = new MIME::Lite(
+		'To' => $param->{'email'},
+		'From' => $from,
+		'Subject' => 'Confirm Email Address',
+		'Type' => 'multipart/alternative',
+		'Data' => $txt,
+	);
+	my $msgtxt = new MIME::Lite(
+		'Type' => 'text/plain; charset="iso-8859-1"',
+		'Data' => $txt,
+	);
+	my $msghtml = new MIME::Lite(
+		'Type' => 'text/html; charset="iso-8859-1"',
+		'Data' => $html,
+	);
+	$msg->attach($msgtxt);
+	$msg->attach($msghtml);
+	eval {
+		$msg->send(
+			'smtp' => 'localhost',
+			'Timeout' => 10,
+		);
+	};
+	if ($@)
+	{
+		::errorlog('Email Error:', $@);
+	}
+	return 1;
+}
+
+sub verify_email
+{
+	my ($obj, $param) = get_param(@_);
+	my $rec = $param->{'record'};
+	if ($rec->data('verified'))
+	{
+		return 0;
+	}
+	$rec->update({
+		'ts_verified' => strftime("%F %T", localtime()),
+		'verified' => 1,
+	});
+	my $erec = new Note::Row(
+		'ring_user_email' => {
+			'email_id' => $rec->data('email_id'),
+			'user_id' => $rec->data('user_id'),
+		},
+		{
+			'select' => [qw/primary_email/],
+		},
+	);
+	if ($erec->data('primary_email'))
+	{
+		my $urec = new Note::Row(
+			'ring_user' => $obj->id(),
+		);
+		$urec->update({
+			'verified' => 1,
+		});
+	}
+}
+
+
 
 sub check_password
 {
