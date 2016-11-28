@@ -26,9 +26,10 @@ use Note::XML 'xml';
 use Note::Template;
 use Note::Account;
 
-use Ring::Item;
 use Ring::Valid 'validate_phone', 'validate_email', 'split_phone';
 use Ring::Exceptions 'throw_duplicate';
+use Ring::Item;
+use Ring::User;
 
 no warnings qw(uninitialized);
 
