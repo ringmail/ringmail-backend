@@ -35,7 +35,7 @@ sub load
 		'first_name' => $form->{'first_name'},
 		'last_name' => $form->{'last_name'},
 		'password' => $form->{'password'},
-		'contacts' => $form->{'contacts'},
+		#'contacts' => $form->{'contacts'},
 	};
 	my $reg = new Ring::Register();
 	my $ok = 0;

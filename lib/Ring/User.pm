@@ -20,14 +20,17 @@ use Date::Parse 'str2time';
 use Math::Random::Secure 'rand';
 use String::Random 'random_regex';
 
-use Note::SQL::Table 'sqltable';
+use Note::SQL::Table 'sqltable', 'transaction';
 use Note::Param;
 use Note::Row;
 use Note::Check;
 use Note::XML 'xml';
 use Note::Template;
 use Note::Account;
+
 use Ring::Item;
+use Ring::Valid 'validate_phone', 'validate_email', 'split_phone';
+use Ring::Twilio;
 
 no warnings qw(uninitialized);
 
@@ -146,31 +149,225 @@ sub verify_email
 	{
 		return 0;
 	}
-	$rec->update({
-		'ts_verified' => strftime("%F %T", localtime()),
-		'verified' => 1,
-	});
-	my $erec = new Note::Row(
-		'ring_user_email' => {
-			'email_id' => $rec->data('email_id'),
-			'user_id' => $rec->data('user_id'),
-		},
-		{
-			'select' => [qw/primary_email/],
-		},
-	);
-	if ($erec->data('primary_email'))
-	{
-		my $urec = new Note::Row(
-			'ring_user' => $obj->id(),
-		);
-		$urec->update({
+	transaction(sub {
+		$rec->update({
+			'ts_verified' => strftime("%F %T", localtime()),
 			'verified' => 1,
 		});
+		my $erec = new Note::Row(
+			'ring_user_email' => {
+				'email_id' => $rec->data('email_id'),
+				'user_id' => $rec->data('user_id'),
+			},
+			{
+				'select' => [qw/primary_email/],
+			},
+		);
+		if ($erec->data('primary_email'))
+		{
+			my $urec = new Note::Row(
+				'ring_user' => $obj->id(),
+			);
+			$urec->update({
+				'verified' => 1,
+			});
+		}
+		$obj->get_target_id(
+			'email_id' => $rec->data('email_id'),
+		);
+	});
+	return 1;
+}
+
+# static method
+sub lookup_user_phone
+{
+	my (undef, $param) = get_param(undef, @_);
+	my $phone = $param->{'phone'};
+	unless (validate_phone($param->{'phone'}))
+	{
+		InvalidUserInput->throw('message' => 'Invalid phone');
+	}
+	my ($did_code, $did_number) = split_phone($param->{'phone'});
+	my $item = new Ring::Item();
+	my $drec = $item->item(
+		'type' => 'did',
+		'did_number' => $did_number,
+		'did_code' => $did_code,
+		'no_create' => 1,
+	);
+	if (defined $drec)
+	{
+		my $rc = new Note::Row(
+			'ring_user_did' => {
+				'did_id' => $drec->id(),
+			},
+		);
+		if ($rc->id())
+		{
+			return new Ring::User($rc->data('user_id'));
+		}
+		else
+		{
+			InvalidUserInput->throw('message' => 'Unknown user for phone number');
+		}
+	}
+	else
+	{
+		InvalidUserInput->throw('message' => 'Unknown phone number');
 	}
 }
 
+sub verify_phone_send
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->id();
+	my $phone = $param->{'phone'};
+	unless (validate_phone($param->{'phone'}))
+	{
+		InvalidUserInput->throw('message' => 'Invalid phone');
+	}
+	my ($did_code, $did_number) = split_phone($param->{'phone'});
+	my $item = new Ring::Item();
+	my $drec = $item->item(
+		'type' => 'did',
+		'did_number' => $did_number,
+		'did_code' => $did_code,
+		'no_create' => 1,
+	);
+	if (defined $drec)
+	{
+		my $rc = new Note::Row(
+			'ring_verify_did' => {
+				'did_id' => $drec->id(),
+				'user_id' => $uid,
+			},
+		);
+		if ($rc->id())
+		{
+			if ($rc->data('verified'))
+			{
+				DuplicateData->throw('message' => 'Phone number already verified');
+			}
+			else
+			{
+				my $msg = 'RingMail Code: '. $rc->data('verify_code');
+				my $tw = new Ring::Twilio();
+				my $reply = $tw->send_sms(
+					'to' => $phone,
+					'from' => '+14243260287',
+					'body' => $msg,
+				);
+				unless ($reply->{'ok'})
+				{
+					::errorlog('Send SMS Error', $reply);
+					FatalError->throw('message' => 'Unable to send SMS');
+				}
+			}
+		}
+		else
+		{
+			InvalidUserInput->throw('message' => 'Phone number not set to be verified for user');
+		}
+	}
+	else
+	{
+		InvalidUserInput->throw('message' => 'Unknown phone number');
+	}
+}
 
+sub verify_phone
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->id();
+	my $phone = $param->{'phone'};
+	unless (validate_phone($param->{'phone'}))
+	{
+		InvalidUserInput->throw('message' => 'Invalid phone');
+	}
+	my ($did_code, $did_number) = split_phone($param->{'phone'});
+	my $item = new Ring::Item();
+	my $drec = $item->item(
+		'type' => 'did',
+		'did_number' => $did_number,
+		'did_code' => $did_code,
+	);
+	my $t = sqltable('ring_user_did');
+	my $q = $t->get(
+		'table' => ['ring_user_did u, ring_did d, ring_verify_did v'],
+		'select' => [
+			'd.did_code',
+			'd.did_number',
+			'd.id as did_id',
+			'v.verify_code',
+			'u.verified as verified_1',
+			'v.verified as verified_2',
+		],
+		'join' => [
+			'u.did_id=d.id',
+			'u.did_id=v.did_id',
+		],
+		'where' => {
+			'u.user_id' => $uid,
+			'd.id' => $drec->id(),
+		},
+		'order' => 'd.id asc',
+	);
+	unless (scalar(@$q) == 1)
+	{
+		InvalidUserInput->throw('message' => 'Phone number not set to be verified for user');
+	}
+	if ($q->[0]->{'verified_1'} || $q->[0]->{'verified_2'})
+	{
+		DuplicateData->throw('message' => 'Already verified');
+	}
+	my $ok = 0;
+	transaction(sub {
+		my $domid = $q->[0]->{'did_id'};
+		my $ud = new Note::Row(
+			'ring_user_did' => {
+				'user_id' => $uid,
+				'did_id' => $domid,
+			},
+		);
+		unless ($ud->{'id'})
+		{
+			InvalidUserInput->throw('message' => 'Phone number not associated with user');
+		}
+		my $vrd = new Note::Row(
+			'ring_verify_did' => {
+				'user_id' => $uid,
+				'did_id' => $domid,
+			},
+		);
+		unless ($vrd->{'id'})
+		{
+			InvalidUserInput->throw('message' => 'Phone number not set to be verified for user');
+		}
+		sqltable('ring_verify_did')->do(
+			'sql' => 'UPDATE ring_verify_did SET tries = tries + 1 WHERE id = ?',
+			'bind' => [$vrd->id()],
+		);
+		my $code = $q->[0]->{'verify_code'};
+		if ($code eq $param->{'verify_code'})
+		{
+			$ud->update({
+				'verified' => 1,
+			});
+			$vrd->update({
+				'verified' => 1,
+				'ts_verified' => strftime("%F %T", localtime()),
+			});
+			# ADD DID
+			$ok = 1;
+		}
+	});
+	unless ($ok)
+	{
+		InvalidUserInput->throw('message' => 'Bad verification code');
+	}
+	return 1;
+}
 
 sub check_password
 {
