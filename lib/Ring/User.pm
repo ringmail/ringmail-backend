@@ -30,6 +30,7 @@ use Note::Account;
 
 use Ring::Item;
 use Ring::Valid 'validate_phone', 'validate_email', 'split_phone';
+use Ring::Exceptions;
 use Ring::Twilio;
 
 no warnings qw(uninitialized);
@@ -323,11 +324,11 @@ sub verify_phone
 	}
 	my $ok = 0;
 	transaction(sub {
-		my $domid = $q->[0]->{'did_id'};
+		my $did = $q->[0]->{'did_id'};
 		my $ud = new Note::Row(
 			'ring_user_did' => {
 				'user_id' => $uid,
-				'did_id' => $domid,
+				'did_id' => $did,
 			},
 		);
 		unless ($ud->{'id'})
@@ -337,7 +338,7 @@ sub verify_phone
 		my $vrd = new Note::Row(
 			'ring_verify_did' => {
 				'user_id' => $uid,
-				'did_id' => $domid,
+				'did_id' => $did,
 			},
 		);
 		unless ($vrd->{'id'})
@@ -358,7 +359,14 @@ sub verify_phone
 				'verified' => 1,
 				'ts_verified' => strftime("%F %T", localtime()),
 			});
-			# ADD DID
+			my $tid = $obj->get_target_id(
+				'did_id' => $did,
+			);
+			$obj->set_target_route(
+				'target_id' => $tid,
+				'endpoint_type' => 'app',
+				'endpoint_id' => undef, # app
+			);
 			$ok = 1;
 		}
 	});
@@ -434,6 +442,69 @@ sub get_target_id
 	}
 	return undef unless (defined $trec);
 	return $trec->id();
+}
+
+sub set_target_route
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->id();
+	my $rt = $param->{'endpoint_type'};
+	my $epid = $param->{'endpoint_id'}; # endpoint_type 'app' does not have an endpoint_id
+	my $tgt = $param->{'target_id'};
+	sqltable('ring_target_route')->delete(
+		'where' => {'target_id' => $tgt},
+	);
+	if ($rt eq 'did')
+	{
+		my $rrec = Note::Row::find_create('ring_route' => {
+			'route_type' => 'did',
+			'did_id' => $epid,
+			'user_id' => $uid,
+		});
+		Note::Row::create('ring_target_route' => {
+			'target_id' => $tgt,
+			'route_id' => $rrec->id(),
+			'seq' => 0,
+		});
+	}
+	elsif ($rt eq 'app')
+	{
+		my $rrec = Note::Row::find_create('ring_route' => {
+			'route_type' => 'app',
+			'user_id' => $uid,
+		});
+		Note::Row::create('ring_target_route' => {
+			'target_id' => $tgt,
+			'route_id' => $rrec->id(),
+			'seq' => 0,
+		});
+	}
+	elsif ($rt eq 'phone')
+	{
+		my $rrec = Note::Row::find_create('ring_route' => {
+			'route_type' => 'phone',
+			'phone_id' => $epid,
+			'user_id' => $uid,
+		});
+		Note::Row::create('ring_target_route' => {
+			'target_id' => $tgt,
+			'route_id' => $rrec->id(),
+			'seq' => 0,
+		});
+	}
+	elsif ($rt eq 'sip')
+	{
+		my $rrec = Note::Row::find_create('ring_route' => {
+			'route_type' => 'sip',
+			'sip_id' => $epid,
+			'user_id' => $uid,
+		});
+		Note::Row::create('ring_target_route' => {
+			'target_id' => $tgt,
+			'route_id' => $rrec->id(),
+			'seq' => 0,
+		});
+	}
 }
 
 sub add_phone

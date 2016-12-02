@@ -10,13 +10,14 @@ use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
 use MIME::Base64 'encode_base64';
+use Try::Tiny;
+use Scalar::Util 'blessed';
 
 use Note::XML 'xml';
 use Note::Row;
 use Note::SQL::Table 'sqltable';
 use Note::Param;
 
-use Ring::API;
 use Ring::User;
 
 extends 'Note::Page';
@@ -32,40 +33,46 @@ sub load
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},
 	);
-	my $res = {
-		'result' => 'error',
-	};
+	my $err = undef;
+	my $res;
 	if ($user)
 	{
-		my $item = new Ring::Item();
-		my $phitem = $item->item(
-			'type' => 'did',
-			'did_number' => $form->{'phone'},
-			'no_create' => 1,
-		);
-		if (defined $phitem) # make sure DID exists in database at all
-		{
-			$form->{'code'} =~ s/\D//mg;
-			if (length($form->{'code'}) == 4)
+		my $ok = 0;
+		try {
+			$ok = $user->verify_phone(
+				'phone' => $form->{'phone'},
+				'verify_code' => $form->{'code'},
+			);
+		} catch {
+			if (blessed($_))
 			{
-				my $ck = Ring::API->cmd(
-					'path' => ['user', 'target', 'verify', 'did', 'check'],
-					'data' => {
-						'user_id' => $user->{'id'},
-						'did_id' => $phitem->{'id'},
-						'verify_code' => $form->{'code'},
-					},
-				);
-				if ($ck->{'ok'} || $ck->{'error'} =~ /already verified/i)
+				if ($_->message() =~ /already verified/i)
 				{
-					$res = {'result' => 'ok'};
+					$ok = 1;
 				}
 				else
 				{
-					::log('Input:', {%$form, 'password' => ''});
-					::log("Check Failed", $ck);
+					$err = undef;
 				}
 			}
+			else
+			{
+ 				::errorlog("Internal Error: $_");
+				$err = 'Internal error';
+			}
+		};
+		if ($ok)
+		{
+			$res = {
+				'result' => 'ok',
+			};
+		}
+		else
+		{
+			$res = {
+				'result' => 'error',
+				'error' => $err,
+			};
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
