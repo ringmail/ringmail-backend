@@ -67,6 +67,7 @@ sub load
 #				$err = 'verified';
 #			}
 #		}
+
 	}
 	elsif (defined($form->{'phone'}))
 	{
