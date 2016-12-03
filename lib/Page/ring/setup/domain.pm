@@ -15,7 +15,6 @@ use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
-use Ring::API;
 
 extends 'Page::ring::user';
 
@@ -31,12 +30,16 @@ sub load
 	my $user = $obj->user();
 	my $uid = $user->id();
 	my $phs = $user->get_phones();
-	my $out = Ring::API->cmd(
-		'path' => ['user', 'target', 'list', 'domain'],
-		'data' => {
-			'user_id' => $uid,
-		},
-	);
+	my $out = {
+		'ok' => 1,
+		'list' => [],
+	};
+#	my $out = Ring::API->cmd(
+#		'path' => ['user', 'target', 'list', 'domain'],
+#		'data' => {
+#			'user_id' => $uid,
+#		},
+#	);
 	::log($out);
 	if ($out->{'ok'})
 	{
@@ -70,46 +73,46 @@ sub load
 					'target_id' => $tgt->{'target_id'},
 					'did_opts' => {},
 				);
-				my $target = Ring::API->cmd(
-					'path' => ['user', 'target', 'route'],
-					'data' => {
-						'user_id' => $uid,
-						'target_id' => $tgt->{'target_id'},
-					},
-				);
-				my $sel = $uid;
-				if ($target->{'ok'})
-				{
-					my $rt = $target->{'route_type'};
-					if ($rt eq 'did')
-					{
-						my $ph = $target->{'did_number'};
-						$ph =~ s/(...)(...)(....)/($1) $2-$3/;
-						$route{'did'} = 1;
-						$route{'did_number'} = $ph;
-						$route{'route'} = 'Phone Number '. $ph;
-					}
-					elsif ($rt eq 'app')
-					{
-						$route{'phone'} = 1;
-						$route{'route'} = 'RingMail App';
-					}
-					elsif ($rt eq 'sip')
-					{
-						$route{'sip'} = 1;
-						$route{'sip_url'} = $target->{'sip_url'};
-						$route{'route'} = 'SIP Address: '. $target->{'sip_url'};
-					}
-				}
-				$route{'phone_field'} = $obj->field(
-					'command' => 'update',
-					'name' => 'phone_'. $i,
-					'type' => 'select',
-					'select' => [
-						['RingMail App', $user->id()],
-					],
-					'selected' => $sel,
-				);
+#				my $target = Ring::API->cmd(
+#					'path' => ['user', 'target', 'route'],
+#					'data' => {
+#						'user_id' => $uid,
+#						'target_id' => $tgt->{'target_id'},
+#					},
+#				);
+#				my $sel = $uid;
+#				if ($target->{'ok'})
+#				{
+#					my $rt = $target->{'route_type'};
+#					if ($rt eq 'did')
+#					{
+#						my $ph = $target->{'did_number'};
+#						$ph =~ s/(...)(...)(....)/($1) $2-$3/;
+#						$route{'did'} = 1;
+#						$route{'did_number'} = $ph;
+#						$route{'route'} = 'Phone Number '. $ph;
+#					}
+#					elsif ($rt eq 'app')
+#					{
+#						$route{'phone'} = 1;
+#						$route{'route'} = 'RingMail App';
+#					}
+#					elsif ($rt eq 'sip')
+#					{
+#						$route{'sip'} = 1;
+#						$route{'sip_url'} = $target->{'sip_url'};
+#						$route{'route'} = 'SIP Address: '. $target->{'sip_url'};
+#					}
+#				}
+#				$route{'phone_field'} = $obj->field(
+#					'command' => 'update',
+#					'name' => 'phone_'. $i,
+#					'type' => 'select',
+#					'select' => [
+#						['RingMail App', $user->id()],
+#					],
+#					'selected' => $sel,
+#				);
 				$content->{'domain_rt'} = \%route;
 				$content->{'domain_sel'} = $id;
 			}
@@ -125,17 +128,17 @@ sub load
 		}
 		$content->{'domain_list'} = \@domlist;
 	}
-	my $vout = Ring::API->cmd(
-		'path' => ['user', 'target', 'verify', 'domain', 'list'],
-		'data' => {
-			'user_id' => $uid,
-		},
-	);
-	if ($vout->{'ok'})
-	{
-		$content->{'verify_count'} = scalar @{$vout->{'list'}};
-		$content->{'verify'} = $vout->{'list'};
-	}
+#	my $vout = Ring::API->cmd(
+#		'path' => ['user', 'target', 'verify', 'domain', 'list'],
+#		'data' => {
+#			'user_id' => $uid,
+#		},
+#	);
+#	if ($vout->{'ok'})
+#	{
+#		$content->{'verify_count'} = scalar @{$vout->{'list'}};
+#		$content->{'verify'} = $vout->{'list'};
+#	}
 	return $obj->SUPER::load($param);
 }
 
@@ -154,18 +157,18 @@ sub cmd_domain_add
 		$obj->form()->{'new_domain'} = 1;
 		return;
 	}
-	my $ck = Ring::API->cmd(
-		'path' => ['user', 'check', 'domain'],
-		'data' => {
-			'domain' => $dns,
-		},
-	);
-	unless ($ck->{'ok'})
-	{
-		$obj->value()->{'error'} = 'That domain has already been registered';
-		$obj->form()->{'new_domain'} = 1;
-		return;
-	}
+#	my $ck = Ring::API->cmd(
+#		'path' => ['user', 'check', 'domain'],
+#		'data' => {
+#			'domain' => $dns,
+#		},
+#	);
+#	unless ($ck->{'ok'})
+#	{
+#		$obj->value()->{'error'} = 'That domain has already been registered';
+#		$obj->form()->{'new_domain'} = 1;
+#		return;
+#	}
 	my $user = $obj->user();
 	my $uid = $user->id();
 	my $vrf = Ring::API->cmd(
