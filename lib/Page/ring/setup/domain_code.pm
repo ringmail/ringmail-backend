@@ -10,12 +10,14 @@ use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
 use Regexp::Common 'net';
+use Try::Tiny;
+use Scalar::Util 'blessed';
 
 use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
-use Ring::API;
+use Ring::Domain;
 
 extends 'Page::ring::user';
 
@@ -29,58 +31,64 @@ sub load
 	my $content = $obj->content();
 	my $val = $obj->value();
 	my $user = $obj->user();
-	my $uid = $user->id();
 	unless ($form->{'id'} =~ /^\d+$/)
 	{
 		return $obj->redirect('/u/settings/domains');
 	}
-	my $out = Ring::API->cmd(
-		'path' => ['user', 'target', 'verify', 'domain', 'list'],
-		'data' => {
-			'user_id' => $uid,
-			'domain_id' => $form->{'id'},
-		},
+	my $domains = new Ring::Domain(
+		'user' => $user,
 	);
-	if ($out->{'ok'})
+	my $list = $domains->verify_info(
+		'domain_id' => $form->{'id'},
+	);
+	unless (scalar(@$list) == 1)
 	{
-		my $list = $out->{'list'};
-		unless (scalar(@$list) == 1)
-		{
-			return $obj->redirect('/u/settings/domains');
-		}
-		if ($val->{'verify'})
-		{
-			$content->{'verify_progress'} = 1;
-		}
-		elsif ($val->{'download'})
-		{
-			my $resp = $obj->response();
-			$resp->content_type('text/html');	
-			my $sh = substr($list->[0]->{'verify_code'}, 0, 16);
-			$resp->header('Content-Disposition' => "attachment; filename=ringmail_$sh.html");
-			my $body = "ringmail-domain-verify=$list->[0]->{'verify_code'}\n";
-			return $body;
-		}
-		elsif ($form->{'verify'}) # ajax request to actually verify
-		{
-			my $check = Ring::API->cmd(
-				'path' => ['user', 'target', 'verify', 'domain', 'check'],
-				'data' => {
-					'user_id' => $uid,
-					'domain_id' => $form->{'id'},
-				},
-			);
-			my $json = encode_json({
-				'ok' => $check->{'ok'},
-				'error' => $check->{'error'} || '',
-			});
-			$obj->response()->content_type('text/plain');
-			return $json;
-		}
-		$val->{'domain'} = $list->[0]->{'domain'};
-		$val->{'code'} = $list->[0]->{'verify_code'};
-		$val->{'code_short'} = substr($list->[0]->{'verify_code'}, 0, 16);
+		return $obj->redirect('/u/settings/domains');
 	}
+	if ($val->{'verify'})
+	{
+		$content->{'verify_progress'} = 1;
+	}
+	elsif ($val->{'download'})
+	{
+		my $resp = $obj->response();
+		$resp->content_type('text/html');	
+		my $sh = substr($list->[0]->{'verify_code'}, 0, 16);
+		$resp->header('Content-Disposition' => "attachment; filename=ringmail_$sh.html");
+		my $body = "ringmail-domain-verify=$list->[0]->{'verify_code'}\n";
+		return $body;
+	}
+	elsif ($form->{'verify'}) # ajax request to actually verify
+	{
+		my $ok = 0;
+		my $error = '';
+ 		try {
+			if ($domains->verify_domain(
+				'domain_id' => $form->{'id'},
+			)) {
+				$ok = 1;
+			}
+		} catch {
+			if (blessed($_))
+			{
+				$error = $_->message();
+			}
+			else
+			{
+				::errorlog("Verify Domain Error: $_");
+				$error = 'Internal error';
+			}
+		};
+		my $json = encode_json({
+			'ok' => $ok,
+			'error' => $error,
+		});
+		$obj->response()->content_type('text/plain');
+		return $json;
+	}
+	$val->{'domain'} = $list->[0]->{'domain'};
+	$val->{'code'} = $list->[0]->{'verify_code'};
+	$val->{'code_short'} = substr($list->[0]->{'verify_code'}, 0, 16);
 	return $obj->SUPER::load($param);
 }
 

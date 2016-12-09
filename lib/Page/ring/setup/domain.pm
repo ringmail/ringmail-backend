@@ -10,11 +10,16 @@ use Data::Dumper;
 use HTML::Entities 'encode_entities';
 use POSIX 'strftime';
 use Regexp::Common 'net';
+use Try::Tiny;
+use Scalar::Util 'blessed';
 
 use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
+use Ring::Domain;
+use Ring::Valid 'validate_domain';
+use Ring::Exceptions;
 
 extends 'Page::ring::user';
 
@@ -28,51 +33,41 @@ sub load
 	my $content = $obj->content();
 	my $val = $obj->value();
 	my $user = $obj->user();
-	my $uid = $user->id();
-	my $phs = $user->get_phones();
-	my $out = {
-		'ok' => 1,
-		'list' => [],
-	};
-#	my $out = Ring::API->cmd(
-#		'path' => ['user', 'target', 'list', 'domain'],
-#		'data' => {
-#			'user_id' => $uid,
-#		},
-#	);
-	::log($out);
-	if ($out->{'ok'})
+	my $domains = new Ring::Domain(
+		'user' => $user,
+	);
+	my $list = $domains->list_domains(
+		'verified' => 1,
+	);
+	my @domains = ();
+	my @domlist = ();
+	$content->{'domain_sel'} = '';
+	my $id = undef;
+	if ($form->{'id'} =~ /^\d+$/)
 	{
-		my $list = $out->{'list'};
-		my @domains = ();
-		my @domlist = ();
-		$content->{'domain_sel'} = '';
-		my $id = undef;
-		if ($form->{'id'} =~ /^\d+$/)
+		$id = $form->{'id'};
+	}
+	if ((! defined($id)) && scalar @$list)
+	{
+		$id = $list->[0]->{'domain_id'};
+	}
+	foreach my $tgt (@$list)
+	{
+		push @domlist, [$tgt->{'domain'}, $tgt->{'domain_id'}];
+		if ($id == $tgt->{'domain_id'})
 		{
-			$id = $form->{'id'};
-		}
-		if ((! defined($id)) && scalar @$list)
-		{
-			$id = $list->[0]->{'domain_id'};
-		}
-		foreach my $tgt (@$list)
-		{
-			push @domlist, [$tgt->{'domain'}, $tgt->{'domain_id'}];
-			if ($id == $tgt->{'domain_id'})
-			{
-				my $i = 1;
-				my %route = (
-					'id' => $i,
-					'id_name' => 'route_'. $i,
-					'id_did' => 'did_'. $i,
-					'id_sip' => 'sip_'. $i,
-					'domain' => $tgt->{'domain'},
-					'primary' => $tgt->{'primary_email'},
-					'active' => $tgt->{'active'},
-					'target_id' => $tgt->{'target_id'},
-					'did_opts' => {},
-				);
+			my $i = 1;
+			my %route = (
+				'id' => $i,
+				'id_name' => 'route_'. $i,
+				'id_did' => 'did_'. $i,
+				'id_sip' => 'sip_'. $i,
+				'domain' => $tgt->{'domain'},
+				'primary' => $tgt->{'primary_email'},
+				'active' => 1, # always active right now
+				'target_id' => $tgt->{'target_id'},
+				'did_opts' => {},
+			);
 #				my $target = Ring::API->cmd(
 #					'path' => ['user', 'target', 'route'],
 #					'data' => {
@@ -113,9 +108,8 @@ sub load
 #					],
 #					'selected' => $sel,
 #				);
-				$content->{'domain_rt'} = \%route;
-				$content->{'domain_sel'} = $id;
-			}
+			$content->{'domain_rt'} = \%route;
+			$content->{'domain_sel'} = $id;
 		}
 		unless (scalar @domlist)
 		{
@@ -128,17 +122,11 @@ sub load
 		}
 		$content->{'domain_list'} = \@domlist;
 	}
-#	my $vout = Ring::API->cmd(
-#		'path' => ['user', 'target', 'verify', 'domain', 'list'],
-#		'data' => {
-#			'user_id' => $uid,
-#		},
-#	);
-#	if ($vout->{'ok'})
-#	{
-#		$content->{'verify_count'} = scalar @{$vout->{'list'}};
-#		$content->{'verify'} = $vout->{'list'};
-#	}
+	my $vlist = $domains->list_domains(
+		'verified' => 0,
+	);
+	$content->{'verify_count'} = scalar @$vlist;
+	$content->{'verify'} = $vlist;
 	return $obj->SUPER::load($param);
 }
 
@@ -147,49 +135,42 @@ sub cmd_domain_add
 	my ($obj, $data, $args) = @_;
 	my $dns = lc($data->{'dns'});
 	::log("Add Domain: $dns");
-	unless (
-		(length($dns) >= 3) && # min 3 char
-		($dns =~ /\./) && # has a . (dot)
-		($dns !~ /\s/) && # does not have a space
-		($dns =~ /^$RE{'net'}{'domain'}{'-rfc1101'}$/) # matches this
-	) {
+	unless (validate_domain($dns))
+	{
 		$obj->value()->{'error'} = 'Invalid domain name.';
 		$obj->form()->{'new_domain'} = 1;
 		return;
 	}
-#	my $ck = Ring::API->cmd(
-#		'path' => ['user', 'check', 'domain'],
-#		'data' => {
-#			'domain' => $dns,
-#		},
-#	);
-#	unless ($ck->{'ok'})
-#	{
-#		$obj->value()->{'error'} = 'That domain has already been registered';
-#		$obj->form()->{'new_domain'} = 1;
-#		return;
-#	}
-	my $user = $obj->user();
-	my $uid = $user->id();
-	my $vrf = Ring::API->cmd(
-		'path' => ['user', 'target', 'verify', 'domain', 'generate'],
-		'data' => {
-			'user_id' => $uid,
-			'domain' => $dns,
-		},
+	my $domains = new Ring::Domain(
+		'user' => $obj->user(),
 	);
-	if ($vrf->{'ok'})
-	{
+	unless ($domains->check_duplicate(
+		'domain' => $dns,
+	)) {
+		$obj->value()->{'error'} = 'That domain has already been registered';
+		$obj->form()->{'new_domain'} = 1;
+		return;
+	}
+	try {
+		$domains->create_domain(
+			'domain' => $dns,
+		);
 		my $val = $obj->value();
 		$val->{'domain_added'} = 1;
 		$val->{'domain'} = $dns;
-	}
-	else
-	{
-		::log("Generate Verify Error:", $vrf);
-		$obj->value()->{'error'} = 'Something went wrong';
-		$obj->form()->{'new_domain'} = 1;
-	}
+	} catch {
+		if (blessed($_))
+		{
+			$obj->value()->{'error'} = $_->message();
+			$obj->form()->{'new_domain'} = 1;
+		}
+		else
+		{
+			::errorlog("Create Domain Error: $_");
+			$obj->value()->{'error'} = 'Internal error';
+			$obj->form()->{'new_domain'} = 1;
+		}
+	};
 }
 
 sub cmd_update
