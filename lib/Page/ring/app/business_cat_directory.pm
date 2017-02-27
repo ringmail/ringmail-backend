@@ -62,7 +62,7 @@ sub load
 					my $catimg = 'hashtagdir.jpg';
 					push @cat, {
 						'type' => 'hashtag_category',
-						'name' => uc($c->{'business_category_name'}),
+						'name' => $c->{'business_category_name'},
 						'id' => $c->{'id'},
 						'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
 					};
@@ -112,7 +112,7 @@ sub load
 						my $catimg = 'hashtagdir.jpg';
 						push @cat, {
 							'type' => 'hashtag_category',
-							'name' => uc($c->{'business_category_name'}),
+							'name' => $c->{'business_category_name'},
 							'id' => $c->{'id'},
 							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
 						};
@@ -147,7 +147,7 @@ sub load
 						my @cat = (
 							{
 								'type' => 'hashtag_category_header',
-								'name' => uc($catrc->data('business_category_name')),
+								'name' => $catrc->data('business_category_name'),
 								'id' => $pid,
 							}
 						);
