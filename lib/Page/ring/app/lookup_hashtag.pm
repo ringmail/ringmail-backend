@@ -38,28 +38,35 @@ sub load
 		if ($to =~ /^#([a-z0-9_]+)/i)
 		{
 			my $tag = lc($1);
+			# my $trow = new Note::Row(
+			# 	'ring_hashtag' => {
+			# 		'hashtag' => $tag,
+			# 	},
+			# 	'select' => ['target_url', 'ringpage_id'],
+			# );
 			my $trow = new Note::Row(
-				'ring_hashtag' => {
+				'business_hashtag' => {
 					'hashtag' => $tag,
 				},
-				'select' => ['target_url', 'ringpage_id'],
+				'select' => ['id'],
 			);
 			my $url;
 			if ($trow->id())
 			{
-				if ($trow->data('ringpage_id'))
-				{
-					$url = $obj->url(
-						'path' => '/ringpage',
-						'query' => {
-							'ringpage_id' => $trow->data('ringpage_id'),
-						},
-					);
-				}
-				else
-				{
-					$url = $trow->data('target_url');
-				}
+				$url = "http://www-mb.ringxml.com/ringpage_biz?hashtag=$tag";
+				# if ($trow->data('ringpage_id'))
+				# {
+				# 	$url = $obj->url(
+				# 		'path' => '/ringpage',
+				# 		'query' => {
+				# 			'ringpage_id' => $trow->data('ringpage_id'),
+				# 		},
+				# 	);
+				# }
+				# else
+				# {
+				# 	$url = $trow->data('target_url');
+				# }
 			}
 			else
 			{

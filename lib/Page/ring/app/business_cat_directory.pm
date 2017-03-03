@@ -29,6 +29,10 @@ sub load
 	my $form = $obj->form();
 
 	my $parentIdIn = $form->{'parent'};
+	my $latIn = $form->{'lat'};
+	my $lonIn = $form->{'lon'};
+	my $distance = 1;
+	my $rangeFactor = 0.014457;
 
 	::log('business category directory', {%$form, 'password' => ''});
 	my $user = Ring::User::login(
@@ -38,6 +42,31 @@ sub load
 	my $res = {'result' => 'Unauthorized'};
 	if ($user)
 	{
+		my $width = int($form->{'width'});
+		my $headerImg;
+		my $headerHeight;
+
+		if ($width eq '320')
+		{
+			$headerImg = 'explore_banner_ip5p@2x.png';
+			$headerHeight = '135';
+		}
+		elsif ($width eq '375')
+		{
+			$headerImg = 'explore_banner_ip6-7s@2x.png';
+			$headerHeight = '158';
+		}
+		elsif ($width eq '414')
+		{
+			$headerImg = 'explore_banner_ip6-7p@3x.png';
+			$headerHeight = '174';
+		}
+		else
+		{
+			$headerImg = 'explore_banner_ip6-7s@2x.png';
+			$headerHeight = '158';
+		}
+
 		my $pid = $form->{'parent'};
 		if ($pid =~ /^\d+$/)
 		{
@@ -56,16 +85,34 @@ sub load
 				);
 
 				my @cat = ();
+				my $first = 1;
+
 				foreach my $c (@$dq)
 				{
 					next if ($c->{'business_category_name'} =~ /\(none\)/i);
 					my $catimg = 'hashtagdir.jpg';
-					push @cat, {
-						'type' => 'hashtag_category',
-						'name' => $c->{'business_category_name'},
-						'id' => $c->{'id'},
-						'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
-					};
+					if ($first)
+					{
+						push @cat, {
+							'type' => 'hashtag_category',
+							'name' => $c->{'business_category_name'},
+							'id' => $c->{'id'},
+							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+							'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $headerImg),
+							'header_img_ht' => $headerHeight,
+						};
+						$first = 0;
+					}
+					else
+					{
+						push @cat, {
+							'type' => 'hashtag_category',
+							'name' => $c->{'business_category_name'},
+							'id' => $c->{'id'},
+							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+						};
+					}
+
 				}
 				my @group = ([]);
 				my $max = 2;
@@ -106,16 +153,31 @@ sub load
 				my @cat = ();
 
 				if (@$dq) {
-
+					my $first = 1;
 					foreach my $c (@$dq)
 					{
 						my $catimg = 'hashtagdir.jpg';
-						push @cat, {
-							'type' => 'hashtag_category',
-							'name' => $c->{'business_category_name'},
-							'id' => $c->{'id'},
-							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
-						};
+						if ($first)
+						{
+							push @cat, {
+								'type' => 'hashtag_category',
+								'name' => $c->{'business_category_name'},
+								'id' => $c->{'id'},
+								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+								'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $headerImg),
+								'header_img_ht' => $headerHeight,
+							};
+							$first = 0;
+						}
+						else
+						{
+							push @cat, {
+								'type' => 'hashtag_category',
+								'name' => $c->{'business_category_name'},
+								'id' => $c->{'id'},
+								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+							};
+						}
 					}
 					my @group = ([]);
 					my $max = 2;
@@ -142,6 +204,7 @@ sub load
 				else
 				{
 					my $catrc = new Note::Row('business_category' => {'id' => $pid});
+
 					if ($catrc->id())
 					{
 						my @cat = (
@@ -151,17 +214,15 @@ sub load
 								'id' => $pid,
 							}
 						);
-						my $tq = sqltable('business_place_category')->get(
+						my $tq = sqltable('business_place_category_geo')->get(
 							'select' => [
 								'bhp.hashtag',
-								'bpc.category_id',
-								'bpc.place_id',
+								'bpcg.category_id',
+								'bpcg.place_id',
 							],
-							'table' => 'business_place_category bpc, business_hashtag_place bhp',
-							'join' => 'bpc.place_id=bhp.place_id',
-							'where' => {
-								'bpc.category_id' => $pid,
-							},
+							'table' => 'business_place_category_geo bpcg, business_hashtag_place bhp',
+							'join' => 'bpcg.place_id=bhp.place_id',
+							'where' => "bpcg.category_id=$pid AND bpcg.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND bpcg.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,bpcg.latitude,bpcg.longitude) <= $distance",
 							'order' => 'bhp.hashtag',
 						);
 						my %seen = ();
