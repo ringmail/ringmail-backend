@@ -226,6 +226,9 @@ sub load
 							'order' => 'bhp.hashtag',
 						);
 						my %seen = ();
+
+						my $avatarImg = 'explore_hashtagdir_icon4.jpg';
+
 						foreach my $i (@$tq)
 						{
 							my $tag = '#'. $i->{'hashtag'};
@@ -233,6 +236,7 @@ sub load
 								'type' => 'hashtag',
 								'label' => $tag,
 								'session_tag' => $tag,
+								'image' => $obj->url('path' => '/img/hashtag_avatars/'. $avatarImg),
 							};
 						}
 						$res->{'directory'} = \@cat;
