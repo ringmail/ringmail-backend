@@ -46,6 +46,8 @@ sub load
 		if ($to =~ /^#([a-z0-9_]+)/i)
 		{
 			my $url;
+			my $avatarUrl;
+			my $avatarImg = 'explore_hashtagdir_icon4.jpg';
 
 			my $tag = lc($1);
 			$tag = "\'$tag\'";
@@ -64,7 +66,8 @@ sub load
 			if (@$tq)
 			{
 				my $closestPlaceId = $$tq[0]->{'place_id'};
-				$url = "http://www-mb.ringxml.com/ringpage_biz?id=$closestPlaceId";
+				$url = $obj->url('path' => 'ringpage_biz' . "?id=$closestPlaceId");
+				$avatarUrl = '/img/hashtag_avatars/' . $avatarImg;
 			}
 			else
 			{
@@ -75,6 +78,7 @@ sub load
 			$res = {
 				'result' => 'ok',
 				'target' => $url,
+				'avatar_url' => $avatarUrl,
 			};
 		}
 	}
