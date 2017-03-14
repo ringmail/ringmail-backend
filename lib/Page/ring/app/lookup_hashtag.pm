@@ -48,6 +48,7 @@ sub load
 			my $url;
 			my $avatarUrl;
 			my $avatarImg = 'explore_hashtagdir_icon4.jpg';
+			my $imgPath = '/img/hashtag_avatars/';
 
 			my $tag = lc($1);
 			$tag = "\'$tag\'";
@@ -78,7 +79,8 @@ sub load
 			$res = {
 				'result' => 'ok',
 				'target' => $url,
-				'avatar_url' => $avatarUrl,
+				'img_path' => $imgPath,
+				'avatar_img' => $avatarImg,
 			};
 		}
 	}
