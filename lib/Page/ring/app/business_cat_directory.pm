@@ -45,21 +45,29 @@ sub load
 		my $width = int($form->{'width'});
 		my $headerImg;
 		my $headerHeight;
+		my $cardHeaderImg;
+		my $cardHeaderHeight;
 
 		if ($width eq '320')
 		{
 			$headerImg = 'explore_banner_ip5p@2x.png';
 			$headerHeight = '135';
+			$cardHeaderImg = 'explore_hashtag_category_sample_banner1_ip5@2x.jpg';
+			$cardHeaderHeight = '96'
 		}
 		elsif ($width eq '375')
 		{
 			$headerImg = 'explore_banner_ip6-7s@2x.png';
 			$headerHeight = '158';
+			$cardHeaderImg = 'explore_hashtag_category_sample_banner1_ip6-7s@2x.jpg';
+			$cardHeaderHeight = '113'
 		}
 		elsif ($width eq '414')
 		{
 			$headerImg = 'explore_banner_ip6-7p@3x.png';
 			$headerHeight = '174';
+			$cardHeaderImg = 'explore_hashtag_directory_sample_banner1_ip6-7p@3x.jpg';
+			$cardHeaderHeight = '124'
 		}
 		else
 		{
@@ -98,6 +106,7 @@ sub load
 							'name' => $c->{'business_category_name'},
 							'id' => $c->{'id'},
 							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+							'header_type' => 'hashtag_directory_header',
 							'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $headerImg),
 							'header_img_ht' => $headerHeight,
 						};
@@ -164,8 +173,9 @@ sub load
 								'name' => $c->{'business_category_name'},
 								'id' => $c->{'id'},
 								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
-								'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $headerImg),
-								'header_img_ht' => $headerHeight,
+								'header_type' => 'hashtag_directory_header',
+								'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $cardHeaderImg),
+								'header_img_ht' => $cardHeaderHeight,
 							};
 							$first = 0;
 						}
@@ -204,43 +214,63 @@ sub load
 				else
 				{
 					my $catrc = new Note::Row('business_category' => {'id' => $pid});
+					# my $catrc = sqltable('business_category')->get(
+					# 	'select' => [
+					# 		'bc1.id'
+					# 		'bc1.business_category_name',
+					# 		'bc2.business_category_name as parent_name'
+					# 	],
+					# 	'table' => 'business_category bc1, business_category bc2',
+					# 	'join' => 'bc2.id=bc1.parent',
+					# 	'where' => "bc1.id = $pid",
+					# );
 
 					if ($catrc->id())
 					{
-						my @cat = (
-							{
-								'type' => 'hashtag_category_header',
-								'name' => $catrc->data('business_category_name'),
-								'id' => $pid,
-							}
-						);
-						my $tq = sqltable('business_place_category_geo')->get(
-							'select' => [
-								'bhp.hashtag',
-								'bpcg.category_id',
-								'bpcg.place_id',
-							],
-							'table' => 'business_place_category_geo bpcg, business_hashtag_place bhp',
-							'join' => 'bpcg.place_id=bhp.place_id',
-							'where' => "bpcg.category_id=$pid AND bpcg.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND bpcg.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,bpcg.latitude,bpcg.longitude) <= $distance",
-							'order' => 'bhp.hashtag',
-						);
-						my %seen = ();
-
-						my $avatarImg = 'explore_hashtagdir_icon4.jpg';
-
-						foreach my $i (@$tq)
+						my $parentrc = new Note::Row('business_category' => {'id' => $catrc->data('parent')});
+						if ($parentrc->id())
 						{
-							my $tag = '#'. $i->{'hashtag'};
-							push @cat, {
-								'type' => 'hashtag',
-								'label' => $tag,
-								'session_tag' => $tag,
-								'image' => $obj->url('path' => '/img/hashtag_avatars/'. $avatarImg),
-							};
+							my @cat = (
+								{
+									'type' => 'hashtag_category_header',
+									'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $cardHeaderImg),
+									'header_img_ht' => $cardHeaderHeight,
+									'name' => $catrc->data('business_category_name'),
+									'parent_name' => $parentrc->data('business_category_name'),
+									'id' => $pid,
+								}
+							);
+							my $tq = sqltable('business_place_category_geo')->get(
+								'select' => [
+									'bhp.hashtag',
+									'bpcg.category_id',
+									'bpcg.place_id',
+								],
+								'table' => 'business_place_category_geo bpcg, business_hashtag_place bhp',
+								'join' => 'bpcg.place_id=bhp.place_id',
+								'where' => "bpcg.category_id=$pid AND bpcg.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND bpcg.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,bpcg.latitude,bpcg.longitude) <= $distance",
+								'order' => 'bhp.hashtag',
+							);
+
+							::log($tq);
+
+							my %seen = ();
+
+							my $avatarImg = 'explore_hashtagdir_icon4.jpg';
+
+							foreach my $i (@$tq)
+							{
+								my $tag = '#'. $i->{'hashtag'};
+								push @cat, {
+									'type' => 'hashtag',
+									'label' => $tag,
+									'session_tag' => $tag,
+									'image' => $obj->url('path' => '/img/hashtag_avatars/'. $avatarImg),
+								};
+							}
+							$res->{'directory'} = \@cat;
+							$res->{'result'} = 'ok';
 						}
-						$res->{'directory'} = \@cat;
-						$res->{'result'} = 'ok';
 					}
 				}
 			}
