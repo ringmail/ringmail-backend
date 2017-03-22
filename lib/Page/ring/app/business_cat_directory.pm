@@ -104,6 +104,8 @@ sub load
 						push @cat, {
 							'type' => 'hashtag_category',
 							'name' => $c->{'business_category_name'},
+							'parent_name' => '',
+							'parent2parent_name' => '',
 							'id' => $c->{'id'},
 							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
 							'header_type' => 'hashtag_directory_header',
@@ -151,8 +153,9 @@ sub load
 						'c1.id',
 						'c1.business_category_name',
 						'c1.parent',
+						'c2.parent c2Parent',
 						'c1.factual_category_id',
-
+						'c2.business_category_name as c2Name',
 					],
 					'table' => 'business_category c1, business_category c2',
 					'join' => 'c2.id=c1.parent',
@@ -168,9 +171,23 @@ sub load
 						my $catimg = 'hashtagdir.jpg';
 						if ($first)
 						{
+							my $parentName = $c->{'c2Name'};
+							my $parent2ParentName = '';
+
+							if ($c->{'c2Parent'} ne '')
+							{
+								my $p2prc = new Note::Row('business_category' => {'id' => $c->{'c2Parent'}});
+								if ($p2prc->id())
+								{
+									$parent2ParentName = $p2prc->data('business_category_name');
+								}
+							}
+							
 							push @cat, {
 								'type' => 'hashtag_category',
 								'name' => $c->{'business_category_name'},
+								'parent_name' => $parentName,
+								'parent2parent_name' => $parent2ParentName,
 								'id' => $c->{'id'},
 								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
 								'header_type' => 'hashtag_directory_header',
