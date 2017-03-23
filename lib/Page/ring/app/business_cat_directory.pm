@@ -47,37 +47,52 @@ sub load
 		my $headerHeight;
 		my $cardHeaderImg;
 		my $cardHeaderHeight;
+		my $catimg;
+		my $imgExt;
 
 		if ($width eq '320')
 		{
-			$headerImg = 'explore_banner_ip5p@2x.png';
+			$headerImg = '/img/hashtag_categories/temp/explore_banner_ip5.jpg';
 			$headerHeight = '135';
-			$cardHeaderImg = 'explore_hashtag_category_sample_banner1_ip5@2x.jpg';
-			$cardHeaderHeight = '96'
+			$cardHeaderImg = '/img/hashtag_categories/temp/explore_hashtag_category_sample_banner1_ip5.jpg';
+			$cardHeaderHeight = '96';
+			$catimg = '/img/hashtag_categories/temp/hashtagdir_ip5.jpg';
+			$imgExt = '_ip5.jpg';
 		}
 		elsif ($width eq '375')
 		{
-			$headerImg = 'explore_banner_ip6-7s@2x.png';
+			$headerImg = '/img/hashtag_categories/temp/explore_banner_ip6.jpg';
 			$headerHeight = '158';
-			$cardHeaderImg = 'explore_hashtag_category_sample_banner1_ip6-7s@2x.jpg';
-			$cardHeaderHeight = '113'
+			$cardHeaderImg = '/img/hashtag_categories/temp/explore_hashtag_category_sample_banner1_ip6.jpg';
+			$cardHeaderHeight = '113';
+			$catimg = '/img/hashtag_categories/temp/hashtagdir_ip6.jpg';
+			$imgExt = '_ip6.jpg';
 		}
 		elsif ($width eq '414')
 		{
-			$headerImg = 'explore_banner_ip6-7p@3x.png';
+			$headerImg = '/img/hashtag_categories/temp/explore_banner_ip6p.jpg';
 			$headerHeight = '174';
-			$cardHeaderImg = 'explore_hashtag_directory_sample_banner1_ip6-7p@3x.jpg';
-			$cardHeaderHeight = '124'
+			$cardHeaderImg = '/img/hashtag_categories/temp/explore_hashtag_directory_sample_banner1_ip6p.jpg';
+			$cardHeaderHeight = '124';
+			$catimg = '/img/hashtag_categories/temp/hashtagdir_ip6p.jpg';
+			$imgExt = '_ip6p.jpg';
 		}
 		else
 		{
-			$headerImg = 'explore_banner_ip6-7s@2x.png';
+			$headerImg = '/img/hashtag_categories/temp/explore_banner_ip6.jpg';
 			$headerHeight = '158';
+			$cardHeaderImg = '/img/hashtag_categories/temp/explore_hashtag_category_sample_banner1_ip6.jpg';
+			$cardHeaderHeight = '113';
+			$catimg = '/img/hashtag_categories/temp/hashtagdir_ip6.jpg';
+			$imgExt = '_ip6.jpg';
 		}
 
 		my $pid = $form->{'parent'};
 		if ($pid =~ /^\d+$/)
 		{
+			my $tmpCatImg = $catimg;
+			my $tmpHeaderImg = $cardHeaderImg;
+
 			if ($pid == 0)
 			{
 				my $dq = sqltable('business_category')->get(
@@ -98,7 +113,7 @@ sub load
 				foreach my $c (@$dq)
 				{
 					next if ($c->{'business_category_name'} =~ /\(none\)/i);
-					my $catimg = 'hashtagdir.jpg';
+
 					if ($first)
 					{
 						push @cat, {
@@ -107,9 +122,9 @@ sub load
 							'parent_name' => '',
 							'parent2parent_name' => '',
 							'id' => $c->{'id'},
-							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+							'image_url' => $obj->url('path' => $catimg),
 							'header_type' => 'hashtag_directory_header',
-							'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $headerImg),
+							'header_img_url' => $obj->url('path' => $headerImg),
 							'header_img_ht' => $headerHeight,
 						};
 						$first = 0;
@@ -120,9 +135,12 @@ sub load
 							'type' => 'hashtag_category',
 							'name' => $c->{'business_category_name'},
 							'id' => $c->{'id'},
-							'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+							'image_url' => $obj->url('path' => $catimg),
 						};
 					}
+
+					$catimg = $tmpCatImg;
+					$cardHeaderImg = $tmpHeaderImg;
 
 				}
 				my @group = ([]);
@@ -156,6 +174,8 @@ sub load
 						'c2.parent c2Parent',
 						'c1.factual_category_id',
 						'c2.business_category_name as c2Name',
+						'c1.img_url',
+						'c1.header_img_url',
 					],
 					'table' => 'business_category c1, business_category c2',
 					'join' => 'c2.id=c1.parent',
@@ -166,9 +186,18 @@ sub load
 
 				if (@$dq) {
 					my $first = 1;
+
 					foreach my $c (@$dq)
 					{
-						my $catimg = 'hashtagdir.jpg';
+						if ($c->{'img_url'} ne '')
+						{
+							$catimg = $c->{'img_url'} . $imgExt;
+						}
+						if ($c->{'header_img_url'} ne '')
+						{
+							$cardHeaderImg = $c->{'header_img_url'} . $imgExt;
+						}
+
 						if ($first)
 						{
 							my $parentName = $c->{'c2Name'};
@@ -189,9 +218,9 @@ sub load
 								'parent_name' => $parentName,
 								'parent2parent_name' => $parent2ParentName,
 								'id' => $c->{'id'},
-								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+								'image_url' => $obj->url('path' => $catimg),
 								'header_type' => 'hashtag_directory_header',
-								'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $cardHeaderImg),
+								'header_img_url' => $obj->url('path' => $cardHeaderImg),
 								'header_img_ht' => $cardHeaderHeight,
 							};
 							$first = 0;
@@ -202,9 +231,11 @@ sub load
 								'type' => 'hashtag_category',
 								'name' => $c->{'business_category_name'},
 								'id' => $c->{'id'},
-								'image_url' => $obj->url('path' => '/img/hashtag_categories/'. $catimg),
+								'image_url' => $obj->url('path' => $catimg),
 							};
 						}
+						$catimg = $tmpCatImg;
+						$cardHeaderImg = $tmpHeaderImg;
 					}
 					my @group = ([]);
 					my $max = 2;
@@ -241,6 +272,10 @@ sub load
 					# 	'join' => 'bc2.id=bc1.parent',
 					# 	'where' => "bc1.id = $pid",
 					# );
+					if ($catrc->data('header_img_url'))
+					{
+						$cardHeaderImg = $catrc->data('header_img_url') . $imgExt;
+					}
 
 					if ($catrc->id())
 					{
@@ -250,7 +285,7 @@ sub load
 							my @cat = (
 								{
 									'type' => 'hashtag_category_header',
-									'header_img_url' => $obj->url('path' => '/img/hashtag_categories/'. $cardHeaderImg),
+									'header_img_url' => $obj->url('path' => $cardHeaderImg),
 									'header_img_ht' => $cardHeaderHeight,
 									'name' => $catrc->data('business_category_name'),
 									'parent_name' => $parentrc->data('business_category_name'),
