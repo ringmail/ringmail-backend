@@ -201,7 +201,7 @@ sub load
 						if ($first)
 						{
 							my $parentName = $c->{'c2Name'};
-							my $parent2ParentName = '';
+							my $parent2ParentName = 'Explore Hashtags';
 
 							if ($c->{'c2Parent'} ne '')
 							{
