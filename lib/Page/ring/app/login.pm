@@ -28,11 +28,25 @@ sub load
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
 	#::log({%$form, 'password' => ''});
-	my $user = Ring::User::login(
-		'login' => $form->{'login'},
-		'password' => $form->{'password'},
-	);
 	my $res;
+	my $user;
+
+	if ($form->{'idToken'})
+	{
+        $user = Ring::User::login(
+			'login' => $form->{'login'},
+			'password' => $form->{'idToken'},
+		);
+	}
+	else
+	{
+		$user = Ring::User::login(
+			'login' => $form->{'login'},
+			'password' => $form->{'password'},
+		);
+	}
+
+
 	if ($user)
 	{
 		::log("Login: $form->{'login'} Version: $form->{'version'}-$form->{'build'}");

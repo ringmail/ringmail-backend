@@ -830,9 +830,22 @@ sub get_contacts_hash
 sub login
 {
 	my (undef, $param) = get_param(undef, @_);
-	my $rc = new Note::Row(
+
+    my $login = $param->{'login'};
+    my $gid = 0;
+
+    if ($login =~ /(.*)_gid/)
+    {
+        $login = $1;
+        
+        #TODO: add jwt verification of $param->{password}
+        # if jwt verified then
+        $gid = 1;
+    }
+    
+    my $rc = new Note::Row(
 		'ring_user' => {
-			'login' => $param->{'login'},
+			'login' => $login,
 		},
 		{
 			'select' => [qw/password_salt password_hash/],
@@ -841,6 +854,12 @@ sub login
 	if ($rc->id())
 	{
 		my $user = new Ring::User($rc->id());
+
+        if ($gid)
+        {
+            return $user;
+        }
+        
 		if ($user->check_password(
 			'salt' => $rc->data('password_salt'),
 			'hash' => $rc->data('password_hash'),

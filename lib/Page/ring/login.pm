@@ -24,7 +24,8 @@ sub load
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
 	my $content = $obj->content();
-	if (exists $form->{'login'})
+    
+    if (exists $form->{'login'})
 	{
 		my $rc = new Note::Row(
 			'ring_user' => {
