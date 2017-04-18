@@ -30,22 +30,39 @@ sub load
 	#::log({%$form, 'password' => ''});
 	my $res;
 	my $user;
+	my $newPW;
 
 	if ($form->{'idToken'})
 	{
-        $user = Ring::User::login(
-			'login' => $form->{'login'},
-			'password' => $form->{'idToken'},
+		open (S, '-|', '/home/note/app/ringmail/scripts/genrandstring.pl');
+		$/ = undef;
+		$newPW = <S>;
+		close(S);
+
+		my $urc = new Note::Row(
+			'ring_user' => {'login' => $form->{'login'}},
 		);
+
+		if ($urc->id())
+		{
+			my $userChange = new Ring::User('id' => $urc->id());
+			$userChange->password_change('password' => $newPW);
+
+			$user = Ring::User::login(
+				'login' => $form->{'login'},
+				'password' => $newPW,
+			);
+
+			::log($newPW);
+		}
 	}
 	else
-	{
+	{	
 		$user = Ring::User::login(
 			'login' => $form->{'login'},
 			'password' => $form->{'password'},
 		);
 	}
-
 
 	if ($user)
 	{
@@ -86,6 +103,7 @@ sub load
 				'sip_login' => $sipauth->[0]->{'login'},
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
+				'ringmail_password' => $newPW,
 				'phone' => $phone,
 				'contacts' => 0,
 				'rg_contacts' => [],

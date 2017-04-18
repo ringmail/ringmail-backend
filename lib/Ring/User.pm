@@ -832,17 +832,7 @@ sub login
 	my (undef, $param) = get_param(undef, @_);
 
     my $login = $param->{'login'};
-    my $gid = 0;
-
-    if ($login =~ /(.*)_gid/)
-    {
-        $login = $1;
         
-        #TODO: add jwt verification of $param->{password}
-        # if jwt verified then
-        $gid = 1;
-    }
-    
     my $rc = new Note::Row(
 		'ring_user' => {
 			'login' => $login,
@@ -855,11 +845,6 @@ sub login
 	{
 		my $user = new Ring::User($rc->id());
 
-        if ($gid)
-        {
-            return $user;
-        }
-        
 		if ($user->check_password(
 			'salt' => $rc->data('password_salt'),
 			'hash' => $rc->data('password_hash'),
