@@ -36,9 +36,9 @@ sub load
 	{
 		my $verifyRequest =`curl -sX GET https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$form->{'idToken'}`;
 		my $response = decode_json( $verifyRequest );
-
+        # ::log($response);
 		# Google App: RingMail-Dev-IOS,  Client ID: 224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com
-		if (($response->{"email_verified"} eq "true") && ($response->{"aud"} eq "224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com"))
+		if (($response->{"email"} eq $form->{'login'}) && ($response->{"email_verified"} eq "true") && ($response->{"aud"} eq "224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com"))
 		{
 			open (S, '-|', '/home/note/app/ringmail/scripts/genrandstring.pl');
 			$/ = undef;
