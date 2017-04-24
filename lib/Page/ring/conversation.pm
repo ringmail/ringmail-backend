@@ -29,7 +29,7 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	::log('conversation request', $form);
+	#::log('conversation request', $form);
 	my $uuid = $form->{'conv'};
 	my $from = $form->{'from'};
 	$from =~ s/\%40/\@/;
@@ -112,7 +112,7 @@ sub load
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log("conversation response", $res);
+	#::log("conversation response", $res);
 	return encode_json($res);
 }
 
