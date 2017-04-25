@@ -5,7 +5,7 @@ use warnings;
 use vars qw();
 
 use Moose;
-use JSON::XS 'encode_json';
+use JSON::XS qw( encode_json decode_json );
 use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
@@ -28,11 +28,49 @@ sub load
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
 	#::log({%$form, 'password' => ''});
-	my $user = Ring::User::login(
-		'login' => $form->{'login'},
-		'password' => $form->{'password'},
-	);
 	my $res;
+	my $user;
+	my $newPW;
+
+	if ($form->{'idToken'})
+	{
+		my $verifyRequest =`curl -sX GET https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$form->{'idToken'}`;
+		my $response = decode_json( $verifyRequest );
+        # ::log($response);
+		# Google App: RingMail-Dev-IOS,  Client ID: 224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com
+		if (($response->{"email"} eq $form->{'login'}) && ($response->{"email_verified"} eq "true") && ($response->{"aud"} eq "224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com"))
+		{
+			open (S, '-|', '/home/note/app/ringmail/scripts/genrandstring.pl');
+			$/ = undef;
+			$newPW = <S>;
+			close(S);
+
+			my $urc = new Note::Row(
+				'ring_user' => {'login' => $form->{'login'}},
+			);
+
+			if ($urc->id())
+			{
+				my $userChange = new Ring::User('id' => $urc->id());
+				$userChange->password_change('password' => $newPW);
+
+				$user = Ring::User::login(
+					'login' => $form->{'login'},
+					'password' => $newPW,
+				);
+
+				::log($newPW);
+			}
+		}
+	}
+	else
+	{	
+		$user = Ring::User::login(
+			'login' => $form->{'login'},
+			'password' => $form->{'password'},
+		);
+	}
+
 	if ($user)
 	{
 		::log("Login: $form->{'login'} Version: $form->{'version'}-$form->{'build'}");
@@ -72,6 +110,7 @@ sub load
 				'sip_login' => $sipauth->[0]->{'login'},
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
+				'ringmail_password' => $newPW,
 				'phone' => $phone,
 				'contacts' => 0,
 				'rg_contacts' => [],

@@ -830,9 +830,12 @@ sub get_contacts_hash
 sub login
 {
 	my (undef, $param) = get_param(undef, @_);
-	my $rc = new Note::Row(
+
+    my $login = $param->{'login'};
+        
+    my $rc = new Note::Row(
 		'ring_user' => {
-			'login' => $param->{'login'},
+			'login' => $login,
 		},
 		{
 			'select' => [qw/password_salt password_hash/],
@@ -841,6 +844,7 @@ sub login
 	if ($rc->id())
 	{
 		my $user = new Ring::User($rc->id());
+
 		if ($user->check_password(
 			'salt' => $rc->data('password_salt'),
 			'hash' => $rc->data('password_hash'),

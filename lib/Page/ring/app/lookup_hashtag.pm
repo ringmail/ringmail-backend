@@ -32,44 +32,55 @@ sub load
 		'password' => $form->{'password'},
 	);
 	my $res = {'result' => 'error'};
+
+	my $latIn = $form->{'lat'};
+    my $lonIn = $form->{'lon'};
+
 	if ($user)
 	{
 		my $to = $form->{'hashtag'};
+
+		my $distance = 1;
+    	my $rangeFactor = 0.014457;
+
 		if ($to =~ /^#([a-z0-9_]+)/i)
 		{
-			my $tag = lc($1);
-			my $trow = new Note::Row(
-				'ring_hashtag' => {
-					'hashtag' => $tag,
-				},
-				'select' => ['target_url', 'ringpage_id'],
-			);
 			my $url;
-			if ($trow->id())
+			my $avatarUrl;
+			my $avatarImg = 'explore_hashtagdir_icon4.jpg';
+			my $imgPath = '/img/hashtag_avatars/';
+
+			my $tag = lc($1);
+			$tag = "\'$tag\'";
+			
+			my $tq = sqltable('business_place_category_geo')->get(
+				'select' => [
+					'b.place_id',
+					'p.hashtag',
+				],
+				'table' => 'business_place_category_geo b, business_hashtag_place p',
+				'join' => 'b.place_id=p.place_id',
+				'where' => "p.hashtag=$tag AND b.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND b.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,b.latitude,b.longitude) <= $distance",
+				'order' => "(POW((b.longitude-$lonIn),2) + POW((b.latitude-$latIn),2))",
+			);
+
+			if (@$tq)
 			{
-				if ($trow->data('ringpage_id'))
-				{
-					$url = $obj->url(
-						'path' => '/ringpage',
-						'query' => {
-							'ringpage_id' => $trow->data('ringpage_id'),
-						},
-					);
-				}
-				else
-				{
-					$url = $trow->data('target_url');
-				}
+				my $closestPlaceId = $$tq[0]->{'place_id'};
+				$url = $obj->url('path' => 'ringpage_biz' . "?id=$closestPlaceId");
+				$avatarUrl = '/img/hashtag_avatars/' . $avatarImg;
 			}
 			else
 			{
 				# default
-				#$url = 'http://'. $::app_config->{'www_domain'}. '/hashtag_available';
 				$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
 			}
+
 			$res = {
 				'result' => 'ok',
 				'target' => $url,
+				'img_path' => $imgPath,
+				'avatar_img' => $avatarImg,
 			};
 		}
 	}

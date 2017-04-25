@@ -1,0 +1,110 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		[% IF hashtag %]
+			<title>[% hashtag %]</title>
+		[% ELSE %]
+			<title>Ring Mail</title>
+		[% END %]
+		<meta name="description" content="">
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+		<link rel="stylesheet" href="/css/business/style.css"/>
+
+		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+[% IF bodybg %]
+	<body style="min-height:100vh; background:url(/img/business/bg/[% bodybg %].png) no-repeat center top/cover;"/>
+[% ELSE %]
+	<body style="min-height:100vh; background:url(/img/business/body.png) no-repeat center top/cover;"/>
+[% END %]
+	<!--[if lt IE 8]>
+			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+	<header class="header">
+<!-- 		<div class="cont">
+			<h2><a class="back" href="#"></a> <span>FINANCE</span></h2>
+		</div> -->
+	</header>
+	<div class="pageCont">
+		<main>
+			<div class="cont">
+				[% IF logo %]
+				<img class="logo" src="[% logo %]" alt=""/>
+				[% ELSE %]
+				<img class="logo" src="img/business/home.png" alt=""/>
+				[% END %]
+				[% IF name %]
+						<h1>[% name %]</h1>
+				[% END %]
+
+					[% IF hashtag %]
+						<p>[% hashtag %]</p>
+					[% END %]
+
+					[% IF record %]
+					<div class="oh">
+						<a href="#" class="btn"><span class="icn icn--phone"><img src="/img/business/phone.png" alt=""></span>Call</a>
+						<a href="#" class="btn"><span class="icn icn--msg"><img src="/img/business/msg.png" alt=""></span>Message</a>
+					</div>
+
+					<h3>About Us</h3>
+					[% IF title %]
+					[% title %]
+					[% END %]
+					<p>
+						[% IF website %]
+								<a href="[% websiteLink %]">[% website %]</a>
+						[% END %]
+						<br>
+						[% IF address %]
+								[% address %]
+								[% IF address_extended %]
+								, [% address_extended %]
+								[% END %]
+								[% IF po_box %]
+								, [% po_box %]
+								[% END %]
+								[% IF post_town %]
+								, [% post_town %]
+								[% END %]
+						[% END %]
+						<br>
+						[% IF locality && region %]
+								[% locality %], [% region %] [% postcode %]
+						[% END %]	
+						<br>
+	<!-- 					[% IF email %]
+								[% email %]
+						[% END %]
+						<br>
+						[% IF tel %]
+								tel: [% tel %]
+						[% END %]
+						<br>
+						[% IF fax %]
+								fax: [% fax %]
+						[% END %]
+						<br>
+						[% IF factual_id %]
+						[% END %]
+						<br> -->
+					</p>
+					[% ELSE %]
+					<h3>Not Found</h3>
+					<br>
+					[% END %]
+			</div>
+		</main>
+
+	</div><!-- pageCont -->
+</body>
+</html>
