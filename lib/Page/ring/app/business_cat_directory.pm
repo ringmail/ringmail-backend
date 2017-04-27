@@ -100,10 +100,9 @@ sub load
 						'c1.id',
 						'c1.business_category_name',
 						'c1.parent',
-						'c1.factual_category_id',
 					],
 					'table' => 'business_category c1',
-					'where' => 'c1.parent IS NULL and c1.factual_category_id IS NULL',
+					'where' => 'c1.parent IS NULL',
 					'order' => 'business_category_name asc',
 				);
 
