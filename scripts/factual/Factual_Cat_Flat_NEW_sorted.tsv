@@ -1,0 +1,314 @@
+125	Shopping		Antiques
+126	Shopping		Arts and Crafts
+127	Shopping		Auctions
+128	Shopping		Beauty Products
+129	Shopping		Bicycles
+130	Shopping		Bookstores
+131	Shopping		Cards and Stationery
+132	Shopping		Children
+133	Shopping		Computers and Electronics
+137	Shopping		Construction Supplies
+138	Shopping		Convenience Stores
+139	Shopping		Costumes
+140	Shopping		Dance and Music
+141	Shopping		Department Stores
+142	Shopping		Clothes, Shoes and Fashion
+147	Shopping		Flea Markets
+148	Shopping		Florists
+149	Shopping		Food and Beverage
+157	Shopping		Furniture and Decor
+158	Shopping		Gift and Novelty
+159	Shopping		Glasses
+160	Shopping		Hobby and Collectibles
+161	Shopping		Luggage
+162	Shopping		Music, Video and DVD
+163	Shopping		Newsstands
+164	Shopping		Nurseries and Garden Centers
+165	Shopping		Outlet
+166	Shopping		Pawn Shops
+167	Shopping		Pets
+168	Shopping		Photos and Frames
+169	Shopping		Shopping Centers and Malls
+170	Shopping		Sporting Goods
+171	Shopping		Supermarkets and Groceries
+173	Shopping		Toys
+174	Shopping		Vintage and Thrift
+175	Shopping		Warehouses and Wholesale Stores
+176	Shopping		Wedding and Bridal
+248	Shopping		Home Appliances
+250	Shopping		Housewares
+442	Shopping		Discount Stores
+444	Shopping		Office Supplies
+445	Shopping		Party Supplies
+4	Shopping	Automotive	Car Dealers and Leasing
+6	Shopping	Automotive	Car Parts and Accessories
+7	Shopping	Automotive	Car Wash and Detail
+8	Shopping	Automotive	Classic and Antique Car
+9	Shopping	Automotive	Maintenance and Repair
+14	Shopping	Automotive	Motorcycles, Mopeds and Scooters
+17	Shopping	Automotive	RVs and Motor Homes
+18	Shopping	Automotive	Salvage Yards
+19	Shopping	Automotive	Towing
+417	Shopping	Automotive	Gas Stations
+21	Community and Government		Animal Shelters and Humane Societies
+24	Community and Government		Disabled Persons Services
+25	Community and Government		Drug and Alcohol Services
+44	Community and Government		Libraries
+59	Community and Government		Senior Citizen Services
+61	Community and Government		Utility Companies
+52	Community and Government		Public and Social Services
+27	Community and Government	Education	Adult Education
+28	Community and Government	Education	Art Lessons and Schools
+29	Community and Government	Education	Colleges and Universities
+30	Community and Government	Education	Computer Training
+31	Community and Government	Education	Culinary Lessons and Schools
+32	Community and Government	Education	Driving Schools
+34	Community and Government	Education	Primary and Secondary Schools
+35	Community and Government	Education	Tutoring and Educational Services
+36	Community and Government	Education	Vocational Schools
+41	Community and Government	Law Enforcement and Public Safety	Rescue Services
+42	Community and Government	Law Enforcement and Public Safety	Fire Stations
+43	Community and Government	Law Enforcement and Public Safety	Police Stations
+23	Services		Day Care and Preschools
+178	Services		Business and Strategy Consulting
+179	Services		Industrial Machinery and Vehicles
+182	Services		Packaging
+187	Services		Scientific
+188	Services		Security and Safety
+189	Services		Telecommunication Services
+193	Services		Advertising and Marketing
+205	Services		Art Restoration
+206	Services		Audiovisual
+209	Services		Computers
+211	Services		Electrical Equipment
+212	Services		Employment Agencies
+213	Services		Engineering
+214	Services		Entertainment
+216	Services		Equipment Rental
+217	Services		Events and Event Planning
+230	Services		Food and Beverage
+262	Services		Storage
+266	Services		Human Resources
+267	Services		Import and Export
+448	Services		Notary
+272	Services		Insurance
+273	Services		Machine Shops
+276	Services		Paper
+288	Services		Printing, Copying and Signage
+289	Services		Professional Cleaning
+290	Services		Publishing
+301	Services		Renewable Energy
+302	Services		Repair Services
+303	Services		Shipping, Freight, and Material Transportation
+304	Services		Tailors
+305	Services		Veterinarians
+307	Services		Wholesale
+446	Services		Career Counseling
+447	Services		Construction
+449	Services		Photography
+450	Services		Translation Services
+460	Services		Technology
+220	Services	Financial	Accounting and Bookkeeping
+221	Services	Financial	Banking and Finance
+222	Services	Financial	Business Brokers and Franchises
+223	Services	Financial	Check Cashing
+224	Services	Financial	Collections
+225	Services	Financial	Financial Planning and Investments
+226	Services	Financial	Fund Raising
+227	Services	Financial	Loans and Mortgages
+228	Services	Financial	Stock Brokers
+229	Services	Financial	Student Aid and Grants
+236	Services	Home Improvement	Architects
+237	Services	Home Improvement	Carpenters
+238	Services	Home Improvement	Carpet and Flooring
+239	Services	Home Improvement	Contractors
+243	Services	Home Improvement	Doors and Windows
+244	Services	Home Improvement	Electricians
+245	Services	Home Improvement	Fences, Fireplaces and Garage Doors
+246	Services	Home Improvement	Hardware and Services
+247	Services	Home Improvement	Heating, Ventilating and Air Conditioning
+249	Services	Home Improvement	Home Inspection Services
+251	Services	Home Improvement	Interior Design
+252	Services	Home Improvement	Kitchens
+253	Services	Home Improvement	Landscaping and Gardeners
+254	Services	Home Improvement	Lighting Fixtures
+256	Services	Home Improvement	Movers
+257	Services	Home Improvement	Painting
+258	Services	Home Improvement	Pest Control
+259	Services	Home Improvement	Plumbing
+260	Services	Home Improvement	Pools and Spas
+261	Services	Home Improvement	Roofers
+263	Services	Home Improvement	Swimming Pool Maintenance and Services
+264	Services	Home Improvement	Tree Service
+265	Services	Home Improvement	Upholstery
+293	Services	Real Estate	Real Estate Agents
+294	Services	Real Estate	Real Estate Appraiser
+296	Services	Real Estate	Apartments, Condos, and Houses
+299	Services	Real Estate	Commercial Real Estate
+50	Organizations		Youth Organizations
+369	Organizations		Country Clubs
+371	Organizations		Zoos, Aquariums and Wildlife Sanctuaries
+54	Organizations	Religious	Buddhist Temples
+55	Organizations	Religious	Churches
+56	Organizations	Religious	Hindu Temples
+57	Organizations	Religious	Mosques
+58	Organizations	Religious	Synagogues
+65	Healthcare		Home Health Care Services
+67	Healthcare		Blood Banks and Centers
+68	Healthcare		Chiropractors
+69	Healthcare		Dentists
+70	Healthcare		Emergency Services
+72	Healthcare		Holistic, Alternative and Naturopathic Medicine
+74	Healthcare		Hospitals, Clinics and Medical Centers
+75	Healthcare		Medical Supplies and Labs
+76	Healthcare		Mental Health
+79	Healthcare		Nurses
+80	Healthcare		Pharmacies
+81	Healthcare		Physical Therapy and Rehabilitation
+105	Healthcare		Pregnancy and Sexual Health
+106	Healthcare		Weight Loss and Nutritionists
+466	Healthcare		Optometrist
+84	Healthcare	Doctors	Anesthesiologists
+85	Healthcare	Doctors	Cardiologists
+86	Healthcare	Doctors	Dermatologists
+87	Healthcare	Doctors	Ear, Nose and Throat
+88	Healthcare	Doctors	Family Medicine
+89	Healthcare	Doctors	Gastroenterologists
+90	Healthcare	Doctors	General Surgery
+91	Healthcare	Doctors	Internal Medicine
+92	Healthcare	Doctors	Neurologists
+93	Healthcare	Doctors	Obstetricians and Gynecologists
+94	Healthcare	Doctors	Oncologists
+95	Healthcare	Doctors	Ophthalmologists
+96	Healthcare	Doctors	Orthopedic Surgeons
+97	Healthcare	Doctors	Pathologists
+98	Healthcare	Doctors	Pediatricians
+99	Healthcare	Doctors	Plastic Surgeons
+100	Healthcare	Doctors	Psychiatrists
+101	Healthcare	Doctors	Radiologists
+102	Healthcare	Doctors	Respiratory
+103	Healthcare	Doctors	Urologists
+441	Healthcare	Doctors	Geriatrics
+104	Healthcare	Doctors	Podiatrists
+278	Personal Care		Dry Cleaning, Ironing and Laundry
+279	Personal Care		Hair Removal
+280	Personal Care		Haircut, Barbers and Beauty Salons
+281	Personal Care		Manicures and Pedicures
+282	Personal Care		Massage Clinics and Therapists
+283	Personal Care		Piercing
+284	Personal Care		Skin Care
+285	Personal Care		Spas
+286	Personal Care		Tanning Salons
+287	Personal Care		Tattooing
+310	Entertainment		Art Dealers and Galleries
+311	Entertainment		Museums
+312	Entertainment		Bars
+319	Entertainment		Amusement Parks
+320	Entertainment		Billiard and Pool
+321	Entertainment		Bingo
+322	Entertainment		Bowling
+323	Entertainment		Carnivals
+325	Entertainment		Circuses
+326	Entertainment		Dance Halls and Saloons
+327	Entertainment		Fairgrounds and Rodeos
+328	Entertainment		Go Carts
+329	Entertainment		Hookah Lounges
+330	Entertainment		Karaoke
+331	Entertainment		Miniature Golf
+332	Entertainment		Movie Theatres
+333	Entertainment		Music and Show Venues
+334	Entertainment		Night Clubs
+335	Entertainment		Party Centers
+336	Entertainment		Psychics and Astrologers
+337	Entertainment		Ticket Sales
+463	Entertainment		Arcades
+370	Entertainment		Wineries and Vineyards
+339	Food and Dining		Bagels and Donuts
+340	Food and Dining		Bakeries
+341	Food and Dining		Breweries
+342	Food and Dining		Cafes, Coffee and Tea Houses
+343	Food and Dining		Dessert
+344	Food and Dining		Ice Cream Parlors
+345	Food and Dining		Internet Cafes
+346	Food and Dining		Juice Bars and Smoothies
+347	Food and Dining		All Restaurants
+348	Food and Dining		American
+349	Food and Dining		Barbecue
+350	Food and Dining		Buffets
+351	Food and Dining		Burgers
+352	Food and Dining		Chinese
+353	Food and Dining		Delis
+354	Food and Dining		Diners
+355	Food and Dining		Fast Food
+356	Food and Dining		French
+357	Food and Dining		Indian
+358	Food and Dining		Italian
+359	Food and Dining		Japanese
+360	Food and Dining		Korean
+361	Food and Dining		Mexican
+362	Food and Dining		Middle Eastern
+363	Food and Dining		Pizza
+364	Food and Dining		Seafood
+365	Food and Dining		Steakhouses
+366	Food and Dining		Sushi
+367	Food and Dining		Thai
+368	Food and Dining		Vegan and Vegetarian
+457	Food and Dining		Asian
+458	Food and Dining		Food Trucks
+464	Food and Dining		International
+373	Sports and Recreation		Athletic Fields
+374	Sports and Recreation		Baseball
+376	Sports and Recreation		Basketball
+377	Sports and Recreation		Combat Sports
+378	Sports and Recreation		Cycling
+379	Sports and Recreation		Dance
+380	Sports and Recreation		Equestrian
+381	Sports and Recreation		Football
+382	Sports and Recreation		Golf
+383	Sports and Recreation		Gun Ranges
+384	Sports and Recreation		Gymnastics
+385	Sports and Recreation		Gyms and Fitness Centers
+386	Sports and Recreation		Hockey
+388	Sports and Recreation		Campgrounds and RV Parks
+389	Sports and Recreation		Hiking
+390	Sports and Recreation		Hot Air Balloons
+391	Sports and Recreation		Hunting and Fishing
+392	Sports and Recreation		Rock Climbing
+393	Sports and Recreation		Skydiving
+394	Sports and Recreation		Paintball
+395	Sports and Recreation		Personal Trainers
+396	Sports and Recreation		Race Tracks
+398	Sports and Recreation		Racquetball
+399	Sports and Recreation		Tennis
+400	Sports and Recreation		Recreation Centers
+401	Sports and Recreation		Running
+402	Sports and Recreation		Skating
+403	Sports and Recreation		Snow Sports
+404	Sports and Recreation		Soccer
+405	Sports and Recreation		Sports Clubs
+406	Sports and Recreation		Stadiums and Arenas
+407	Sports and Recreation		Swimming Pools
+409	Sports and Recreation		Boating
+410	Sports and Recreation		Canoes and Kayaks
+411	Sports and Recreation		Rafting
+412	Sports and Recreation		Scuba Diving
+413	Sports and Recreation		Swimming
+452	Sports and Recreation		Surfing
+414	Sports and Recreation		Yoga and Pilates
+416	Travel		Airlines and Aviation Services
+418	Travel		Parking
+419	Travel		Public Transportation Services
+420	Travel		Taxi and Car Services
+425	Travel		Airports
+426	Travel		Bus Stations
+428	Travel		Ports
+429	Travel		Rail Stations
+431	Travel		Cruises
+433	Travel		Bed and Breakfasts
+434	Travel		Cottages and Cabins
+435	Travel		Hostels
+436	Travel		Hotels and Motels
+437	Travel		Lodges and Vacation Rentals
+438	Travel		Resorts
+439	Travel		Tourist Information and Services
+440	Travel		Travel Agents and Tour Operators
