@@ -53,7 +53,8 @@ sub load
     if ($rec)
     {
         $content->{'record'} = 'true';
-        my $chainName = $rec->data('chain_name');
+        # not all chains have chain_name value
+        my $chainName = $rec->data('name');
         if ($chainName)
         {
             my $chainSocial = new Note::Row('business_chain_social' => {'chain_name' => $chainName});
@@ -65,8 +66,10 @@ sub load
             {
                 $content->{'logo'} = $logoImg;
             }
+
+            ::log("htag chainName:  $chainName");
         }
-        
+
         my $tel = $rec->data('tel');
         $tel =~ s/^\+1(\d{3})(\d{3})(\d{4})$/($1) $2-$3/;
 
