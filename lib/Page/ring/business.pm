@@ -53,8 +53,7 @@ sub load
     if ($rec)
     {
         $content->{'record'} = 'true';
-        # not all chains have chain_name value
-        my $chainName = $rec->data('name');
+        my $chainName = $rec->data('chain_name');
         if ($chainName)
         {
             my $chainSocial = new Note::Row('business_chain_social' => {'chain_name' => $chainName});
