@@ -1,0 +1,333 @@
+id,"business_category_name",factual_category_id,parent,"img_url","header_img_url"
+1,"Shopping",NULL,NULL,NULL,NULL
+2,"Antiques",125,1,"/img/hashtag_categories/cards/card_125","/img/hashtag_categories/banners/banner_125"
+3,"Arts and Crafts",126,1,"/img/hashtag_categories/cards/card_126","/img/hashtag_categories/banners/banner_126"
+4,"Auctions",127,1,NULL,NULL
+5,"Beauty Products",128,1,"/img/hashtag_categories/cards/card_128","/img/hashtag_categories/banners/banner_128"
+6,"Bicycles",129,1,"/img/hashtag_categories/cards/card_129","/img/hashtag_categories/banners/banner_129"
+7,"Bookstores",130,1,"/img/hashtag_categories/cards/card_130","/img/hashtag_categories/banners/banner_130"
+8,"Cards and Stationery",131,1,"/img/hashtag_categories/cards/card_131","/img/hashtag_categories/banners/banner_131"
+9,"Children",132,1,"/img/hashtag_categories/cards/card_132","/img/hashtag_categories/banners/banner_132"
+10,"Computers and Electronics",133,1,"/img/hashtag_categories/cards/card_133","/img/hashtag_categories/banners/banner_133"
+11,"Construction Supplies",137,1,NULL,NULL
+12,"Convenience Stores",138,1,NULL,NULL
+13,"Costumes",139,1,"/img/hashtag_categories/cards/card_139","/img/hashtag_categories/banners/banner_139"
+14,"Dance and Music",140,1,"/img/hashtag_categories/cards/card_140","/img/hashtag_categories/banners/banner_140"
+15,"Department Stores",141,1,"/img/hashtag_categories/cards/card_141","/img/hashtag_categories/banners/banner_141"
+16,"Clothes, Shoes and Fashion",142,1,NULL,NULL
+17,"Flea Markets",147,1,"/img/hashtag_categories/cards/card_147","/img/hashtag_categories/banners/banner_147"
+18,"Florists",148,1,"/img/hashtag_categories/cards/card_148","/img/hashtag_categories/banners/banner_148"
+19,"Food and Beverage",149,1,"/img/hashtag_categories/cards/card_149","/img/hashtag_categories/banners/banner_149"
+20,"Furniture and Decor",157,1,"/img/hashtag_categories/cards/card_157","/img/hashtag_categories/banners/banner_157"
+21,"Gift and Novelty",158,1,"/img/hashtag_categories/cards/card_158","/img/hashtag_categories/banners/banner_158"
+22,"Glasses",159,1,NULL,NULL
+23,"Hobby and Collectibles",160,1,NULL,NULL
+24,"Luggage",161,1,NULL,NULL
+25,"Music, Video and DVD",162,1,NULL,NULL
+26,"Newsstands",163,1,NULL,NULL
+27,"Nurseries and Garden Centers",164,1,NULL,NULL
+28,"Outlet",165,1,NULL,NULL
+29,"Pawn Shops",166,1,NULL,NULL
+30,"Pets",167,1,NULL,NULL
+31,"Photos and Frames",168,1,NULL,NULL
+32,"Shopping Centers and Malls",169,1,NULL,NULL
+33,"Sporting Goods",170,1,NULL,NULL
+34,"Supermarkets and Groceries",171,1,NULL,NULL
+35,"Toys",173,1,NULL,NULL
+36,"Vintage and Thrift",174,1,NULL,NULL
+37,"Warehouses and Wholesale Stores",175,1,NULL,NULL
+38,"Wedding and Bridal",176,1,NULL,NULL
+39,"Home Appliances",248,1,NULL,NULL
+40,"Housewares",250,1,NULL,NULL
+41,"Discount Stores",442,1,NULL,NULL
+42,"Office Supplies",444,1,NULL,NULL
+43,"Party Supplies",445,1,NULL,NULL
+44,"Automotive",NULL,1,NULL,NULL
+45,"Car Dealers and Leasing",4,44,"/img/hashtag_categories/cards/card_4","/img/hashtag_categories/banners/banner_4"
+46,"Car Parts and Accessories",6,44,"/img/hashtag_categories/cards/card_6","/img/hashtag_categories/banners/banner_6"
+47,"Car Wash and Detail",7,44,"/img/hashtag_categories/cards/card_7","/img/hashtag_categories/banners/banner_7"
+48,"Classic and Antique Car",8,44,"/img/hashtag_categories/cards/card_8","/img/hashtag_categories/banners/banner_8"
+49,"Maintenance and Repair",9,44,"/img/hashtag_categories/cards/card_9","/img/hashtag_categories/banners/banner_9"
+50,"Motorcycles, Mopeds and Scooters",14,44,NULL,NULL
+51,"RVs and Motor Homes",17,44,"/img/hashtag_categories/cards/card_17","/img/hashtag_categories/banners/banner_17"
+52,"Salvage Yards",18,44,"/img/hashtag_categories/cards/card_18","/img/hashtag_categories/banners/banner_18"
+53,"Towing",19,44,NULL,NULL
+54,"Gas Stations",417,44,"/img/hashtag_categories/cards/card_417","/img/hashtag_categories/banners/banner_417"
+55,"Community and Government",NULL,NULL,NULL,NULL
+56,"Animal Shelters and Humane Societies",21,55,"/img/hashtag_categories/cards/card_21","/img/hashtag_categories/banners/banner_21"
+57,"Disabled Persons Services",24,55,"/img/hashtag_categories/cards/card_24","/img/hashtag_categories/banners/banner_24"
+58,"Drug and Alcohol Services",25,55,"/img/hashtag_categories/cards/card_25","/img/hashtag_categories/banners/banner_25"
+59,"Libraries",44,55,"/img/hashtag_categories/cards/card_44","/img/hashtag_categories/banners/banner_44"
+60,"Senior Citizen Services",59,55,"/img/hashtag_categories/cards/card_59","/img/hashtag_categories/banners/banner_59"
+61,"Utility Companies",61,55,"/img/hashtag_categories/cards/card_61","/img/hashtag_categories/banners/banner_61"
+62,"Public and Social Services",52,55,NULL,NULL
+63,"Education",NULL,55,NULL,NULL
+64,"Adult Education",27,63,"/img/hashtag_categories/cards/card_27","/img/hashtag_categories/banners/banner_27"
+65,"Art Lessons and Schools",28,63,"/img/hashtag_categories/cards/card_28","/img/hashtag_categories/banners/banner_28"
+66,"Colleges and Universities",29,63,"/img/hashtag_categories/cards/card_29","/img/hashtag_categories/banners/banner_29"
+67,"Computer Training",30,63,"/img/hashtag_categories/cards/card_30","/img/hashtag_categories/banners/banner_30"
+68,"Culinary Lessons and Schools",31,63,"/img/hashtag_categories/cards/card_31","/img/hashtag_categories/banners/banner_31"
+69,"Driving Schools",32,63,"/img/hashtag_categories/cards/card_32","/img/hashtag_categories/banners/banner_32"
+70,"Primary and Secondary Schools",34,63,NULL,NULL
+71,"Tutoring and Educational Services",35,63,"/img/hashtag_categories/cards/card_35","/img/hashtag_categories/banners/banner_35"
+72,"Vocational Schools",36,63,NULL,NULL
+73,"Law Enforcement and Public Safety",NULL,55,NULL,NULL
+74,"Rescue Services",41,73,"/img/hashtag_categories/cards/card_41","/img/hashtag_categories/banners/banner_41"
+75,"Fire Stations",42,73,"/img/hashtag_categories/cards/card_42","/img/hashtag_categories/banners/banner_42"
+76,"Police Stations",43,73,"/img/hashtag_categories/cards/card_43","/img/hashtag_categories/banners/banner_43"
+77,"Services",NULL,NULL,NULL,NULL
+78,"Day Care and Preschools",23,77,"/img/hashtag_categories/cards/card_23","/img/hashtag_categories/banners/banner_23"
+79,"Business and Strategy Consulting",178,77,NULL,NULL
+80,"Industrial Machinery and Vehicles",179,77,NULL,NULL
+81,"Packaging",182,77,NULL,NULL
+82,"Scientific",187,77,NULL,NULL
+83,"Security and Safety",188,77,NULL,NULL
+84,"Telecommunication Services",189,77,NULL,NULL
+85,"Advertising and Marketing",193,77,NULL,NULL
+86,"Art Restoration",205,77,NULL,NULL
+87,"Audiovisual",206,77,NULL,NULL
+88,"Computers",209,77,NULL,NULL
+89,"Electrical Equipment",211,77,NULL,NULL
+90,"Employment Agencies",212,77,NULL,NULL
+91,"Engineering",213,77,NULL,NULL
+92,"Entertainment",214,77,NULL,NULL
+93,"Equipment Rental",216,77,NULL,NULL
+94,"Events and Event Planning",217,77,NULL,NULL
+95,"Food and Beverage",230,77,NULL,NULL
+96,"Storage",262,77,NULL,NULL
+97,"Human Resources",266,77,NULL,NULL
+98,"Import and Export",267,77,NULL,NULL
+99,"Notary",448,77,NULL,NULL
+100,"Insurance",272,77,NULL,NULL
+101,"Machine Shops",273,77,NULL,NULL
+102,"Paper",276,77,NULL,NULL
+103,"Printing, Copying and Signage",288,77,NULL,NULL
+104,"Professional Cleaning",289,77,NULL,NULL
+105,"Publishing",290,77,NULL,NULL
+106,"Renewable Energy",301,77,NULL,NULL
+107,"Repair Services",302,77,NULL,NULL
+108,"Shipping, Freight, and Material Transportation",303,77,NULL,NULL
+109,"Tailors",304,77,NULL,NULL
+110,"Veterinarians",305,77,NULL,NULL
+111,"Wholesale",307,77,NULL,NULL
+112,"Career Counseling",446,77,NULL,NULL
+113,"Construction",447,77,NULL,NULL
+114,"Photography",449,77,NULL,NULL
+115,"Translation Services",450,77,NULL,NULL
+116,"Technology",460,77,NULL,NULL
+117,"Financial",NULL,77,NULL,NULL
+118,"Accounting and Bookkeeping",220,117,NULL,NULL
+119,"Banking and Finance",221,117,NULL,NULL
+120,"Business Brokers and Franchises",222,117,NULL,NULL
+121,"Check Cashing",223,117,NULL,NULL
+122,"Collections",224,117,NULL,NULL
+123,"Financial Planning and Investments",225,117,NULL,NULL
+124,"Fund Raising",226,117,NULL,NULL
+125,"Loans and Mortgages",227,117,NULL,NULL
+126,"Stock Brokers",228,117,NULL,NULL
+127,"Student Aid and Grants",229,117,NULL,NULL
+128,"Home Improvement",NULL,77,NULL,NULL
+129,"Architects",236,128,NULL,NULL
+130,"Carpenters",237,128,NULL,NULL
+131,"Carpet and Flooring",238,128,NULL,NULL
+132,"Contractors",239,128,NULL,NULL
+133,"Doors and Windows",243,128,NULL,NULL
+134,"Electricians",244,128,NULL,NULL
+135,"Fences, Fireplaces and Garage Doors",245,128,NULL,NULL
+136,"Hardware and Services",246,128,NULL,NULL
+137,"Heating, Ventilating and Air Conditioning",247,128,NULL,NULL
+138,"Home Inspection Services",249,128,NULL,NULL
+139,"Interior Design",251,128,NULL,NULL
+140,"Kitchens",252,128,NULL,NULL
+141,"Landscaping and Gardeners",253,128,NULL,NULL
+142,"Lighting Fixtures",254,128,NULL,NULL
+143,"Movers",256,128,NULL,NULL
+144,"Painting",257,128,NULL,NULL
+145,"Pest Control",258,128,NULL,NULL
+146,"Plumbing",259,128,NULL,NULL
+147,"Pools and Spas",260,128,NULL,NULL
+148,"Roofers",261,128,NULL,NULL
+149,"Swimming Pool Maintenance and Services",263,128,NULL,NULL
+150,"Tree Service",264,128,NULL,NULL
+151,"Upholstery",265,128,NULL,NULL
+152,"Real Estate",NULL,77,NULL,NULL
+153,"Real Estate Agents",293,152,NULL,NULL
+154,"Real Estate Appraiser",294,152,NULL,NULL
+155,"Apartments, Condos, and Houses",296,152,NULL,NULL
+156,"Commercial Real Estate",299,152,NULL,NULL
+157,"Organizations",NULL,NULL,NULL,NULL
+158,"Youth Organizations",50,157,"/img/hashtag_categories/cards/card_50","/img/hashtag_categories/banners/banner_50"
+159,"Country Clubs",369,157,NULL,NULL
+160,"Zoos, Aquariums and Wildlife Sanctuaries",371,157,NULL,NULL
+161,"Religious",NULL,157,NULL,NULL
+162,"Buddhist Temples",54,161,"/img/hashtag_categories/cards/card_54","/img/hashtag_categories/banners/banner_54"
+163,"Churches",55,161,"/img/hashtag_categories/cards/card_55","/img/hashtag_categories/banners/banner_55"
+164,"Hindu Temples",56,161,"/img/hashtag_categories/cards/card_56","/img/hashtag_categories/banners/banner_56"
+165,"Mosques",57,161,"/img/hashtag_categories/cards/card_57","/img/hashtag_categories/banners/banner_57"
+166,"Synagogues",58,161,"/img/hashtag_categories/cards/card_58","/img/hashtag_categories/banners/banner_58"
+167,"Healthcare",NULL,NULL,NULL,NULL
+168,"Home Health Care Services",65,167,NULL,NULL
+169,"Blood Banks and Centers",67,167,NULL,NULL
+170,"Chiropractors",68,167,NULL,NULL
+171,"Dentists",69,167,"/img/hashtag_categories/cards/card_69","/img/hashtag_categories/banners/banner_69"
+172,"Emergency Services",70,167,"/img/hashtag_categories/cards/card_70","/img/hashtag_categories/banners/banner_70"
+173,"Holistic, Alternative and Naturopathic Medicine",72,167,NULL,NULL
+174,"Hospitals, Clinics and Medical Centers",74,167,NULL,NULL
+175,"Medical Supplies and Labs",75,167,"/img/hashtag_categories/cards/card_75","/img/hashtag_categories/banners/banner_75"
+176,"Mental Health",76,167,"/img/hashtag_categories/cards/card_76","/img/hashtag_categories/banners/banner_76"
+177,"Nurses",79,167,"/img/hashtag_categories/cards/card_79","/img/hashtag_categories/banners/banner_79"
+178,"Pharmacies",80,167,"/img/hashtag_categories/cards/card_80","/img/hashtag_categories/banners/banner_80"
+179,"Physical Therapy and Rehabilitation",81,167,NULL,NULL
+180,"Pregnancy and Sexual Health",105,167,NULL,NULL
+181,"Weight Loss and Nutritionists",106,167,"/img/hashtag_categories/cards/card_106","/img/hashtag_categories/banners/banner_106"
+182,"Optometrist",466,167,NULL,NULL
+183,"Doctors",NULL,167,NULL,NULL
+184,"Anesthesiologists",84,183,NULL,NULL
+185,"Cardiologists",85,183,NULL,NULL
+186,"Dermatologists",86,183,NULL,NULL
+187,"Ear, Nose and Throat",87,183,NULL,NULL
+188,"Family Medicine",88,183,NULL,NULL
+189,"Gastroenterologists",89,183,NULL,NULL
+190,"General Surgery",90,183,NULL,NULL
+191,"Internal Medicine",91,183,NULL,NULL
+192,"Neurologists",92,183,NULL,NULL
+193,"Obstetricians and Gynecologists",93,183,NULL,NULL
+194,"Oncologists",94,183,NULL,NULL
+195,"Ophthalmologists",95,183,NULL,NULL
+196,"Orthopedic Surgeons",96,183,NULL,NULL
+197,"Pathologists",97,183,NULL,NULL
+198,"Pediatricians",98,183,NULL,NULL
+199,"Plastic Surgeons",99,183,NULL,NULL
+200,"Psychiatrists",100,183,NULL,NULL
+201,"Radiologists",101,183,NULL,NULL
+202,"Respiratory",102,183,NULL,NULL
+203,"Urologists",103,183,NULL,NULL
+204,"Geriatrics",441,183,NULL,NULL
+205,"Podiatrists",104,183,NULL,NULL
+206,"Personal Care",NULL,NULL,NULL,NULL
+207,"Dry Cleaning, Ironing and Laundry",278,206,NULL,NULL
+208,"Hair Removal",279,206,NULL,NULL
+209,"Haircut, Barbers and Beauty Salons",280,206,NULL,NULL
+210,"Manicures and Pedicures",281,206,NULL,NULL
+211,"Massage Clinics and Therapists",282,206,NULL,NULL
+212,"Piercing",283,206,NULL,NULL
+213,"Skin Care",284,206,NULL,NULL
+214,"Spas",285,206,NULL,NULL
+215,"Tanning Salons",286,206,NULL,NULL
+216,"Tattooing",287,206,NULL,NULL
+217,"Entertainment",NULL,NULL,NULL,NULL
+218,"Art Dealers and Galleries",310,217,NULL,NULL
+219,"Museums",311,217,NULL,NULL
+220,"Bars",312,217,NULL,NULL
+221,"Amusement Parks",319,217,NULL,NULL
+222,"Billiard and Pool",320,217,NULL,NULL
+223,"Bingo",321,217,NULL,NULL
+224,"Bowling",322,217,NULL,NULL
+225,"Carnivals",323,217,NULL,NULL
+226,"Circuses",325,217,NULL,NULL
+227,"Dance Halls and Saloons",326,217,NULL,NULL
+228,"Fairgrounds and Rodeos",327,217,NULL,NULL
+229,"Go Carts",328,217,NULL,NULL
+230,"Hookah Lounges",329,217,NULL,NULL
+231,"Karaoke",330,217,NULL,NULL
+232,"Miniature Golf",331,217,NULL,NULL
+233,"Movie Theatres",332,217,NULL,NULL
+234,"Music and Show Venues",333,217,NULL,NULL
+235,"Night Clubs",334,217,NULL,NULL
+236,"Party Centers",335,217,NULL,NULL
+237,"Psychics and Astrologers",336,217,NULL,NULL
+238,"Ticket Sales",337,217,NULL,NULL
+239,"Arcades",463,217,NULL,NULL
+240,"Wineries and Vineyards",370,217,NULL,NULL
+241,"Food and Dining",NULL,NULL,NULL,NULL
+242,"Bagels and Donuts",339,241,NULL,NULL
+243,"Bakeries",340,241,NULL,NULL
+244,"Breweries",341,241,NULL,NULL
+245,"Cafes, Coffee and Tea Houses",342,241,NULL,NULL
+246,"Dessert",343,241,NULL,NULL
+247,"Ice Cream Parlors",344,241,NULL,NULL
+248,"Internet Cafes",345,241,NULL,NULL
+249,"Juice Bars and Smoothies",346,241,NULL,NULL
+250,"All Restaurants",347,241,NULL,NULL
+251,"American",348,241,NULL,NULL
+252,"Barbecue",349,241,NULL,NULL
+253,"Buffets",350,241,NULL,NULL
+254,"Burgers",351,241,NULL,NULL
+255,"Chinese",352,241,NULL,NULL
+256,"Delis",353,241,NULL,NULL
+257,"Diners",354,241,NULL,NULL
+258,"Fast Food",355,241,NULL,NULL
+259,"French",356,241,NULL,NULL
+260,"Indian",357,241,NULL,NULL
+261,"Italian",358,241,NULL,NULL
+262,"Japanese",359,241,NULL,NULL
+263,"Korean",360,241,NULL,NULL
+264,"Mexican",361,241,NULL,NULL
+265,"Middle Eastern",362,241,NULL,NULL
+266,"Pizza",363,241,NULL,NULL
+267,"Seafood",364,241,NULL,NULL
+268,"Steakhouses",365,241,NULL,NULL
+269,"Sushi",366,241,NULL,NULL
+270,"Thai",367,241,NULL,NULL
+271,"Vegan and Vegetarian",368,241,NULL,NULL
+272,"Asian",457,241,NULL,NULL
+273,"Food Trucks",458,241,NULL,NULL
+274,"International",464,241,NULL,NULL
+275,"Sports and Recreation",NULL,NULL,NULL,NULL
+276,"Athletic Fields",373,275,NULL,NULL
+277,"Baseball",374,275,NULL,NULL
+278,"Basketball",376,275,NULL,NULL
+279,"Combat Sports",377,275,NULL,NULL
+280,"Cycling",378,275,"/img/hashtag_categories/cards/card_378","/img/hashtag_categories/banners/banner_378"
+281,"Dance",379,275,"/img/hashtag_categories/cards/card_379","/img/hashtag_categories/banners/banner_379"
+282,"Equestrian",380,275,"/img/hashtag_categories/cards/card_380","/img/hashtag_categories/banners/banner_380"
+283,"Football",381,275,"/img/hashtag_categories/cards/card_381","/img/hashtag_categories/banners/banner_381"
+284,"Golf",382,275,"/img/hashtag_categories/cards/card_382","/img/hashtag_categories/banners/banner_382"
+285,"Gun Ranges",383,275,NULL,NULL
+286,"Gymnastics",384,275,NULL,NULL
+287,"Gyms and Fitness Centers",385,275,"/img/hashtag_categories/cards/card_385","/img/hashtag_categories/banners/banner_385"
+288,"Hockey",386,275,"/img/hashtag_categories/cards/card_386","/img/hashtag_categories/banners/banner_386"
+289,"Campgrounds and RV Parks",388,275,"/img/hashtag_categories/cards/card_388","/img/hashtag_categories/banners/banner_388"
+290,"Hiking",389,275,"/img/hashtag_categories/cards/card_389","/img/hashtag_categories/banners/banner_389"
+291,"Hot Air Balloons",390,275,"/img/hashtag_categories/cards/card_390","/img/hashtag_categories/banners/banner_390"
+292,"Hunting and Fishing",391,275,"/img/hashtag_categories/cards/card_391","/img/hashtag_categories/banners/banner_391"
+293,"Rock Climbing",392,275,NULL,NULL
+294,"Skydiving",393,275,NULL,NULL
+295,"Paintball",394,275,NULL,NULL
+296,"Personal Trainers",395,275,NULL,NULL
+297,"Race Tracks",396,275,NULL,NULL
+298,"Racquetball",398,275,NULL,NULL
+299,"Tennis",399,275,"/img/hashtag_categories/cards/card_399","/img/hashtag_categories/banners/banner_399"
+300,"Recreation Centers",400,275,NULL,NULL
+301,"Running",401,275,"/img/hashtag_categories/cards/card_401","/img/hashtag_categories/banners/banner_401"
+302,"Skating",402,275,"/img/hashtag_categories/cards/card_402","/img/hashtag_categories/banners/banner_402"
+303,"Snow Sports",403,275,"/img/hashtag_categories/cards/card_403","/img/hashtag_categories/banners/banner_403"
+304,"Soccer",404,275,"/img/hashtag_categories/cards/card_404","/img/hashtag_categories/banners/banner_404"
+305,"Sports Clubs",405,275,NULL,NULL
+306,"Stadiums and Arenas",406,275,"/img/hashtag_categories/cards/card_406","/img/hashtag_categories/banners/banner_406"
+307,"Swimming Pools",407,275,"/img/hashtag_categories/cards/card_407","/img/hashtag_categories/banners/banner_407"
+308,"Boating",409,275,"/img/hashtag_categories/cards/card_409","/img/hashtag_categories/banners/banner_409"
+309,"Canoes and Kayaks",410,275,"/img/hashtag_categories/cards/card_410","/img/hashtag_categories/banners/banner_410"
+310,"Rafting",411,275,"/img/hashtag_categories/cards/card_411","/img/hashtag_categories/banners/banner_411"
+311,"Scuba Diving",412,275,"/img/hashtag_categories/cards/card_412","/img/hashtag_categories/banners/banner_412"
+312,"Swimming",413,275,"/img/hashtag_categories/cards/card_413","/img/hashtag_categories/banners/banner_413"
+313,"Surfing",452,275,"/img/hashtag_categories/cards/card_452","/img/hashtag_categories/banners/banner_452"
+314,"Yoga and Pilates",414,275,"/img/hashtag_categories/cards/card_414","/img/hashtag_categories/banners/banner_414"
+315,"Travel",NULL,NULL,NULL,NULL
+316,"Airlines and Aviation Services",416,315,"/img/hashtag_categories/cards/card_416","/img/hashtag_categories/banners/banner_416"
+317,"Parking",418,315,"/img/hashtag_categories/cards/card_418","/img/hashtag_categories/banners/banner_418"
+318,"Public Transportation Services",419,315,"/img/hashtag_categories/cards/card_419","/img/hashtag_categories/banners/banner_419"
+319,"Taxi and Car Services",420,315,"/img/hashtag_categories/cards/card_420","/img/hashtag_categories/banners/banner_420"
+320,"Airports",425,315,"/img/hashtag_categories/cards/card_425","/img/hashtag_categories/banners/banner_425"
+321,"Bus Stations",426,315,"/img/hashtag_categories/cards/card_426","/img/hashtag_categories/banners/banner_426"
+322,"Ports",428,315,NULL,NULL
+323,"Rail Stations",429,315,"/img/hashtag_categories/cards/card_429","/img/hashtag_categories/banners/banner_429"
+324,"Cruises",431,315,"/img/hashtag_categories/cards/card_431","/img/hashtag_categories/banners/banner_431"
+325,"Bed and Breakfasts",433,315,"/img/hashtag_categories/cards/card_433","/img/hashtag_categories/banners/banner_433"
+326,"Cottages and Cabins",434,315,"/img/hashtag_categories/cards/card_434","/img/hashtag_categories/banners/banner_434"
+327,"Hostels",435,315,NULL,NULL
+328,"Hotels and Motels",436,315,"/img/hashtag_categories/cards/card_436","/img/hashtag_categories/banners/banner_436"
+329,"Lodges and Vacation Rentals",437,315,"/img/hashtag_categories/cards/card_437","/img/hashtag_categories/banners/banner_437"
+330,"Resorts",438,315,"/img/hashtag_categories/cards/card_438","/img/hashtag_categories/banners/banner_438"
+331,"Tourist Information and Services",439,315,"/img/hashtag_categories/cards/card_439","/img/hashtag_categories/banners/banner_439"
+332,"Travel Agents and Tour Operators",440,315,"/img/hashtag_categories/cards/card_440","/img/hashtag_categories/banners/banner_440"
