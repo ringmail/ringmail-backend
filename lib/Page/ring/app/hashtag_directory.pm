@@ -223,7 +223,7 @@ sub load
 				else # no sub-categories, must be leaf so lookup hashtags
 				{
 					my $tq = sqltable('ring_hashtag_geo')->get(
-						'select' => ['h.hashtag', 'g.category_id'],
+						'select' => 'distinct h.hashtag',
 						'table' => 'ring_hashtag h, ring_hashtag_geo g',
 						'join' => 'g.hashtag_id=h.id',
 						'where' => [
@@ -231,7 +231,15 @@ sub load
 								'g.category_id' => $pid,
 							},
 							'and',
-							"g.latitude BETWEEN $latIn - ($distance * $rangeFactor) AND $latIn + ($distance * $rangeFactor) AND g.longitude BETWEEN $lonIn - ($distance * $rangeFactor) AND $lonIn + ($distance * $rangeFactor) AND geodistance($latIn, $lonIn, g.latitude, g.longitude) <= $distance",
+							[
+								"g.latitude BETWEEN $latIn - ($distance * $rangeFactor) AND $latIn + ($distance * $rangeFactor) AND g.longitude BETWEEN $lonIn - ($distance * $rangeFactor) AND $lonIn + ($distance * $rangeFactor) AND geodistance($latIn, $lonIn, g.latitude, g.longitude) <= $distance",
+								'or',
+								{
+									'g.latitude' => undef,
+									'g.longitude' => undef,
+									'g.country_code' => 'us', # TODO: make this dynamic
+								},
+							],
 						],
 						'order' => 'h.hashtag asc',
 					);
