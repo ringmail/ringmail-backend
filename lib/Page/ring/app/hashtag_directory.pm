@@ -287,7 +287,7 @@ sub load
 		$res = {'result' => 'Unauthorized'};
 	}
 	$obj->{'response'}->content_type('application/json');
-	::log($res);
+	#::log($res);
 	return encode_json($res);
 }
 
