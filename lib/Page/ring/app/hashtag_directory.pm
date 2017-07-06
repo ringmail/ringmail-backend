@@ -90,7 +90,6 @@ sub load
 		my $pid = $form->{'category_id'};
 		if ($pid =~ /^\d+$/)
 		{
-
 			if ($pid == 0) # root of directory
 			{
 				my $dq = sqltable('ring_category')->get(
@@ -101,15 +100,30 @@ sub load
 					'where' => 'category_id IS NULL',
 					'order' => 'category ASC', # TODO: custom order for top level
 				);
-				my @cat = ();
+				my %catspec = ();
 				foreach my $c (@$dq)
 				{
-					push @cat, {
+					$catspec{$c->{'category'}} = {
 						'type' => 'hashtag_category',
 						'name' => $c->{'category'},
 						'id' => $c->{'id'},
 						'image_url' => $obj->url('path' => $catimg),
 					};
+				}
+				my @cat = ();
+				foreach my $c (
+					'Food and Dining',
+					'Entertainment',
+					'Personal Care',
+					'Shopping',
+					'Sports and Recreation',
+					'Services',
+					'Healthcare',
+					'Travel',
+					'Community and Government',
+					'Organizations',
+				) {
+					push @cat, $catspec{$c};
 				}
 
 				# TODO: unroll this!
