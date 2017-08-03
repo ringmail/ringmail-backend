@@ -35,6 +35,7 @@ sub push_message
 			},
 			'select' => [qw/main_token push_app/],
 		);
+		#::log("Push RC:", $rc);
 		if ($rc->id())
 		{
 			my $apns = $rc->data('main_token');
@@ -46,14 +47,13 @@ sub push_message
 					'app' => $app,
 					'token' => $apns,
 					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
-					'loc-key' => 'CHAT',
 					'sound' => 'chat_in_alert.caf',
 					'data' => {
 						'tag' => substr(md5_hex($param->{'from'}), 0, 10),
 					},
 				};
-				$obj->apns_push($params);
 				::log("Push Message Token: $apns App: $app");
+				$obj->apns_push($params);
 			}
 		}
 	}
@@ -86,7 +86,7 @@ sub push_call
 					'app' => $app,
 					'token' => $apns,
 					'body' => (length($body) > 160) ? substr($body, 0, 160) : $body,
-					'sound' => 'msg.caf',
+					'call_id' => $param->{'call_id'}
 				};
 				$obj->apns_push($params);
 				::log("Push Call Token: $apns App: $app");
@@ -117,11 +117,10 @@ sub apns_push
 			$param->{'token'},
 			{
 				'aps' => {
-					'alert' => {
-						'body' => 'Call',
-					},
+					'category' => 'call',
 				},
 				'from' => $param->{'body'},
+				'call_id' => $param->{'call_id'},
 			},
 		);
 		$apns->send_queue();
@@ -139,8 +138,8 @@ sub apns_push
 				'aps' => {
 					'alert' => {
 						'body' => $param->{'body'},
-						'action-loc-key' => $param->{'loc-key'},
 					},
+					'category' => 'msg',
 					'sound' => $param->{'sound'},
 				},
 				%$data,

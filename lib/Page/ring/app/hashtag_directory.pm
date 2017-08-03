@@ -40,6 +40,11 @@ sub load
 	my $res = {};
 	if ($user)
 	{
+		my $offset = $form->{'offset'};
+		unless ($offset =~ /^\d+$/)
+		{
+			$offset = 0;
+		}
 		my $width = int($form->{'width'});
 		my $headerImg;
 		my $headerHeight;
@@ -96,18 +101,24 @@ sub load
 					'select' => [
 						'id',
 						'category',
+						'image_card',
 					],
 					'where' => 'category_id IS NULL',
-					'order' => 'category ASC', # TODO: custom order for top level
+					'order' => 'category ASC limit 100', # TODO: custom order for top level
 				);
 				my %catspec = ();
 				foreach my $c (@$dq)
 				{
+					my $cmg = $catimg;
+					if ($c->{'image_card'} ne '')
+					{
+						$cmg = $c->{'image_card'}. $imgExt;
+					}
 					$catspec{$c->{'category'}} = {
 						'type' => 'hashtag_category',
 						'name' => $c->{'category'},
 						'id' => $c->{'id'},
-						'image_url' => $obj->url('path' => $catimg),
+						'image_url' => $obj->url('path' => $cmg),
 					};
 				}
 				my @cat = ();
@@ -169,7 +180,7 @@ sub load
 					'where' => {
 						'category_id' => $pid,
 					},
-					'order' => 'category asc',
+					'order' => 'category asc limit 100',
 				);
 				my @cat = ();
 				if (scalar @$dq) # has items, must be sub-category
@@ -255,7 +266,7 @@ sub load
 								},
 							],
 						],
-						'order' => 'h.hashtag asc',
+						'order' => 'h.hashtag asc limit 50 offset '. $offset,
 					);
 					my $avatarImg = 'explore_hashtagdir_icon4.jpg';
 					foreach my $i (@$tq)

@@ -10,6 +10,7 @@ use Data::Dumper;
 use URI::Escape;
 use POSIX 'strftime';
 use MIME::Base64 'encode_base64';
+use LWP::UserAgent;
 
 use Note::XML 'xml';
 use Note::Row;
@@ -18,6 +19,7 @@ use Note::Param;
 
 use Ring::User;
 use Ring::User::Contacts;
+use Ring::Google_OAuth2;
 
 extends 'Note::Page';
 
@@ -27,39 +29,48 @@ sub load
 {
 	my ($obj, $param) = get_param(@_);
 	my $form = $obj->form();
-	#::log({%$form, 'password' => ''});
+	::log('Login', {%$form, 'password' => ''});
 	my $res;
 	my $user;
-	my $newPW;
-
-	if ($form->{'idToken'})
+	my $newpass = '';
+	if (exists $form->{'idToken'})
 	{
-		my $verifyRequest =`curl -sX GET https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$form->{'idToken'}`;
-		my $response = decode_json( $verifyRequest );
-        # ::log($response);
-		# Google App: RingMail-Dev-IOS,  Client ID: 224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com
-		if (($response->{"email"} eq $form->{'login'}) && ($response->{"email_verified"} eq "true") && ($response->{"aud"} eq "224803357623-b9n16dqjn97ovbuo3v00kflvc0h6tsd5.apps.googleusercontent.com"))
+		my $ua = new Ring::Google_OAuth2();
+		my $response = $ua->get_token_info(
+			'token' => $form->{'idToken'},
+		);
+		if (defined $response)
 		{
-			open (S, '-|', '/home/note/app/ringmail/scripts/genrandstring.pl');
-			$/ = undef;
-			$newPW = <S>;
-			close(S);
-
-			my $urc = new Note::Row(
-				'ring_user' => {'login' => $form->{'login'}},
-			);
-
-			if ($urc->id())
+			if (($response->{'email'} eq $form->{'login'}) && ($response->{'email_verified'} eq 'true'))
 			{
-				my $userChange = new Ring::User('id' => $urc->id());
-				$userChange->password_change('password' => $newPW);
-
-				$user = Ring::User::login(
-					'login' => $form->{'login'},
-					'password' => $newPW,
+				my $urc = new Note::Row(
+					'ring_user' => {'login' => $form->{'login'}},
 				);
-
-				::log($newPW);
+				if ($urc->id())
+				{
+					open (S, '-|', '/home/note/app/ringmail/scripts/genrandstring.pl');
+					$/ = undef;
+					$newpass = <S>;
+					::log('New PW:'. $newpass);
+					close(S);
+					my $userChange = new Ring::User('id' => $urc->id());
+					$userChange->password_change('password' => $newpass);
+					$user = Ring::User::login(
+						'login' => $form->{'login'},
+						'password' => $newpass,
+					);
+				}
+				else
+				{
+					$res = {
+						'result' => 'error',
+						'error' => 'register',
+						'idToken' => $form->{'idToken'},
+					};
+					$obj->{'response'}->content_type('application/json');
+					#::log($res);
+					return encode_json($res);
+				}
 			}
 		}
 	}
@@ -110,19 +121,11 @@ sub load
 				'sip_login' => $sipauth->[0]->{'login'},
 				'sip_password' => $sipauth->[0]->{'password'},
 				'chat_password' => $chatpw,
-				'ringmail_password' => $newPW,
+				'ringmail_password' => $newpass,
 				'phone' => $phone,
 				'contacts' => 0,
 				'rg_contacts' => [],
 				'ts_latest' => '',
-				'default_hashtags' => [
-					'#Business',
-					'#RingMail',
-					'#RingPage',
-					'#Coffee',
-					'#LAFoodies',
-					'#RagingMammoth',
-				],
 			};
 			my $cobj = new Ring::User::Contacts(
 				'user_id' => $user->id(),
@@ -165,7 +168,7 @@ sub load
 		};
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log($res);
+	::log($res);
 	return encode_json($res);
 }
 

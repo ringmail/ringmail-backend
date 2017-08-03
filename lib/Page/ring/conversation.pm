@@ -112,7 +112,7 @@ sub load
 		}
 	}
 	$obj->{'response'}->content_type('application/json');
-	#::log("conversation response", $res);
+	::log("conversation response", $res);
 	return encode_json($res);
 }
 
