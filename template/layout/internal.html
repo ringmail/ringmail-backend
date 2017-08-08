@@ -1,43 +1,75 @@
-[% USE date %]
-<!doctype html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-<title>Dashboard Admin</title>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<link rel="stylesheet" href="/css/font-awesome.min.css"/>
-<link rel="stylesheet" href="/css/bootstrap.css"/>
-<link rel="stylesheet" href="/css/bootstrap-responsive.css"/>
-<link rel="stylesheet" href="/css/application.css"/>
-<link rel="stylesheet" href="/css/jquery-ui.min.css">
-<link rel="stylesheet" href="/css/jquery-ui.structure.min.css">
-<link rel="stylesheet" href="/css/jquery-ui.theme.min.css">
-<link rel="stylesheet" href="/css/main.css"><!-- load this last! -->
-<script src="/js/jquery-3.0.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/biomp.js"></script>
-<script src="/js/holder.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
-</head>
-<body>
-<div id="wrapper">
-	[% content %]
-</div> 
-<div id="footer">
-	<div class="container">
-		<div class="row">
-			<div class="span6">
-				Powered By <a href="http://dyl.com">DYL</a> &copy [% date.format( date.now, '%Y' ) %], all rights reserved.
-			</div> 
-			<div id="builtby" class="span6">
-				<a href="/tos">RingMail Network Usage Policy</a>				
-			</div> 
-		</div> 
-	</div> 
-</div> 
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+		<title>[% title %]</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css"/>
+		<link href="/css/admin/bootstrap.min.css" rel="stylesheet"/>
+		<link href="/css/admin/mdb.min.css" rel="stylesheet"/>
+		<link href="/css/admin/style.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark indigo">
+				<div  class="container">
+					<a class="navbar-brand" href="#"><img src="/img/admin/rm-logo.png" alt="RingMail" /></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto nav-left">
+							<li class="nav-item[% IF menu_main == 'hashtags' %] active[% END %]">
+								<a class="nav-link" href="#">Hashtags</a>
+							</li>
+							<li class="nav-item[% IF menu_main == 'domains' %] active[% END %]">
+								<a class="nav-link" href="#">Domains</a>
+							</li>
+							<li class="nav-item[% IF menu_main == 'purchase' %] active[% END %]">
+								<a class="nav-link" href="#">Purchase</a>
+							</li>
+						</ul>
+						<ul class="navbar-nav ml-auto nav-flex-icons">
+							<li class="nav-item">
+								<a class="nav-link waves-effect waves-light cart"><i class="fa fa-shopping-cart" style="font-size: 26px;"></i><span class="cart-items">3</span></a>
+							</li>
+							<li class="nav-item avatar dropdown">
+								<a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="/img/admin/avatar.png" class="img-fluid rounded-circle z-depth-0"></a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-purple" aria-labelledby="navbarDropdownMenuLink-5">
+									<a class="dropdown-item waves-effect waves-light" href="#">Action</a>
+									<a class="dropdown-item waves-effect waves-light" href="#">Another action</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<main>
+    		<div class="container">
+[% content %]
+			</div>
+		</main>
+		<footer class="page-footer center-on-small-only">
+		    <div class="container">
+		        <div class="row justify-content-between">
+		            <div class="col-md-8 text-left">
+			            <ul>
+			            	<li class="brand-footer-li">RingMail.com</li>
+			                <li>2017 © RingMail. All rights reserved.</li>
+			            </ul>
+		            </div>
+		            <div class="col-md-4 text-right">
+		                <ul>
+		                    <li><a href="privacypolicy.htm">Privacy Policy</a></li>
+		                </ul>
+		            </div>
+		        </div>
+		    </div>
+		</footer>
+		<script type="text/javascript" src="/js/admin/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="/js/admin/popper.min.js"></script>
+		<script type="text/javascript" src="/js/admin/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/admin/mdb.min.js"></script>
+	</body>
 </html>
+

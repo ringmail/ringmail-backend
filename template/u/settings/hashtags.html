@@ -1,261 +1,247 @@
-[% menu_settings = 'hashtags' %]
+[% title = 'Hashtags' %]
+[% menu_main = 'hashtags' %]
 [% content = BLOCK %]
-[% INCLUDE u/settings/menu.html %]
-<div id="masthead">
-	<div class="container">
-		<div class="masthead-pad">
-			<div class="masthead-text">
-				<h2>Hashtags</h2>
-			</div>
-		</div>
-	</div>
-</div>
-<div id="content">
-	<div class="container">		
+<h1>Hashtags</h1>
+<div class="content-box-grad"></div>
+<div class="content-box table-box">
+	<h2>Add Hashtag</h2>
 		<div class="row">
-			<div class="tabbable">
-				<div class="span12">
-					<h2>Add Hashtag</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+			<div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
+				<div style="margin-left: 10px;">
+					<form method="post" action="[% page.url() %]" style="padding: 10px; margin-left: 10px;">
 						<fieldset>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<div class="hashtag-search">
-									<div class="input-prepend">
-										<span class="add-on">#</span>
-										[% page.field(
-										command => 'search',
-										type => 'text',
-										name => 'hashtag',
-										value => page.form.hashtag,
-										opts => {
-										id => 'hashtag',
-										style => 'width: 179px',
-										},
-										) %]
-										[% IF page.value.error %]
-										<div>
-											<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
-										</div>
-										[% END %]
-									</div>
-									[% page.button(
-									command => 'search',
-									contents => 'Add',
-									opts => {
+							<span class="add-on">#</span>
+							[% page.field(
+								command => 'search',
+								type => 'text',
+								name => 'hashtag',
+								value => page.form.hashtag,
+								opts => {
+								id => 'hashtag',
+									style => 'width: 179px',
+								},
+							) %]
+							[% IF page.value.error %]
+							<div>
+								<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+							</div>
+							[% END %]
+							[% page.button(
+								command => 'search',
+								contents => 'Add Hashtag',
+								opts => {
 									class => 'btn btn-primary btn-medium',
-									},
-									) %]
-								</div>
-							</div>
-							<div class="span12">
-								[% IF page.value.hashtag.defined %]
-								[% IF page.value.hashtag == 0 %]
-								[% ELSE %]
-								<h4>Sorry, #[% page.form.hashtag %] is unavailable</h4>
-								[% END %]
-								[% END %]
-							</div>
-						</fieldset>
-					</form>
-				</div>
-				<div class="span12 cart-start">
-					<h2>My Hashtags</h2>
-					[%
-					query = {}
-					query_page = { page => page.form.page, }
-					%]
-					[% IF page.form.page.defined and page.form.page.length > 0 %]
-					[% query.import( query_page ) %]
-					[% END %]
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-						<table class="table table-bordered table-highlight table-cart">
-							<thead>
-								<tr>
-									<th>Hashtag</th>
-									<th>Price</th>
-									<th>Status</th>
-									<th>RingPage</th>
-									<th>Edit Details</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-							[% IF hashtags.size == 0 %]
-							<tr>
-								<td colspan="6">No Hashtags.</td>
-							</tr>
-							[% ELSE %]
-							[% pending = 0 %]
-							[% USE X = Page( count, page.app.config.page_size.defined ? page.app.config.page_size : 10, page.form.page, ) %]
-							[% FOREACH hashtag IN hashtags %]
-							<tr>
-								<td>#[% hashtag.hashtag %]</td>
-								<td>$99.99</td>
-								<td>
-									[% IF hashtag.free == 1 %]
-									<span class="label label-primary">Free</span>
-									[% ELSE %]
-									[% IF hashtag.transaction_id.defined %]
-									<span class="label label-primary">Paid</span>
-									[% ELSE %]
-									<span class="label label-primary">Pending</span>
-									[% END %]
-									[% END %]
-								</td>
-								<td>
-									[% directory = 0 %]
-									[% IF hashtag.transaction_id.defined OR hashtag.free == 1 %]
-									[% IF hashtag.ringpage_id.defined %]
-									[% directory = directory + 1 %]
-									[% page.link(
-									text => hashtag.ringpage,
-									path => '/u/ringpage',
-									query => {
-									ringpage_id => hashtag.ringpage_id,
-									},
-									) %]
-									[% ELSE %]
-									[% IF hashtag.target_url.defined %]
-									[% directory = directory + 1 %]
-									[% IF hashtag.target_url.length > 35 %]
-									[% hashtag.target_url.substr( 0, 35 ) %]...
-									[% ELSE %]
-									[% hashtag.target_url %]
-									[% END %]
-									[% ELSE %]
-									[% page.link(
-									text => '<em>Specify RingPage for Hashtag.</em>',
-									path => '/u/hashtag',
-									query => {
-									hashtag_id => hashtag.id
-									},
-									) %]
-									[% END %]
-									[% END %]
-									[% IF directory > 0 %]
-									|
-									[% IF hashtag.directory_id.defined %]
-									[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
-									[% page.link(
-									text => '<em>Click here to remove your hashtag from the directory.</em>',
-									command => 'directory_remove',
-									args => [ hashtag.id, ],
-									opts => {
-									onclick => "return confirm( 'Remove your directory listing?' )",
-									},
-									) %]
-									[% ELSE %]
-									<em>Directory Listing Requested.</em>
-									[% END %]
-									[% ELSE %]
-									[% page.link(
-									text => '<em>Click here to add your hashtag to the directory.</em>',
-									command => 'directory_add',
-									args => [ hashtag.id, ],
-									opts => {
-									onclick => "return confirm( 'Ready to submit your hashtag to the directory?' )",
-									},
-									) %]
-									[% END %]
-									[% END %]
-									[% ELSE %]
-									&nbsp;
-									[% END %]
-								</td>
-								<td>
-									[% IF hashtag.transaction_id.defined OR hashtag.free == 1 %]
-									[% page.link(
-									text => 'Edit Details',
-									path => '/u/hashtag',
-									query => {
-									hashtag_id => hashtag.id
-									},
-									) %]
-									|
-									[% page.link(
-									text => 'Share',
-									path => '/u/hashtag_share',
-									query => {
-									hashtag_id => hashtag.id
-									},
-									) %]
-									[% ELSE %]
-									&nbsp;
-									[% END %]
-								</td>
-								<td>
-									[% pending = pending + 1 %]
-									[% page.field(
-									command => 'remove',
-									type => 'checkbox',
-									name => 'hashtag_id',
-									opts => {
-									value => hashtag.id,
-									},
-									) %]
-								</td>
-							</tr>
-							[% END %]
-							[% END %]
-							[% IF pending > 0 %]
-							<tr>
-								<td colspan="5">
-									&nbsp;
-								</td>
-								<td>
-									[% page.button(
-									command => 'remove',
-									text => 'Remove',
-									opts => {
-									class => 'btn btn-primary',
-									onclick => "return confirm( 'Are you sure you would like to remove your hashtags?' );",
-									},
-									) %]
-								</td>
-							</tr>
-							[% END %]
-							<tr>
-								<td colspan="6">
-									<ul class="pager">
-										[% IF X.previous_page > 0 %]
-										<li class="previous">
-										[%
-										query = { page => X.previous_page, }
-										%]
-										[% page.link(
-										text => '&larr; Previous',
-										query => query,
-										) %]
-										</li>
-										[% ELSE %]
-										<li class="previous disabled">
-										<span>&larr; Previous</span>
-										</li>
-										[% END %]
-										[% IF X.next_page > 0 %]
-										<li class="next">
-										[%
-										query = { page => X.next_page, }
-										%]
-										[% page.link(
-										text => 'Next &rarr;',
-										query => query,
-										) %]
-										[% ELSE %]
-										<li class="next disabled">
-										<span>Next &rarr;</span>
-										</li>
-										[% END %]
-									</ul>
-								</td>
-							</tr>
-							</tbody>
-						</table>
-					</form>
-				</div>
+								},
+							) %]
+					</fieldset>
+				</form>
 			</div>
 		</div>
 	</div>
+	<br/>
+	<hr/>
+	<br/>
+			<!--<div class="span12">
+				[% IF page.value.hashtag.defined %]
+				[% IF page.value.hashtag == 0 %]
+				[% ELSE %]
+				<h4>Sorry, #[% page.form.hashtag %] is unavailable</h4>
+				[% END %]
+				[% END %]
+			</div>-->
+	<h2>My Hashtags</h2>
+[%
+	query = {}
+	query_page = { page => page.form.page, }
+%]
+[% IF page.form.page.defined and page.form.page.length > 0 %]
+	[% query.import( query_page ) %]
+[% END %]
+	<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+		<table class="table table-bordered table-auto-resp">
+			<thead class="no-border">
+				<tr>
+					<th>Hashtag</th>
+					<th>Price</th>
+					<th>Status</th>
+					<th>RingPage</th>
+					<th>Edit Details</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				[% IF hashtags.size == 0 %]
+				<tr>
+					<td colspan="6">No Hashtags.</td>
+				</tr>
+				[% ELSE %]
+				[% pending = 0 %]
+				[% USE X = Page( count, page.app.config.page_size.defined ? page.app.config.page_size : 10, page.form.page, ) %]
+				[% FOREACH hashtag IN hashtags %]
+				<tr>
+					<td>#[% hashtag.hashtag %]</td>
+					<td>$99.99</td>
+					<td>
+						[% IF hashtag.free == 1 %]
+						<span class="label label-primary">Free</span>
+						[% ELSE %]
+						[% IF hashtag.transaction_id.defined %]
+						<span class="label label-primary">Paid</span>
+						[% ELSE %]
+						<span class="label label-primary">Pending</span>
+						[% END %]
+						[% END %]
+					</td>
+					<td>
+						[% directory = 0 %]
+						[% IF hashtag.transaction_id.defined OR hashtag.free == 1 %]
+						[% IF hashtag.ringpage_id.defined %]
+						[% directory = directory + 1 %]
+						[% page.link(
+						text => hashtag.ringpage,
+						path => '/u/ringpage',
+						query => {
+						ringpage_id => hashtag.ringpage_id,
+						},
+						) %]
+						[% ELSE %]
+						[% IF hashtag.target_url.defined %]
+						[% directory = directory + 1 %]
+						[% IF hashtag.target_url.length > 35 %]
+						[% hashtag.target_url.substr( 0, 35 ) %]...
+						[% ELSE %]
+						[% hashtag.target_url %]
+						[% END %]
+						[% ELSE %]
+						[% page.link(
+						text => '<em>Specify RingPage for Hashtag.</em>',
+						path => '/u/hashtag',
+						query => {
+						hashtag_id => hashtag.id
+						},
+						) %]
+						[% END %]
+						[% END %]
+						[% IF directory > 0 %]
+						|
+						[% IF hashtag.directory_id.defined %]
+						[% IF hashtag.ts_directory.defined AND hashtag.directory == 1 %]
+						[% page.link(
+						text => '<em>Click here to remove your hashtag from the directory.</em>',
+						command => 'directory_remove',
+						args => [ hashtag.id, ],
+						opts => {
+						onclick => "return confirm( 'Remove your directory listing?' )",
+						},
+						) %]
+						[% ELSE %]
+						<em>Directory Listing Requested.</em>
+						[% END %]
+						[% ELSE %]
+						[% page.link(
+						text => '<em>Click here to add your hashtag to the directory.</em>',
+						command => 'directory_add',
+						args => [ hashtag.id, ],
+						opts => {
+						onclick => "return confirm( 'Ready to submit your hashtag to the directory?' )",
+						},
+						) %]
+						[% END %]
+						[% END %]
+						[% ELSE %]
+						&nbsp;
+						[% END %]
+					</td>
+					<td>
+						[% IF hashtag.transaction_id.defined OR hashtag.free == 1 %]
+						[% page.link(
+						text => 'Edit Details',
+						path => '/u/hashtag',
+						query => {
+						hashtag_id => hashtag.id
+						},
+						) %]
+						|
+						[% page.link(
+						text => 'Share',
+						path => '/u/hashtag_share',
+						query => {
+						hashtag_id => hashtag.id
+						},
+						) %]
+						[% ELSE %]
+						&nbsp;
+						[% END %]
+					</td>
+					<td>
+						[% pending = pending + 1 %]
+						[% page.field(
+						command => 'remove',
+						type => 'checkbox',
+						name => 'hashtag_id',
+						opts => {
+						value => hashtag.id,
+						},
+						) %]
+					</td>
+				</tr>
+				[% END %]
+				[% END %]
+				[% IF pending > 0 %]
+				<tr>
+					<td colspan="5">
+						&nbsp;
+					</td>
+					<td>
+						[% page.button(
+						command => 'remove',
+						text => 'Remove',
+						opts => {
+							class => 'btn btn-primary',
+							onclick => "return confirm( 'Are you sure you would like to remove your hashtags?' );",
+						},
+						) %]
+					</td>
+				</tr>
+				[% END %]
+			</tbody>
+		</table>
+	</form>
+	<nav style="margin-left: 20px;">
+		<ul class="pagination">
+			[% IF X.previous_page > 0 %]
+			<li class="page-item">
+			[%
+				query = { page => X.previous_page, }
+			%]
+			[% page.link(
+				text => '&laquo; Previous',
+				query => query,
+				opts => { class => 'page-link' }
+			) %]
+			</li>
+			[% ELSE %]
+			<li class="page-item disabled">
+				<a class="page-link">&laquo; Previous</a>
+			</li>
+			[% END %]
+			[% IF X.next_page > 0 %]
+			<li class="next">
+			[%
+				query = { page => X.next_page, }
+			%]
+			[% page.link(
+				text => 'Next &raquo;',
+				query => query,
+				opts => { class => 'page-link' }
+			) %]
+			[% ELSE %]
+			<li class="page-item disabled">
+				<a class="page-link">Next &raquo;</a>
+			</li>
+			[% END %]
+		</ul>
+	</nav>
 </div>
 [% END %]
 [% INCLUDE layout/internal.html %]
