@@ -5,34 +5,34 @@
 <div class="content-box-grad"></div>
 <div class="content-box table-box">
 	<h2>Add Hashtag</h2>
-		<div class="row">
-			<div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
-				<div style="margin-left: 10px;">
-					<form method="post" action="[% page.url() %]" style="padding: 10px; margin-left: 10px;">
-						<fieldset>
-							<span class="add-on">#</span>
-							[% page.field(
-								command => 'search',
-								type => 'text',
-								name => 'hashtag',
-								value => page.form.hashtag,
-								opts => {
-								id => 'hashtag',
-									style => 'width: 179px',
-								},
-							) %]
-							[% IF page.value.error %]
-							<div>
-								<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
-							</div>
-							[% END %]
-							[% page.button(
-								command => 'search',
-								contents => 'Add Hashtag',
-								opts => {
-									class => 'btn btn-primary btn-medium',
-								},
-							) %]
+	<div class="row">
+		<div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
+			<div style="margin-left: 10px;">
+				<form method="post" action="[% page.url() %]" style="padding: 10px; margin-left: 10px;">
+					<fieldset>
+						<span class="add-on">#</span>
+						[% page.field(
+							command => 'search',
+							type => 'text',
+							name => 'hashtag',
+							value => page.form.hashtag,
+							opts => {
+							id => 'hashtag',
+								style => 'width: 179px',
+							},
+						) %]
+						[% IF page.value.error %]
+						<div>
+							<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+						</div>
+						[% END %]
+						[% page.button(
+							command => 'search',
+							contents => 'Add Hashtag',
+							opts => {
+								class => 'btn btn-primary btn-medium',
+							},
+						) %]
 					</fieldset>
 				</form>
 			</div>

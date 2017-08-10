@@ -82,7 +82,6 @@ sub create {
 
         $hashtag_row = 'Note::Row::insert'->(
             ring_hashtag => {
-                category_id => $param->{category_id},
                 hashtag     => $tag,
                 ts_expires  => $param->{expires},
                 user_id     => $param->{user_id},

@@ -1,199 +1,153 @@
+[% title = 'Shopping Cart' %]
+[% menu_main = 'hashtags' %]
 [% content = BLOCK %]
-[% INCLUDE u/settings/menu.html %]
-<div id="masthead">
-	<div class="container">
-		<div class="masthead-pad">
-			<div class="masthead-text">
-				<h2>Account</h2>
+<h1>Shopping Cart</h1>
+<div class="content-box-grad"></div>
+<div class="content-box table-box">
+	<h2>Add Hashtag</h2>
+	<div class="row">
+		<div class="col-xl-6 col-lg-8 col-md-8 col-sm-10">
+			<div style="margin-left: 10px;">
+				<form method="post" action="[% page.url() %]" style="padding: 10px; margin-left: 10px;">
+					<fieldset>
+						<span class="add-on">#</span>
+						[% page.field(
+							command => 'search',
+							type => 'text',
+							name => 'hashtag',
+							value => page.form.hashtag,
+							opts => {
+							id => 'hashtag',
+								style => 'width: 179px',
+							},
+						) %]
+						[% IF page.value.error %]
+						<div>
+							<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
+						</div>
+						[% END %]
+						[% page.button(
+							command => 'search',
+							contents => 'Add Hashtag',
+							opts => {
+								class => 'btn btn-primary btn-medium',
+							},
+						) %]
+					</fieldset>
+				</form>
 			</div>
 		</div>
 	</div>
+	<br/>
+	<hr/>
+	<br/>
+	<!--<h2>Coupon Code</h2>
+	<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+		<fieldset>
+			[% page.field(
+			command => 'apply_coupon_code',
+			type => 'text',
+			name => 'coupon_code',
+			value => page.form.coupon_code,
+			opts => {
+			id => 'hashtag',
+			style => 'width: 179px',
+			},
+			) %]
+			[% page.button(
+			command => 'apply_coupon_code',
+			text => 'Apply',
+			opts => {
+			class => 'btn btn-primary',
+			},
+			) %]
+		</fieldset>
+	</form>-->
+	<h2>Shopping Cart</h2>
+	<form method="post" action="[% page.url() %]">
+		<table class="table table-bordered table-highlight table-cart">
+			<thead>
+				<tr>
+					<th>Hashtag</th>
+					<th>Coupon</th>
+					<th>Amount</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				[% IF cartX.size == 0 %]
+				<tr>
+					<td colspan="4">No Hashtags in cart.</td>
+				</tr>
+				[% ELSE %]
+				[% pending = 0 %]
+				[% FOREACH hashtag IN cartX %]
+				<tr>
+					<td>
+						[% IF hashtag.hashtag_id.defined %]		
+						#[% hashtag.hashtag %]
+						[% ELSE %]
+						&nbsp;
+						[% END %]
+					</td>
+					<td>
+						[% IF hashtag.coupon_id.defined %]		
+						[% hashtag.code %]
+						[% ELSE %]
+						&nbsp;
+						[% END %]
+					</td>
+					<td>
+						[% IF hashtag.hashtag_id.defined %]		
+						$[% hashtag.amount %]
+						[% END %]
+						[% IF hashtag.coupon_id.defined %]		
+						-$[% hashtag.amount %]
+						[% END %]
+					</td>
+					<td>
+						[% IF hashtag.hashtag_id.defined %]		
+						[% pending = pending + 1 %]
+						[% page.field(
+						command => 'remove',
+						type => 'checkbox',
+						name => 'hashtag_id',
+						opts => {
+						value => hashtag.hashtag_id,
+						},
+						) %]
+						[% ELSE %]
+						&nbsp;
+						[% END %]
+					</td>
+				</tr>
+				[% END %]
+				[% END %]
+				[% IF pending > 0 %]
+				<tr>
+					<td colspan="3">
+						&nbsp;
+					</td>
+					<td>
+						[% page.button(
+						command => 'remove',
+						text => 'Remove',
+						opts => {
+						class => 'btn btn-primary',
+						},
+						) %]
+					</td>
+				</tr>
+				[% END %]
+			</tbody>
+		</table>
+	</form>
+	<p class="cart-total-p">
+		Total: $[% total < 0 ? '0.00' : total %]
+	</p>
 </div>
-<div id="content">
-	<div class="container">
-		<div class="row">
-			<div class="tabbable">
-				<div class="span6">
-					<h2>Add Hashtag</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-						<fieldset>
-							<div class="control-group[% IF page.value.error %] error[% END %]">
-								<div class="hashtag-search">
-									<div class="input-prepend">
-										<span class="add-on">#</span>
-										[% page.field(
-										command => 'search',
-										type => 'text',
-										name => 'hashtag',
-										value => page.form.hashtag,
-										opts => {
-										id => 'hashtag',
-										style => 'width: 179px',
-										},
-										) %]
-										[% IF page.value.error %]
-										<div>
-											<span class="error" for="hashtag" style="display: inline;">[% page.value.error %]</span>
-										</div>
-										[% END %]
-									</div>
-									[% page.button(
-									command => 'search',
-									contents => 'Add',
-									opts => {
-									class => 'btn btn-primary btn-medium',
-									},
-									) %]
-								</div>
-							</div>
-							<div class="span12">
-								[% IF page.value.hashtag.defined %]
-								[% IF page.value.hashtag == 0 %]
-								<h4>Great news! #[% page.form.hashtag %] is available</h4>
-								<pre class="hashtag-available"> #[% page.form.hashtag %] | $99.99 </pre>
-								[% page.field(
-								command => 'add_to_cart',
-								type => 'hidden',
-								name => 'hashtag',
-								value => page.form.hashtag,
-								) %]
-								[% page.button(
-								command => 'add_to_cart',
-								contents => 'Add To Cart',
-								opts => {
-								class => 'btn btn-primary btn-medium',
-								},
-								) %]
-								[% page.field(
-								command => 'buy_it_now',
-								type => 'hidden',
-								name => 'hashtag',
-								value => page.form.hashtag,
-								) %]
-								[% page.button(
-								command => 'buy_it_now',
-								contents => 'Buy It Now',
-								opts => {
-								class => 'btn btn-primary btn-medium',
-								},
-								) %]
-								[% ELSE %]
-								<h4>Sorry, #[% page.form.hashtag %] is unavailable</h4>
-								[% END %]
-								[% END %]
-							</div>
-						</fieldset>
-					</form>
-				</div>
-				<div class="span6">
-					<h2>Coupon Code</h2>
-					<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-						<fieldset>
-							[% page.field(
-							command => 'apply_coupon_code',
-							type => 'text',
-							name => 'coupon_code',
-							value => page.form.coupon_code,
-							opts => {
-							id => 'hashtag',
-							style => 'width: 179px',
-							},
-							) %]
-							[% page.button(
-							command => 'apply_coupon_code',
-							text => 'Apply',
-							opts => {
-							class => 'btn btn-primary',
-							},
-							) %]
-						</fieldset>
-					</form>
-				</div>
-				<div class="span12 cart-start">
-					<h2>Shopping Cart</h2>
-					<form method="post" action="[% page.url() %]">
-						<table class="table table-bordered table-highlight table-cart">
-							<thead>
-								<tr>
-									<th>Hashtag</th>
-									<th>Coupon</th>
-									<th>Amount</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-							[% IF cartX.size == 0 %]
-							<tr>
-								<td colspan="4">No Hashtags in cart.</td>
-							</tr>
-							[% ELSE %]
-							[% pending = 0 %]
-							[% FOREACH hashtag IN cartX %]
-							<tr>
-								<td>
-									[% IF hashtag.hashtag_id.defined %]		
-									#[% hashtag.hashtag %]
-									[% ELSE %]
-									&nbsp;
-									[% END %]
-								</td>
-								<td>
-									[% IF hashtag.coupon_id.defined %]		
-									[% hashtag.code %]
-									[% ELSE %]
-									&nbsp;
-									[% END %]
-								</td>
-								<td>
-									[% IF hashtag.hashtag_id.defined %]		
-									$[% hashtag.amount %]
-									[% END %]
-									[% IF hashtag.coupon_id.defined %]		
-									-$[% hashtag.amount %]
-									[% END %]
-								</td>
-								<td>
-									[% IF hashtag.hashtag_id.defined %]		
-									[% pending = pending + 1 %]
-									[% page.field(
-									command => 'remove',
-									type => 'checkbox',
-									name => 'hashtag_id',
-									opts => {
-									value => hashtag.hashtag_id,
-									},
-									) %]
-									[% ELSE %]
-									&nbsp;
-									[% END %]
-								</td>
-							</tr>
-							[% END %]
-							[% END %]
-							[% IF pending > 0 %]
-							<tr>
-								<td colspan="3">
-									&nbsp;
-								</td>
-								<td>
-									[% page.button(
-									command => 'remove',
-									text => 'Remove',
-									opts => {
-									class => 'btn btn-primary',
-									},
-									) %]
-								</td>
-							</tr>
-							[% END %]
-							</tbody>
-						</table>
-					</form>
-					<p class="cart-total-p">
-					Total: $[% total < 0 ? '0.00' : total %]
-					</p>
-				</div>
-				[% IF cartX.size > 0 and cart.size > 0 %]
+
+<!--				[% IF cartX.size > 0 and cart.size > 0 %]
 				<div class="span6">
 					<h2>Checkout</h2>
 					[% IF total > 0 %]
@@ -215,6 +169,6 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 [% END %]
 [% INCLUDE layout/internal.html %]
