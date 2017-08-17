@@ -65,8 +65,10 @@ sub load
             {
                 $content->{'logo'} = $logoImg;
             }
+
+            ::log("htag chainName:  $chainName");
         }
-        
+
         my $tel = $rec->data('tel');
         $tel =~ s/^\+1(\d{3})(\d{3})(\d{4})$/($1) $2-$3/;
 

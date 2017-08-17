@@ -73,6 +73,71 @@ sub BUILDARGS
 	}
 }
 
+sub reset_email_send
+{
+	my ($obj, $param) = get_param(@_);
+	my $uid = $obj->id();
+	my $item = new Ring::Item();
+	my $erec = $item->item(
+		'type' => 'email',
+		'email' => $param->{'email'},
+	);
+	my $sr = new String::Random();
+	my $code = $sr->randregex('[a-zA-Z0-9]{500}');
+	$code = md5_hex($code);
+	my $rc = Note::Row::find_create(
+		'ring_user_pwreset' => {
+			'user_id' => $uid,
+		},
+	);
+	$rc->update({
+		'reset_hash' => $code,
+		'ts' => strftime("%F %T", localtime()),
+	});
+	my $from = 'RingMail <ringmail@ringmail.com>';
+	my $wdom = $main::app_config->{'www_domain'};
+	my $link = 'https://'. $wdom. '/reset?code='. $code;
+	my $tmpl = new Note::Template(
+		'root' => $main::note_config->{'root'}. '/app/ringmail/template',
+	);
+	my $txt = $tmpl->apply('email/reset_pass.txt', {
+		'link' => $link,
+		'email' => $param->{'email'},
+	});
+	my $html = $tmpl->apply('email/reset_pass.html', {
+		'link' => $link,
+		'email' => $param->{'email'},
+	});
+	my $msg = new MIME::Lite(
+		'To' => $param->{'email'},
+		'From' => $from,
+		'Subject' => 'RingMail Password Reset',
+		'Type' => 'multipart/alternative',
+		'Data' => $txt,
+	);
+	my $msgtxt = new MIME::Lite(
+		'Type' => 'text/plain; charset="iso-8859-1"',
+		'Data' => $txt,
+	);
+	my $msghtml = new MIME::Lite(
+		'Type' => 'text/html; charset="iso-8859-1"',
+		'Data' => $html,
+	);
+	$msg->attach($msgtxt);
+	$msg->attach($msghtml);
+	eval {
+		$msg->send(
+			'smtp' => 'localhost',
+			'Timeout' => 10,
+		);
+	};
+	if ($@)
+	{
+		::_errorlog('Email Error:', $@);
+	}
+	return 1;
+}
+
 sub verify_email_send
 {
 	my ($obj, $param) = get_param(@_);

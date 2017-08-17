@@ -1,0 +1,469 @@
+/**
+ * http://applemusic.tumblr.com/
+ */
+
+/** Ultra Light */
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 100;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-ultralight-webfont.woff");
+}
+
+/** Thin */
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 200;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-thin-webfont.woff");
+}
+
+/** Regular */
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
+/** Medium */
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 500;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-medium-webfont.woff");
+}
+
+/** Semi Bold */
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 600;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-semibold-webfont.woff");
+}
+
+/** Bold */ 
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 700;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-bold-webfont.woff");
+}
+
+* {
+    font-family: "San Francisco"   
+}
+
+
+
+
+body {
+	/* max-width: 1540px; */
+	width: 100%;
+	margin: 0 auto;
+	background-color: #fff;
+}
+
+main {
+	padding: 20px 0;
+	position: relative;
+	background: url('/img/admin/pattern_background.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+footer.page-footer {
+	position: relative;
+	margin-top: 0;
+	background-color: #17205a;
+}
+
+.navbar {
+	background: url('/img/admin/header.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 120px;
+}
+
+.navbar .navbar-brand {
+	align-self: auto;
+}
+
+
+.navbar-nav.nav-left {
+	margin-left: 100px;
+}
+
+
+.navbar-nav {
+	margin-top: 44px;
+}
+
+.navbar-nav.nav-left .nav-item {
+	margin: 0 5%;
+	
+}
+
+.navbar-nav.nav-left .nav-item .nav-link {
+	font-family: "San Francisco";
+	font-weight: 400;
+	font-size: 18px;
+}
+
+.navbar.navbar-dark .navbar-nav .nav-item.active>.nav-link {
+    border-bottom: 5px solid #5584ff;
+    padding-bottom: 36px;
+    background: none;
+}
+
+.navbar-nav .nav-item .cart {
+	position: relative;
+	margin-right: 20px;
+}
+
+.cart-items {
+	position: absolute;
+	right: 8px;
+	top: 2px;
+    background-color: #0047ff;
+    color: #fff;
+    border: 1px solid #fff;
+    margin: 0;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 10px;
+    padding: 0;
+    min-width: 16px;
+    max-width: 16px;
+    font-size: 10px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+h1 {
+	font-family: "San Francisco";
+	font-weight: 500;
+	font-size: 36px;
+	color: #0e1a35;
+	padding-top: 50px;
+	padding-bottom: 40px;
+	margin-bottom: 0;
+}
+
+h2 {
+	font-family: "San Francisco";
+	font-weight: 600;
+	font-size: 24px; 
+	color: #3a445c;
+	padding-bottom: 25px;
+	margin-bottom: 0;
+}
+
+h3, .table thead.no-border tr th {
+	font-family: "San Francisco";
+	font-weight: 400;
+	font-size: 18px;
+	line-height 28px;
+	color: #677082;
+	margin-bottom: 0;
+}
+
+h4, .table tr td {
+	font-family: "San Francisco";
+	font-weight: 600;
+	font-size: 14px;
+	line-height 24px;
+	color: #0e1a35;
+	margin-bottom: 0;
+}
+
+.table tr td {
+    vertical-align: middle;
+}
+
+h5 {
+	font-family: "San Francisco";
+	font-weight: 500;
+	font-size: 20px;
+	line-height 24px;
+	color: #0e1a35;
+	margin-bottom: 0;
+}
+
+.content-box-grad {
+	display: block;
+	width: 100%;
+    height: 5px;
+	background: #134ccd; /* Old browsers */
+	background: -moz-linear-gradient(left, #134ccd 10%, #366eeb 34%, #9857ab 71%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, #134ccd 10%,#366eeb 34%,#9857ab 71%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, #134ccd 10%,#366eeb 34%,#9857ab 71%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#134ccd', endColorstr='#9857ab',GradientType=1 ); /* IE6-9 */
+	box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.12), 0px 1px 2px 0px rgba(0,0,0,0.20);
+
+}
+
+.content-box {
+	position: relative;
+	display: block;
+	padding: 30px;
+	background-color: #fff;
+	border: 1px solid #acacac;
+	border-top: none;
+	margin-bottom: 50px;
+	box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.12), 0px 1px 2px 0px rgba(0,0,0,0.20);
+}
+
+
+
+.content-box.table-box {
+	padding: 30px 0;
+}
+
+.content-box.table-box h2 {
+	padding: 0 30px 25px;
+}
+
+.table tr td, .table tr th {
+	padding-left: 30px;
+}
+
+input[type=date], input[type=datetime-local], input[type=email], input[type=number], input[type=password], input[type=search-md], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], textarea.md-textarea {
+	border: 1px solid #acacac;
+	border-radius: 3px;
+	height: 30px;
+	line-height: 30px;
+	padding: 5px 14px;
+	width: 180px;
+	margin: 0;
+}
+
+.btn {
+	padding: .5rem 1.25rem;
+	border-radius: 30px;
+	font-size: 18px;
+	color: #fff;
+	font-family: "San Francisco";
+	font-weight: 400;
+	text-transform: none;
+	margin: 0;
+}
+
+.md-form, .md-form .btn {
+	margin-bottom: 0;
+}
+
+.btn.btn-primary, .btn.btn-primary:focus, .btn.btn-primary:active {
+	margin-left: 40px;
+	background-color: #1abc9c!important;
+}
+
+.btn.btn-primary:hover {
+	background-color: #1abc9c!important;
+	color: #000;
+}
+
+.btn.btn-secondary, .btn.btn-secondary:focus, .btn.btn-secondary:active {
+	background-color: #ed5565!important;
+}
+
+
+.btn.btn-secondary.btn-table-right {
+	display: block;
+	margin-left: auto;
+	margin-right: 30px;
+	margin-top: 20px;
+}
+
+
+.btn.btn-secondary:hover {
+	background-color: #ed5565!important;
+	color: #000;
+}
+
+.btn.btn-three, .btn.btn-three:focus, .btn.btn-three:active {
+	background-color: #355fb3;
+	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: auto;
+}
+
+.btn.btn-three:hover {
+	background-color: #355fb3!important;
+	color: #000;
+}
+
+.btn.btn-four, .btn.btn-four:focus, .btn.btn-four:active {
+	background-color: #FFF;
+	color: #355fb3!important;
+	border: 3px solid #355fb3;
+	font-size: 14px;
+
+}
+
+.btn.btn-four:hover {
+	background-color: #fff!important;
+	color: #000!important;
+}
+
+.rm-select-wrapper {
+    overflow: hidden;
+    width: 240px;
+    background-color: #f5f5f5;
+    border: 1px solid #acacac;
+    border-radius: 3px;
+    position: relative;
+    margin-bottom: 22px;
+}
+
+
+
+.rm-select-wrapper select {
+background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+}
+
+.rm-select-wrapper:after {
+	font-family: 'fontawesome';
+	content: "\f0d7";
+	position: absolute;
+	top: 4px;
+	right: 6px;
+}
+
+[type=radio]+label:after, [type=radio]+label:before {
+	border-width: 1px;
+}
+
+.table-bordered {
+	border-top: 0;
+}
+
+.table-bordered tr, .table-bordered td, .table-bordered tr th {
+	border: 1px solid #acacac;
+}
+
+.table thead.no-border tr, .table thead.no-border tr th{
+	border: 0;
+}
+
+.table-bordered tbody tr td:first-of-type, .table-bordered tbody tr {
+	border-left: none;
+}
+
+.table-bordered tbody tr, .table-bordered tbody tr td:last-of-type {
+	border-right: none;
+}
+
+.td-edit-a:after {
+	content: '|';
+	padding-left: 10px;
+	padding-right: 5px
+} 
+
+table td a:link, table td a:active, table td a:visited {
+	color: #355fb3;
+}
+
+.td-edit-a:hover, .td-share-a:hover {
+	
+}
+
+.brand-footer-li {
+	font-weight: 400;
+}
+
+table td [type=checkbox]+label {
+    height: 8px;
+    line-height: 8px;
+}
+
+table td label {
+	margin-bottom: 0;
+}
+
+table td .form-group {
+	margin-bottom: 0;
+}
+
+@media (min-width: 1600px) {
+.container {
+    width: 1540px;
+    max-width: 100%;
+}
+}
+
+@media (min-width: 1400px) {
+.container {
+    width: 1360px;
+    max-width: 100%;
+}
+}
+
+
+
+@media (max-width: 450px) {
+input[type=date], input[type=datetime-local], input[type=email], input[type=number], input[type=password], input[type=search-md], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], textarea.md-textarea {
+	width: 100%
+	}
+	.btn.btn-primary {
+		margin: 24px auto;
+	}
+}
+
+@media screen and (max-width: 667px) {
+
+    table.table-auto-resp {
+      border: 0;
+    }
+
+    table.table-auto-resp thead {
+      display: none;
+    }
+
+    table.table-bordered.table-auto-resp tr {
+      display: block;
+      margin: 0 24px 24px;
+      border:  1px solid #acacac;
+    }
+    
+    table.table-auto-resp tr td {
+	    padding-left: 10px;
+    }
+
+    table.table-auto-resp td {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      border-bottom: none;
+      border-top: none;
+    }
+
+    table.table-auto-resp td:last-child {
+      border-bottom: 0;
+    }
+
+    table.table-auto-resp td:before {
+      content: attr(data-label);
+      float: left;
+      font-weight: bold;
+    }
+    table.table-bordered.table-auto-resp tr th {
+	    border: none;
+    }
+    
+    table.table-bordered.table-auto-resp td [type=checkbox]+label {
+    height: 8px;
+    line-height: 8px;
+	padding-left: 20px;
+	}
+	
+	table.table-bordered.table-auto-resp td .form-control {
+		display: inline-block;
+	}
+    
+    table.table-bordered.table-auto-resp td, table.table-bordered.table-auto-resp tr th {
+	    border: none;
+	    border-bottom: 1px solid #acacac;
+    }
+    
+  }

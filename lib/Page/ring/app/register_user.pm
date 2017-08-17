@@ -19,6 +19,7 @@ use Note::Param;
 
 use Ring::Register;
 use Ring::User;
+use Ring::Google_OAuth2;
 
 extends 'Note::Page';
 
@@ -44,7 +45,35 @@ sub load
 	try {
 		$reg->validate_input($input);
 		$reg->check_duplicate($input);
-		$reg->create_user($input);
+		my $uid = $reg->create_user($input);
+		if (exists $form->{'idToken'})
+		{
+			my $ua = new Ring::Google_OAuth2();
+			my $response = $ua->get_token_info(
+				'token' => $form->{'idToken'},
+			);
+			if (defined $response)
+			{
+				if (($response->{'email'} eq $form->{'email'}) && ($response->{'email_verified'} eq 'true'))
+				{
+					my $rc = new Note::Row(
+						'ring_verify_email' => {
+							'user_id' => $uid,
+						},
+						{
+							'select' => [qw/verified user_id email_id/],
+						},
+					);
+					if ($rc->id())
+					{
+						my $user = new Ring::User($uid);
+						$user->verify_email(
+							'record' => $rc,
+						);
+					}
+				}
+			}
+		}
 	} catch {
 		if (blessed($_))
 		{

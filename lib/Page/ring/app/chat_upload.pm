@@ -17,8 +17,15 @@ use Note::Param;
 use Note::AWS::S3;
 
 use base 'Note::Page';
+use vars qw(%MIME_OK);
 
 no warnings 'uninitialized';
+
+our %MIME_OK = map {$_ => 1} qw(
+	image/jpeg
+	image/png
+	video/mp4
+);
 
 sub load
 {
@@ -37,11 +44,20 @@ sub load
 			'secret_key' => $main::app_config->{'s3_secret_key'},
 		);
 		my $k = 'chat_upload/'. $file;
+		my $ct = 'application/data';
+		if ($param->{'form'}->{'mime_type'})
+		{
+			my $nct = lc($param->{'form'}->{'mime_type'});
+			if ($MIME_OK{$ct})
+			{
+				$ct = $nct;
+			}
+		}
 		$s3->upload(
 			'file' => $path,
 			'key' => $k,
 			'bucket' => 'ringmail1',
-			'content_type' => 'image/png',
+			'content_type' => $ct,
 			'expires' => strftime("%F", gmtime(time() + (24 * 3600 * 7))),
 		);
 		my $url = $s3->download_url(
@@ -51,7 +67,7 @@ sub load
 		$res = {
 			'result' => 'ok',
 			'uuid' => $uuid,
-			'type' => 'image/png',
+			'type' => $ct,
 			'url' => "$url",
 		};
 	}
