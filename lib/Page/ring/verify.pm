@@ -16,7 +16,7 @@ use Note::XML 'xml';
 use Note::Param;
 
 use Ring::User;
-use Ring::Exception;
+use Ring::Exceptions;
 
 extends 'Note::Page';
 
