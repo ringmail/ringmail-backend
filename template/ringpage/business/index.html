@@ -1,110 +1,124 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		[% IF hashtag %]
-			<title>[% hashtag %]</title>
-		[% ELSE %]
-			<title>Ring Mail</title>
-		[% END %]
-		<meta name="description" content="">
-		<link rel="shortcut icon" href="favicon.ico">
-		<link rel="apple-touch-icon" href="apple-touch-icon.png">
-		<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-		<link rel="stylesheet" href="/css/business/style.css"/>
-
-		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Ringmail</title>
+    <!-- Font Awesome -->
+    <!-- Bootstrap core CSS -->
+    <link href="/css/business/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/css/business/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="/css/business/font-awesome.css" rel="stylesheet">
+    
+    <link href="/css/business/style.css" rel="stylesheet">
+    
 </head>
-[% IF bodybg %]
-	<body style="min-height:100vh; background:url(/img/business/bg/[% bodybg %].png) no-repeat center top/cover;"/>
-[% ELSE %]
-	<body style="min-height:100vh; background:url(/img/business/body.png) no-repeat center top/cover;"/>
-[% END %]
-	<!--[if lt IE 8]>
-			<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-	<![endif]-->
-	<header class="header">
-<!-- 		<div class="cont">
-			<h2><a class="back" href="#"></a> <span>FINANCE</span></h2>
-		</div> -->
-	</header>
-	<div class="pageCont">
-		<main>
-			<div class="cont">
-				[% IF logo %]
-				<img class="logo" src="[% logo %]" alt=""/>
-				[% ELSE %]
-				<img class="logo" src="img/business/home.png" alt=""/>
+
+<body>
+
+<main>
+    <div class="card">
+	    <figure>
+	    	<img class="" src="/img/business/rp-logo.png" alt="" />
+	    </figure>
+	    
+	    <h1>[% hashtag %]</h1>
+	    
+		[% IF name %]
+	    <h3>[% name %]</h3>
+	    [% END %]
+        <!--<h2>Business RingPage</h2>-->
+ 
+        <!--<p>Access exclusive content connected to #Hashtags via the RingMail app.</p>-->
+        <p>&nbsp;</p>
+        
+        <button class="btn btn-actn"><i class="fa fa-phone"></i> Call</button>
+        <button class="btn btn-actn"><i class="fa fa-envelope"></i> Email</button>
+        <!--button class="btn btn-actn"><i class="fa fa-comments"></i> Text</button-->
+        <p class="address-p">
+		[% IF address %]
+				[% address %]
+				[% IF address_extended %]
+				, [% address_extended %]
 				[% END %]
-				[% IF name %]
-						<h1>[% name %]</h1>
+				[% IF po_box %]
+				, [% po_box %]
 				[% END %]
+				[% IF post_town %]
+				, [% post_town %]
+				[% END %]
+		[% END %]
+		[% IF locality && region %]
+				|
+				[% locality %], [% region %] [% postcode %]
+		[% END %]	
+	    <a href="https://twitter.com/intent/tweet?text=🚀%23test%20ring.ml/test%20" class="btn btn-post"><i class="fa fa-twitter-square"></i> Tweet This</a>
 
-					[% IF hashtag %]
-						<p>[% hashtag %]</p>
-					[% END %]
+    </div>
+    
+    <div class="card card-share">
+	    <ul>
+			[% IF website %]
+			<li>
+				<a class="share-a" href="[% websiteLink %]"><i class="fa fa-home"></i></a>
+			</li>
+			[% END %]
+	    	<!--<li>
+	    		<a class="share-a"><i class="fa fa-facebook-square"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-twitter-square"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-linkedin-square"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-google-plus-square"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-youtube"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-yelp"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-instagram"></i></a>
+	    	</li>
+	    	<li>
+	    		<a class="share-a"><i class="fa fa-pinterest"></i></a>
+	    	</li>-->
+	    	
+	    </ul>
+    </div>
+    
+    <footer>
+		    <div class="row align-items-center">
+			    <div class="col-6">
+			    	<button class="btn btn-claim">Claim This</button>
+			    </div>
+			    <div class="col-6 pr-0">
+					<p>1829 Main Street <br /> City, CA 90094 <br /> company.com</p>
+			    </div>
+		    </div>
+    </footer>
+    
+</main>
 
-					[% IF record %]
-					<div class="oh">
-						<a href="#" class="btn"><span class="icn icn--phone"><img src="/img/business/phone.png" alt=""></span>Call</a>
-						<a href="#" class="btn"><span class="icn icn--msg"><img src="/img/business/msg.png" alt=""></span>Message</a>
-					</div>
 
-					<h3>About Us</h3>
-					[% IF title %]
-					[% title %]
-					[% END %]
-					<p>
-						[% IF website %]
-								<a href="[% websiteLink %]">[% website %]</a>
-						[% END %]
-						<br>
-						[% IF address %]
-								[% address %]
-								[% IF address_extended %]
-								, [% address_extended %]
-								[% END %]
-								[% IF po_box %]
-								, [% po_box %]
-								[% END %]
-								[% IF post_town %]
-								, [% post_town %]
-								[% END %]
-						[% END %]
-						<br>
-						[% IF locality && region %]
-								[% locality %], [% region %] [% postcode %]
-						[% END %]	
-						<br>
-	<!-- 					[% IF email %]
-								[% email %]
-						[% END %]
-						<br>
-						[% IF tel %]
-								tel: [% tel %]
-						[% END %]
-						<br>
-						[% IF fax %]
-								fax: [% fax %]
-						[% END %]
-						<br>
-						[% IF factual_id %]
-						[% END %]
-						<br> -->
-					</p>
-					[% ELSE %]
-					<h3>Not Found</h3>
-					<br>
-					[% END %]
-			</div>
-		</main>
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="/js/business/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="/js/business/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="/js/business/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="/js/business/mdb.min.js"></script>
 
-	</div><!-- pageCont -->
 </body>
+
 </html>

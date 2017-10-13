@@ -54,20 +54,20 @@ sub load
     {
         $content->{'record'} = 'true';
         my $chainName = $rec->data('chain_name');
-        if ($chainName)
-        {
-            my $chainSocial = new Note::Row('business_chain_social' => {'chain_name' => $chainName});
-            $chainName =~ s/(\s|[^a-zA-Z0-9])//g;
-            $content->{'bodybg'} = $chainName;
-            my $logoImg = "./img/business/logo/$chainName.png";
-            my $logoRec = new Note::Row('business_logos' => {'name' => $chainName});
-            if ($logoRec->data('name'))
-            {
-                $content->{'logo'} = $logoImg;
-            }
-
-            ::log("htag chainName:  $chainName");
-        }
+#        if ($chainName)
+#        {
+#            my $chainSocial = new Note::Row('business_chain_social' => {'chain_name' => $chainName});
+#            $chainName =~ s/(\s|[^a-zA-Z0-9])//g;
+#            $content->{'bodybg'} = $chainName;
+#            my $logoImg = "./img/business/logo/$chainName.png";
+#            my $logoRec = new Note::Row('business_logos' => {'name' => $chainName});
+#            if ($logoRec->data('name'))
+#            {
+#                $content->{'logo'} = $logoImg;
+#            }
+#
+#            ::log("htag chainName:  $chainName");
+#        }
 
         my $tel = $rec->data('tel');
         $tel =~ s/^\+1(\d{3})(\d{3})(\d{4})$/($1) $2-$3/;

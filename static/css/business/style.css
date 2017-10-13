@@ -1,392 +1,351 @@
 @font-face {
-  font-family: 'open_sansregular';
-  src: url("/font/business/opensans-regular-webfont.eot");
-  src: url("/font/business/opensans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("/font/business/opensans-regular-webfont.woff2") format("woff2"), url("/font/business/opensans-regular-webfont.woff") format("woff"), url("/font/business/opensans-regular-webfont.ttf") format("truetype"), url("/font/business/opensans-regular-webfont.svg#open_sansregular") format("svg");
-  font-weight: normal;
-  font-style: normal; }
+    font-family: 'montserratlight';
+    src: url('/font/business/montserrat-light-webfont.woff2') format('woff2'),
+         url('/font/business/montserrat-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 @font-face {
-  font-family: 'open_sansbold';
-  src: url("/font/business/opensans-bold-webfont.eot");
-  src: url("/font/business/opensans-bold-webfont.eot?#iefix") format("embedded-opentype"), url("/font/business/opensans-bold-webfont.woff2") format("woff2"), url("/font/business/opensans-bold-webfont.woff") format("woff"), url("/font/business/opensans-bold-webfont.ttf") format("truetype"), url("/font/business/opensans-bold-webfont.svg#open_sansbold") format("svg");
-  font-weight: normal;
-  font-style: normal; }
+    font-family: 'montserratmedium';
+    src: url('/font/business/montserrat-medium-webfont.woff2') format('woff2'),
+         url('/font/business/montserrat-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-/* base */
-/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
-/**
- * 1. Change the default font family in all browsers (opinionated).
- * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
- */
-html {
-  font-family: sans-serif;
-  /* 1 */
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */ }
+}
 
-/**
- * Remove the margin in all browsers (opinionated).
- */
-body {
-  margin: 0; }
+@font-face {
+    font-family: 'montserratregular';
+    src: url('/font/business/montserrat-regular-webfont.woff2') format('woff2'),
+         url('/font/business/montserrat-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-article,
-aside,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section {
-  /* 1 */
-  display: block; }
+}
 
-a {
-  background-color: transparent;
-  /* 1 */
-  -webkit-text-decoration-skip: objects;
-  /* 2 */ }
+@font-face {
+    font-family: 'montserratsemibold';
+    src: url('/font/business/montserrat-semibold-webfont.woff2') format('woff2'),
+         url('/font/business/montserrat-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-a:active,
-a:hover {
-  outline-width: 0; }
+}
 
-/**
- * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
- */
-b,
-strong {
-  font-weight: inherit; }
+text-bottom/* Reset Styles
+***********************/
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed,figure, figcaption, footer, header, hgroup,menu, nav, output, ruby, section, summary,time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,q:before, q:after {content: ''; content: none;}
+table {border-collapse: collapse; border-spacing: 0;}
+strong {font-weight: bold;}
+em {font-style: italic;}
+a {outline: none;}
+button:focus {
+  outline: 0;
+}
 
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
-b,
-strong {
-  font-weight: bolder; }
+a, a:link, a:hover, a:active, a:focus {
+outline: none;
+}
 
-img {
-  border-style: none; }
+/* a:not([href]):not([tabindex]) {
+    color: #000000;
+    text-decoration: none;
+} */
 
-svg:not(:root) {
-  overflow: hidden; }
 
-/**
- * Add the correct margin in IE 8.
- */
-hr {
-  box-sizing: content-box;
-  /* 1 */
-  height: 0;
-  /* 1 */
-  overflow: visible;
-  /* 2 */ }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */ }
+/* ==== clearfix styles ===================================================== */
 
-button,
-input {
-  /* 1 */
-  overflow: visible; }
+.clear {
+    clear: both;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+}
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+}
 
-button,
-select {
-  /* 1 */
-  text-transform: none; }
+a, a:link, .btn {
+	display: inline-block;
+	outline: none;
+	opacity: 1;
+   transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
 
-button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
-  /* 2 */ }
+a:active, a:focus {
+	text-decoration: none;
+	outline: none;
+}
 
-/**
- * Remove the inner border and padding in Firefox.
- */
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
-  border-style: none;
-  padding: 0; }
-
-button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
-  outline: 1px dotted ButtonText; }
-
-textarea {
-  overflow: auto; }
-
-[type="checkbox"],
-[type="radio"] {
-  box-sizing: border-box;
-  /* 1 */
-  padding: 0;
-  /* 2 */ }
-
-/**
- * Correct the cursor style of increment and decrement buttons in Chrome.
- */
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto; }
-
-/**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
- */
-[type="search"] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */ }
-
-/**
- * Remove the inner padding and cancel buttons in Chrome and Safari on OS X.
- */
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none; }
-
-/**
- * Correct the text style of placeholders in Chrome, Edge, and Safari.
- */
-::-webkit-input-placeholder {
-  color: inherit;
-  opacity: 0.54; }
-
-/**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
- */
-::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */ }
-
-::-moz-selection {
-  background-color: #89929c;
-  color: #fff; }
-
-::selection {
-  background-color: #89929c;
-  color: #fff; }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box !important; }
-
-*, *:hover, *:focus {
-  outline: none !important; }
-
-html,
-body,
-button {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased; }
+a:hover, .btn:hover {
+	opacity: .85;
+	cursor: default;
+	cursor: pointer;
+}
 
 body {
-  font: 400 16px/1.42857 "open_sansregular", Arial, sans-serif;
-  color: #89929c; }
-
-a {
-  text-decoration: none; }
-
-a:hover,
-a:focus {
-  text-decoration: none; }
-
-ol, ul {
-  list-style: none; }
-
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0; }
-
-img {
-  border: 0;
-  width: auto;
-  max-width: 100%; }
-
-/* helpers */
-.tc {
-  text-align: center; }
-
-.rel {
-  position: relative; }
-
-.abs {
-  position: absolute; }
-
-.mb35 {
-  margin-bottom: 35px; }
-
-.mb10 {
-  margin-bottom: 10px !important; }
-
-.mb20 {
-  margin-bottom: 20px !important; }
-
-.tdn {
-  text-decoration: none !important; }
-
-.dib {
-  display: inline-block !important; }
-
-.cf:before, .cf:after {
-  content: " ";
-  display: table; }
-
-.cf:after {
-  clear: both; }
-
-.fl {
-  float: left; }
-
-.fr {
-  float: right; }
-
-b {
-  font-weight: normal; }
-
-/* components */
-body {
-  min-height: 100vh;
-  }
-
-.btn {
-  position: relative;
-  padding-left: 64px;
-  text-align: left;
-  height: 42px;
-  line-height: 42px;
-  display: block;
-  border: 1px solid #1c2540;
-  border-radius: 8px;
-  color: #272727;
-  transition: all .2s ease-in-out;
-  overflow: hidden; }
-  .btn:hover {
-    background-color: #272727;
-    border-color: #272727;
-    color: #fff; }
-  .btn:first-of-type {
-    margin-bottom: 7px; }
-  .btn span {
-    left: 0;
-    top: 0;
-    left: 0;
-    width: 44px;
-    height: 44px;
-    padding-top: 1px;
-    -webkit-transform: translateY(-1px);
-        -ms-transform: translateY(-1px);
-            transform: translateY(-1px);
+    display: table;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+    background: url("/img/business/rp-bg.png") no-repeat center top;
+    font-family: 'montserratregular';
     text-align: center;
-    border-right: 1px solid #1c2540;
-    position: absolute; }
-
-.icn {
-  display: inline-block;
-  margin-right: 10px;
-  -webkit-transform: translateY(1px);
-      -ms-transform: translateY(1px);
-          transform: translateY(1px); }
-
-.oh {
-  overflow: hidden; }
-
-.back {
-  width: 9px;
-  height: 17px;
-  background: url("/img/business/left-a.png") no-repeat center/cover; }
-
-.pageCont {
-  margin: 0 auto;
-  max-width: 375px;
-  padding: 8px; }
-
-.cont {
-  padding: 0 15px;
-  max-width: 305px;
-  margin: 0 auto; }
-
-.header {
-  background-color: #1c2540;
-  text-align: center; }
-  .header .cont {
-    padding: 4px 15px;
-    overflow: hidden; }
-  .header a {
-    float: left;
-    -webkit-transform: translateY(4px);
-        -ms-transform: translateY(4px);
-            transform: translateY(4px);
-    transition: all .2s ease-in-out; }
-    .header a:hover {
-      opacity: .8; }
-  .header a, .header span {
-    display: inline-block;
-    vertical-align: middle; }
-
-h2, h3 {
-  font-weight: normal; }
+    
+}
 
 h1 {
-  font-size: 18px;
-  color: #272727;
-  font-weight: 500;
-  margin-bottom: 0;
-  line-height: 1; }
-
-h1 + p {
-  line-height: 1;
-  margin: 10px auto 20px; }
+	font-size: 28px;
+	font-family: 'montserrat';
+	color: #fff;
+	margin: 20px auto 10px;
+	line-height: 36px;
+}
 
 h2 {
-  font-size: 16px;
-  color: #fff; }
+	color: #2b4074;
+	font-size: 18px;
+	font-family: 'montserrat';
+	margin: 16px 0px 4px 0px;
+}
 
 h3 {
-  font-size: 16px;
-  color: #272727;
-  margin: 50px auto 15px;
-  line-height: 1; }
+	color: #584141;
+	font-size: 18px;
+	font-family: 'montserratlight';
+	margin: 4px 0px 0px 0px;
+}
+
+p {
+	color: #2b4074;
+	font-family: 'montserratlight';
+	font-size: 16px;
+	margin-bottom: 20px;
+	line-height: 20px;
+}
+
+.btn {
+	padding: .5rem .5rem;
+	text-transform: capitalize;
+	display: inline-block;
+}
+
+.btn.btn-post {
+	background-color: transparent;
+	border: 2px solid #68287f;
+	color: #68287f!important;
+	text-align: center;
+	font-family: 'montserratmedium';
+	font-size: 14px;
+	width: 64%;
+	border-radius: 26px;
+	margin: 12px auto;
+}
+
+.btn.btn-post i {
+	padding-right: 6px;
+	color: #68287f;
+}
+
+.btn.btn-actn {
+	background: rgb(53,71,186); /* Old browsers */
+	background: -moz-linear-gradient(left, rgba(53,71,186,1) 0%, rgba(125,106,255,1) 50%, rgba(106,144,212,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(53,71,186,1) 0%,rgba(125,106,255,1) 50%,rgba(106,144,212,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(53,71,186,1) 0%,rgba(125,106,255,1) 50%,rgba(106,144,212,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3547ba', endColorstr='#6a90d4',GradientType=1 ); /* IE6-9 */
+	text-align: left;
+	color: #fff;
+	font-family: 'montserratlight';
+	font-size: 22px;
+	border-radius: 8px;
+	width: 100%;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 28px;
+}
+
+.btn.btn-actn i {
+	padding-left: 20px;
+	padding-right: 6px;
+	font-size: 23px;
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 28px;
+}
+
+.btn.btn-actn i.fa.fa-phone {
+	padding-right: 10px;
+}
 
 main {
-  margin-top: 120px;
-  text-align: center; }
-  main .cont {
+    display: table-cell;
+	vertical-align: middle;
+	width: 100%;
+	padding-top: 20px;
+}
+
+.card {
     position: relative;
+    background-color: rgba(255,255,255,.37);
+    /* For IE8 and earlier */
+    border-radius: 16px;
+    padding: 40px;
+    width: 92%;
+    text-align: center;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 60px 4% 24px;
+}
+
+.card.card-share {
+	background: -moz-linear-gradient(left, rgba(53,71,186,0.14) 0%, rgba(125,106,255,0.14) 50%, rgba(106,144,212,0.14) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(53,71,186,0.14) 0%,rgba(125,106,255,0.14) 50%,rgba(106,144,212,0.14) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, rgba(53,71,186,0.14) 0%,rgba(125,106,255,0.14) 50%,rgba(106,144,212,0.14) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#243547ba', endColorstr='#246a90d4',GradientType=1 ); /* IE6-9 */
+	margin: 24px auto;
+}
+
+.card figure {
+	position: absolute;
+	top: -57px;
+	left: 50%;
+	margin-left: -57px;
+	height: 114px;
+	width: 114px;
+	border: 1px solid #b2b2b2;
+	-webkit-border-radius: 57px;
+    -moz-border-radius: 57px;
+    border-radius: 57px;
     background-color: #fff;
-    border-radius: 8px;
-    padding: 52px 15px 42px; }
-    main .cont .logo {
-      position: absolute;
-      width: 70px;
-      height: 70px;
-     top: 0;
-     left: 50%;
-      -webkit-transform:translate(-50%, -50%);
-          -ms-transform:translate(-50%, -50%);
-          -moz-transform:translate(-50%, -50%);
-            -o-transform:translate(-50%, -50%);        
-               transform:translate(-50%, -50%); }
-    main .cont p {
-      padding: 0 15px; }
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+.card figure img {
+	position: relative;
+	top: 28px;
+	height: 58px;
+	width: 58px;
+}
+
+.card.card-share {
+	color: #fff;
+	font-size: 52px;
+	padding: 10px 40px;
+}
+
+.card.card-share ul {
+	width: 100%;
+	display: block;
+	margin: 0 auto;
+	padding-bottom: 8px;
+}
+
+.card.card-share li {
+	float: left;
+	width: 21.25%;
+	margin-right: 5%;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.card.card-share li:nth-of-type(4n) {
+	margin-right: 0;
+} 
+
+footer {
+	width: 100%;
+	padding: 20px 40px;
+	background-color: #2b4074;
+	margin: 0 auto 0;
+	display: inline-block;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+
+}
+
+.desktop-footer {
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+.btn.btn-claim {
+	display: inline-block;
+	border-radius: 52px;
+	font-family: 'montserratmedium';
+	font-size: 14px;
+	color: #a6d2ff!important;
+	background-color: transparent;
+	border: 2px solid #a6d2ff;
+	border-radius: 26px;
+	width: 100%;
+}
+
+footer p {
+	color: #fff;
+	font-family: 'montserratlight';
+	font-size: 12px;	
+	text-align: left;
+	margin-bottom: 0;
+}
+
+.address-p {
+	margin-top: 32px;
+	margin-bottom: 0;
+	font-size: 12px;
+	line-height: 16px;
+}
+
+.share-a {
+	color: #FFFFFF;
+}
+
+@media only screen and (min-width : 667px) {
+	.card {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.card {
+		width: 375px;
+	}
+	
+	footer {
+		width: 375px;
+		bottom: 0;
+		left: 0;
+	}
+	
+	body {
+		padding-top: 0;
+		margin-top: 0;
+	} 
+}
