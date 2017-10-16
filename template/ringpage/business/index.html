@@ -5,17 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ringmail</title>
-    <!-- Font Awesome -->
-    <!-- Bootstrap core CSS -->
+    <title>[% hashtag %]</title>
+
     <link href="/css/business/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
     <link href="/css/business/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
     <link href="/css/business/font-awesome.css" rel="stylesheet">
-    
     <link href="/css/business/style.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin=""/>
 </head>
 
 <body>
@@ -53,10 +49,24 @@
 				[% END %]
 		[% END %]
 		[% IF locality && region %]
-				|
+				<br/>	
 				[% locality %], [% region %] [% postcode %]
 		[% END %]	
+		</p>
 	    <a href="https://twitter.com/intent/tweet?text=🚀%23test%20ring.ml/test%20" class="btn btn-post"><i class="fa fa-twitter-square"></i> Tweet This</a>
+
+		[% IF hours_display %]
+		<p/>
+		<p>
+			<strong>Hours:</strong><br/>[% hours_display %]
+		</p>
+		[% END %]
+
+		<p/>
+		<p>
+			<strong>Map:</strong>
+			<div id="placemap"></div>
+		</p>
 
     </div>
     
@@ -67,11 +77,18 @@
 				<a class="share-a" href="[% websiteLink %]"><i class="fa fa-home"></i></a>
 			</li>
 			[% END %]
+			[% IF social_twitter %]
+	    	<li>
+	    		<a class="share-a" href="[% social_twitter %]"><i class="fa fa-twitter-square"></i></a>
+	    	</li>
+			[% END %]
+			[% IF social_facebook %]
+	    	<li>
+	    		<a class="share-a" href="[% social_facebook %]"><i class="fa fa-facebook-square"></i></a>
+	    	</li>
+			[% END %]
 	    	<!--<li>
 	    		<a class="share-a"><i class="fa fa-facebook-square"></i></a>
-	    	</li>
-	    	<li>
-	    		<a class="share-a"><i class="fa fa-twitter-square"></i></a>
 	    	</li>
 	    	<li>
 	    		<a class="share-a"><i class="fa fa-linkedin-square"></i></a>
@@ -101,24 +118,59 @@
 			    	<button class="btn btn-claim">Claim This</button>
 			    </div>
 			    <div class="col-6 pr-0">
-					<p>1829 Main Street <br /> City, CA 90094 <br /> company.com</p>
+					<p>
+						[% IF address %]
+								[% address %]
+								[% IF address_extended %]
+								, [% address_extended %]
+								[% END %]
+								[% IF po_box %]
+								, [% po_box %]
+								[% END %]
+								[% IF post_town %]
+								, [% post_town %]
+								[% END %]
+						[% END %]
+						[% IF locality && region %]
+								<br/>
+								[% locality %], [% region %] [% postcode %]
+						[% END %]	
+					</p>
 			    </div>
 		    </div>
+			<div class="row">
+			    <div class="col-12">
+			    	<p>
+						This hashtag is available to customize if this is your business.<br/>
+						<strong>Powered By RingMail</strong><br/>
+						&copy; [% PERL %]print POSIX::strftime("%Y", localtime());[% END %] RingMail, Inc. - All rights reserved.
+					</p>
+			    </div>
+		    </div>
+
     </footer>
     
 </main>
 
 
-    <!-- SCRIPTS -->
-    <!-- JQuery -->
     <script type="text/javascript" src="/js/business/jquery-3.2.1.min.js"></script>
-    <!-- Bootstrap tooltips -->
     <script type="text/javascript" src="/js/business/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="/js/business/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
     <script type="text/javascript" src="/js/business/mdb.min.js"></script>
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+	<script type="text/javascript">
+var placemap = L.map('placemap').setView([[% latitude %], [% longitude %]], 15);
 
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg80?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets-basic',
+    accessToken: '[% mapbox_token %]'
+}).addTo(placemap);
+
+var marker = L.marker([[% latitude %], [% longitude %]]).addTo(placemap).bindPopup('<strong>[% name %]</strong><br/>[% IF address %][% address %][% IF address_extended %], [% address_extended %][% END %][% IF po_box %], [% po_box %][% END %] [% IF post_town %], [% post_town %][% END %][% END %]') .openPopup();
+
+	</script>
 </body>
 
 </html>
