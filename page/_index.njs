@@ -1,3 +1,3 @@
 {
-   "template" : "pages/index.html"
+   "template" : "_index.html"
 }
