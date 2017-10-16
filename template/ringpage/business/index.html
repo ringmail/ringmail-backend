@@ -168,7 +168,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg80?access_token
     accessToken: '[% mapbox_token %]'
 }).addTo(placemap);
 
-var marker = L.marker([[% latitude %], [% longitude %]]).addTo(placemap).bindPopup('<strong>[% name %]</strong><br/>[% IF address %][% address %][% IF address_extended %], [% address_extended %][% END %][% IF po_box %], [% po_box %][% END %] [% IF post_town %], [% post_town %][% END %][% END %]') .openPopup();
+var marker = L.marker([[% latitude %], [% longitude %]]).addTo(placemap).bindPopup('<strong>[% name_filtered %]</strong><br/>[% IF address %][% address %][% IF address_extended %], [% address_extended %][% END %][% IF po_box %], [% po_box %][% END %] [% IF post_town %], [% post_town %][% END %][% END %]') .openPopup();
 
 	</script>
 </body>

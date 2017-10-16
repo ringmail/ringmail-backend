@@ -118,6 +118,9 @@ sub load
 		$content->{'website'} = $website;
 		$content->{'mapbox_token'} = $obj->app()->config()->{'mapbox_token'};
 
+		$content->{'name_filtered'} = $rec->{'name'};
+		$content->{'name_filtered'} =~ s/[^a-zA-Z0-9\- ]//gm;
+
 		my $social = sqltable('business_social')->get(
 			'result' => 1,
 			'select' => ['facebook_url', 'twitter_url'],
