@@ -50,9 +50,11 @@ sub load
 			my $avatarImg = 'explore_hashtagdir_icon4.jpg';
 			my $imgPath = '/img/hashtag_avatars/';
 
-			my $tag = lc($1);
-			$tag = "\'$tag\'";
+			my $tag = $1;
+			my $qtag = lc($1);
+			$qtag = "\'$qtag\'";
 			
+			# TODO: Add global hashtags
 			my $tq = sqltable('business_place_category_geo')->get(
 				'select' => [
 					'b.place_id',
@@ -60,7 +62,7 @@ sub load
 				],
 				'table' => 'business_place_category_geo b, business_hashtag_place p',
 				'join' => 'b.place_id=p.place_id',
-				'where' => "p.hashtag=$tag AND b.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND b.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,b.latitude,b.longitude) <= $distance",
+				'where' => "p.hashtag=$qtag AND b.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND b.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,b.latitude,b.longitude) <= $distance",
 				'order' => "(POW((b.longitude-$lonIn),2) + POW((b.latitude-$latIn),2))",
 			);
 
@@ -72,8 +74,24 @@ sub load
 			}
 			else
 			{
-				# default
-				$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
+				# check for a hashtag anywhere
+				my $placequery = sqltable('business_hashtag_place')->get(
+					'select' => 'h.place_id',
+					'table' => 'business_hashtag_place h',
+					'where' => {
+						'h.hashtag' => $tag,
+					},
+					'order' => 'h.id asc limit 1',
+				);
+				if (scalar(@$placequery))
+				{
+					$url = $obj->url('path' => '/internal/ringpage/business_places?hashtag='. $tag);
+				}
+				else
+				{
+					# default
+					$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
+				}
 			}
 
 			$res = {

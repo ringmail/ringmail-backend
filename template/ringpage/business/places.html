@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>[% hashtag %]</title>
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="/css/business/basic.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin=""/>
+</head>
+<body>
+	<div class="pageCont tc">
+		<img src="/img/business/basic_logo.png" alt="RingMail logo" />
+		<h1>
+			<strong>[% hashtag %]</strong><br/>is available in other locations.
+		</h1>
+		<p>
+			Here is a list of locations<br/>for this Hashtag:
+		</p>
+		[% IF places.size %]
+		<p>
+			<strong>[% places.0.name %]</strong>
+		</p>
+		<table class="place_table">
+			[% FOR p IN places %]
+			<tr>
+				<td>
+					[% p.number %])
+				</td>
+				<td>
+					<div class="place_address">
+						[% IF p.address %][% p.address %]<br/>[% END %][% p.locality %], [% p.region %] [% p.postcode %]
+					</div>
+				</td>
+				<td>
+					<a href="/ringpage_biz?id=[% p.id %]">RingPage</a>
+				</td>
+			</tr>
+			[% END %]
+		</table>
+		[% END %]
+		[% IF map_places.size %]
+		<div id="placemap"></div>
+		[% END %]
+	</div>
+	<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+[% IF map_places.size %]
+	<script type="text/javascript">
+var placemap = L.map('placemap').setView([[% avg_latitude %], [% avg_longitude %]], 5);
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg80?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets-basic',
+    accessToken: '[% mapbox_token %]'
+}).addTo(placemap);
+
+[% FOR p IN map_places %]
+var placehtml[% loop.count %] = '<strong>[% p.name_filtered %]</strong> ([% p.number %])<br/>[% IF p.address %][% p.address %]<br/>[% END %][% p.locality %], [% p.region %] [% p.postcode %]<br/><a href="/ringpage_biz?id=[% p.id %]">RingPage</a>';
+var marker[% loop.count %] = L.marker([[% p.latitude %], [% p.longitude %]]).addTo(placemap).bindPopup(placehtml[% loop.count %]);
+[% END %]
+
+	</script>
+[% END %]
+</body>
+</html>
