@@ -111,17 +111,17 @@ sub load
 			$content->{'domain_rt'} = \%route;
 			$content->{'domain_sel'} = $id;
 		}
-		unless (scalar @domlist)
-		{
-			@domlist = ['(No Verified Domains)', ''],
-		}
-		$content->{'domain_opts'} = {'id' => 'domain_sel'};
-		if (scalar @domlist)	
-		{
-			$content->{'domain_opts'}->{'onchange'} = 'this.form.submit();';
-		}
-		$content->{'domain_list'} = \@domlist;
 	}
+	unless (scalar @domlist)
+	{
+		@domlist = ['(No Verified Domains)', ''],
+	}
+	$content->{'domain_opts'} = {'id' => 'domain_sel'};
+	if (scalar @domlist)	
+	{
+		$content->{'domain_opts'}->{'onchange'} = 'this.form.submit();';
+	}
+	$content->{'domain_list'} = \@domlist;
 	my $vlist = $domains->list_domains(
 		'verified' => 0,
 	);
