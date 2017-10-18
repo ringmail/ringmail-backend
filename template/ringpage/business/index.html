@@ -18,13 +18,12 @@
 
 <main>
     <div class="card">
+		[% IF custom_logo %]
 	    <figure>
-			[% IF custom_logo %]
 	    	<div class="logoimg" style="background: url(/img/business/logo/[% custom_logo %]) center center no-repeat;" alt="">&nbsp;</div>
-			[% ELSE %]
-	    	<div class="logoimg" style="background: url(/img/business/rp-logo.png) center center no-repeat;" alt="">&nbsp;</div>
-			[% END %]
+	    	<!--<div class="logoimg" style="background: url(/img/business/rp-logo.png) center center no-repeat;" alt="">&nbsp;</div>-->
 	    </figure>
+		[% END %]
 	    
 	    <h1>[% hashtag %]</h1>
 	    
@@ -57,7 +56,7 @@
 				[% locality %], [% region %] [% postcode %]
 		[% END %]	
 		</p>
-	    <a href="https://twitter.com/intent/tweet?text=🚀%23test%20ring.ml/test%20" class="btn btn-post"><i class="fa fa-twitter-square"></i> Tweet This</a>
+	    <a href="https://twitter.com/intent/tweet?text=🚀%23[% tag %]%20ring.ml/[% tag %]%20" class="btn btn-post"><i class="fa fa-twitter-square"></i> Tweet This</a>
 
 		[% IF hours_display %]
 		<p/>

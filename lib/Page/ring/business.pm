@@ -147,10 +147,13 @@ sub load
 			) {
 				$haslink = 1;
 			}
-
-			my $logopath = $main::note_config->{'root'}. '/app/ringmail/static/img/business/logo/'. $tag. '.png';
-			if (-e 
 		}
+		my $logopath = $main::note_config->{'root'}. '/app/ringmail/static/img/business/logo/'. lc($tag). '.png';
+		if (-e $logopath)
+		{
+			$content->{'custom_logo'} = lc($tag). '.png';
+		}
+
 		$content->{'has_link'} = $haslink;
 	}
   
