@@ -142,7 +142,7 @@ sub load
 			$content->{'social_twitter'} = $social->{'twitter_url'};
 			if (
 				(defined($social->{'facebook_url'}) && length($social->{'facebook_url'})) ||
-				(defined($social->{'twitter_url'}) && length($social->{'twitter_url'})) ||
+				(defined($social->{'twitter_url'}) && length($social->{'twitter_url'}))
 			) {
 				$haslink = 1;
 			}
