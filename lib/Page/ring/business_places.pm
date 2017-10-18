@@ -61,7 +61,7 @@ sub load
 		$content->{'avg_latitude'} = sum(@lat) / scalar(@lat);
 		$content->{'avg_longitude'} = sum(@lon) / scalar(@lon);
 	}
-	::log($content);
+	#::log($content);
 
 	return $obj->SUPER::load($param);
 }

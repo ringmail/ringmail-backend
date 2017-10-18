@@ -111,12 +111,18 @@ sub load
 		$content->{'longitude'} = $rec->{'longitude'};
 		$content->{'tel'} = $tel;
 
-		my $website = $rec->{'website'};
-		$content->{'websiteLink'} = $website;
-		$website =~ s/^(http|https):\/\/www\.//;
-		$website =~ s/\s+$//;
-		$content->{'website'} = $website;
 		$content->{'mapbox_token'} = $obj->app()->config()->{'mapbox_token'};
+
+		my $haslink = 0;
+		my $website = $rec->{'website'};
+		if (defined($website) && length($website))
+		{
+			$content->{'websiteLink'} = $website;
+			$website =~ s/^(http|https):\/\/www\.//;
+			$website =~ s/\s+$//;
+			$content->{'website'} = $website;
+			$haslink = 1;
+		}
 
 		$content->{'name_filtered'} = $rec->{'name'};
 		$content->{'name_filtered'} =~ s/[^a-zA-Z0-9\- ]//gm;
@@ -134,7 +140,14 @@ sub load
 			chomp($social->{'twitter_url'});
 			$content->{'social_facebook'} = $social->{'facebook_url'};
 			$content->{'social_twitter'} = $social->{'twitter_url'};
+			if (
+				(defined($social->{'facebook_url'}) && length($social->{'facebook_url'})) ||
+				(defined($social->{'twitter_url'}) && length($social->{'twitter_url'})) ||
+			) {
+				$haslink = 1;
+			}
 		}
+		$content->{'has_link'} = $haslink;
 	}
   
 	return $obj->SUPER::load($param);

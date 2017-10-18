@@ -247,24 +247,29 @@ sub load
 				}
 				else # no sub-categories, must be leaf so lookup hashtags
 				{
+
+					# TODO: Do this first
+					#'or',
+					#{
+					#	'g.latitude' => undef,
+					#	'g.longitude' => undef,
+					#	'g.country_code' => 'us', # TODO: make this dynamic
+					#},
+
 					my $tq = sqltable('ring_hashtag_geo')->get(
 						'select' => 'distinct h.hashtag',
-						'table' => 'ring_hashtag h, ring_hashtag_geo g',
-						'join' => 'g.hashtag_id=h.id',
+						'table' => 'ring_hashtag h, ring_hashtag_geo g, business_place p',
+						'join' => [
+							'g.hashtag_id=h.id',
+							'g.business_place_id=p.id',
+						],
 						'where' => [
 							{
 								'g.category_id' => $pid,
+								'p.existence' => ['>', 0],
 							},
 							'and',
-							[
-								"g.latitude BETWEEN $latIn - ($distance * $rangeFactor) AND $latIn + ($distance * $rangeFactor) AND g.longitude BETWEEN $lonIn - ($distance * $rangeFactor) AND $lonIn + ($distance * $rangeFactor) AND geodistance($latIn, $lonIn, g.latitude, g.longitude) <= $distance",
-								'or',
-								{
-									'g.latitude' => undef,
-									'g.longitude' => undef,
-									'g.country_code' => 'us', # TODO: make this dynamic
-								},
-							],
+							"g.latitude BETWEEN $latIn - ($distance * $rangeFactor) AND $latIn + ($distance * $rangeFactor) AND g.longitude BETWEEN $lonIn - ($distance * $rangeFactor) AND $lonIn + ($distance * $rangeFactor) AND geodistance($latIn, $lonIn, g.latitude, g.longitude) <= $distance",
 						],
 						'order' => 'h.hashtag asc limit 50 offset '. $offset,
 					);
