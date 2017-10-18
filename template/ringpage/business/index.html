@@ -19,7 +19,11 @@
 <main>
     <div class="card">
 	    <figure>
-	    	<img class="" src="/img/business/rp-logo.png" alt="" />
+			[% IF custom_logo %]
+	    	<div class="logoimg" style="background: url(/img/business/logo/[% custom_logo %]) center center no-repeat;" alt="">&nbsp;</div>
+			[% ELSE %]
+	    	<div class="logoimg" style="background: url(/img/business/rp-logo.png) center center no-repeat;" alt="">&nbsp;</div>
+			[% END %]
 	    </figure>
 	    
 	    <h1>[% hashtag %]</h1>

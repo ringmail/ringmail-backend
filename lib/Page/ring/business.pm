@@ -91,6 +91,7 @@ sub load
 		$fax =~ s/^\+1(\d{3})(\d{3})(\d{4})$/($1) $2-$3/;
 
 		$content->{'hashtag'} = $hashtag;
+		my $tag = $content->{'tag'} = substr($hashtag, 1);
 		$content->{'placeId'} = $placeId;
 
 		$content->{'address'} = $rec->{'address'};
@@ -146,6 +147,9 @@ sub load
 			) {
 				$haslink = 1;
 			}
+
+			my $logopath = $main::note_config->{'root'}. '/app/ringmail/static/img/business/logo/'. $tag. '.png';
+			if (-e 
 		}
 		$content->{'has_link'} = $haslink;
 	}
