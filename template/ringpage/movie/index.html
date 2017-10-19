@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>[% hashtag %]</title>
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="/css/business/basic.css">
+</head>
+<body>
+	<div class="pageCont tc">
+		<h2>
+			[% hashtag %]
+		</h2>
+		<h1>
+			[% movie.title %]
+		</h1>
+		<p/>
+		<div id="ytplayer"></div>
+		<p>
+			In Theaters:<br/>
+			<strong>[% release %]</strong>
+		</p>
+		<a href="#" class="btn btn--brand">Remind Me</a>
+		<img src="[% movie.poster_url %]" class="img-responsive"/>
+		<div class="movie_overview" style="text-align: left; font-size: 0.9em; color: #000000; padding: 10px;">
+			[% movie.overview %]
+		</div>
+		<br/>
+		<a href="[% movie.homepage %]" class="btn btn--brand">Movie Homepage</a>
+	    <a href="https://twitter.com/intent/tweet?text=🚀%23[% tag %]%20ring.ml/[% tag %]%20" class="btn btn--brand">Tweet This</a>
+	</div>
+	<script>
+// Load the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/player_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+// Replace the 'ytplayer' element with an <iframe> and
+// YouTube player after the API code downloads.
+var player;
+function onYouTubePlayerAPIReady() {
+	player = new YT.Player('ytplayer', {
+		height: '180',
+		width: '320',
+		showinfo: 0,
+		modestbranding: 1,
+		videoId: '[% movie.youtube_id %]'
+	});
+}
+	</script>
+</body>
+</html>

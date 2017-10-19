@@ -39,61 +39,81 @@ sub load
 	if ($user)
 	{
 		my $to = $form->{'hashtag'};
-
-		my $distance = 1;
-    	my $rangeFactor = 0.014457;
-
 		if ($to =~ /^#([a-z0-9_]+)/i)
 		{
+			my $tag = $1;
 			my $url;
-			my $avatarUrl;
 			my $avatarImg = 'explore_hashtagdir_icon4.jpg';
 			my $imgPath = '/img/hashtag_avatars/';
 
-			my $tag = $1;
-			my $qtag = lc($1);
-			$qtag = "\'$qtag\'";
-			
-			# TODO: Add global hashtags
-			my $tq = sqltable('business_place_category_geo')->get(
-				'select' => [
-					'b.place_id',
-					'p.hashtag',
-				],
-				'table' => 'business_place_category_geo b, business_hashtag_place p',
-				'join' => 'b.place_id=p.place_id',
-				'where' => "p.hashtag=$qtag AND b.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND b.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,b.latitude,b.longitude) <= $distance",
-				'order' => "(POW((b.longitude-$lonIn),2) + POW((b.latitude-$latIn),2))",
+			# global hashtag lookup
+			my $hq = sqltable('ring_hashtag')->get(
+				'select' => ['target_url', 'user_id'],
+				'where' => {
+					'hashtag' => $tag,
+					'localized' => 0,
+				},
 			);
-
-			if (@$tq)
+			if (scalar @$hq)
 			{
-				my $closestPlaceId = $$tq[0]->{'place_id'};
-				$url = $obj->url('path' => 'ringpage_biz' . "?id=$closestPlaceId");
-				$avatarUrl = '/img/hashtag_avatars/' . $avatarImg;
+				$url = $hq->[0]->{'target_url'};
+				if ($hq->[0]->{'user_id'} == 0 && $url =~ /^\//)
+				{
+					# interpret as a relative path (only for internal tags)
+					$url = $obj->url('path' => $url);
+				}
 			}
 			else
 			{
-				# check for a hashtag anywhere
-				my $placequery = sqltable('business_hashtag_place')->get(
-					'select' => 'h.place_id',
-					'table' => 'business_hashtag_place h',
-					'where' => {
-						'h.hashtag' => $tag,
-					},
-					'order' => 'h.id asc limit 1',
+				# localized hashtag,place search
+				my $distance = 10; # Miles
+				my $rangeFactor = 0.014457;
+				my $avatarUrl;
+
+				my $qtag = lc($1);
+				$qtag = "\'$qtag\'";
+				
+				# TODO: Add global hashtags
+				my $tq = sqltable('ring_hashtag')->get(
+					'select' => [
+						'g.business_place_id as place_id',
+					],
+					'table' => 'ring_hashtag_geo g, ring_hashtag h',
+					'join' => 'h.id=g.hashtag_id',
+					'where' => "h.hashtag=$qtag AND h.localized = 1 AND g.latitude BETWEEN $latIn-($distance*$rangeFactor) AND $latIn+($distance*$rangeFactor) AND g.longitude BETWEEN $lonIn-($distance*$rangeFactor) AND $lonIn+($distance*$rangeFactor) AND geodistance($latIn,$lonIn,g.latitude,g.longitude) <= $distance",
+					'order' => "(POW((g.longitude-$lonIn),2) + POW((g.latitude-$latIn),2))",
 				);
-				if (scalar(@$placequery))
+
+				if (@$tq)
 				{
-					$url = $obj->url('path' => '/internal/ringpage/business_places?hashtag='. $tag);
+					my $closestPlaceId = $$tq[0]->{'place_id'};
+					$url = $obj->url('path' => 'ringpage_biz' . "?id=$closestPlaceId");
+					$avatarUrl = '/img/hashtag_avatars/' . $avatarImg;
 				}
 				else
 				{
-					# default
-					$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
+					# check for a hashtag anywhere
+					my $placequery = sqltable('ring_hashtag_geo')->get(
+						'select' => 'g.business_place_id',
+						'table' => 'ring_hashtag_geo g, ring_hashtag h',
+						'join' => 'g.hashtag_id=h.id',
+						'where' => {
+							'h.hashtag' => $tag,
+							'h.localized' => 1,
+						},
+						'order' => 'g.id asc limit 1',
+					);
+					if (scalar(@$placequery))
+					{
+						$url = $obj->url('path' => '/internal/ringpage/business_places?hashtag='. $tag);
+					}
+					else
+					{
+						# default
+						$url = 'http://pages.ringmail.com/ringmail/hashtag_claimahashtag/';
+					}
 				}
 			}
-
 			$res = {
 				'result' => 'ok',
 				'target' => $url,

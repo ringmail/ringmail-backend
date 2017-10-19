@@ -263,15 +263,18 @@ img {
   font-family: "roboto_condensedbold", Arial, sans-serif;
   font-size: 17px;
   letter-spacing: .3px;
-  margin-bottom: 106px;
-  width: 258px; }
+  margin-bottom: 20px;
+  width: 258px;
+}
 
 .btn--brand {
   background: #0077c2;
   color: #fff !important;
-  transition: all .2s ease-in-out; }
-  .btn--brand:hover {
-    background: #0067a9; }
+  transition: all .2s ease-in-out;
+}
+.btn--brand:hover {
+  background: #0067a9;
+}
 
 .pageCont {
   margin: 0 auto;
@@ -299,6 +302,13 @@ img {
 #placemap {
 	height: 360px;
 	width: 100%;
+}
+
+.movie_overview {
+	text-align: left;
+	color: #000000;
+	font-size: 0.9em;
+	padding: 10px;
 }
 
 h1 {

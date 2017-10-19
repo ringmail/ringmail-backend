@@ -1,5 +1,5 @@
-INSERT INTO ring_hashtag (hashtag, category_id, user_id, active, paid, directory)
-SELECT d.hashtag, NULL, 291, 1, 1, 1
+INSERT INTO ring_hashtag (hashtag, user_id, active, paid, directory)
+SELECT d.hashtag, 0, 1, 1, 1
 FROM business_hashtag d WHERE d.hashtag != 'DYL'
 
 ---

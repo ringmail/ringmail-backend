@@ -29,8 +29,11 @@ sub load
 		'select' => [
 			'p.*',
 		],
-		'table' => 'business_place p, business_hashtag_place h',
-		'join' => 'h.place_id=p.id',
+		'table' => 'business_place p, ring_hashtag h, ring_hashtag_geo g',
+		'join' => [
+			'g.business_place_id=p.id',
+			'g.hashtag_id=h.id',
+		],
 		'where' => { 'h.hashtag' => $hashtag, },
 		'order' => 'p.id asc limit 11',
 	);
