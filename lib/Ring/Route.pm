@@ -140,8 +140,8 @@ sub get_route
 			if ($tphone->id())
 			{
 				$res = {
-					'route' => 'phone',
-					'phone' => $tphone->data('login'),
+					'type' => 'phone',
+					'route' => $tphone->data('login'),
 				};
 			}
 		}

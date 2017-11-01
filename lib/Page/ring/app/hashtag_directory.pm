@@ -32,7 +32,7 @@ sub load
 	my $distance = 1;
 	my $rangeFactor = 0.014457;
 
-	::log('hashtag directory', {%$form, 'password' => ''});
+	#::log('hashtag directory', {%$form, 'password' => ''});
 	my $user = Ring::User::login(
 		'login' => $form->{'login'},
 		'password' => $form->{'password'},

@@ -89,9 +89,9 @@ sub load
 						::log("Lookup From: $fru->{'login'}|$newfrom -> To: $tologin|$to");
 						$newfrom =~ s/\@/\\/;
 						$newfrom = uri_escape($newfrom);
-						if ($dest->{'route'} eq 'phone')
+						if ($dest->{'type'} eq 'phone')
 						{
-							$res = "type=phone;from=$newfrom;to=$dest->{'phone'};uuid=$touuid;contact=$tocontact";
+							$res = "type=phone;from=$newfrom;to=$dest->{'route'};uuid=$touuid;contact=$tocontact";
 						}
 					}
 				}
