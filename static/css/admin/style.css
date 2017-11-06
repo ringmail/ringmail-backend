@@ -185,6 +185,11 @@ h5 {
 	margin-bottom: 0;
 }
 
+.margin-box {
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 .content-box-grad {
 	display: block;
 	width: 100%;
@@ -209,13 +214,15 @@ h5 {
 	box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.12), 0px 1px 2px 0px rgba(0,0,0,0.20);
 }
 
-
-
 .content-box.table-box {
 	padding: 30px 0;
 }
 
 .content-box.table-box h2 {
+	padding: 0 30px 25px;
+}
+
+.content-box.table-box h3 {
 	padding: 0 30px 25px;
 }
 
@@ -226,9 +233,9 @@ h5 {
 input[type=date], input[type=datetime-local], input[type=email], input[type=number], input[type=password], input[type=search-md], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], textarea.md-textarea {
 	border: 1px solid #acacac;
 	border-radius: 3px;
-	height: 30px;
+	height: 20px;
 	line-height: 30px;
-	padding: 5px 14px;
+	padding: 2px 7px;
 	width: 180px;
 	margin: 0;
 }
@@ -249,7 +256,6 @@ input[type=date], input[type=datetime-local], input[type=email], input[type=numb
 }
 
 .btn.btn-primary, .btn.btn-primary:focus, .btn.btn-primary:active {
-	margin-left: 40px;
 	background-color: #1abc9c!important;
 }
 
@@ -330,9 +336,9 @@ background: transparent;
 	right: 6px;
 }
 
-[type=radio]+label:after, [type=radio]+label:before {
+/*[type=radio]+label:after, [type=radio]+label:before {
 	border-width: 1px;
-}
+}*/
 
 .table-bordered {
 	border-top: 0;
