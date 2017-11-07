@@ -8,11 +8,11 @@
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 			[% IF page.form.new_domain %]
 			<h2>Register New Domain:</h2>
-			<div class="faq-container">
+			<div class="margin-box faq-container">
 				<ol class="faqList faq-list">
 					<li id="faq-1">
 						<div class="faq-icon">
-							<div class="faq-number">&raquo;</div>
+							<div class="faq-number">!</div>
 						</div>
 						<div class="faq-text">
 							<h4>After registering you must confirm ownership of this domain</h4>
@@ -21,37 +21,42 @@
 					</li>
 				</ol>
 			</div>
-			<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
-				<fieldset>
-					<div class="control-group[% IF page.value.error %] error[% END %]">
-						<label class="control-label" for="dns">Domain Name:</label>
-						<div class="controls">
-							[% page.field(
-								'command' => 'domain_add',
-								'type' => 'text',
-								'name' => 'dns',
-								'opts' => {'id' => 'dns'},
-							) %]
-							[% IF page.value.error %]
-							<div>
-								<span class="error" for="dns" style="display: inline;">[% page.value.error %]</span>
+			<div class="margin-box faq-container">
+				<form method="post" action="[% page.url() %]" style="margin: 0px; padding: 0px;" class="form-horizontal">
+					<fieldset>
+						<div class="control-group[% IF page.value.error %] error[% END %]">
+							<label class="control-label" for="dns">Domain Name:</label>
+							<div class="controls">
+								[% page.field(
+									'command' => 'domain_add',
+									'type' => 'text',
+									'name' => 'dns',
+									'opts' => {'id' => 'dns'},
+								) %]
+								[% IF page.value.error %]
+								<div>
+									<span class="error" for="dns" style="display: inline;">[% page.value.error %]</span>
+								</div>
+								[% END %]
 							</div>
-							[% END %]
 						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							[% page.button(
-								'command' => 'domain_add',
-								'contents' => 'Register Domain',
-								'opts' => {'class' => 'btn btn-primary btn-medium'},
-							) %]
-							&nbsp;&nbsp;|&nbsp;&nbsp;
-							<a href="[% page.url() %]">Cancel</a>
+						<div>
+							&nbsp;
 						</div>
-					</div>
-				</fieldset>
-			</form>
+						<div class="control-group">
+							<div class="controls">
+								[% page.button(
+									'command' => 'domain_add',
+									'contents' => 'Register Domain',
+									'opts' => {'class' => 'btn btn-primary btn-medium'},
+								) %]
+								&nbsp;&nbsp;|&nbsp;&nbsp;
+								<a href="[% page.url() %]">Cancel</a>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
 			[% ELSE %]
 			<h2>Register Domain</h2>
 			[% IF page.value.domain_added %]

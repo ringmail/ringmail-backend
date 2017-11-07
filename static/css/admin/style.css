@@ -391,6 +391,77 @@ table td .form-group {
 	margin-bottom: 0;
 }
 
+/*------------------------------------------------------------------
+ 
+Faq Styles
+
+------------------------------------------------------------------- */
+.faq-container .faq-search {
+  margin-bottom: 2em;
+  text-align: right;
+}
+.faq-container .faq-search input {
+  width: 96%;
+  display: block;
+  padding: 2%;
+}
+.faq-container .faq-empty {
+  display: none;
+}
+.faq-container .faq-toc {
+  padding: 1.5em 0;
+  margin: 2em 0 0;
+  border: 1px dotted #CCC;
+  border-right: none;
+  border-left: none;
+}
+.faq-container .faq-toc ol {
+  padding: 0;
+  margin: 0;
+}
+.faq-container .faq-toc ol li {
+  margin-bottom: .75em;
+  list-style: none;
+}
+.faq-container .faq-toc ol li a {
+  margin-left: .5em;
+}
+.faq-container .faq-list {
+  padding: 0;
+  margin: 3em 0 0;
+  list-style: none;
+}
+.faq-container .faq-list li {
+  display: table;
+  margin-bottom: 2em;
+}
+.faq-container .faq-list li .faq-icon {
+  display: table-cell;
+  padding-right: 1.25em;
+  vertical-align: top;
+}
+.faq-container .faq-list li .faq-text {
+  display: table-cell;
+  vertical-align: top;
+}
+.faq-container .faq-list li .faq-text h4 {
+  margin-top: 0;
+}
+.faq-container .faq-list li .faq-number {
+  width: 32px;
+  height: 32px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 32px;
+  color: #ffffff;
+  background: #1abc9c;
+  border: 3px solid #ffffff;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
 @media (min-width: 1600px) {
 .container {
     width: 1540px;
